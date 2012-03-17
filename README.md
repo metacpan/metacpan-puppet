@@ -30,4 +30,7 @@ Turn off with
     rm /tmp/leo_testing.txt
 Then follow 'To Run' above and this file will be recreated.
 
+# References
+
+http://www.puppetcookbook.com/
 
