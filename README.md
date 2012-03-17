@@ -6,6 +6,7 @@ OpenSuse:
 
 # Installing
     zypper in puppet-server
+    yast -i yum
 
 Should get you puppet-0.25.4-4.7.1.x86_64
 
