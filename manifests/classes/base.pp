@@ -17,53 +17,53 @@ class test_setup {
 
 class default_packages {
 	# Editors
-	package { vim: ensure => latest }
+	package { vim: ensure => present }
 	
 	# System Tools
-	package { mtr: ensure => latest }
-	package { bzip2: ensure => latest }
-	package { diffutils: ensure => latest }
+	package { mtr: ensure => present }
+	package { bzip2: ensure => present }
+	package { diffutils: ensure => present }
 
-#   package { host: ensure => latest }
-#   package { htop: ensure => latest }
-#   package { mutt: ensure => latest }
-#   package { less: ensure => latest }
-#   package { ncftp: ensure => latest }
-#   package { ntp: ensure => latest }
-#   package { ntpdate: ensure => latest }
-#   package { psmisc: ensure => latest } # killall pstree fuser commands
-#   package { rsync: ensure => latest }
-#   package { screen: ensure => latest }
-#   package { sudo: ensure => latest }
-#   package { sysstat: ensure => latest }
-#   package { telnet: ensure => latest }
-#   package { whois: ensure => latest }
+#   package { host: ensure => present }
+#   package { htop: ensure => present }
+#   package { mutt: ensure => present }
+#   package { less: ensure => present }
+#   package { ncftp: ensure => present }
+#   package { ntp: ensure => present }
+#   package { ntpdate: ensure => present }
+#   package { psmisc: ensure => present } # killall pstree fuser commands
+#   package { rsync: ensure => present }
+#   package { screen: ensure => present }
+#   package { sudo: ensure => present }
+#   package { sysstat: ensure => present }
+#   package { telnet: ensure => present }
+#   package { whois: ensure => present }
 # 
 #   # Daemons
-#   package { memcached: ensure => latest } 
+#   package { memcached: ensure => present } 
 # 
 #   # Development tools
-#   package { gcc:       ensure => latest }
-#   package { make:      ensure => latest }
-#   package { libc6:     ensure => latest }
-#   package { libc6-dev: ensure => latest }
-#   package { libxml2-utils:   ensure => latest }
-#   package { pkg-config: ensure => latest }
-#   package { build-essential: ensure => latest }
+#   package { gcc:       ensure => present }
+#   package { make:      ensure => present }
+#   package { libc6:     ensure => present }
+#   package { libc6-dev: ensure => present }
+#   package { libxml2-utils:   ensure => present }
+#   package { pkg-config: ensure => present }
+#   package { build-essential: ensure => present }
 # # for building ssh
 #   
 #       
 #   # Stuff for firewall / security
 #   package { iptables: ensure => installed }
-#   package { nmap: ensure => latest }
-#   package { chkrootkit: ensure => latest }
-#   package { tcpdump: ensure => latest }
-#   package { fake: ensure => latest }
-#   package { dnsutils: ensure => latest }
-#   package { net-tools: ensure => latest } 
+#   package { nmap: ensure => present }
+#   package { chkrootkit: ensure => present }
+#   package { tcpdump: ensure => present }
+#   package { fake: ensure => present }
+#   package { dnsutils: ensure => present }
+#   package { net-tools: ensure => present } 
 # 
 # # Stats / Analysis
-# package { graphviz: ensure => latest } 
+# package { graphviz: ensure => present } 
 
 
 
