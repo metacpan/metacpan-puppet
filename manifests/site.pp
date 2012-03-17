@@ -1,5 +1,5 @@
-$fileserver = "puppet://localhost:9100/files"
-$moduleserver = "puppet://localhost:9100"
+$fileserver = "puppet://localhost/files"
+$moduleserver = "puppet://localhost"
 
 # import "modules.pp"
 # import "../classes/*.pp"
