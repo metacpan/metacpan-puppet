@@ -27,7 +27,7 @@ Turn off with
     /etc/init.d/puppetmasterd stop
 
 # To test
-    rm /tmp/leo_testing.txt
+    rm /tmp/puppet_testing.txt
 Then follow 'To Run' above and this file will be recreated.
 
 # References
