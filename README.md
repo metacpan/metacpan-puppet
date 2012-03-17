@@ -1,4 +1,4 @@
-Repo for metacpan server puppet configurations
+# metacpan puppet configurations
 
 All machines will be setup identically.
 
