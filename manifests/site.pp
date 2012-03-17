@@ -4,12 +4,12 @@ $moduleserver = "puppet://localhost"
 Yumrepo { gpgcheck=>true, enabled=>true }
 
 yumrepo {
-  "SL-10.2":
-    descr=>"openSuSE Linux 10.2",
-    baseurl=>"http://download.opensuse.org/distribution/10.2/inst-source/suse/";
-  "SL-10.2-update":
-    descr=>"openSuSE Linux 10.2 updates",
-    baseurl=>"http://download.suse.com/update/10.2/"
+  "SL-11.3":
+    descr=>"openSuSE Linux 11.3",
+    baseurl=>"http://download.opensuse.org/distribution/11.3/inst-source/suse/";
+  "SL-11.3-update":
+    descr=>"openSuSE Linux 11.3 updates",
+    baseurl=>"http://download.suse.com/update/11.3/"
 }
 
 case $operatingsystem {
@@ -24,4 +24,13 @@ node localhost {
     include default_setup
     
 }
-
+# 
+# zypprepo { 'repo-oss':
+#      type => 'yast2',
+#      descr => 'openSUSE-11.3-OSS',
+#      baseurl => 'http://download.opensuse.org/distribution/11.3/repo/oss',
+#      enabled => '1',
+#      autorefresh => '1',
+#      path => '/',
+#      keeppackages => '0'
+# }
