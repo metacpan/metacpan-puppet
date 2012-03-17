@@ -1,5 +1,7 @@
 Repo for metacpan server puppet configurations
 
+All machines will be setup identically.
+
 OpenSuse:
 
 # Installing
@@ -12,21 +14,13 @@ Should get you puppet-0.25.4-4.7.1.x86_64
     rm -rf puppet
     git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
 
+# To Run
+    /etc/init.d/puppetmasterd start
+    puppetd -t
+    /etc/init.d/puppetmasterd stop
 
-# To Delete
---- NOTES (should be able to ignore shortly, this is just incase)
+# To test
+    rm /tmp/leo_testing.txt
+Then follow 'To Run' above and this file will be recreated.
 
-Note:
-If you've set the 'certdnsnames' option in your master's
-puppet.conf file, merely installing the updated packages is not
-sufficient to fix this problem. You need to either pick a new DNS
-name for the master and reconfigure all agents to use it or re-new
-certificates on all agents.
 
-Please refer to the documentation in
-/usr/share/doc/packages/puppet/puppetlabs-cve20113872-0.0.5
-for detailed instructions and scripts.
-
-Puppetlabs' site also provides more information:
-http://puppetlabs.com/security/cve/cve-2011-3872/faq/
-http://puppetlabs.com/blog/important-security-announcement-altnames-vulnerability/
