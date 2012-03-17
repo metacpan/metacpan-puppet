@@ -9,6 +9,13 @@ OpenSuse:
 
 Should get you puppet-0.25.4-4.7.1.x86_64
 
+# Make sure puppet and puppetmaster won't start on reboot
+    chkconfig | grep puppet
+
+Turn off with
+
+    hkconfig puppetmaster off
+
 # Setup
     cd /etc
     rm -rf puppet
