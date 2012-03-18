@@ -39,3 +39,12 @@ http://www.puppetcookbook.com/
 # Do not need
    gem install puppet-module
 
+# To configure
+
+*  nginx
+*  munin-node
+*  munin (master, including cron)
+*  users, including ssh keys
+*  hosts file
+*  ES?
+
