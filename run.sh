@@ -4,4 +4,4 @@
 cd /etc/puppet
 git pull
 puppetd -t
-/etc/init.d/puppetmasterd start
+/etc/init.d/puppetmasterd stop
