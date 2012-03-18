@@ -1,36 +1,32 @@
 $fileserver = "puppet://localhost/files"
 $moduleserver = "puppet://localhost"
 
-Yumrepo { gpgcheck=>true, enabled=>true }
+import "modules.pp"
+import "classes/*.pp"
+
+Yumrepo { gpgcheck=>1, enabled=>1 }
 
 yumrepo {
-  "SL-11.3":
-    descr=>"openSuSE Linux 11.3",
-    baseurl=>"http://download.opensuse.org/distribution/11.3/inst-source/suse/";
-  "SL-11.3-update":
-    descr=>"openSuSE Linux 11.3 updates",
-    baseurl=>"http://download.suse.com/update/11.3/"
+    "SL-11.3":
+      descr=>"openSuSE Linux 11.3",
+      baseurl=>"http://download.opensuse.org/repositories/server:/http/openSUSE_11.3/";
+    "Packman-11.3":
+      descr=>"Packman repository (openSUSE_11.3)",
+      baseurl=>"http://packman.inode.at/suse/openSUSE_11.3/";
+    "YaST_Web-11.3":
+      descr=>"Web interface for YaST modules (openSUSE_11.3)",
+      baseurl=>"http://download.opensuse.org/repositories/YaST:/Web/openSUSE_11.3/";
+    "repo-oss-11.3":
+      descr=>"openSUSE-11.3-Oss",
+      baseurl=>"http://download.opensuse.org/distribution/11.3/repo/oss/suse/";
 }
 
 case $operatingsystem {
-  suse: {Package{ provider => yum }}
+  suse: { Package{ provider => yum } }
 }
-
-# import "modules.pp"
-import "classes/*.pp"
 
 node localhost {
     # Setup all machines the same (for now at least)
     include default_setup
     
 }
-# 
-# zypprepo { 'repo-oss':
-#      type => 'yast2',
-#      descr => 'openSUSE-11.3-OSS',
-#      baseurl => 'http://download.opensuse.org/distribution/11.3/repo/oss',
-#      enabled => '1',
-#      autorefresh => '1',
-#      path => '/',
-#      keeppackages => '0'
-# }

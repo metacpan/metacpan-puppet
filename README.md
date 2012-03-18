@@ -6,6 +6,7 @@ OpenSuse:
 
 # Installing
     zypper in puppet-server
+    zypper install rubygems
     yast -i yum
 
 Should get you puppet-0.25.4-4.7.1.x86_64
@@ -34,4 +35,7 @@ Then follow 'To Run' above and this file will be recreated.
 # References
 
 http://www.puppetcookbook.com/
+
+# Do not need
+   gem install puppet-module
 
