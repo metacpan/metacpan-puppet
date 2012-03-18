@@ -6,7 +6,7 @@ import "classes/*.pp"
 
 
 case $operatingsystem {
-  suse: { 
+  OpenSuSE: { 
     include suse_yum
     Package{ provider => yum }
     
