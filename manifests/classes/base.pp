@@ -35,5 +35,29 @@ class default_packages {
     # Stuff for firewall / security
     package { iptables: ensure => installed }
     package { chkrootkit: ensure => present }
+}
+
+class default_users {
+
+    metacpanuser {
+        leouser:
+            user => 'leo', fullname => 'leo user', path => '/home',
+
+        # michaeluser:
+        #     user => 'mjem', fullname => 'Michael user', path => '/home',
+        #     password => '$1$xFTbkaoo$/7TS/KZ8d8XR0vD3uFLqw.';
+        # 
+        # frankyuser:
+        #     user => 'franky', fullname => 'franky user', path => '/home',
+        #     password => '$1$R9bX1aU4$S5jNowpdMGq1yOWYwXL2H1';
+        # 
+        # ericuser:
+        #     user => 'eric', fullname => 'Eric user', path => '/home',
+        #     password => '$1$aQ2c5rAN$YM4vH8b0ZzIMI70SzdBos/';
+    }
+
 
 }
+
+
+
