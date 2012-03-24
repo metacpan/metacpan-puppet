@@ -31,6 +31,22 @@ class default_config_files {
             mode => 644,
             source => "$fileserver/default/etc/resolv.conf",
     }
+    
+    # Sort out ssh file, need dir first
+    file{ "/etc/ssh":
+            owner => "root",
+            group => "root",
+            mode => 755,
+            ensure => directory,
+    }
+    # TODO: make sshd restart if this changes, but not really important
+    file { "/etc/ssh/sshd_config":
+            owner => "root",
+            group => "root",
+            mode => 644,
+            source => "$fileserver/default/etc/ssh/sshd_config",
+    }
+    
 
 }
 
