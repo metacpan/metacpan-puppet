@@ -2,7 +2,7 @@ class default_setup {
     include test_setup
     include default_packages
     include default_users
-  #  include default_sshd
+    include default_sshd
 
 }
 
@@ -39,21 +39,21 @@ class default_packages {
 }
 
 class default_sshd {
-    # package { "openssh-client":
-    #   ensure => installed,
-    # }
-    # package { "openssh-server":
-    #   ensure => installed,
-    # }
-    # user { sshd:
-    #   home => "/var/run/sshd",
-    #   shell => "/usr/sbin/nologin",
-    #   allowdupe => false,
-    # }
+    package { "openssh-client":
+      ensure => installed,
+    }
+    package { "openssh-server":
+      ensure => installed,
+    }
+    user { sshd:
+      home => "/var/run/sshd",
+      shell => "/usr/sbin/nologin",
+      allowdupe => false,
+    }
 	service { ssh:
 		ensure => running,
 		pattern => "sshd",
-        # require => Package["openssh-server"],
+        require => Package["openssh-server"],
 	}
 }
 
