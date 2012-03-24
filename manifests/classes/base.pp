@@ -1,6 +1,7 @@
 class default_setup {
     include test_setup
     include default_packages
+    include default_users
   #  include default_sshd
 
 }

@@ -15,7 +15,7 @@ define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
                 gid        => "$user",
                 provider   => "useradd",
                 # password   => "$password",
-                groups     => [ 'web' ]
+                # groups     => [ 'user' ]
         }
 
         # Set up user
