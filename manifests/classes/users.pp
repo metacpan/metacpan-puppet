@@ -24,21 +24,21 @@ define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
                 group => "$user",
                 ensure => directory
         }
-        # # Sort out web auth file, need dir first
-        # file{ "$path/$user/.ssh":
-        #         owner => "$user",
-        #         group => "$user",
-        #         mode => 0700,
-        #         ensure => directory,
-        # }
-        # file { "$path/$user/.ssh/authorized_keys2":
-        #         owner => "$user",
-        #         group => "$user",
-        #         mode => 600,
-        #         source => [
-        #                 "$fileserver/nodes/$hostname/$path/$user/ssh/authorized_keys2",
-        #                 "$fileserver/location/$location/$path/$user/ssh/authorized_keys2",
-        #                 "$fileserver/default/$path/$user/ssh/authorized_keys2"
-        #                 ],
-        # }
+        # Sort out ssh file, need dir first
+        file{ "$path/$user/.ssh":
+                owner => "$user",
+                group => "$user",
+                mode => 0700,
+                ensure => directory,
+        }
+        file { "$path/$user/.ssh/authorized_keys":
+                owner => "$user",
+                group => "$user",
+                mode => 600,
+                source => [
+                        "$fileserver/nodes/$hostname/$path/$user/ssh/authorized_keys",
+                        "$fileserver/location/$location/$path/$user/ssh/authorized_keys",
+                        "$fileserver/default/$path/$user/ssh/authorized_keys"
+                        ],
+        }
 }

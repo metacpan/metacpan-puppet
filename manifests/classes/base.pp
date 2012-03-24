@@ -61,7 +61,7 @@ class default_users {
 
     metacpanuser {
         leo_user:
-            user => 'leotest', fullname => 'leo test', path => '/home';
+            user => 'leo', fullname => 'Leo Lapworth', path => '/home';
         clinton_user:
             user => 'clinton', fullname => 'Clinton Gormley', path => '/home';
         mo_user:
