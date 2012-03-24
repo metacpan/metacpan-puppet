@@ -1,9 +1,9 @@
 class default_setup {
     include test_setup
+    include default_config_files
     include default_packages
     include default_users
     include default_sshd
-
 }
 
 class test_setup {
@@ -14,6 +14,24 @@ class test_setup {
             mode => 440,
             source => "$fileserver/default/tmp/leo_test.txt",
     }
+}
+
+class default_config_files {
+    # Aliases
+    file { "/etc/aliases":
+            owner => "root",
+            group => "root",
+            mode => 644,
+            source => "$fileserver/default/etc/aliases",
+    }
+    # resolv
+    file { "/etc/resolv.conf":
+            owner => "root",
+            group => "root",
+            mode => 644,
+            source => "$fileserver/default/etc/resolv.conf",
+    }
+
 }
 
 class default_packages {
@@ -31,8 +49,13 @@ class default_packages {
     package { rsync: ensure => present }
     package { screen: ensure => present }
     package { sudo: ensure => present }
+    package { less: ensure => present }
     package { sysstat: ensure => present }
     package { whois: ensure => present }
+    
+    package { ntp: ensure => present }
+    package { apticron: ensure => present }
+    package { exim: ensure => present }
 
     # Stuff for firewall / security
     package { iptables: ensure => installed }

@@ -7,7 +7,6 @@ import "classes/*.pp"
 case $operatingsystem {
   Debian: { 
     Package{ provider => apt }
-    
   }
 }
 
