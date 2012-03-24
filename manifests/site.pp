@@ -4,11 +4,9 @@ $moduleserver = "puppet://localhost"
 import "modules.pp"
 import "classes/*.pp"
 
-
 case $operatingsystem {
-  OpenSuSE: { 
-    include suse_yum
-    Package{ provider => yum }
+  Debian: { 
+    Package{ provider => apt }
     
   }
 }
@@ -16,5 +14,7 @@ case $operatingsystem {
 node localhost {
     # Setup all machines the same (for now at least)
     include default_setup
+    
+    
     
 }
