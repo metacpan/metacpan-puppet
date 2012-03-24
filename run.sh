@@ -1,7 +1,7 @@
 #!/bin/sh
 
-/etc/init.d/puppetmasterd start
+/etc/init.d/puppetmaster start
 cd /etc/puppet
-git pull
+#git pull
 puppetd -t
-/etc/init.d/puppetmasterd stop
+/etc/init.d/puppetmaster stop

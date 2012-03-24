@@ -2,21 +2,17 @@
 
 All machines will be setup identically.
 
-OpenSuse:
+Debian stable (6.0.4):
 
-# Installing
-    zypper in puppet-server
-    zypper install rubygems
-    yast -i yum
+# Install from base iso http://www.debian.org/distrib/
+    apt-get install openssh-server git
+    apt-get install puppetmaster puppet
 
-Should get you puppet-0.25.4-4.7.1.x86_64
+Should get you puppet 2.6.2
 
-# Make sure puppet and puppetmaster won't start on reboot
-    chkconfig | grep puppet
-
-Turn off with
-
-    hkconfig puppetmaster off
+update-rc.d -n puppetmaster remove
+update-rc.d -n puppet remove
+update-rc.d -n puppetqd remove
 
 # Setup
     cd /etc
@@ -33,23 +29,5 @@ Then follow 'To Run' above and this file will be recreated.
 # References
 
 http://www.puppetcookbook.com/
-
-# Do not need
-   gem install puppet-module
-
-# To configure
-
-*  nginx
-*  munin-node
-*  munin (master, including cron)
-*  users, including ssh keys
-*  hosts file
-*  ES?
-
-ln -s ~metacpan/perl5/perlbrew/perls/perl-5.14.0/bin/perl ~metacpan/perl5/perlbrew/perl
-
-5 0 * * * ~/perl5/perlbrew/perl ~/api.metacpan.org/bin/metacpan release --skip --age 25 --latest ~/CPAN/authors/id/
-
-* make sure this is running.. /etc/init.d/metacpan-watcher start                 
                  
-
+puppetmaster --genconfig

@@ -1,7 +1,7 @@
 class default_setup {
     include test_setup
     include default_packages
-
+  #  include default_sshd
 
 }
 
@@ -37,11 +37,30 @@ class default_packages {
     package { chkrootkit: ensure => present }
 }
 
+class default_sshd {
+    # package { "openssh-client":
+    #   ensure => installed,
+    # }
+    # package { "openssh-server":
+    #   ensure => installed,
+    # }
+    # user { sshd:
+    #   home => "/var/run/sshd",
+    #   shell => "/usr/sbin/nologin",
+    #   allowdupe => false,
+    # }
+	service { ssh:
+		ensure => running,
+		pattern => "sshd",
+        # require => Package["openssh-server"],
+	}
+}
+
 class default_users {
 
     metacpanuser {
-        leouser:
-            user => 'leo', fullname => 'leo user', path => '/home',
+        leo2user:
+            user => 'leotest', fullname => 'leo user', path => '/home';
 
         # michaeluser:
         #     user => 'mjem', fullname => 'Michael user', path => '/home',
