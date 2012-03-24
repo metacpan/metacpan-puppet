@@ -24,6 +24,7 @@ class default_packages {
 	package { mtr: ensure => present }
 	package { bzip2: ensure => present }
 	package { diffutils: ensure => present }
+	package { zsh: ensure => present } # for rafl
 
     package { htop: ensure => present }
     package { psmisc: ensure => present } # killall pstree fuser commands
@@ -69,7 +70,8 @@ class default_users {
         olaf_user:
             user => 'olaf', fullname => 'Olaf Alders', path => '/home';
         rafl_user:
-            user => 'rafl', fullname => 'Florian Ragwitz', path => '/home';
+            user => 'rafl', fullname => 'Florian Ragwitz', path => '/home',
+            shell => '/usr/bin/zsh';
     }
 
 
