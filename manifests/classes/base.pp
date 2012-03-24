@@ -94,7 +94,7 @@ class default_users {
             user => 'olaf', fullname => 'Olaf Alders', path => '/home';
         rafl_user:
             user => 'rafl', fullname => 'Florian Ragwitz', path => '/home',
-            shell => '/usr/bin/zsh';
+            shell => '/bin/zsh';
     }
 
 
