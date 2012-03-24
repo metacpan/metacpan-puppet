@@ -18,10 +18,11 @@ update-rc.d -n puppetqd remove
     cd /etc
     rm -rf puppet
     git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
-
+   
 # To Run (start master, cd, git pull, puppet, stop master)
     /etc/puppet/run.sh
-
+    You may have to run this twice on the first run
+    
 # To test
     rm /tmp/puppet_testing.txt
 Then follow 'To Run' above and this file will be recreated.

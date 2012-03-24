@@ -60,20 +60,16 @@ class default_sshd {
 class default_users {
 
     metacpanuser {
-        leo2user:
-            user => 'leotest', fullname => 'leo user', path => '/home';
-
-        # michaeluser:
-        #     user => 'mjem', fullname => 'Michael user', path => '/home',
-        #     password => '$1$xFTbkaoo$/7TS/KZ8d8XR0vD3uFLqw.';
-        # 
-        # frankyuser:
-        #     user => 'franky', fullname => 'franky user', path => '/home',
-        #     password => '$1$R9bX1aU4$S5jNowpdMGq1yOWYwXL2H1';
-        # 
-        # ericuser:
-        #     user => 'eric', fullname => 'Eric user', path => '/home',
-        #     password => '$1$aQ2c5rAN$YM4vH8b0ZzIMI70SzdBos/';
+        leo_user:
+            user => 'leotest', fullname => 'leo test', path => '/home';
+        clinton_user:
+            user => 'clinton', fullname => 'Clinton Gormley', path => '/home';
+        mo_user:
+            user => 'mo', fullname => 'Moritz Onken', path => '/home';
+        olaf_user:
+            user => 'olaf', fullname => 'Olaf Alders', path => '/home';
+        rafl_user:
+            user => 'rafl', fullname => 'Florian Ragwitz', path => '/home';
     }
 
 
