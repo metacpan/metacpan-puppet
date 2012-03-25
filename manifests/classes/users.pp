@@ -1,4 +1,4 @@
-define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
+define metacpanadminuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
 
         # # clear out the group first
         group { "$user":
@@ -40,5 +40,12 @@ define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
                         "$fileserver/location/$location/$path/$user/ssh/authorized_keys",
                         "$fileserver/default/$path/$user/ssh/authorized_keys"
                         ],
+        }
+        file {
+            "/etc/sudoers.d/$user":
+                owner => "root",
+                group => "root",
+                mode => "440",
+                content => "$user   ALL = ALL";
         }
 }

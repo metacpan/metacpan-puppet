@@ -107,7 +107,7 @@ class default_sshd {
 
 class default_users {
 
-    metacpanuser {
+    metacpanadminuser {
         leo_user:
             user => 'leo', fullname => 'Leo Lapworth', path => '/home';
         clinton_user:
