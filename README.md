@@ -10,9 +10,9 @@ Debian stable (6.0.4):
 
 Should get you puppet 2.6.2
 
-update-rc.d -n puppetmaster remove
-update-rc.d -n puppet remove
-update-rc.d -n puppetqd remove
+    update-rc.d -n puppetmaster remove
+    update-rc.d -n puppet remove
+    update-rc.d -n puppetqd remove
 
 # Setup
     cd /etc
@@ -25,9 +25,9 @@ update-rc.d -n puppetqd remove
     
 # Get all accounts to update their passwords when login (via sshkey)
     chage -d 0 mo
-    chage -d 0 rafl
     chage -d 0 clinton
     chage -d 0 olaf
+    chage -d 0 rafl
     chage -d 0 leo
 
 # To test
