@@ -13,7 +13,8 @@ case $operatingsystem {
 node localhost {
     # Setup all machines the same (for now at least)
     include default_setup
-    
+        
+    include munin::web
     
     
 }

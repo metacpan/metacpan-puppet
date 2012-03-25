@@ -17,6 +17,14 @@ class test_setup {
 }
 
 class default_config_files {
+    # Somewhere for our metacpan config files
+    file {
+        "/etc/metacpan":
+            ensure  => "directory",
+            owner   => "root",
+            group   => "root";
+    }
+
     # Aliases
     file { "/etc/aliases":
             owner => "root",
@@ -71,7 +79,7 @@ class default_packages {
     
     package { ntp: ensure => present }
     package { apticron: ensure => present }
-    package { exim: ensure => present }
+    # package { exim: ensure => present } # TODO: FIX
 
     # Stuff for firewall / security
     package { iptables: ensure => installed }
