@@ -16,7 +16,7 @@ class nginx {
             owner => root,
             group => root,
             mode => 0444,
-            source => "puppet:///modules/nginx/$name.conf",
+            source => "$moduleserver/nginx/$name.conf",
             before => Service["nginx"],
             notify => Service["nginx"],
         }

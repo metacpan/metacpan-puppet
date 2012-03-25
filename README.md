@@ -21,7 +21,7 @@ Should get you puppet 2.6.2
    
 # To Run (start master, cd, git pull, puppet, stop master)
     /etc/puppet/run.sh
-    You may have to run this twice on the first run
+    You may have to run this a couple of times the first time
     
 # Get all accounts to update their passwords when login (via sshkey)
     chage -d 0 mo
@@ -39,3 +39,7 @@ Then follow 'To Run' above and this file will be recreated.
 http://www.puppetcookbook.com/
                  
 puppetmaster --genconfig
+
+# Notes
+
+5550 to 5559 ports to play with on test box
