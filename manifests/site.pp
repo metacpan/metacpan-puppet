@@ -15,6 +15,6 @@ node localhost {
     include default_setup
         
     include munin::web
-    
-    
+    include munin-server
+
 }

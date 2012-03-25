@@ -5,49 +5,46 @@ $munin_plugin_path = "/etc/munin/plugins"
 class munin-node {
     package { "munin-node": ensure => present }
         
-    file { "/etc/munin":
-        ensure => directory,
-        owner   => "root",
-        group   => "root",
-        mode    => 755,
-    }
-        
-    file { "/etc/munin/munin-node.conf":
-        owner  => "root",
-        group  => "root",
-        mode   => 644,
-        source => "$moduleserver/munin/munin-node.conf",
-        alias  => "munin-node.conf",
-    }
-    
-    # make sure it's running and reloads when the config files change
-    service { munin-node:
-        ensure    => running,
-        require   => Package["munin-node"],
-        subscribe => [ File["munin-node.conf"] ],
-    }
-
     file {
+        "/etc/munin":
+            ensure => directory,
+            owner   => "root",
+            group   => "root",
+            mode    => 755;
+            
+        "/etc/munin/plugin-conf.d":
+            ensure => directory,
+            owner   => "root",
+            group   => "root",
+            mode    => 755,
+            recurse => true,
+            source => "$moduleserver/munin/plugin-conf.d";
+            
+        "/etc/munin/munin-node.conf":
+            owner  => "root",
+            group  => "root",
+            mode   => 644,
+            source => "$moduleserver/munin/munin-node.conf",
+            alias  => "munin-node.conf";
+
         "$munin_plugin_path":
             ensure  => "directory",
             owner   => "root",
             group   => "root",
             checksum    => mtime,
-            require     => Package[munin-node],
+            require     => Package[munin-node];
             # FIXME: Does not seem to get activated when dir
             # changes from an update
             # notify      => Exec["munin-node-restart"];
             # notify      => Service["munin-node"];
-    }
 
-    # Our specifically added plugins
-    file {
+        # Our specifically added plugins
         "/etc/metacpan/munin":
             ensure  => "directory",
             owner   => "root",
             group   => "root",
             require => [ File["/etc/metacpan"] ];
-            
+
         "$metacpan_munin_plugin_path":
             ensure  => "directory",
             owner   => "root",
@@ -58,6 +55,14 @@ class munin-node {
             # changes from an update
             # notify      => Exec["munin-node-restart"];
             # notify      => Service["munin-node"];
+
+    }
+    
+    # make sure it's running and reloads when the config files change
+    service { munin-node:
+        ensure    => running,
+        require   => Package["munin-node"],
+        subscribe => [ File["munin-node.conf"] ],
     }
 
   	define add_default_plugin () {
@@ -157,69 +162,17 @@ class munin::web inherits munin-node {
     
 }
 
-
-
-
 class munin-server {
     package { "munin": ensure => installed }
     package { "telnet": ensure => installed }
-    package { "libdate-manip-perl": ensure => installed }
     
-    # give munin user & web group permission to generate html and graphs
-    # file { "/var/www":
-    #     ensure  => directory,
-    #     owner   => "munin",
-    #     group   => "web",
-    #     mode    => 775,
-    # }
-    # 
-    # file { "/var/www/cgi-bin":
-    #     ensure  => link,
-    #     owner   => "munin",
-    #     group   => "web",
-    #     mode    => 755,
-    #     target  => "/usr/lib/cgi-bin",
-    # }
-    # 
-    # file { "/usr/lib/cgi-bin/munin-cgi-graph":
-    #     owner   => "root",
-    #     group   => "root",
-    #     mode    => 755,
-    # }
-    # 
-    # file { "/usr/share/munin/munin-graph":
-    #     owner   => "root",
-    #     group   => "web",
-    #     mode    => 755,
-    # }
-    # 
-    # file { "/var/log/munin":
-    #     ensure => directory,
-    #     owner  => "munin",
-    #     group  => "web",
-    #     mode   => 770,
-    # }
-    # 
-    # file { "/var/log/munin/munin-graph.log":
-    #     owner  => "munin",
-    #     group  => "web",
-    #     mode   => 660,
-    # }
-    # 
-    # file { "/etc/logrotate.d/munin":
-    #     owner   => "root",
-    #     group   => "root",
-    #     mode    => 644,
-    #     source  => "$moduleserver/munin/logrotate.d/munin",
-    # }
-    # 
     # # it's not a service, runs from cron
-    # file { "/etc/munin/munin.conf":
-    #     owner   => "root",
-    #     group   => "root",
-    #     mode    => 644,
-    #     source  => "$moduleserver/munin/munin.conf",
-    #     alias   => "munin.conf",
-    #     require => Package["munin"],
-    # }
+    file { "/etc/munin/munin.conf":
+        owner   => "root",
+        group   => "root",
+        mode    => 644,
+        source  => "$moduleserver/munin/munin.conf",
+        alias   => "munin.conf",
+        require => Package["munin"],
+    }
 }
