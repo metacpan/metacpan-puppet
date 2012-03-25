@@ -23,6 +23,13 @@ update-rc.d -n puppetqd remove
     /etc/puppet/run.sh
     You may have to run this twice on the first run
     
+# Get all accounts to update their passwords when login (via sshkey)
+    chage -d 0 mo
+    chage -d 0 rafl
+    chage -d 0 clinton
+    chage -d 0 olaf
+    chage -d 0 leo
+
 # To test
     rm /tmp/puppet_testing.txt
 Then follow 'To Run' above and this file will be recreated.
