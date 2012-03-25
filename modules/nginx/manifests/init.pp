@@ -16,7 +16,7 @@ class nginx {
             owner => root,
             group => root,
             mode => 0444,
-            source => "$moduleserver/nginx/$name.conf",
+            content => template("nginx/$name.conf"),
             before => Service["nginx"],
             notify => Service["nginx"],
         }
