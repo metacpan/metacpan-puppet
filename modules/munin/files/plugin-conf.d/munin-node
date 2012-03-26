@@ -50,3 +50,5 @@ env.ports 5000 5001
 [elasticsearch_open_files]
 user elasticsearch
 
+[exim4_*]
+user Debian-exim
