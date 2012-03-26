@@ -121,7 +121,7 @@ class munin::default inherits munin-node {
         "irqstats", "load", "memory", "munin_stats",
         "netstat", "open_inodes", "proc_pri", 
         "processes", "swap", "threads", 
-        "uptime", "users", "multimemory"
+        "uptime", "users"
         ]:     
     }
 
@@ -162,6 +162,7 @@ class munin::web inherits munin-node {
         "elasticsearch_open_files"    ,
         "elasticsearch_translog_size" ,
         "starman_processes"           ,
+        "multimemory"                 ,
         ]:
     }
     
