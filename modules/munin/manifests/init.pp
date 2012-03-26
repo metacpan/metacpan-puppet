@@ -177,7 +177,7 @@ class munin-server {
         owner   => "root",
         group   => "root",
         mode    => 644,
-        source  => "$moduleserver/munin/munin.conf",
+        content => template("munin/munin.conf.erb"),
         alias   => "munin.conf",
         require => Package["munin"],
     }
