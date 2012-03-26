@@ -138,6 +138,9 @@ class munin::web inherits munin-node {
     # usual stuff
     include munin::default
 
+    # for http_loadtime
+    package { ['time', 'wget']: ensure => present }
+
     munin-node::add_default_plugin {
         [
         "http_loadtime",
