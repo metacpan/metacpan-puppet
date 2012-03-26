@@ -1,4 +1,4 @@
-$default_munin_plugin_path = "/usr/lib/munin/plugins"
+$default_munin_plugin_path = "/usr/share/munin/plugins"
 $metacpan_munin_plugin_path = "/etc/metacpan/munin/plugins"
 $munin_plugin_path = "/etc/munin/plugins"
 
