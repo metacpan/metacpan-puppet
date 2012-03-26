@@ -118,7 +118,7 @@ class munin::default inherits munin-node {
         "fw_packets", 
         "forks", "interrupts", 
         "iostat_ios", "iostat", 
-        "irqstats", "load", "memory", 
+        "irqstats", "load", "memory", "munin_stats",
         "netstat", "open_inodes", "proc_pri", 
         "processes", "swap", "threads", 
         "uptime", "users", "multimemory"
