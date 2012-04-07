@@ -121,6 +121,10 @@ class default_users {
             shell => '/bin/zsh';
     }
 
+    metacpanuser {
+        metacpan:
+            user => 'metacpan', fullname => '', path => '/home';
+    }
 
 }
 
