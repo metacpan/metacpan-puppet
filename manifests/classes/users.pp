@@ -19,12 +19,23 @@ define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
         }
 
         # Set up user
-        file { "$path/$user":
+        file {
+            "$path/$user":
                 owner => "$user",
                 group => "$user",
-                ensure => directory
+                ensure => directory;
+                
+            # Copy the whole of the users bin dir
+            "$path/$user/bin":
+                ensure => directory,
+                recurse => true,
+                owner => "$user",
+                group => "$user",
+                source => [
+                        "$fileserver/default/$path/$user/bin",
+                        "$fileserver/default/$path/default/bin",
+                ];
         }
-
 }
 
 define metacpanadminuser( $user, $fullname, $path, $shell = '/bin/bash' ) {

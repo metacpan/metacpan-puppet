@@ -1,0 +1,36 @@
+#!/usr/bin/perl
+
+# Script to checkout and automatically update the
+# metacpan sites into the metacpan users home directory
+
+use strict;
+use warnings;
+my $HOMEDIR = '/home/metacpan';
+
+my %sites = (
+
+    # Directory        => (read only) repo 
+    "metacpan.org"     => 'git://github.com/CPAN-API/metacpan-web.git',
+    "api.metacpan.org" => 'git://github.com/CPAN-API/cpan-api.git',
+    "vote.contest.metacpan.org"    #
+        => 'git://github.com/CPAN-API/logo-vote.git',
+    "search.metacpan.org"          #
+        => 'git://github.com/CPAN-API/search-metacpan-org.git',
+
+);
+
+foreach my $site ( keys %sites ) {
+    my $site_dir = "$HOMEDIR/$site";
+    print "Processing: $site_dir\n";
+
+    unless ( -d $site_dir ) {
+
+        # Check it out
+        my $repo = $sites{$site};
+        chdir($HOMEDIR);
+        system("git clone $repo $site");
+    } else {
+        chdir($site_dir);
+        my $bar = system("git pull");
+    }
+}
