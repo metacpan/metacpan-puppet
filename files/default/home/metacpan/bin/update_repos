@@ -9,13 +9,15 @@ my $HOMEDIR = '/home/metacpan';
 
 my %sites = (
 
-    # Directory        => (read only) repo 
+    # Directory        => (read only) repo
     "metacpan.org"     => 'git://github.com/CPAN-API/metacpan-web.git',
     "api.metacpan.org" => 'git://github.com/CPAN-API/cpan-api.git',
     "vote.contest.metacpan.org"    #
         => 'git://github.com/CPAN-API/logo-vote.git',
     "search.metacpan.org"          #
         => 'git://github.com/CPAN-API/search-metacpan-org.git',
+    "contest.metacpan.org"         #
+        => 'git://github.com/CPAN-API/contest-metacpan-org.git',
 
 );
 
