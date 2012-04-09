@@ -31,6 +31,7 @@ define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
                 recurse => true,
                 owner => "$user",
                 group => "$user",
+                mode => '0700', # make everything executible
                 source => [
                         "$fileserver/default/$path/$user/bin",
                         "$fileserver/default/$path/default/bin",
