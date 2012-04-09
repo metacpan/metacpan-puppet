@@ -12,20 +12,28 @@ class nginx {
     vhost{$vhosts: }
 
     define vhost(){
-        file{"/etc/nginx/conf.d/$name.conf":
-            owner => root,
-            group => root,
-            mode => 0444,
-            content => template("nginx/$name.conf"),
-            before => Service["nginx"],
-            notify => Service["nginx"],
-        }
-        file{"/var/log/nginx/$name":
-            ensure => directory,
-            owner => root,
-            group => root,
-            mode => 0755,
-            before => Service["nginx"],
+        file{
+            "/etc/nginx/sites-available/$name":
+                owner => root,
+                group => root,
+                mode => 0444,
+                content => template("nginx/$name.erb"),
+                before => Service["nginx"],
+                notify => Service["nginx"];
+
+            # Add the symlink to enable
+            "/etc/nginx/sites-enabled/$name":
+                ensure => link,
+                target => "/etc/nginx/sites-available/${name}",
+                before => Service["nginx"],
+                notify => Service["nginx"];
+
+            "/var/log/nginx/$name":
+                ensure => directory,
+                owner => root,
+                group => root,
+                mode => 0755,
+                before => Service["nginx"];
         }
     }
 }

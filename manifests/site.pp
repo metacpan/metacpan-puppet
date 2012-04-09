@@ -20,8 +20,12 @@ node localhost {
     include munin::web
     include munin-server
 
-    # $vhosts = ["metacpan.org", "api.metacpan.org", "cpan.metacpan.org"]
-    $vhosts = ['munin.metacpan.org']
+    $vhosts = [
+    "api.metacpan.org", "metacpan.org",
+    "sco.metacpan.org", "cpan.metacpan.org", "search.metacpan.org",
+    "contest.metacpan.org", "vote.contest.metacpan",
+    "munin",
+    ]
     include nginx
 
 }
