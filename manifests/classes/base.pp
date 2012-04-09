@@ -84,6 +84,16 @@ class default_packages {
     # Stuff for firewall / security
     package { iptables: ensure => installed }
     package { chkrootkit: ensure => present }
+    
+    
+    case $operatingsystem {
+      Debian: {
+        package{ build-essential: ensure => present }
+      }
+      default: {
+        Package{ provider => apt }
+      }
+    }
 }
 
 class default_sshd {
