@@ -22,7 +22,7 @@ node localhost {
 
     $vhosts = [
     "api.metacpan.org", "metacpan.org",
-    "sco.metacpan.org", "cpan.metacpan.org", "search.metacpan.org",
+    "sco.metacpan.org", "cpan.metacpan.org", "js.metacpan.org",
     "contest.metacpan.org",
     "munin",
     ]

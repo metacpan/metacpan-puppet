@@ -42,6 +42,11 @@ class nginx {
                 source => "$moduleserver/nginx/$name";
         }
     }
+    
+    file {
+        "/etc/nginx/sites-enabled/default":
+            ensure => 'absent'
+    }
 
     vhost{$vhosts: }
 
