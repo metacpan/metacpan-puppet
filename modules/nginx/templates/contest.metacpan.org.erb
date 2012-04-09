@@ -2,7 +2,7 @@
 
 server {
 
-    server_name  .contest.metacpan.org .<%= hostname %>.contest.metacpan.org;
+    server_name  .<%= hostname %>.contest.metacpan.org .contest.metacpan.org;
 
     access_log  <%= nginx_log_dir %>/access.log;
     error_log   <%= nginx_log_dir %>/error.log;

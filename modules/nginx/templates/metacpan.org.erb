@@ -9,7 +9,7 @@ server {
     gzip_disable     "MSIE [1-6]\.";
     gzip_comp_level 4;
 
-    server_name metacpan.org <%= hostname %>.metacpan.org;
+    server_name <%= hostname %>.metacpan.org metacpan.org;
     access_log <%= nginx_log_dir %>/access.log;
     error_log <%= nginx_log_dir %>/error.log error;
 
@@ -33,10 +33,11 @@ server {
     }
 }
 
+# Wild cards for anything else
 server {
     listen 80;
     listen 443;
     ssl on;
-    server_name .metacpan.org .beta.metacpan.org;
+    server_name .<%= hostname %>.metacpan.org .metacpan.org .beta.metacpan.org;
     rewrite /(.*)$ https://metacpan.org/$1 permanent;
 }

@@ -12,12 +12,15 @@ my %sites = (
     # Directory        => (read only) repo
     "metacpan.org"     => 'git://github.com/CPAN-API/metacpan-web.git',
     "api.metacpan.org" => 'git://github.com/CPAN-API/cpan-api.git',
-    "vote.contest.metacpan.org"    #
-        => 'git://github.com/CPAN-API/logo-vote.git',
     "js.metacpan.org"          #
-        => 'git://github.com/CPAN-API/js-metacpan-org.git',
+        => 'git://github.com/CPAN-API/j-metacpan-org.git',
     "contest.metacpan.org"         #
         => 'git://github.com/CPAN-API/contest-metacpan-org.git',
+
+
+    # Sites no longer used
+    # "vote.contest.metacpan.org"    #
+    #     => 'git://github.com/CPAN-API/logo-vote.git',
 
 );
 

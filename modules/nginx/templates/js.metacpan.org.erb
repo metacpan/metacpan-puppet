@@ -2,7 +2,7 @@
 
 server {
 
-    server_name  js.metacpan.org <%= hostname %>.js.metacpan.org;
+    server_name  <%= hostname %>.js.metacpan.org js.metacpan.org;
 
     access_log  <%= nginx_log_dir %>/access.log;
     error_log   <%= nginx_log_dir %>/error.log;

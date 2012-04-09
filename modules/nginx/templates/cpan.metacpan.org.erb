@@ -4,7 +4,7 @@ server {
 
     listen 80;
     listen 443;
-    server_name  .cpan.metacpan.org .<%= hostname %>.cpan.metacpan.org;
+    server_name  .<%= hostname %>.cpan.metacpan.org .cpan.metacpan.org;
 
     access_log  <%= nginx_log_dir %>/access.log;
     error_log   <%= nginx_log_dir %>/error.log;

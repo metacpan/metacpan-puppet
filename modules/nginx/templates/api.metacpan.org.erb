@@ -3,7 +3,7 @@ server {
 	    listen 443;
 	    ssl	on;
 	    
-        server_name api.beta.metacpan.org api.metacpan.org <%= hostname %>.api.metacpan.org;
+        server_name <%= hostname %>.api.metacpan.org api.beta.metacpan.org api.metacpan.org;
 
         access_log <%= nginx_log_dir %>/access.log;
         error_log <%= nginx_log_dir %>/error.log error;
