@@ -30,9 +30,13 @@ Should get you puppet 2.6.2
     chage -d 0 rafl
     chage -d 0 leo
 
+# Copy /home/metacpan/certs directory from existing machine
+
 # To test
     rm /tmp/puppet_testing.txt
 Then follow 'To Run' above and this file will be recreated.
+
+
 
 # References
 
