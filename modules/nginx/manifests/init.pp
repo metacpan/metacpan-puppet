@@ -12,7 +12,18 @@ class nginx {
     vhost{$vhosts: }
 
     define vhost(){
+        $nginx_log_dir = "/var/log/nginx/$name"
+
         file{
+            # Somewhere for logfiles
+            "/var/log/nginx/$name":
+                ensure => directory,
+                owner => root,
+                group => root,
+                mode => 0755,
+                before => Service["nginx"];
+
+            # The actual config file
             "/etc/nginx/sites-available/$name":
                 owner => root,
                 group => root,
@@ -28,12 +39,6 @@ class nginx {
                 before => Service["nginx"],
                 notify => Service["nginx"];
 
-            "/var/log/nginx/$name":
-                ensure => directory,
-                owner => root,
-                group => root,
-                mode => 0755,
-                before => Service["nginx"];
         }
     }
 }

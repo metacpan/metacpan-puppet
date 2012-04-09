@@ -4,16 +4,16 @@ server {
 
     listen 80;
     listen 443;
-    server_name  .cpan.metacpan.org;
+    server_name  .cpan.metacpan.org .<%= hostname %>.cpan.metacpan.org;
 
-    access_log  /home/metacpan/logs/cpan.metacpan.org/access.log;
-    error_log   /home/metacpan/logs/cpan.metacpan.org/error.log;
+    access_log  <%= nginx_log_dir %>/access.log;
+    error_log   <%= nginx_log_dir %>/error.log;
 
     root  /home/metacpan/CPAN;
 
     location / {
         index  index.html;
-	autoindex on;
+        autoindex on;
     }
 
     gzip               on;

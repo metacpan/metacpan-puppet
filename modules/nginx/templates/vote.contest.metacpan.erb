@@ -9,9 +9,9 @@ server {
     gzip_disable     "MSIE [1-6]\.";
     gzip_comp_level 4;
 
-    server_name vote.metacpan.org;
-    access_log /home/metacpan/vote.contest.metacpan.org/var/log/access.log;
-    error_log /home/metacpan/vote.contest.metacpan.org/var/log/error.log error;
+    server_name vote.metacpan.org <%= hostname %>.vote.metacpan.org;
+    access_log <%= nginx_log_dir %>/access.log;
+    error_log <%= nginx_log_dir %>/error.log error;
 
     location / {
         proxy_pass http://localhost:5009/;

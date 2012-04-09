@@ -9,9 +9,9 @@ server {
     gzip_disable     "MSIE [1-6]\.";
     gzip_comp_level 4;
 
-    server_name metacpan.org;
-    access_log /home/metacpan/metacpan.org/var/log/access.log;
-    error_log /home/metacpan/metacpan.org/var/log/error.log error;
+    server_name metacpan.org <%= hostname %>.metacpan.org;
+    access_log <%= nginx_log_dir %>/access.log;
+    error_log <%= nginx_log_dir %>/error.log error;
 
     location /dist/ {
         rewrite /dist/(.*)$ /release/$1 permanent;

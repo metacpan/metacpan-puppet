@@ -2,10 +2,10 @@
 
 server {
 
-    server_name  js.metacpan.org;
+    server_name  js.metacpan.org <%= hostname %>.js.metacpan.org;
 
-    access_log  /home/metacpan/search.metacpan.org/logs/access.log;
-    error_log   /home/metacpan/search.metacpan.org/logs/error.log;
+    access_log  <%= nginx_log_dir %>/access.log;
+    error_log   <%= nginx_log_dir %>/logs/error.log;
 
     root  /home/metacpan/search.metacpan.org/htdocs;
 
