@@ -15,7 +15,7 @@ my %sites = (
     "vote.contest.metacpan.org"    #
         => 'git://github.com/CPAN-API/logo-vote.git',
     "js.metacpan.org"          #
-        => 'git://github.com/CPAN-API/search-metacpan-org.git',
+        => 'git://github.com/CPAN-API/js-metacpan-org.git',
     "contest.metacpan.org"         #
         => 'git://github.com/CPAN-API/contest-metacpan-org.git',
 
