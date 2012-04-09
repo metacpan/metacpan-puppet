@@ -1,14 +1,16 @@
+# sample nginx server for search.metacpan.org
+
 server {
-    server_name  .cpan.metacpan.org .cpan.ams6.corp.booking.com;
 
-    access_log  /var/log/nginx/cpan.metacpan.org/access.log;
-    error_log   /var/log/nginx/cpan.metacpan.org/error.log;
+    server_name  .contest.metacpan.org;
 
-    root  /srv/cpan;
+    access_log  /home/metacpan/logs/contest.metacpan.org/access.log;
+    error_log   /home/metacpan/logs/contest.metacpan.org/error.log;
+
+    root  /home/metacpan/contest.metacpan.org;
 
     location / {
         index  index.html;
-        autoindex on;
     }
 
     gzip               on;

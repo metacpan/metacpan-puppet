@@ -1,7 +1,6 @@
 server {
-    listen 80;
-    listen 443;
-#    ssl on;
+	listen 443;
+	ssl on;
 
     gzip on;
     gzip_proxied     any;
@@ -10,12 +9,17 @@ server {
     gzip_disable     "MSIE [1-6]\.";
     gzip_comp_level 4;
 
-    server_name metacpan.org bk.metacpan.org metacpan.ams6.corp.booking.com;
-    access_log /var/log/nginx/metacpan.org/access.log;
-    error_log /var/log/nginx/metacpan.org/error.log;
+    server_name metacpan.org;
+    access_log /home/metacpan/metacpan.org/var/log/access.log;
+    error_log /home/metacpan/metacpan.org/var/log/error.log error;
 
     location /dist/ {
         rewrite /dist/(.*)$ /release/$1 permanent;
+    }
+
+
+    location /robots.txt {
+        alias /home/metacpan/api.metacpan.org/var/robots.txt;
     }
 
     location / {
@@ -27,26 +31,12 @@ server {
         proxy_set_header   X-Forwarded-Port $server_port;
         proxy_set_header   X-Forwarded-Host $host;
     }
-
-    location /piwik/ {
-        root /home/metacpan;
-        index index.php;
-
-        location ~ ^/piwik/.*\.php$ {
-            fastcgi_pass   127.0.0.1:9000;
-            fastcgi_index  index.php;
-            fastcgi_param  SCRIPT_FILENAME  /srv/metacpan$fastcgi_script_name;
-            include        fastcgi_params;
-        }
-    }
 }
 
-#server {
-#    listen 80;
-#    listen 443;
-#    ssl on;
-#    server_name .metacpan.org .beta.metacpan.org;
-#    rewrite /(.*)$ https://metacpan.org/$1 permanent;
-#}
-
-
+server {
+    listen 80;
+    listen 443;
+    ssl on;
+    server_name .metacpan.org .beta.metacpan.org;
+    rewrite /(.*)$ https://metacpan.org/$1 permanent;
+}

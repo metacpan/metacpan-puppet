@@ -1,0 +1,33 @@
+server {
+    listen 443;
+    ssl on;
+
+    gzip on;
+    gzip_proxied     any;
+    gzip_vary on;
+    gzip_types       text/plain application/xml application/json application/javascript text/css image/svg+xml application/x-javascript;
+    gzip_disable     "MSIE [1-6]\.";
+    gzip_comp_level 4;
+
+    server_name vote.metacpan.org;
+    access_log /home/metacpan/vote.contest.metacpan.org/var/log/access.log;
+    error_log /home/metacpan/vote.contest.metacpan.org/var/log/error.log error;
+
+    location / {
+        proxy_pass http://localhost:5009/;
+        proxy_redirect off;
+        proxy_set_header   Host             $host;
+        proxy_set_header   X-Real-IP        $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Port $server_port;
+        proxy_set_header   X-Forwarded-Host $host;
+    }
+}
+
+server {
+    listen 80;
+    listen 443;
+    ssl on;
+    server_name .vote.metacpan.org;
+    rewrite /(.*)$ https://vote.metacpan.org/$1 permanent;
+}
