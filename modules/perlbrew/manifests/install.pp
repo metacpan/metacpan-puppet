@@ -1,4 +1,15 @@
 class perlbrew::install {
+  # We alreaddy have these
+  # package {
+  #   "build-essential":
+  #     ensure => present,
+  # }
+  # 
+  # package {
+  #   "wget":
+  #     ensure => present,
+  # }
+
   file {
     $perlbrew::params::perlbrew_bin:
       owner   => root,
