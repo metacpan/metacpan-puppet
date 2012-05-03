@@ -36,6 +36,12 @@ define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
                         "$fileserver/default/$path/$user/bin",
                         "$fileserver/default/$path/default/bin",
                 ];
+            # Little RC file to setup the env
+            "$path/$user/.metacpanrc":
+                owner   => "$user",
+                group   => "$user",
+                mode    => 0700,
+                content => 'export PATH=/usr/local/perlbrew/perls/metalib/bin:$PATH';
         }
 }
 
