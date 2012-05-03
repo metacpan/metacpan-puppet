@@ -72,6 +72,7 @@ class default_packages {
     package { psmisc: ensure => present } # killall pstree fuser commands
     package { rsync: ensure => present }
     package { screen: ensure => present }
+    package { locate: ensure => present }
     package { sudo: ensure => present }
     package { less: ensure => present }
     package { sysstat: ensure => present }
