@@ -5,17 +5,6 @@ import 'modules.pp'
 import 'classes/*.pp'
 import 'metacpan/*.pp'
 
-include 'perlbrew'
-
-case $operatingsystem {
-  Debian: {
-    Package{ provider => apt }
-  }
-  default: {
-    Package{ provider => apt }
-  }
-}
-
 # Setup all machines the same (for now at least)
 node localhost {
     # classes/base.pp

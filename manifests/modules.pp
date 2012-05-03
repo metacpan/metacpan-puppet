@@ -1,3 +1,5 @@
 #import "puppet"
 import "munin"
-import "perlbrew"
+
+# This works will worry about why not 'import' later
+include "perlbrew"
