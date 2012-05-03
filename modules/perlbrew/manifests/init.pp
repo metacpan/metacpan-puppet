@@ -6,7 +6,7 @@ class perlbrew {
   define build ($version) {
     exec {
       "perlbrew_build_${name}":
-        command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} install ${version} --as ${name} -Accflags=-fPIC -Dcccdlflags=-fPIC'",
+        command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} install ${version} --as ${name} --notest -Accflags=-fPIC -Dcccdlflags=-fPIC'",
         user    => "perlbrew",
         group   => "perlbrew",
         timeout => 3600,

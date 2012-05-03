@@ -98,7 +98,7 @@ class metacpan_perl {
     ]
     # install our perl modules
     # use perlbrew::install_no_test_module if you dont' want to run tests
-    perlbrew::install_module {
+    perlbrew::install_no_test_module {
         $cpan_modules:
             perl => 'metalib';
     }
