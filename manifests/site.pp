@@ -9,7 +9,7 @@ import 'metacpan/*.pp'
 node localhost {
     # classes/base.pp
     include default_setup
-
+    
     # classes/metacpan/perl.pp
     include metacpan_perl
 
