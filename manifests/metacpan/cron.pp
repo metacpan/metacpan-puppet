@@ -13,7 +13,7 @@ class cron::website {
     
     $defaultuser = 'metacpan'
     
-    $metacpan_cmd = '$HOME/api.metacpan.org/bin/metacpan';
+    $metacpan_cmd = '$HOME/api.metacpan.org/bin/metacpan'
     
     cron {
         test:
