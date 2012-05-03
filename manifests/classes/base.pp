@@ -86,6 +86,8 @@ class default_packages {
     package { iptables: ensure => installed }
     package { chkrootkit: ensure => present }
     
+    # Euuu - nasty, remove
+    package { nano: ensure => absent }
     
     case $operatingsystem {
       Debian: {

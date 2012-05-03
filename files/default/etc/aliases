@@ -1,6 +1,18 @@
 # /etc/aliases (managed by puppet)
-mailer-daemon: postmaster
-postmaster: root
+
+# All email to noc@metacpan.org
+root:	noc@metacpan.org
+
+# All metacpan email to noc place
+metacpan: root
+
+# Basic system aliases that MUST be present.
+postmaster:	root
+mailer-daemon:	postmaster
+
+# amavis
+virusalert:	root
+
 nobody: root
 hostmaster: root
 usenet: root
@@ -11,4 +23,3 @@ ftp: root
 abuse: root
 noc: root
 security: root
-root: noc@metacpan.org

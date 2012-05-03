@@ -7,11 +7,16 @@ import 'metacpan/*.pp'
 
 # Setup all machines the same (for now at least)
 node localhost {
+        
     # classes/base.pp
     include default_setup
     
     # classes/metacpan/perl.pp
     include metacpan_perl
+    
+    # Used for cron
+    $path_env = 'PATH=/usr/local/perlbrew/perls/metalib/bin:/usr/local/bin:/usr/bin:/bin'
+    include cron::website
 
     include munin::web
     include munin-server
