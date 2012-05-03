@@ -32,6 +32,9 @@ Should get you puppet 2.6.2
 
 # Copy /home/metacpan/certs directory from existing machine
 
+# as 'metacpan' user
+perl ~/bin/update_repos
+
 # To test
     rm /tmp/puppet_testing.txt
 Then follow 'To Run' above and this file will be recreated.
