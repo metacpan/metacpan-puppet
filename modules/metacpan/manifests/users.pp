@@ -78,7 +78,7 @@ class metacpan::users {
             "/etc/sudoers.d/$user":
                 owner => "root",
                 group => "root",
-                mode => "440",
+                mode => "444",
                 content => "$user   ALL = ALL";
         }
 

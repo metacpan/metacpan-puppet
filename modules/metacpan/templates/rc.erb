@@ -1,22 +1,20 @@
 #!/bin/sh
 #
 ### BEGIN INIT INFO
-# Provides:          metacpan-api
+# Provides:          <%= filename %>
 # Required-Start:    $ALL
 # Required-Stop:
-# Default-Start:     3 5
+# Default-Start:     2 3 4 5
 # Default-Stop:      0 1 2 6
 # Short-Description: MetaCPAN API Server
 ### END INIT INFO
 
 # Check for missing binaries (stale symlinks should not happen)
 # Note: Special treatment of stop for LSB conformance
-HOME=/home/metacpan
-source /home/metacpan/perl5/perlbrew/etc/bashrc
-perlbrew switch perl-5.14.0
-STARMAN_BIN=/home/metacpan/perl5/perlbrew/perls/perl-5.14.0/bin/starman
-ROOT=/home/metacpan/api.metacpan.org
-PID_FILE=/var/run/metacpan-api.pid
+source <%= metacpanrc %>
+STARMAN_BIN=<%= perlbin %>/starman
+ROOT=<%= app_root %>
+PID_FILE=/var/run/<%= filename %>.pid
 test -x $STARMAN_BIN || { echo "$STARMAN_BIN not installed"; 
 	if [ "$1" = "stop" ]; then exit 0;
 	else exit 5; fi; }
@@ -50,7 +48,7 @@ test -x $STARMAN_BIN || { echo "$STARMAN_BIN not installed";
 #      rc_reset         clear both the local and overall rc status
 #      rc_exit          exit appropriate to overall rc status
 #      rc_active        checks whether a service is activated by symlinks
-. /etc/rc.status
+.    /etc/rc.status
 
 # Reset status of this service
 rc_reset

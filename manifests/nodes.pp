@@ -1,21 +1,26 @@
 # Setup all machines the same (for now at least)
 node localhost {
 
+    $metacpanrc = '/home/metacpan/.metacpanrc'
+    $perlbin = '/usr/local/perlbrew/perls/metalib/bin'
+
     # Load all the generic metacpan stuff
     include metacpan
 
     # Perl take quite a while, so comment out
     # if your testing other things
-    include metacpan::perl::modules
+    # include metacpan::perl::modules
 
     include metacpan::ssh::server
 
     # Choose what we want
     include metacpan::users::basic
     include metacpan::users::admins
-    include metacpan::rc_files
-    include metacpan::cron::api
     
+    include metacpan::site::api
+    include metacpan::cron::api    
+
+    include metacpan::site::web
 
     include munin::web
     include munin-server
