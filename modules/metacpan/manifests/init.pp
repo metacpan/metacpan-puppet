@@ -1,5 +1,6 @@
 class metacpan {
 
+    include metacpan::users
     
 }
 

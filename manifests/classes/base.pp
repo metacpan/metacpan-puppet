@@ -2,7 +2,6 @@ class default_setup {
     include test_setup
     include default_config_files
     include default_packages
-    include default_users
     include default_sshd
 }
 
@@ -116,29 +115,6 @@ class default_sshd {
 		pattern => "sshd",
         require => Package["openssh-server"],
 	}
-}
-
-class default_users {
-
-    metacpanadminuser {
-        leo_user:
-            user => 'leo', fullname => 'Leo Lapworth', path => '/home';
-        clinton_user:
-            user => 'clinton', fullname => 'Clinton Gormley', path => '/home';
-        mo_user:
-            user => 'mo', fullname => 'Moritz Onken', path => '/home';
-        olaf_user:
-            user => 'olaf', fullname => 'Olaf Alders', path => '/home';
-        rafl_user:
-            user => 'rafl', fullname => 'Florian Ragwitz', path => '/home',
-            shell => '/bin/zsh';
-    }
-
-    metacpanuser {
-        metacpan:
-            user => 'metacpan', fullname => '', path => '/home';
-    }
-
 }
 
 

@@ -13,6 +13,10 @@ node localhost {
     include munin::web
     include munin-server
 
+    include metacpan
+    include metacpan::users::basic
+    include metacpan::users::admins
+
     # include metacpan::perl
     include metacpan::rc_files
     include metacpan::cron::api
