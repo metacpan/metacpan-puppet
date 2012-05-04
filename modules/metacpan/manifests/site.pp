@@ -1,15 +1,14 @@
 class metacpan::site {
     
-    
     # init_and_rc
-    define init_and_rc(filename) {
+    define init_and_rc(filename, init_template, desc) {
 
         file{
             "/etc/init.d/$filename":
                 owner => root,
                 group => root,
                 mode => 0755,
-                content => template("metacpan/init_starman.erb");
+                content => template("metacpan/$init_template");
         }
 
         exec {
@@ -19,7 +18,7 @@ class metacpan::site {
         }
 
     }
-
+    
 
     define nginx() {
         
@@ -35,8 +34,26 @@ class metacpan::site::api inherits metacpan::site {
     init_and_rc {
         init_api:
             filename => 'metacpan-api',
-            rc_template => 'starman',
+            init_template => 'init_starman.erb',
+            desc => 'Metacpan API server',
     }
+
+    init_and_rc {
+        init_rrr:
+            filename => 'metacpan-rrr',
+            init_template => 'init_rrr.erb',
+            desc => 'Mirror CPAN using rrr',
+    }
+
+    init_and_rc {
+        init_watcher:
+            filename => 'metacpan-watcher',
+            init_template => 'init_watcher.erb',
+            desc => 'Make sure everything is running ok'
+    }
+
+
+
 }
 
 class metacpan::site::web inherits metacpan::site {
@@ -47,5 +64,7 @@ class metacpan::site::web inherits metacpan::site {
     init_and_rc {
         init_web:
             filename => 'metacpan-web',
+            init_template => 'init_starman.erb',
+            desc => 'Metacpan web front end server',
     }
 }

@@ -8,9 +8,6 @@ class metacpan {
     include metacpan::cron
     include metacpan::perl
     include metacpan::site
-    
+
+
 }
-
-
-
-
