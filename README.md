@@ -29,6 +29,8 @@ Should get you puppet 2.6.2
     chage -d 0 olaf
     chage -d 0 rafl
     chage -d 0 leo
+    
+Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 
 # Copy /home/metacpan/certs directory from existing machine
 
