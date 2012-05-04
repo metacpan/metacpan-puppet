@@ -139,7 +139,7 @@ class munin::web inherits munin-node {
     include munin::default
 
     # for http_loadtime
-    package { ['time', 'wget']: ensure => present }
+    package { ['time']: ensure => present }
     # for nginx_request and nginx_status
     package { "libwww-perl": ensure => present }
 

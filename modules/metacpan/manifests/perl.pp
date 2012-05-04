@@ -17,6 +17,9 @@ class metacpan::perl {
 
     # install cpanm
     perlbrew::install_cpanm { "metalib": }
+}
+
+class metacpan::perl::modules inherits metacpan::perl {
 
     # list our perl modules
     $cpan_modules = [
