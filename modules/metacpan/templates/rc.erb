@@ -75,7 +75,7 @@ case "$1" in
 	## Start daemon with startproc(8). If this fails
 	## the return value is set appropriately by startproc.
 	cd $ROOT
-	$STARMAN_BIN --preload-app -D --user metacpan --group users --pid $PID_FILE --error-log /home/metacpan/api.metacpan.org/var/log/api/starman_error.log
+	$STARMAN_BIN --preload-app -D --user metacpan --group users --pid $PID_FILE --error-log <%= error_log %>
 
 	# Remember status and be verbose
 	rc_status -v

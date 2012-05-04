@@ -9,7 +9,7 @@ class metacpan::site {
                 owner => root,
                 group => root,
                 mode => 0755,
-                content => template("metacpan/rc.erb");
+                content => template("metacpan/init_starman.erb");
         }
 
         exec {
@@ -30,16 +30,19 @@ class metacpan::site {
 class metacpan::site::api inherits metacpan::site {
 
     $app_root = '/home/metacpan/api.metacpan.org'
+    $error_log = '/home/metacpan/api.metacpan.org/var/log/api/starman_error.log'
 
     init_and_rc {
         init_api:
             filename => 'metacpan-api',
+            rc_template => 'starman',
     }
 }
 
 class metacpan::site::web inherits metacpan::site {
     
     $app_root = '/home/metacpan/metacpan.org'
+    $error_log = '/home/metacpan/metacpan.org/var/log/app.log'
     
     init_and_rc {
         init_web:
