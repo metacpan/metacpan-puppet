@@ -18,7 +18,7 @@ node localhost {
     include metacpan::users::admins
     
     include metacpan::website::api
-    include metacpan::cron::api
+    # include metacpan::cron::api
 
     include metacpan::website::www
 
