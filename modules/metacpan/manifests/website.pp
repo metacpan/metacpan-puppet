@@ -50,11 +50,25 @@ class metacpan::website {
         }
     }
     
+    define rotate_logs(path, rotate = 9999, postrotate = '', copytruncate = false) {
+        logrotate::rule { "metacpan_$name":
+          path         => $path,
+          rotate       => $rotate,
+          rotate_every => 'day',
+          ifempty      => false,
+          missingok    => true,
+          compress     => true,
+          copytruncate => $copytruncate,
+          postrotate   => $postrotate,
+        }
+    }
+    
 }
 
 class metacpan::website::api inherits metacpan::website {
 
     $app_root = '/home/metacpan/api.metacpan.org'
+    $log_root = "$app_root/var/log"
     $error_log = '/home/metacpan/api.metacpan.org/var/log/api/starman_error.log'
 
     init_and_rc {
@@ -83,14 +97,26 @@ class metacpan::website::api inherits metacpan::website {
         'api.metacpan.org':
     }
     
-    logrotate::rule { 'rotate_api_access_log':
-      path         => '/home/metacpan/api.metacpan.org/var/log/api/access.log',
-      rotate       => 9999,
-      rotate_every => 'day',
-      ifempty      => false,
-      missingok    => true,
-      compress     => true,
-      postrotate   => 'test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`',
+    rotate_logs {
+        "api_access_log":
+            path => "$log_root/api/access.log",
+            postrotate => 'test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`';
+        "api_error_log":
+            path => "$log_root/api/error.log",
+            postrotate => 'test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`';
+        "api_starman_error_log":
+            path => "$log_root/api/starman_error.log",
+            copytruncate => true;
+        "api_logs":
+            path => "$log_root/*.log",
+            copytruncate => true;
+            
+        # Move this to somewhere later...
+        "es_logs":
+            path => "/opt/elasticsearch/logs/*.log",
+            rotate => 14,
+            copytruncate => true;
+        
     }
 
 
@@ -99,7 +125,14 @@ class metacpan::website::api inherits metacpan::website {
 class metacpan::website::www inherits metacpan::website {
     
     $app_root = '/home/metacpan/metacpan.org'
+    $log_root = "$app_root/var/log"
     $error_log = '/home/metacpan/metacpan.org/var/log/app.log'
+    
+    rotate_logs {
+        "www_logs":
+            path => "$log_root/*.log",
+            postrotate => 'test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`';
+    }
     
     init_and_rc {
         init_web:
