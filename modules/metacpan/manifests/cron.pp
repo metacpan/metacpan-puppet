@@ -54,7 +54,7 @@ class metacpan::cron::api inherits metacpan::cron {
         "cpantesters":
             cmd => 'cpantesters',
             hour => '*/6',
-            minute => '12';
+            minute => '*';
         "latest":
             cmd => 'latest 2&>1 > /dev/null',
             minute => '30';
@@ -69,7 +69,7 @@ class metacpan::cron::api inherits metacpan::cron {
             minute => '25';
         "backup_purge":
             cmd => 'backup ',
-            minute => '10',
+            minute => '*',
             weekday => '3';
         "release":
             cmd => '--skip --age 25 --latest /home/metacpan/CPAN/authors/id/',
