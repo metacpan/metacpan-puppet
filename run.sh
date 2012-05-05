@@ -1,7 +1,7 @@
 #!/bin/sh
 
-find . -type d -exec chmod a+rx {} \;
-find . -type f -exec chmod a+r {} \;
+find /etc/puppet -type d -exec chmod a+rx {} \;
+find /etc/puppet -type f -exec chmod a+r {} \;
 
 /etc/init.d/puppetmaster start
 # cd /etc/puppet
