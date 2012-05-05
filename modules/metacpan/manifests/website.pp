@@ -37,7 +37,7 @@ class metacpan::website {
                 owner => root,
                 group => root,
                 mode => 0444,
-                content => template("nginx/$name.erb"),
+                content => template("metacpan/nginx_$name.erb"),
                 before => Service["nginx"],
                 notify => Service["nginx"];
 
