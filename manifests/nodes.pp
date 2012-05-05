@@ -21,6 +21,8 @@ node localhost {
     # include metacpan::cron::api
 
     include metacpan::website::www
+    
+    include elasticsearch::install
 
     $vhosts = [ "munin" ]
     include nginx

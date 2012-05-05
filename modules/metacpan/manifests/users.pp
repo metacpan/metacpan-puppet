@@ -1,5 +1,19 @@
 class metacpan::users {
     
+    # Make sure sudo file perms are right
+    file {
+        "/etc/sudoers":
+            owner => "root",
+            group => "root",
+            mode => "440";
+        "/etc/sudoers.d/README":
+            owner => "root",
+            group => "root",
+            mode => "440",
+        
+    }
+    
+    
     define metacpanuser( $user, $fullname, $path, $shell = '/bin/bash' ) {
 
             # clear out the group first
@@ -78,7 +92,7 @@ class metacpan::users {
             "/etc/sudoers.d/$user":
                 owner => "root",
                 group => "root",
-                mode => "444",
+                mode => "440",
                 content => "$user   ALL = ALL";
         }
 
