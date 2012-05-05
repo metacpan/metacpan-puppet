@@ -1,5 +1,7 @@
 class elasticsearch {
     
+    package { "openjdk-6-jre": ensure => 'present' }
+    
     $user = 'elasticsearch'
     $path = "/usr/local/$user"
     
@@ -27,39 +29,69 @@ class elasticsearch {
     }
         
     define install_version() {
-        
+                
         $tar_name = "elasticsearch-$name.tar.gz"
         $extracted_name = "elasticsearch-$name"
         
         $url = "https://github.com/downloads/elasticsearch/elasticsearch/$tar_name"
         exec {
-            "es-download-$name":
+            "es-download-and-extract-$name":
                 cwd => $path,
                 user => $user,
                 group => $user,
-                command => "/usr/bin/wget $url",
-                creates => "$path/$tar_name",
+                command => "/usr/bin/curl -L $url | /bin/tar -xz",
+                creates => "$path/$extracted_name",
                 require => File[ "/usr/local/$user"];
         }
-        exec {
-            "es-extract-$name":
-                cwd => $path,
-                user => $user,
+        
+        file {
+            # Install the service folder downloaded from (f24dc18)
+            # https://github.com/elasticsearch/elasticsearch-servicewrapper
+            "$path/$extracted_name/bin/service":
+                    ensure => directory,
+                    recurse => true,
+                    owner => "$user",
+                    group => "$user",
+                    mode => '0744', # make everything executible
+                    source => "$moduleserver/elasticsearch/service",
+                    require => Exec[ "es-download-and-extract-$name" ];
+        }
+    }
+    
+    define make_live(version) {
+        
+        $opt = "/opt/elasticsearch"
+
+        # symlink to this version
+        file {
+            "$opt":
+                owner => $user,
                 group => $user,
-                command => "/bin/tar -xzf $tar_name",
-                creates => "$path/$extracted_name",
-                require => Exec[ "es-download-$name" ];
+                ensure => link,
+                target => "$path/elasticsearch-$version";
+        }
+        file {
+            "/usr/local/bin/rcelasticsearch":
+                owner => 'root',
+                group => 'root',
+                mode => 0755,
+                ensure => link,
+                target => "$path/elasticsearch-$version/bin/service/elasticsearch"            
+        }
+        
+        
+        # If the symlink changes, or the init.d is missing, run the installer
+        exec {
+            "update-service-elasticsearch":
+                cwd => $opt,
+                command => "$opt/bin/service/elasticsearch install",
+                creates => "/etc/init.d/elasticsearch",
+                subscribe => File[ "/opt/elasticsearch" ];
         }
         
     }
-    
-    # 
-    # 
-    # 
-    # 
-    # package{["elasticsearch","elasticsearch-plugin-head","jre"]:
-    #     ensure => latest,
-    # }
+
+
     # file{"/etc/sysconfig/elasticsearch":
     #     owner => root,
     #     group => root,
@@ -88,7 +120,14 @@ class elasticsearch::install inherits elasticsearch {
     
     
     install_version {
+        '0.18.5':
+            ;
         '0.19.3':
+            ;
+    }
+    make_live {
+        'es_live':
+            version => '0.18.5',
     }
     
     

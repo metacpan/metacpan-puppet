@@ -37,12 +37,6 @@ Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 # as 'metacpan' user
 perl ~/bin/update_repos
 
-# To test
-    rm /tmp/puppet_testing.txt
-Then follow 'To Run' above and this file will be recreated.
-
-
-
 # References
 
 http://www.puppetcookbook.com/

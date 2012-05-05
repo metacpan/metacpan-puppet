@@ -3,6 +3,9 @@ class metacpan::packages {
 	package { vim: ensure => present }
 	
 	# System Tools
+	package { curl: ensure => present }
+	package { wget: ensure => present }
+	package { lynx: ensure => present }
 	package { mtr: ensure => present }
 	package { bzip2: ensure => present }
 	package { diffutils: ensure => present }
