@@ -17,22 +17,15 @@ node localhost {
     include metacpan::users::basic
     include metacpan::users::admins
     
-    include metacpan::site::api
-    include metacpan::cron::api    
+    include metacpan::website::api
+    include metacpan::cron::api
 
-    include metacpan::site::web
+    include metacpan::website::www
+
+    $vhosts = [ "munin" ]
+    include nginx
 
     include munin::web
     include munin-server
     
-    
-
-    $vhosts = [
-    "api.metacpan.org", "metacpan.org",
-    "sco.metacpan.org", "cpan.metacpan.org", "js.metacpan.org",
-    "contest.metacpan.org",
-    "munin",
-    ]
-    include nginx
-
 }

@@ -1,4 +1,4 @@
-class metacpan::site {
+class metacpan::website {
     
     # init_and_rc
     define init_and_rc(filename, init_template, desc) {
@@ -21,12 +21,38 @@ class metacpan::site {
     
 
     define nginx() {
-        
+        $nginx_log_dir = "/var/log/nginx/$name"
+
+        file{
+            # Somewhere for logfiles
+            "/var/log/nginx/$name":
+                ensure => directory,
+                owner => root,
+                group => root,
+                mode => 0755,
+                before => Service["nginx"];
+
+            # The actual config file
+            "/etc/nginx/sites-available/$name":
+                owner => root,
+                group => root,
+                mode => 0444,
+                content => template("nginx/$name.erb"),
+                before => Service["nginx"],
+                notify => Service["nginx"];
+
+            # Add the symlink to enable
+            "/etc/nginx/sites-enabled/$name":
+                ensure => link,
+                target => "/etc/nginx/sites-available/${name}",
+                before => Service["nginx"],
+                notify => Service["nginx"];
+        }
     }
     
 }
 
-class metacpan::site::api inherits metacpan::site {
+class metacpan::website::api inherits metacpan::website {
 
     $app_root = '/home/metacpan/api.metacpan.org'
     $error_log = '/home/metacpan/api.metacpan.org/var/log/api/starman_error.log'
@@ -52,11 +78,13 @@ class metacpan::site::api inherits metacpan::site {
             desc => 'Make sure everything is running ok'
     }
 
-
+    nginx {
+        'api.metacpan.org':
+    }
 
 }
 
-class metacpan::site::web inherits metacpan::site {
+class metacpan::website::www inherits metacpan::website {
     
     $app_root = '/home/metacpan/metacpan.org'
     $error_log = '/home/metacpan/metacpan.org/var/log/app.log'
@@ -67,4 +95,13 @@ class metacpan::site::web inherits metacpan::site {
             init_template => 'init_starman.erb',
             desc => 'Metacpan web front end server',
     }
+    
+    nginx {
+        [
+        "metacpan.org",
+        "sco.metacpan.org", "cpan.metacpan.org", "js.metacpan.org",
+        "contest.metacpan.org",
+        ]:
+    }
+    
 }
