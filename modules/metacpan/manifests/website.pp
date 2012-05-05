@@ -1,7 +1,7 @@
 class metacpan::website {
     
     # init_and_rc
-    define init_and_rc(filename, init_template, desc) {
+    define init_and_rc(filename, init_template, desc, starman_args = '') {
 
         file{
             "/etc/init.d/$filename":
@@ -62,6 +62,7 @@ class metacpan::website::api inherits metacpan::website {
             filename => 'metacpan-api',
             init_template => 'init_starman.erb',
             desc => 'Metacpan API server',
+            starman_args => '-p 5000 --workers 5',
     }
 
     init_and_rc {
@@ -94,6 +95,7 @@ class metacpan::website::www inherits metacpan::website {
             filename => 'metacpan-web',
             init_template => 'init_starman.erb',
             desc => 'Metacpan web front end server',
+            starman_args => '-p 5001 --workers 10',
     }
     
     nginx {
