@@ -82,6 +82,17 @@ class metacpan::website::api inherits metacpan::website {
     nginx {
         'api.metacpan.org':
     }
+    
+    logrotate::rule { 'rotate_api_access_log':
+      path         => '/home/metacpan/api.metacpan.org/var/log/api/access.log',
+      rotate       => 9999,
+      rotate_every => 'day',
+      ifempty      => false,
+      missingok    => true,
+      compress     => true,
+      postrotate   => 'test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`',
+    }
+
 
 }
 
