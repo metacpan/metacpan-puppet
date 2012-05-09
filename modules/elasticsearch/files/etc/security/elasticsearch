@@ -1,0 +1,6 @@
+#Each line describes a limit for a user in the form:
+#
+#<domain>        <type>  <item>  <value>
+elasticsearch     -	nofile    65000
+elasticsearch     -	memlock   unlimited
+metacpan          -	nofile    65000

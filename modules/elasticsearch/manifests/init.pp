@@ -26,6 +26,12 @@ class elasticsearch {
             owner => $user,
             group => $user,
             ensure => directory;
+                
+        "/etc/security/limits.d/elasticsearch":
+            owner  => 'root',
+            group  => 'root',
+            mode   => 0644,
+            source => "$moduleserver/elasticsearch/etc/security/elasticsearch";
     }
         
     define install_version() {
