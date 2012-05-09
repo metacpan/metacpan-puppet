@@ -64,25 +64,37 @@ class elasticsearch {
         }
     }
     
-    define make_live(version) {
+    define make_live( version, elasticsearch_memory_mb = '20' ) {
         
         $opt = "/opt/elasticsearch"
+        $es_path = "$path/elasticsearch-$version"
 
-        # symlink to this version
         file {
+            # symlink to this version
             "$opt":
                 owner => $user,
                 group => $user,
                 ensure => link,
-                target => "$path/elasticsearch-$version";
-        }
-        file {
+                target => "$es_path";
             "/usr/local/bin/rcelasticsearch":
                 owner => 'root',
                 group => 'root',
                 mode => 0755,
                 ensure => link,
-                target => "$path/elasticsearch-$version/bin/service/elasticsearch"            
+                target => "$es_path/bin/service/elasticsearch";
+                           
+            # make sure config files are sorted
+            "$es_path/config/elasticsearch.yml":
+                owner => $user,
+                group => $user,
+                mode => 0644,
+                content => template('elasticsearch/config/elasticsearch_yml.erb');
+            "$es_path/bin/service/elasticsearch.conf":
+                owner => $user,
+                group => $user,
+                mode => 0644,
+                content => template('elasticsearch/service/elasticsearch_conf.erb');
+                
         }
         
         
@@ -93,6 +105,14 @@ class elasticsearch {
                 command => "$opt/bin/service/elasticsearch install",
                 creates => "/etc/init.d/elasticsearch",
                 subscribe => File[ "/opt/elasticsearch" ];
+        }
+        
+        service{"elasticsearch":
+            hasstatus => true,
+            hasrestart => true,
+            ensure => running,
+            enable => true,
+            subscribe => [ File["$es_path/config/elasticsearch.yml"], File["$es_path/bin/service/elasticsearch.conf"]  ],
         }
         
     }
@@ -112,18 +132,10 @@ class elasticsearch {
     #     source => "puppet:///modules/elasticsearch/elasticsearch.yml",
     #     require => Package["elasticsearch"],
     # }
-    # service{"elasticsearch":
-    #     hasstatus => true,
-    #     hasrestart => true,
-    #     ensure => running,
-    #     enable => true,
-    #     require => File["/etc/sysconfig/elasticsearch"],
-    #     subscribe => [Package["elasticsearch"],File["/etc/elasticsearch/elasticsearch.yml"]],
-    # }
+
 }
 
 class elasticsearch::install inherits elasticsearch {
-    
     
     install_version {
         '0.18.5':
@@ -134,9 +146,8 @@ class elasticsearch::install inherits elasticsearch {
     make_live {
         'es_live':
             version => '0.18.5',
+            elasticsearch_memory_mb => $elasticsearch_memory_mb,
     }
     
-    
 }
-
 

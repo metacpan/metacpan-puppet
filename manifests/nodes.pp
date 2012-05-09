@@ -22,6 +22,8 @@ node localhost {
 
     include metacpan::website::www
     
+    # 14336 = live elasticsearch_memory_mb
+    # $elasticsearch_memory_mb = '20'
     include elasticsearch::install
 
     $vhosts = [ "munin" ]
