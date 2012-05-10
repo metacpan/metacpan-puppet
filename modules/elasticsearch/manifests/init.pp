@@ -67,7 +67,8 @@ class elasticsearch {
     define make_live( version, elasticsearch_memory_mb = '20' ) {
         
         $opt = "/opt/elasticsearch"
-        $es_path = "$path/elasticsearch-$version"
+        $extracted_name = "elasticsearch-$version"
+        $es_path = "$path/$extracted_name"
 
         file {
             # symlink to this version
@@ -75,12 +76,15 @@ class elasticsearch {
                 owner => $user,
                 group => $user,
                 ensure => link,
-                target => "$es_path";
+                target => "$es_path",
+                require => File[ "$path/$extracted_name/bin/service"];
+
             "/usr/local/bin/rcelasticsearch":
                 owner => 'root',
                 group => 'root',
                 mode => 0755,
                 ensure => link,
+                require => File[ "$path/$extracted_name/bin/service"],
                 target => "$es_path/bin/service/elasticsearch";
                            
             # make sure config files are sorted
@@ -104,6 +108,7 @@ class elasticsearch {
                 cwd => $opt,
                 command => "$opt/bin/service/elasticsearch install",
                 creates => "/etc/init.d/elasticsearch",
+                require => File[ "$path/$extracted_name/bin/service"], 
                 subscribe => File[ "/opt/elasticsearch" ];
         }
         
