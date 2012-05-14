@@ -19,12 +19,14 @@ class elasticsearch {
             shell      => "/bin/bash",
             gid        => $user,
             provider   => "useradd",
+            require => Group[ "$user" ],
     }
     
     file {
-        "/usr/local/$user":
+        "$path":
             owner => $user,
             group => $user,
+            require => User[ "$user" ],
             ensure => directory;
                 
         "/etc/security/limits.d/elasticsearch":
@@ -47,7 +49,7 @@ class elasticsearch {
                 group => $user,
                 command => "/usr/bin/curl -L $url | /bin/tar -xz",
                 creates => "$path/$extracted_name",
-                require => File[ "/usr/local/$user"];
+                require => File[ "$path" ];
         }
         
         file {
@@ -85,7 +87,7 @@ class elasticsearch {
                 mode => 0755,
                 ensure => link,
                 require => File[ "$path/$extracted_name/bin/service"],
-                target => "$es_path/bin/service/elasticsearch";
+                target => "$opt/bin/service/elasticsearch";
                            
             # make sure config files are sorted
             "$es_path/config/elasticsearch.yml":
