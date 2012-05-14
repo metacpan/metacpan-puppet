@@ -34,6 +34,9 @@ class metacpan::users {
                     # groups     => [ 'user' ]
             }
 
+            # Where perl lives
+            $export_path = "export PATH=${perlbin}:\$PATH"
+
             # Set up user
             file {
                 "$path/$user":
@@ -53,11 +56,12 @@ class metacpan::users {
                             "$fileserver/default/$path/default/bin",
                     ];
                 # Little RC file to setup the env
+
                 "$path/$user/.metacpanrc":
                     owner   => "$user",
                     group   => "$user",
                     mode    => 0700,
-                    content => 'export PATH=/usr/local/perlbrew/perls/metalib/bin:$PATH';
+                    content => $export_path;
             }
     }
 

@@ -11,9 +11,17 @@ class metacpan::website {
                 content => template("metacpan/$init_template");
         }
 
+        # service{"$filename":
+        #     hasstatus => true,
+        #     hasrestart => true,
+        #     ensure => running,
+        #     enable => true,
+        # }
+        
+
         exec {
             "update-rc-$filename":
-                command => "/usr/sbin/update-rc.d $filename defaults 18",
+                command => "/usr/sbin/update-rc.d $filename start 10 2",
                 creates => "/etc/rc3.d/S21$filename";
         }
 

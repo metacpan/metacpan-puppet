@@ -11,7 +11,7 @@
 
 # Check for missing binaries (stale symlinks should not happen)
 # Note: Special treatment of stop for LSB conformance
-source <%= metacpanrc %>
+export PATH=<%= perlbin %>:$PATH
 RRR_BIN=<%= perlbin %>/rrr-client
 TARGET=/home/metacpan/CPAN
 PID_FILE=/var/run/<%= filename %>.pid
@@ -34,7 +34,7 @@ test -x $RRR_BIN || { echo "$RRR_BIN not installed";
 # This is currently not used by UnitedLinux based distributions and
 # not needed for init scripts for UnitedLinux only. If it is used,
 # the functions from rc.status should not be sourced or used.
-#. /lib/lsb/init-functions
+. /lib/lsb/init-functions
 
 # Shell functions sourced from /etc/rc.status:
 #      rc_check         check and set local and overall rc status
@@ -48,10 +48,10 @@ test -x $RRR_BIN || { echo "$RRR_BIN not installed";
 #      rc_reset         clear both the local and overall rc status
 #      rc_exit          exit appropriate to overall rc status
 #      rc_active        checks whether a service is activated by symlinks
-. /etc/rc.status
+# . /etc/rc.status
 
 # Reset status of this service
-rc_reset
+# rc_reset
 
 # Return values acc. to LSB for all commands but status:
 # 0	  - success

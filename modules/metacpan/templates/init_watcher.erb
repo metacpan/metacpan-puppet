@@ -11,7 +11,7 @@
 
 # Check for missing binaries (stale symlinks should not happen)
 # Note: Special treatment of stop for LSB conformance
-source <%= metacpanrc %>
+export PATH=<%= perlbin %>:$PATH
 WATCHER_BIN=<%= app_root %>/bin/metacpan
 PID_FILE=/var/run/<%= filename %>.pid
 ROOT=<%= app_root %>

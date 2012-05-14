@@ -103,7 +103,6 @@ class elasticsearch {
                 
         }
         
-        
         # If the symlink changes, or the init.d is missing, run the installer
         exec {
             "update-service-elasticsearch":
