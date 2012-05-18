@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+
+# This file was created and transferred by puppet
+# Do not edit manually!
+
+# Start/stop the starman daemon.
 #
 ### BEGIN INIT INFO
 # Provides:          <%= filename %>
@@ -9,142 +14,162 @@
 # Short-Description: <%= desc %>
 ### END INIT INFO
 
-# Check for missing binaries (stale symlinks should not happen)
-# Note: Special treatment of stop for LSB conformance
 export PATH=<%= perlbin %>:$PATH
-STARMAN_BIN=<%= perlbin %>/starman
-ROOT=<%= app_root %>
-PID_FILE=/var/run/<%= filename %>.pid
-test -x $STARMAN_BIN || { echo "$STARMAN_BIN not installed"; 
-	if [ "$1" = "stop" ]; then exit 0;
-	else exit 5; fi; }
 
-# Check for existence of needed config file and read it
-#metacpan-api_CONFIG=/etc/sysconfig/metacpan-api
-#test -r $metacpan-api_CONFIG || { echo "$metacpan-api_CONFIG not existing";
-#	if [ "$1" = "stop" ]; then exit 0;
-#	else exit 6; fi; }
+# psgi defaults
+APPDIR="<%= app_root %>"
+PSGIAPP="$APPDIR/app.psgi"
 
-# Read config	
-#. $metacpan-api_CONFIG
+# starman defaults
+NAME=<%= filename %>
+DAEMON=<%= perlbin %>/starman
+WORKERS=<%= starman_workers %>
+PORT=<%= starman_port %>
+PIDDIR=/tmp
+PIDFILE=$PIDDIR/${NAME}.pid
+USER=metacpan
+GROUP=users
 
-# Source LSB init functions
-# providing start_daemon, killproc, pidofproc, 
-# log_success_msg, log_failure_msg and log_warning_msg.
-# This is currently not used by UnitedLinux based distributions and
-# not needed for init scripts for UnitedLinux only. If it is used,
-# the functions from rc.status should not be sourced or used.
-#. /lib/lsb/init-functions
+test -f ${DAEMON} || exit 0
 
-# Shell functions sourced from /etc/rc.status:
-#      rc_check         check and set local and overall rc status
-#      rc_status        check and set local and overall rc status
-#      rc_status -v     be verbose in local rc status and clear it afterwards
-#      rc_status -v -r  ditto and clear both the local and overall rc status
-#      rc_status -s     display "skipped" and exit with status 3
-#      rc_status -u     display "unused" and exit with status 3
-#      rc_failed        set local and overall rc status to failed
-#      rc_failed <num>  set local and overall rc status to <num>
-#      rc_reset         clear both the local and overall rc status
-#      rc_exit          exit appropriate to overall rc status
-#      rc_active        checks whether a service is activated by symlinks
-.    /etc/rc.status
+. /lib/lsb/init-functions
 
-# Reset status of this service
-rc_reset
+if [ ! $WORKERS ]; then
+    echo "\$WORKERS is not defined"
+    exit 1
+fi
 
-# Return values acc. to LSB for all commands but status:
-# 0	  - success
-# 1       - generic or unspecified error
-# 2       - invalid or excess argument(s)
-# 3       - unimplemented feature (e.g. "reload")
-# 4       - user had insufficient privileges
-# 5       - program is not installed
-# 6       - program is not configured
-# 7       - program is not running
-# 8--199  - reserved (8--99 LSB, 100--149 distrib, 150--199 appl)
-# 
-# Note that starting an already running service, stopping
-# or restarting a not-running service as well as the restart
-# with force-reload (in case signaling is not supported) are
-# considered a success.
+if [ ! $PORT ]; then
+    echo "\$PORT is not defined"
+    exit 1
+fi
 
+if [ ! -d $APPDIR ]; then
+    echo "$APPDIR does not exist"
+    exit 1
+fi
+
+STARMAN="$DAEMON -- $PSGIAPP --workers $WORKERS --pid $PIDFILE --port $PORT --preload-app --daemonize --user $USER --group $GROUP"
+
+check_running() {
+    [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
+}
+
+check_compile() {
+    perl -c $PSGIAPP || return 0
+}
+
+_start() {
+
+  echo "Starting $PSGIAPP, pidfile $PIDFILE..."
+
+  /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+  --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
+
+  echo "Waiting for $NAME to start..."
+
+  for i in 1 2 3 4 ; do
+    sleep 1
+    if check_running ; then
+      echo "$NAME is now starting up"
+      return 0
+    fi
+  done
+
+  # sometimes it takes two tries.
+  echo "Failed. Trying again..."
+  /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+  --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
+
+  for i in 1 2 3 4 ; do
+    sleep 1
+    if check_running ; then
+      echo "$NAME is now starting up"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+start() {
+    log_daemon_msg "Starting" $NAME
+    echo ""
+
+    if check_running; then
+        log_progress_msg "already running"
+        log_end_msg 0
+        exit 0
+    fi
+
+    rm -f $PIDFILE 2>/dev/null
+
+    _start
+    log_end_msg $?
+    return $?
+}
+
+stop() {
+    log_daemon_msg "Stopping" $NAME
+    echo ""
+
+    /sbin/start-stop-daemon --stop --oknodo --pidfile $PIDFILE
+    sleep 3
+    log_end_msg $?
+    return $?
+}
+
+restart() {
+    log_daemon_msg "Restarting" $NAME
+    echo ""
+
+    check_compile 
+    if [ $? != 0 ] ; then
+        log_failure_msg "Error detected; not restarting."
+        log_end_msg 1
+        exit 1
+    fi
+
+    /sbin/start-stop-daemon --stop --oknodo --pidfile $PIDFILE
+    _start
+    log_end_msg $?
+    return $?
+}
+
+reload() {
+    log_daemon_msg "Reloading" $NAME
+    echo ""
+
+    if [ $? != 0 ] ; then
+       log_failure_msg "Error detected; not reloading."
+       log_end_msg 1
+       exit 1
+    fi
+
+    /sbin/start-stop-daemon --stop --signal HUP --oknodo --pidfile $PIDFILE
+    log_end_msg $?
+    return $?
+}
+
+# See how we were called.
 case "$1" in
     start)
-	echo -n "Starting metacpan-api "
-	## Start daemon with startproc(8). If this fails
-	## the return value is set appropriately by startproc.
-	cd $ROOT
-	$STARMAN_BIN --preload-app -D --user metacpan --group users <%= starman_args %> --pid $PID_FILE --error-log <%= error_log %>
-
-	# Remember status and be verbose
-	rc_status -v
-	;;
+        start
+    ;;
     stop)
-	echo -n "Shutting down metacpan-api "
-	## Stop daemon with killproc(8) and if this fails
-	## killproc sets the return value according to LSB.
-
-	/bin/kill `cat $PID_FILE`
-	/bin/rm $PID_FILE
-
-	# Remember status and be verbose
-	rc_status -v
-	;;
-    try-restart|condrestart)
-	## Do a restart only if the service was active before.
-	## Note: try-restart is now part of LSB (as of 1.9).
-	## RH has a similar command named condrestart.
-	if test "$1" = "condrestart"; then
-		echo "${attn} Use try-restart ${done}(LSB)${attn} rather than condrestart ${warn}(RH)${norm}"
-	fi
-	$0 status
-	if test $? = 0; then
-		$0 restart
-	else
-		rc_reset	# Not running is not a failure.
-	fi
-	# Remember status and be quiet
-	rc_status
-	;;
-    restart)
-	## Stop the service and regardless of whether it was
-	## running or not, start it again.
-	$0 stop
-	$0 start
-
-	# Remember status and be quiet
-	rc_status
-	;;
-    status)
-	echo -n "Checking for service metacpan-api "
-	## Check status with checkproc(8), if process is running
-	## checkproc will return with exit status 0.
-
-	# Return value is slightly different for the status command:
-	# 0 - service up and running
-	# 1 - service dead, but /var/run/  pid  file exists
-	# 2 - service dead, but /var/lock/ lock file exists
-	# 3 - service not running (unused)
-	# 4 - service status unknown :-(
-	# 5--199 reserved (5--99 LSB, 100--149 distro, 150--199 appl.)
-	
-	# NOTE: checkproc returns LSB compliant status values.
-	/sbin/checkproc -p $PID_FILE $STARMAN_BIN
-	# NOTE: rc_status knows that we called this init script with
-	# "status" option and adapts its messages accordingly.
-	rc_status -v
-	;;
-    probe)
-	## Optional: Probe for the necessity of a reload, print out the
-	## argument to this init script which is required for a reload.
-	## Note: probe is not (yet) part of LSB (as of 1.9)
-
-	test /etc/metacpan-api/metacpan-api.conf -nt $PID_FILE && echo reload
-	;;
+        stop
+    ;;
+    restart|force-reload)
+        restart
+    ;;
+    reload)
+        reload
+    ;;
+    check_compile)
+	check_compile
+    ;;
     *)
-	echo "Usage: $0 {start|stop|status|try-restart|restart|force-reload|reload|probe}"
-	exit 1
-	;;
+        echo $"Usage: $0 {start|stop|restart|reload|check_compile}"
+        exit 1
 esac
-rc_exit
+exit $?

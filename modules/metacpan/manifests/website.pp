@@ -9,21 +9,41 @@ class metacpan::website {
                 group => root,
                 mode => 0755,
                 content => template("metacpan/$init_template");
-        }
-
-        # service{"$filename":
-        #     hasstatus => true,
-        #     hasrestart => true,
-        #     ensure => running,
-        #     enable => true,
-        # }
-        
+        }        
 
         exec {
             "update-rc-$filename":
                 command => "/usr/sbin/update-rc.d $filename start 10 2",
                 creates => "/etc/rc3.d/S21$filename";
         }
+
+    }
+
+
+    define starman(filename, app_root, desc, starman_port, starman_workers = 5 ) {
+
+        file{
+            "/etc/init.d/$filename":
+                owner => root,
+                group => root,
+                mode => 0755,
+                content => template("metacpan/init_starman.erb");
+        }
+
+        service{"$filename":
+            # http://docs.puppetlabs.com/references/stable/type.html#service
+            hasstatus => false,
+            # hasrestart => true,
+            ensure => running,
+            enable => true,
+        }
+        
+
+        # exec {
+        #     "update-rc-$filename":
+        #         command => "/usr/sbin/update-rc.d $filename start 10 2",
+        #         creates => "/etc/rc3.d/S21$filename";
+        # }
 
     }
     
@@ -79,27 +99,28 @@ class metacpan::website::api inherits metacpan::website {
     $log_root = "$app_root/var/log"
     $error_log = '/home/metacpan/api.metacpan.org/var/log/api/starman_error.log'
 
-    init_and_rc {
+    starman {
         init_api:
             filename => 'metacpan-api',
-            init_template => 'init_starman.erb',
             desc => 'Metacpan API server',
-            starman_args => '-p 5000 --workers 5',
+            app_root => $app_root,
+            starman_port => '5000',
+            starman_workers => '5';
     }
 
-    init_and_rc {
-        init_rrr:
-            filename => 'metacpan-rrr',
-            init_template => 'init_rrr.erb',
-            desc => 'Mirror CPAN using rrr',
-    }
-
-    init_and_rc {
-        init_watcher:
-            filename => 'metacpan-watcher',
-            init_template => 'init_watcher.erb',
-            desc => 'Make sure everything is running ok'
-    }
+    # init_and_rc {
+    #     init_rrr:
+    #         filename => 'metacpan-rrr',
+    #         init_template => 'init_rrr.erb',
+    #         desc => 'Mirror CPAN using rrr',
+    # }
+    # 
+    # init_and_rc {
+    #     init_watcher:
+    #         filename => 'metacpan-watcher',
+    #         init_template => 'init_watcher.erb',
+    #         desc => 'Make sure everything is running ok'
+    # }
 
     nginx {
         'api.metacpan.org':
@@ -142,12 +163,13 @@ class metacpan::website::www inherits metacpan::website {
             postrotate => 'test ! -f /var/run/nginx.pid || kill -USR1 `cat /var/run/nginx.pid`';
     }
     
-    init_and_rc {
+    starman {
         init_web:
             filename => 'metacpan-web',
-            init_template => 'init_starman.erb',
+            app_root => $app_root,
             desc => 'Metacpan web front end server',
-            starman_args => '-p 5001 --workers 10',
+            starman_port => '5001',
+            starman_workers => '10';
     }
     
     nginx {
