@@ -1,10 +1,11 @@
 # metacpan puppet configurations
 
-All machines will be setup identically.
+All machines will be setup identically for now...
 
 Debian stable (6.0.4):
 
-# We want some stuff from backports, so edit /etc/apt/sources.list add:
+# We want some stuff from backports...
+    # Edit /etc/apt/sources.list add:
     deb http://backports.debian.org/debian-backports squeeze-backports main
     
     apt-get update
