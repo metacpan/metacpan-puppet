@@ -8,6 +8,7 @@ Debian stable (6.0.4):
     # Edit /etc/apt/sources.list add:
     deb http://backports.debian.org/debian-backports squeeze-backports main
     
+    # Then from command line run
     apt-get update
 
 # Install from base iso http://www.debian.org/distrib/
