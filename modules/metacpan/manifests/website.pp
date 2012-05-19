@@ -20,7 +20,13 @@ class metacpan::website {
     }
 
 
-    define starman(filename, app_root, desc, starman_port, starman_workers = 5 ) {
+    define starman(
+        filename, 
+        app_root, 
+        desc, 
+        starman_port, 
+        starman_workers = 5
+        ) {
 
         file{
             "/etc/init.d/$filename":
@@ -32,18 +38,11 @@ class metacpan::website {
 
         service{"$filename":
             # http://docs.puppetlabs.com/references/stable/type.html#service
-            hasstatus => false,
-            # hasrestart => true,
+            hasstatus => true,
+            hasrestart => true,
             ensure => running,
             enable => true,
         }
-        
-
-        # exec {
-        #     "update-rc-$filename":
-        #         command => "/usr/sbin/update-rc.d $filename start 10 2",
-        #         creates => "/etc/rc3.d/S21$filename";
-        # }
 
     }
     

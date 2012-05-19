@@ -10,7 +10,7 @@
 # Required-Start:    $ALL
 # Required-Stop:
 # Default-Start:     2 3 4 5
-# Default-Stop:      0 1 2 6
+# Default-Stop:      0 1 6
 # Short-Description: <%= desc %>
 ### END INIT INFO
 
@@ -162,6 +162,9 @@ case "$1" in
     restart|force-reload)
         restart
     ;;
+    status)
+        check_running
+    ;;
     reload)
         reload
     ;;
@@ -169,7 +172,7 @@ case "$1" in
 	check_compile
     ;;
     *)
-        echo $"Usage: $0 {start|stop|restart|reload|check_compile}"
+        echo $"Usage: $0 {start|stop|restart|reload|check_compile|status}"
         exit 1
 esac
 exit $?

@@ -4,11 +4,16 @@ All machines will be setup identically.
 
 Debian stable (6.0.4):
 
+# We want some stuff from backports, so edit /etc/apt/sources.list add:
+    deb http://backports.debian.org/debian-backports squeeze-backports main
+    
+    apt-get update
+
 # Install from base iso http://www.debian.org/distrib/
     apt-get install openssh-server git
-    apt-get install puppetmaster puppet
+    apt-get -t squeeze-backports install puppetmaster puppet
 
-Should get you puppet 2.6.2
+Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
 
     update-rc.d -n puppetmaster remove
     update-rc.d -n puppet remove
