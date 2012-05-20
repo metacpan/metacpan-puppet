@@ -108,15 +108,7 @@ class metacpan::website::api inherits metacpan::website {
             starman_port => '5000',
             starman_workers => '5';
     }
-    
 
-    # init_and_rc {
-    #     init_rrr:
-    #         filename => 'metacpan-rrr',
-    #         init_template => 'init_rrr.erb',
-    #         desc => 'Mirror CPAN using rrr',
-    # }
-    
     # FIXME: turn this on once it actually starts
     # init_and_rc {
     #     init_watcher:
@@ -125,7 +117,15 @@ class metacpan::website::api inherits metacpan::website {
     #         desc => 'Make sure everything is running ok',
     #         require => Service[ 'elasticsearch' ]
     # }
-
+    
+    # FIXME: this needs to be converted to debian init style
+    # init_and_rc {
+    #     init_rrr:
+    #         filename => 'metacpan-rrr',
+    #         init_template => 'init_rrr.erb',
+    #         desc => 'Mirror CPAN using rrr',
+    # }
+    
     nginx {
         'api.metacpan.org':
     }
