@@ -11,10 +11,12 @@ class metacpan::website {
                 content => template("metacpan/$init_template");
         }        
 
-        exec {
-            "update-rc-$filename":
-                command => "/usr/sbin/update-rc.d $filename start 10 2",
-                creates => "/etc/rc3.d/S21$filename";
+        service{"$filename":
+            # http://docs.puppetlabs.com/references/stable/type.html#service
+            hasstatus => true,
+            hasrestart => true,
+            ensure => running,
+            enable => true,
         }
 
     }
@@ -106,6 +108,7 @@ class metacpan::website::api inherits metacpan::website {
             starman_port => '5000',
             starman_workers => '5';
     }
+    
 
     # init_and_rc {
     #     init_rrr:
@@ -113,12 +116,14 @@ class metacpan::website::api inherits metacpan::website {
     #         init_template => 'init_rrr.erb',
     #         desc => 'Mirror CPAN using rrr',
     # }
-    # 
+    
+    # FIXME: turn this on once it actually starts
     # init_and_rc {
     #     init_watcher:
     #         filename => 'metacpan-watcher',
     #         init_template => 'init_watcher.erb',
-    #         desc => 'Make sure everything is running ok'
+    #         desc => 'Make sure everything is running ok',
+    #         require => Service[ 'elasticsearch' ]
     # }
 
     nginx {

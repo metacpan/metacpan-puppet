@@ -151,7 +151,7 @@ class elasticsearch::install inherits elasticsearch {
     }
     make_live {
         'es_live':
-            version => '0.18.5',
+            version => $es_live_version,
             elasticsearch_memory_mb => $elasticsearch_memory_mb,
     }
     
