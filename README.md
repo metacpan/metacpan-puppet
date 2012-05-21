@@ -2,21 +2,22 @@
 
 All machines will be setup identically for now...
 
-Debian stable (6.0.4):
+# Install Debian stable (6.0.4)
+    Base iso from http://www.debian.org/distrib/
 
-# We want some stuff from backports...
+# We want puppet from backports so...
     # Edit /etc/apt/sources.list add:
     deb http://backports.debian.org/debian-backports squeeze-backports main
-    
-    # Then from command line run
+
+# Now install the minimum to get puppet running    
     apt-get update
 
-# Install from base iso http://www.debian.org/distrib/
     apt-get install openssh-server git
     apt-get -t squeeze-backports install puppetmaster puppet
 
 Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
 
+    # We don't want puppet running automatically
     update-rc.d -n puppetmaster remove
     update-rc.d -n puppet remove
     update-rc.d -n puppetqd remove
@@ -26,9 +27,10 @@ Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
     rm -rf puppet
     git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
    
-# To Run (start master, cd, git pull, puppet, stop master)
+# To Run (start master, run puppet client, stop master)
     /etc/puppet/run.sh
-    You may have to run this a couple of times the first time
+    You may have to run this a couple of times the first time, the very
+    first time it will take quite a while to run (it has a lot to do!)
     
 # Get all accounts to update their passwords when login (via sshkey)
     chage -d 0 mo
@@ -39,10 +41,12 @@ Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
     
 Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 
-# Copy /home/metacpan/certs directory from existing machine
+# Copy http certificates
+    Copy /home/metacpan/certs directory from existing machine
 
-# as 'metacpan' user
-perl ~/bin/update_repos
+# Create or update repositories: www, api and others
+    # as 'metacpan' user
+    perl ~/bin/update_repos
 
 # Where do I start with looking in puppet?
 
