@@ -1,4 +1,3 @@
-$fileserver = 'puppet://localhost/files'
 $moduleserver = 'puppet://localhost'
 
 # Modules

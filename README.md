@@ -44,6 +44,30 @@ Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 # as 'metacpan' user
 perl ~/bin/update_repos
 
+# Where do I start with looking in puppet?
+
+    # Globals & loading specific modules
+    manifests/site.pp
+
+    # Server specific (at the moment all servers are localhost)
+    manifests/nodes.pp
+
+    # core metacpan stuff is in here
+    modules/metacpan/
+
+    # default loader (which loads everything else)
+    modules/metacpan/manifests/init.pp
+
+    # static files and templates are in
+    modules/metacpan/files or modules/metacpan/templates
+    
+    # Other modules that get used, these are customised
+    modules/munin
+    modules/elasticsearch
+    modules/logrotate
+    modules/nginx
+    modules/perlbrew
+    
 # References
 
 http://www.puppetcookbook.com/
