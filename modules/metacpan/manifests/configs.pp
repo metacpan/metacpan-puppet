@@ -12,14 +12,14 @@ class metacpan::configs {
             owner => "root",
             group => "root",
             mode => 644,
-            source => "$fileserver/default/etc/aliases",
+            source => "$moduleserver/metacpan/default/etc/aliases",
     }
     # resolv
     file { "/etc/resolv.conf":
             owner => "root",
             group => "root",
             mode => 644,
-            source => "$fileserver/default/etc/resolv.conf",
+            source => "$moduleserver/metacpan/default/etc/resolv.conf",
     }
 }
 

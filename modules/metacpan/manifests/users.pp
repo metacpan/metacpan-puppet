@@ -52,8 +52,8 @@ class metacpan::users {
                     group => "$user",
                     mode => '0700', # make everything executible
                     source => [
-                            "$fileserver/default/$path/$user/bin",
-                            "$fileserver/default/$path/default/bin",
+                            "$moduleserver/metacpan/default/$path/$user/bin",
+                            "$moduleserver/metacpan/default/$path/default/bin",
                     ];
                 # Little RC file to setup the env
 
@@ -85,9 +85,9 @@ class metacpan::users {
                 group => "$user",
                 mode => 600,
                 source => [
-                        "$fileserver/nodes/$hostname/$path/$user/ssh/authorized_keys",
-                        "$fileserver/location/$location/$path/$user/ssh/authorized_keys",
-                        "$fileserver/default/$path/$user/ssh/authorized_keys"
+                        "$moduleserver/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
+                        "$moduleserver/metacpan/location/$location/$path/$user/ssh/authorized_keys",
+                        "$moduleserver/metacpan/default/$path/$user/ssh/authorized_keys"
                         ],
         }
 
