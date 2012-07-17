@@ -93,6 +93,7 @@ class metacpan::perl::modules inherits metacpan::perl {
         'File::Find',
         'File::Find::Rule',
         'File::Path',
+        'File::Rsync::Mirror::Recent',
         'File::Spec',
         'File::Spec::Functions',
         'File::stat',
