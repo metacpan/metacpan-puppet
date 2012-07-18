@@ -41,7 +41,7 @@ case "$1" in
 	## Start daemon with startproc(8). If this fails
 	## the return value is set appropriately by startproc.
 	cd $ROOT
-	/bin/su -c "$RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes" metacpan &
+	/bin/su -c -E "$RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes" metacpan &
 	# FIXME: we want to have a pid file so we can reliably check status and stop/restart. However, the following doesn't just work and needs more thought.
 	#  --rafl 2012-03-09
 	#/bin/su -c "$RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes & echo $!" metacpan > $PID_FILE
