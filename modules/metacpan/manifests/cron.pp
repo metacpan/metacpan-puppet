@@ -1,6 +1,6 @@
 class metacpan::cron {
   package { cron: ensure => latest }
-  
+
   service { cron:
       ensure => running,
       pattern => "cron",
@@ -40,7 +40,7 @@ class metacpan::cron {
 }
 
 class metacpan::cron::api inherits metacpan::cron {
-    
+
     api_cron{
         "author":
             cmd => 'author',
@@ -54,7 +54,7 @@ class metacpan::cron::api inherits metacpan::cron {
         "cpantesters":
             cmd => 'cpantesters',
             hour => '*/6',
-            minute => '*';
+            minute => '42';
         "latest":
             cmd => 'latest 2&>1 > /dev/null',
             minute => '30';
@@ -69,12 +69,17 @@ class metacpan::cron::api inherits metacpan::cron {
             minute => '25';
         "backup_purge":
             cmd => 'backup ',
-            minute => '*',
+            minute => '10',
+            hour   => '4',
             weekday => '3';
         "release":
             cmd => '--skip --age 25 --latest /home/metacpan/CPAN/authors/id/',
             hour => '0',
             minute => '5';
+        "tickets":
+            cmd => 'tickets',
+            minute => '12',
+            hour => '3';
     }
 }
 
