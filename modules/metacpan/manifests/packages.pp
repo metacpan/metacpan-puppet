@@ -20,6 +20,9 @@ class metacpan::packages {
     package { less: ensure => present }
     package { sysstat: ensure => present }
     package { whois: ensure => present }
+    package { ack-grep: ensure => present }
+    package { tree: ensure => present }
+    package { mosh: ensure => present }
     
     package { ntp: ensure => present }
     package { apticron: ensure => present }
