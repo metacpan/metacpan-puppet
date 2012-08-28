@@ -17,20 +17,13 @@
 # Note: Special treatment of stop for LSB conformance
 export PATH=<%= perlbin %>:$PATH
 RRR_BIN=<%= perlbin %>/rrr-client
+PERL=<%= perlbin %>/perl
 TARGET=/home/metacpan/CPAN
 PID_FILE=/var/run/<%= filename %>.pid
 test -x $RRR_BIN || { echo "$RRR_BIN not installed"; 
 	if [ "$1" = "stop" ]; then exit 0;
 	else exit 5; fi; }
 
-# Check for existence of needed config file and read it
-#metacpan-rrr_CONFIG=/etc/sysconfig/metacpan-rrr
-#test -r $metacpan-rrr_CONFIG || { echo "$metacpan-rrr_CONFIG not existing";
-#	if [ "$1" = "stop" ]; then exit 0;
-#	else exit 6; fi; }
-
-# Read config	
-#. $metacpan-rrr_CONFIG
 
 # Source LSB init functions
 . /lib/lsb/init-functions
@@ -41,7 +34,7 @@ case "$1" in
 	## Start daemon with startproc(8). If this fails
 	## the return value is set appropriately by startproc.
 	cd $ROOT
-	/bin/su -c -E "$RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes" metacpan &
+	/bin/su -c "$PERL $RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes" metacpan &
 	# FIXME: we want to have a pid file so we can reliably check status and stop/restart. However, the following doesn't just work and needs more thought.
 	#  --rafl 2012-03-09
 	#/bin/su -c "$RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes & echo $!" metacpan > $PID_FILE
@@ -52,6 +45,7 @@ case "$1" in
 	## Stop daemon with killproc(8) and if this fails
 	## killproc sets the return value according to LSB.
 
+	echo -n "FIXME: STOPPING RRR-CLIENT DOES NOT WORK"
 	/usr/bin/killall rrr-client
 
 	# Remember status and be verbose
