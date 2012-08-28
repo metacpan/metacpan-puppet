@@ -21,5 +21,24 @@ class metacpan::configs {
             mode => 644,
             source => "$moduleserver/metacpan/default/etc/resolv.conf",
     }
+    # SSL
+    file {
+        "/home/metacpan/certs":
+            ensure => "directory",
+            owner  => "metacpan",
+            group  => "metacpan",
+    }
+    file { "/home/metacpan/certs/metacpan.pem":
+            owner  => "metacpan",
+            group  => "metacpan",
+            mode   => 644,
+            source => "$moduleserver/metacpan/default/home/metacpan/certs/self-signed/metacpan.pem",
+    }
+    file { "/home/metacpan/certs/metacpan.key":
+            owner  => "metacpan",
+            group  => "metacpan",
+            mode   => 644,
+            source => "$moduleserver/metacpan/default/home/metacpan/certs/self-signed/metacpan.key",
+    }
 }
 
