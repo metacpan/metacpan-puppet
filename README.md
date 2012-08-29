@@ -5,11 +5,23 @@ All machines will be setup identically for now...
 # Install Debian stable (6.0.4)
     Base iso from http://www.debian.org/distrib/
 
+# Quick Start
+
+To do the pre-Puppet install in one step, run this command from somewhere other
+than /etc/puppet and then skip to the "To Run" section below:
+
+    bash <(curl -s https://raw.github.com/CPAN-API/Metacpan-Puppet/master/init.sh)
+
+If you prefer not to run the script above, continue on below.
+
 # We want puppet from backports so...
     # Edit /etc/apt/sources.list add:
     deb http://backports.debian.org/debian-backports squeeze-backports main
 
 # Now install the minimum to get puppet running    
+
+To follow the steps manually, copy/paste the commands belo
+
     apt-get update
 
     apt-get install openssh-server git
