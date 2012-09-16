@@ -178,7 +178,7 @@ class metacpan::website::www inherits metacpan::website {
     nginx {
         [
         "metacpan.org",
-        "sco.metacpan.org", "cpan.metacpan.org", "js.metacpan.org",
+        "sco.metacpan.org", "cpan.metacpan.org",
         "contest.metacpan.org",
         ]:
     }
