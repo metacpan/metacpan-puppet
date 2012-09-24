@@ -1,7 +1,7 @@
 class metacpan::packages {
 	# Editors
 	package { vim: ensure => present }
-	
+
 	# System Tools
 	package { curl: ensure => present }
 	package { wget: ensure => present }
@@ -16,6 +16,14 @@ class metacpan::packages {
     package { rsync: ensure => present }
     package { screen: ensure => present }
     package { locate: ensure => present }
+
+    # ensure locate actually works after install
+    # comment this out to save a few seconds on initial install
+    exec { "initialize-locate-db":
+        command => "updatedb",
+        path    => "/usr/bin/",
+    }
+
     package { sudo: ensure => present }
     package { less: ensure => present }
     package { sysstat: ensure => present }
@@ -23,7 +31,7 @@ class metacpan::packages {
     package { ack-grep: ensure => present }
     package { tree: ensure => present }
     package { mosh: ensure => present }
-    
+
     package { ntp: ensure => present }
     package { apticron: ensure => present }
     # package { exim: ensure => present } # TODO: FIX
@@ -31,11 +39,11 @@ class metacpan::packages {
     # Stuff for firewall / security
     package { iptables: ensure => installed }
     package { chkrootkit: ensure => present }
-    
+
     # Euuu - nasty, remove
     package { nano: ensure => absent }
     package{ build-essential: ensure => present }
-    
+
     case $operatingsystem {
       Debian: {
       }
