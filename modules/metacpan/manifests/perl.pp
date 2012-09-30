@@ -148,6 +148,7 @@ class metacpan::perl::modules inherits metacpan::perl {
         'Parse::CSV',
         'Path::Class',
         'PerlIO::gzip',
+        'Pithub',
         'Plack::App::Directory',
         'Plack::Middleware::Assets',
         'Plack::Middleware::Header',
