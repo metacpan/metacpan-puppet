@@ -126,7 +126,9 @@ class metacpan::users::admins inherits metacpan::users {
             user => 'rafl', fullname => 'Florian Ragwitz', path => '/home',
             shell => '/bin/zsh';
         apeiron_user:
-            user => 'apeiron', fullname => 'Chris Nehren', path => '/home',
+            user => 'apeiron', fullname => 'Chris Nehren', path => '/home';
+        rwstauner_user:
+            user => 'rwstauner', fullname => 'Randy Stauner', path => '/home';
     }
 }
 
