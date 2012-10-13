@@ -72,7 +72,6 @@ class metacpan::perl::modules inherits metacpan::perl {
         'Digest::SHA1',
         'Dist::Zilla::Plugin::Prereqs',
         'Dist::Zilla::PluginBundle::Filter',
-        'Dist::Zilla::PluginBundle::JQUELIN',
         'ElasticSearch',
         'ElasticSearch::TestServer',
         'ElasticSearchX::Model',
