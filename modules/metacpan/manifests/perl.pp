@@ -191,7 +191,7 @@ class metacpan::perl::modules inherits metacpan::perl {
     ]
     # install our perl modules
     # use perlbrew::install_no_test_module if you dont' want to run tests
-    perlbrew::install_no_test_module {
+    perlbrew::install_module {
         $cpan_modules:
             perl => 'metalib';
     }
