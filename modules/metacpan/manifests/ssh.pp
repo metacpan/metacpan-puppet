@@ -12,13 +12,14 @@ class metacpan::ssh::server {
             group => "root",
             mode => 755,
             ensure => directory,
-    }
-    # TODO: make sshd restart if this changes, but not really important
+            require => Package["openssh-server"],
+    }->
     file { "/etc/ssh/sshd_config":
             owner => "root",
             group => "root",
             mode => 644,
             source => "$moduleserver/metacpan/default/etc/ssh/sshd_config",
+            notify => Service["ssh"],
     }
 
     
