@@ -22,6 +22,7 @@ class metacpan::packages {
     exec { "initialize-locate-db":
         command => "updatedb",
         path    => "/usr/bin/",
+        require => Package["locate"],
     }
 
     package { sudo: ensure => present }
