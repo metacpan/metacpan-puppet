@@ -12,8 +12,7 @@ node default {
     include metacpan::ssh::server
 
     # Choose what we want
-    include metacpan::users::basic
-    include metacpan::users::admins
+    include metacpan::user::admins
 
     include metacpan::website::api
     # include metacpan::cron::api
