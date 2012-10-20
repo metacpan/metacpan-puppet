@@ -20,9 +20,10 @@ class metacpan::packages {
     # ensure locate actually works after install
     # comment this out to save a few seconds on initial install
     exec { "initialize-locate-db":
-        command => "updatedb",
-        path    => "/usr/bin/",
-        require => Package["locate"],
+        command     => "updatedb",
+        path        => "/usr/bin/",
+        subscribe   => Package["locate"],
+        refreshonly => true,
     }
 
     package { sudo: ensure => present }
