@@ -19,15 +19,22 @@ define metacpan::user(
         ensure     => "present",
         comment    => "$fullname",
         shell      => "$shell",
-        gid        => $user,
         provider   => "useradd",
-        # no password
-        password   => "",
+    }->
+    # force empty password
+    # setting password => "" above will result
+    # in a locked user account in the first run
+    # puppet bug?
+    exec { "usermod --password '' $user":
+        path        => "/usr/sbin",
+        subscribe   => User[$user],
+        refreshonly => true,
     }->
     # force user to set password on first login
     exec { "chage -d 0 $user":
-        path => "/usr/bin",
-        onlyif => "/bin/grep -P '^$user::[^0]\\d*:' /etc/shadow",
+        path        => "/usr/bin",
+        subscribe   => User[$user],
+        refreshonly => true,
     }
 
     # Where perl lives
