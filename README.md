@@ -10,6 +10,7 @@ All machines will be setup identically for now...
 To do the pre-Puppet install in one step, run this command from somewhere other
 than /etc/puppet and then skip to the "To Run" section below:
 
+    aptitude install curl
     bash <(curl -s https://raw.github.com/CPAN-API/Metacpan-Puppet/master/init.sh)
 
 If you prefer not to run the script above, continue on below.
