@@ -7,5 +7,9 @@ class metacpan::rrrclient {
     }->
     rrrclient { metacpan:
         perl => $metacpan::perl,
+    }->
+    service { "rrrclient-metacpan":
+        ensure => running,
+        enable => true,
     }
 }
