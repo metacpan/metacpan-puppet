@@ -55,12 +55,6 @@ define metacpan::user(
                     "$moduleserver/metacpan/default/$path/default/bin",
             ];
 
-        # Create dir for CPAN
-        "$path/$user/CPAN":
-            ensure => directory,
-            owner  => $user,
-            group  => $user;
-
         # Little RC file to setup the env
 
         "$path/$user/.metacpanrc":

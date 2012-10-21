@@ -1,0 +1,48 @@
+#!/bin/sh
+
+#
+# FIXME: this needs to be converted to debian init style
+#
+#
+### BEGIN INIT INFO
+# Provides:          <%= filename %>
+# Required-Start:    $ALL
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 2 6
+# Short-Description: <%= description %>
+### END INIT INFO
+
+export PATH=<%= path%>:$PATH
+
+# Check for missing binaries (stale symlinks should not happen)
+# Note: Special treatment of stop for LSB conformance
+test -x $BIN || { echo "$BIN not installed"; 
+	if [ "$1" = "stop" ]; then exit 0;
+	else exit 5; fi; }
+
+
+# Source LSB init functions
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+	echo -n "Starting <%= filename %> "
+        start-stop-daemon --start --background -c <%= owner %> -m -p <%= pid_file %> --startas <%= bin %> -- --source cpan-rsync.perl.org::CPAN/RECENT.recent --target <%= target %> --skip-deletes
+	;;
+    stop)
+	echo -n "Shutting down <%= filename %> "
+        start-stop-daemon --stop --signal INT -p <%= pid_file %>
+	;;
+    restart)
+	$0 stop
+	$0 start
+	;;
+   status)
+       status_of_proc -p <%= pid_file %>
+       ;;
+    *)
+	echo "Usage: $0 {start|stop|status|restart}"
+	exit 1
+	;;
+esac

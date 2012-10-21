@@ -118,13 +118,6 @@ class metacpan::website::api inherits metacpan::website {
     #         require => Service[ 'elasticsearch' ]
     # }
     
-    init_and_rc {
-        init_rrr:
-            filename => 'metacpan-rrr',
-            init_template => 'init_rrr.erb',
-            desc => 'Mirror CPAN using rrr',
-    }
-    
     nginx {
         'api.metacpan.org':
     }
