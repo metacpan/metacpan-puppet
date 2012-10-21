@@ -1,0 +1,17 @@
+# Default to bootstrap autosign
+[main]
+logdir=/var/log/puppet
+vardir=/var/lib/puppet
+rundir=/var/run/puppet
+ssldir=/etc/puppet/ssl
+factpath=$vardir/lib/facter
+#pluginsync=true
+
+[agent]
+server=localhost
+runinterval=600
+certname=localhost
+
+[master]
+templatedir=/var/lib/puppet/templates
+certname=localhost
