@@ -5,6 +5,11 @@ class perlbrew::environment {
       gid    => 300,
   }
 
+  file { "/etc/profile.d/perlbrew.sh":
+      content => "export PERLBREW_ROOT=/usr/local/perlbrew\nsource \$PERLBREW_ROOT/etc/bashrc\n",
+      ensure => file,
+  }
+
   user {
     "perlbrew":
       home     => $perlbrew::params::perlbrew_root,

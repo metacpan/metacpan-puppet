@@ -4,18 +4,17 @@ class perlbrew {
   include perlbrew::install
   include perlbrew::environment
 
-   # speed up make and test with multiple jobs
-  $jobs = $processorcount * 2 + 1
-
   define build ($version = $name) {
+    # speed up make and test with multiple jobs
+    $jobs = $processorcount * 2 + 1
     exec {
       "perlbrew_build_${name}":
-        command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} install ${version} --as ${name} -j $jobs -Accflags=-fPIC -Dcccdlflags=-fPIC'",
+        command => "/bin/sh -c 'umask 022; /usr/bin/env PERLBREW_ROOT=${perlbrew::params::perlbrew_root} ${perlbrew::params::perlbrew_bin} install ${version} --as ${name} -j ${jobs} -Accflags=-fPIC -Dcccdlflags=-fPIC'",
         user    => "perlbrew",
         group   => "perlbrew",
         timeout => 3600,
         creates => "${perlbrew::params::perlbrew_root}/perls/${name}",
-        require => Class["perlbrew::environment"],
+        require => [ Class["perlbrew::environment"], Class["perlbrew::install"] ],
     }
   }
 
