@@ -33,21 +33,14 @@ case "$1" in
 	echo -n "Starting metacpan-rrr "
 	## Start daemon with startproc(8). If this fails
 	## the return value is set appropriately by startproc.
-	cd $ROOT
-	/bin/su -c "$PERL $RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes" metacpan &
-	# FIXME: we want to have a pid file so we can reliably check status and stop/restart. However, the following doesn't just work and needs more thought.
-	#  --rafl 2012-03-09
-	#/bin/su -c "$RRR_BIN --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes & echo $!" metacpan > $PID_FILE
-
+        start-stop-daemon --start --background -c metacpan -m -p $PID_FILE --startas $RRR_BIN -- --source cpan-rsync.perl.org::CPAN/RECENT.recent --target $TARGET --skip-deletes
 	;;
     stop)
 	echo -n "Shutting down metacpan-rrr "
 	## Stop daemon with killproc(8) and if this fails
 	## killproc sets the return value according to LSB.
 
-	echo -n "FIXME: STOPPING RRR-CLIENT DOES NOT WORK"
-	/usr/bin/killall rrr-client
-
+        start-stop-daemon -K -p $PID_FILE
 	# Remember status and be verbose
 	;;
     restart)
