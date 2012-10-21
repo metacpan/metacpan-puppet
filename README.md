@@ -41,16 +41,11 @@ Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
     git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
 
 # To Run (start master, run puppet client, stop master)
-    /etc/puppet/run.sh
-    You may have to run this a couple of times the first time, the very
-    first time it will take quite a while to run (it has a lot to do!)
+    /etc/puppet/run.sh dev
 
-# Get all accounts to update their passwords when login (via sshkey)
-    chage -d 0 mo
-    chage -d 0 clinton
-    chage -d 0 olaf
-    chage -d 0 rafl
-    chage -d 0 leo
+You may have to run this a couple of times the first time, the very
+first time it will take quite a while to run (it has a lot to do!)
+You can also use 'n1' for the live server, others will be added over time
 
 Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 
@@ -66,8 +61,8 @@ Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
     # Globals & loading specific modules
     manifests/site.pp
 
-    # Server specific (at the moment all servers are localhost)
-    manifests/nodes.pp
+    # Server specific
+    manifests/nodes/...
 
     # core metacpan stuff is in here
     modules/metacpan/
