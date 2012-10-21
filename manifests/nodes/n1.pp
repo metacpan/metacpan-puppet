@@ -1,5 +1,5 @@
-node default {
-    
+node n1 {
+
     $perlbin = '/usr/local/perlbrew/perls/metalib/bin'
 
     # Load all the generic metacpan stuff

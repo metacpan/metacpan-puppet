@@ -1,7 +1,5 @@
 node dev {
     
-    include puppet::client
-
     $perlbin = '/usr/local/perlbrew/perls/metalib/bin'
 
     # Load all the generic metacpan stuff
