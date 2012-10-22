@@ -5,10 +5,6 @@ node dev {
     # Load all the generic metacpan stuff
     include metacpan
 
-    # Perl take quite a while, so comment out
-    # if your testing other things
-    # include metacpan::perl::modules
-
     include metacpan::ssh::server
 
     # Choose what we want
