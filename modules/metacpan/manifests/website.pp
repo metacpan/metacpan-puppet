@@ -1,7 +1,7 @@
 class metacpan::website {
     
     # init_and_rc
-    define init_and_rc(filename, init_template, desc, starman_args = '') {
+    define init_and_rc($filename, $init_template, $desc, $starman_args = '') {
 
         file{
             "/etc/init.d/$filename":
@@ -23,11 +23,11 @@ class metacpan::website {
 
 
     define starman(
-        filename, 
-        app_root, 
-        desc, 
-        starman_port, 
-        starman_workers = 5
+        $filename,
+        $app_root,
+        $desc,
+        $starman_port,
+        $starman_workers = 5
         ) {
 
         file{
@@ -79,7 +79,7 @@ class metacpan::website {
         }
     }
     
-    define rotate_logs(path, rotate = 9999, postrotate = '', copytruncate = false) {
+    define rotate_logs($path, $rotate = 9999, $postrotate = '', $copytruncate = false) {
         logrotate::rule { "metacpan_$name":
           path         => $path,
           rotate       => $rotate,

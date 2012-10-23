@@ -66,7 +66,7 @@ class elasticsearch {
         }
     }
     
-    define make_live( version, elasticsearch_memory_mb = '50' ) {
+    define make_live( $version, $elasticsearch_memory_mb = '50' ) {
         
         $opt = "/opt/elasticsearch"
         $extracted_name = "elasticsearch-$version"

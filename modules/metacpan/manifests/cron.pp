@@ -9,7 +9,7 @@ class metacpan::cron {
 
   $path_env = 'PATH=/usr/local/perlbrew/perls/metalib/bin:/usr/local/bin:/usr/bin:/bin'
 
-  define meta_cron(cmd, user = 'metacpan', hour = '*', minute, weekday = '*', ensure = 'present') {
+  define meta_cron($cmd, $user = 'metacpan', $hour = '*', $minute, $weekday = '*', $ensure = 'present') {
 
       cron {
           "cron_$name":
@@ -23,7 +23,7 @@ class metacpan::cron {
       }
   }
 
-  define api_cron(cmd, user = 'metacpan', hour = '*', minute, weekday = '*', ensure = 'absent') {
+  define api_cron($cmd, $user = 'metacpan', $hour = '*', $minute, $weekday = '*', $ensure = 'absent') {
       $metacpan_cmd = '$HOME/api.metacpan.org/bin/metacpan'
 
       cron {
