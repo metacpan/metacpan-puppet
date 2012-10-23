@@ -1,4 +1,4 @@
-$moduleserver = 'puppet://localhost'
+$moduleserver = 'puppet://localhost/modules'
 
 # Modules
 import "munin"
