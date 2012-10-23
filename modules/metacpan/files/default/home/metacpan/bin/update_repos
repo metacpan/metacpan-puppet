@@ -35,5 +35,6 @@ foreach my $site ( keys %sites ) {
     } else {
         chdir($site_dir);
         my $bar = system("git pull");
+        # TODO: cpanm --installdeps .
     }
 }
