@@ -24,6 +24,7 @@ update-rc.d -n puppetqd remove
 cd /etc
 rm -rf puppet
 git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
+mkdir -p /etc/puppet/files
 
 echo 'Now follow the rest of the steps from:'
 echo 'https://github.com/CPAN-API/Metacpan-Puppet#to-run-start-master-run-puppet-client-stop-master'
