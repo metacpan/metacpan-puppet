@@ -6,13 +6,6 @@ define metacpan::user(
     $admin = false,
 ) {
 
-    # clear out the group first
-    group { $user:
-        name      => $user,
-        ensure    => "present",
-        provider  => "groupadd",
-    }
-
     user { $user:
         home       => "$path/$user",
         managehome => true,

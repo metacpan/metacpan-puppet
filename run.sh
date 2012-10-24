@@ -13,10 +13,11 @@ fi
 
 cd /etc/puppet
 
-# Aways specify the fqdn so we get the right config
+# Aways specify the cername so we get the right config
+# the arg should really exist in the autosign.conf if possible
 if [ ! $1 ]
 then
-	echo "Must supply a node type arg (dev, testing, n1, n2..)"
+	echo "Supply a node arg (dev, or one of the live machines: n1, n2..)"
 	exit;
 fi
 
