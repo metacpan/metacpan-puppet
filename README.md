@@ -43,7 +43,8 @@ Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
 # To Run (start master, run puppet client, stop master)
     /etc/puppet/run.sh dev
 
-You may have to run this a couple of times the first time, the very
+You may have to run this a couple of times to get everything setup
+correctly (e.g. you have to add lines to /etc/hosts), the very
 first time it will take quite a while to run (it has a lot to do!)
 You can also use 'n1' for the live server, others will be added over time
 
