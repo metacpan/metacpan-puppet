@@ -3,6 +3,14 @@
 find /etc/puppet -type d -exec chmod a+rx {} \;
 find /etc/puppet -type f -exec chmod a+r {} \;
 
+# Make sure puppet is in our hosts file (on the local machine)
+if ! grep -q puppet "/etc/hosts"
+then
+	echo "Add the following line to your /etc/hosts file then re-run:"
+	echo "127.0.0.1    puppet"
+	exit
+fi
+
 cd /etc/puppet
 
 # Aways specify the fqdn so we get the right config

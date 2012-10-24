@@ -6,12 +6,12 @@ rundir=/var/run/puppet
 ssldir=/etc/puppet/ssl
 factpath=$vardir/lib/facter
 #pluginsync=true
+node_name=cert
 
 [agent]
-server=localhost
+server=puppet
 runinterval=600
-certname=localhost
+certname=default
 
 [master]
 templatedir=/var/lib/puppet/templates
-certname=localhost
