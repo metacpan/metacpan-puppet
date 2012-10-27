@@ -10,7 +10,17 @@ do
     fi
 done
 
-echo "deb http://backports.debian.org/debian-backports squeeze-backports main" >> /etc/apt/sources.list
+aptsource="deb http://backports.debian.org/debian-backports squeeze-backports main"
+aptlists=/etc/apt/sources.list
+test -d $aptlists.d && aptlistsdir=$aptlists.d
+if ! grep -q -R -F "$aptsource" $aptlists $aptlistsdir; then
+  if [ $aptlistsdir ]; then
+    echo "$aptsource" >> $aptlistsdir/backports.list
+  else
+    echo "$aptsource" >> $aptlists
+  fi
+fi
+
 apt-get update
 
 apt-get --assume-yes install vim sudo openssh-server git
