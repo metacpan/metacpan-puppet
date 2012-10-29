@@ -44,7 +44,7 @@ class metacpan::configs {
     # make logrotate use dateext for all logs
     # speeds up backups because file names don't change
     file { "/etc/logrotate.d/dateext":
-            content => "datext",
+            content => "dateext",
             ensure => file,
             require => Package["logrotate"],
     }
