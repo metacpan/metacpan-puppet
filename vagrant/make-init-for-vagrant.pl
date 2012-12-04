@@ -14,6 +14,8 @@ while(<$in>){
 
   # instead of git clone (since we already have it checked out) just copy it
   # copy (as opposed to symlink) so that the owner and perms get set right
+  # XXX: should we use cp -l ?
+  # XXX: or possibly mount another share as a different user?
   s{^git clone .+/Metacpan-Puppet(?:\.git)? (\S+)}{\ncp -r /vagrant $1};
 
   print $out $_;

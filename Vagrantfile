@@ -6,4 +6,6 @@ Vagrant::Config.run do |config|
   # by these shell scripts rather than simply applied
 
   config.vm.provision :shell, :path => 'vagrant/provision.sh'
+
+  # see "To Run" in README.md
 end
