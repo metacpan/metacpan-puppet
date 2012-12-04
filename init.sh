@@ -31,10 +31,14 @@ update-rc.d -n puppetmaster remove
 update-rc.d -n puppet remove
 update-rc.d -n puppetqd remove
 
+if !$VAGRANT_IS_PROVISIONING; then
+
 cd /etc
 rm -rf puppet
 git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
 mkdir -p /etc/puppet/files
+
+fi
 
 echo 'Now follow the rest of the steps from:'
 echo 'https://github.com/CPAN-API/Metacpan-Puppet#to-run-start-master-run-puppet-client-stop-master'
