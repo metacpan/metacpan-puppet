@@ -31,7 +31,7 @@ update-rc.d -n puppetmaster remove
 update-rc.d -n puppet remove
 update-rc.d -n puppetqd remove
 
-if !$VAGRANT_IS_PROVISIONING; then
+if test -z "$VAGRANT_IS_PROVISIONING"; then
 
 cd /etc
 rm -rf puppet
