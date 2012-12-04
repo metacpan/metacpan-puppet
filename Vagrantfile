@@ -5,7 +5,7 @@ Vagrant::Config.run do |config|
   # currently the puppet setup is designed to be bootstrapped
   # by these shell scripts rather than simply applied
 
-  config.vm.provision :shell, :path => 'vagrant/provision.sh'
+  config.vm.provision :shell, :path => 'Vagrant/provision.sh'
 
   # see "To Run" in README.md
 end

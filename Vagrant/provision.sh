@@ -3,7 +3,7 @@
 echo "vagrant provision: $0"
 
 # pizza pizza
-dir=/vagrant/vagrant
+dir=/vagrant/Vagrant
 
 # avoid getting prompted about sudoers config conflict
 v_sudoers=/etc/sudoers.d/vagrant
