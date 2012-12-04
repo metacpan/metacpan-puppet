@@ -8,4 +8,6 @@ Vagrant::Config.run do |config|
   config.vm.provision :shell, :path => 'Vagrant/provision.sh'
 
   # see "To Run" in README.md
+
+  config.vm.share_folder('v-puppet', '/etc/puppet', '.')
 end

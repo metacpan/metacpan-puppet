@@ -6,6 +6,7 @@ echo "vagrant provision: $0"
 dir=/vagrant/Vagrant
 
 # avoid getting prompted about sudoers config conflict
+# when init.sh does an apt-get update with backports
 v_sudoers=/etc/sudoers.d/vagrant
 if ! test -e "$v_sudoers"; then
   echo 'vagrant ALL=NOPASSWD:ALL' > /etc/sudoers.d/vagrant
@@ -22,5 +23,14 @@ if ! test -e "$v_sudoers"; then
     echo "$incd" >> /etc/sudoers
 fi
 
+# We need Vagrant to establish the mount point through virtualbox (for -t vboxsf)
+# but we need to remount it manually to chown it to root.
+# Unmount it here to avoid any side effects of running init.sh
+umount v-puppet
+
+# Run a modified init.sh
 $dir/make-init-for-vagrant.pl
 echo Y | $dir/init-for-vagrant.sh
+
+# Now remount it with root as the owner so puppet works correctly
+mount -t vboxsf -o uid=0,gid=0 v-puppet /etc/puppet/

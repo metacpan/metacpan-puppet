@@ -21,12 +21,6 @@ while(<$in>){
   # don't warn and no-op; actually stop them from running
   s{^(update-rc\.d) -n (\S+) remove}{$1 $2 disable; /etc/init.d/$2 stop};
 
-  # instead of git clone (since we already have it checked out) just copy it
-  # copy (as opposed to symlink) so that the owner and perms get set right
-  # XXX: should we use cp -l ?
-  # XXX: or possibly mount another share as a different user?
-  s{^git clone .+/Metacpan-Puppet(?:\.git)? (\S+)}{\ncp -r /vagrant $1};
-
   print $out $_;
 }
 
