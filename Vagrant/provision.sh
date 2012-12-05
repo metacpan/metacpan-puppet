@@ -38,5 +38,5 @@ umount v-puppet
 $dir/make-init-for-vagrant.pl
 echo Y | $dir/init-for-vagrant.sh
 
-# Now remount it with root as the owner so puppet works correctly
-mount -t vboxsf -o uid=0,gid=0 v-puppet /etc/puppet/
+# Now remount so puppet works correctly
+$dir/mount_etc_puppet.sh
