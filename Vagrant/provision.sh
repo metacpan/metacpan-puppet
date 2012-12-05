@@ -23,6 +23,12 @@ if ! test -e "$v_sudoers"; then
     echo "$incd" >> /etc/sudoers
 fi
 
+
+# run.sh won't run until this is done:
+hosts_line="127.0.0.1    puppet"
+grep -F "$hosts_line" /etc/hosts || echo $'\n\n# puppet (run.sh)\n'"$hosts_line" >> /etc/hosts
+
+
 # We need Vagrant to establish the mount point through virtualbox (for -t vboxsf)
 # but we need to remount it manually to chown it to root.
 # Unmount it here to avoid any side effects of running init.sh
