@@ -21,6 +21,9 @@ while(<$in>){
   # don't warn and no-op; actually stop them from running
   s{^(update-rc\.d) -n (\S+) remove}{$1 $2 disable; /etc/init.d/$2 stop};
 
+  # an extra safety measure
+  s{^(\s*rm|git .+)}{# $1};
+
   print $out $_;
 }
 
