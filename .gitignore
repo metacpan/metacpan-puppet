@@ -1,5 +1,6 @@
 puppet.conf
 ssl/*
+!ssl/vagrant.txt
 
 .vagrant
 /Vagrant/init-for-vagrant.sh

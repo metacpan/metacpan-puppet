@@ -1,0 +1,4 @@
+If using vagrant this dir should not be removed
+so this file is used as a placeholder.
+
+If not using vagrant this file should be harmless.
