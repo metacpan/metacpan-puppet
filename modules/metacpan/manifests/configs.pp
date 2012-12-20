@@ -21,6 +21,22 @@ class metacpan::configs {
             mode => 644,
             source => "$moduleserver/metacpan/default/etc/resolv.conf",
     }
+    
+    # apticron
+    file {
+        "/etc/apticron":
+            ensure  => "directory",
+            owner   => "root",
+            group   => "root";
+    }
+    file { "/etc/apticron/apticron.conf":
+            owner => "root",
+            group => "root",
+            mode => 644,
+            source => "$moduleserver/metacpan/default/etc/apticron/apticron.conf",
+    }
+    
+    
     # SSL
     file {
         "/home/metacpan/certs":
