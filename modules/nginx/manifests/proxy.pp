@@ -4,10 +4,7 @@ define nginx::proxy(
         $vhost,
         $vhost_root = "/etc/nginx/conf.d/$vhost",
 ) {
-        file { "${vhost_root}.d":
-                ensure => directory,
-                require => Nginx::Vhost[$vhost],
-        }->
+        realize File["$vhost_root.d"]
         file { "${vhost_root}.d/$name.conf":
                 ensure => file,
                 content => template("nginx/proxy.conf.erb"),

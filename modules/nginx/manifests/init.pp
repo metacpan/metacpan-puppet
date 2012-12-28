@@ -12,6 +12,10 @@ class nginx {
                 ensure => file,
         }->
 
+	file { "/var/www":
+		ensure => directory,
+	}->
+
         service { "nginx":
                 ensure => running,
         }

@@ -1,12 +1,13 @@
 define nginx::vhost(
         $root = "/var/www/$name",
+        $html = "/var/www/$name/html",
         $ssl_only = false,
         $ssl = $ssl_only,
         $php = false,
         $bare = false,
 ) {
 
-        file { [$root, "$root/html", "$root/logs"]:
+        file { [$root, $html, "$root/logs"]:
                 ensure => directory,
         }
 
@@ -17,7 +18,9 @@ define nginx::vhost(
                        "$root/ssl/server.crt":
                         ensure => file,
                         source => [
-                        	"puppet:///private/ssl/$name/server.crt", "puppet:///private/ssl/server.crt",
+                        	"puppet:///private/ssl/$name/server.crt",
+                                "puppet:///private/ssl/server.crt",
+                                "puppet:///files/certs/server.crt",
                         ],
                         notify => Service["nginx"],
                         mode => "0400";
@@ -26,6 +29,7 @@ define nginx::vhost(
                         source => [
                         	"puppet:///private/ssl/$name/server.key",
                         	"puppet:///private/ssl/server.key",
+                                "puppet:///files/certs/server.key",
                         ],
                         notify => Service["nginx"],
                         mode => "0400",
@@ -36,5 +40,9 @@ define nginx::vhost(
                 ensure => file,
                 content => template("nginx/vhost.conf.erb"),
                 notify => Service["nginx"],
+        }
+
+	@file { "/etc/nginx/conf.d/$name.d":
+                ensure => directory,
         }
 }

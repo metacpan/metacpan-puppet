@@ -9,7 +9,7 @@ server {
 server {
   listen 80;
   server_name <%= @name %>;
-  root <%= @root %>/html;
+  root <%= @html %>;
   access_log <%= @root %>/logs/access.log combined;
   error_log <%= @root %>/logs/error.log info;
 
