@@ -41,7 +41,7 @@ class elasticsearch {
         $tar_name = "elasticsearch-$name.tar.gz"
         $extracted_name = "elasticsearch-$name"
         
-        $url = "https://github.com/downloads/elasticsearch/elasticsearch/$tar_name"
+        $url = "http://download.elasticsearch.org/elasticsearch/elasticsearch/$tar_name"
         exec {
             "es-download-and-extract-$name":
                 cwd => $path,
