@@ -1,0 +1,78 @@
+<% if @ssl && @ssl_only %>
+server {
+  listen 80;
+  server_name <%= @name %>;
+  rewrite ^(.*)$ https://<%= @name %>$1 permanent;
+}
+
+<% elsif @ssl %>
+server {
+  listen 80;
+  server_name <%= @name %>;
+  root <%= @root %>/html;
+  access_log <%= @root %>/logs/access.log combined;
+  error_log <%= @root %>/logs/error.log info;
+
+  gzip             on;
+  gzip_proxied     any;
+  gzip_vary        on;
+  gzip_types       text/plain application/xml application/json application/javascript text/css image/svg+xml application/x-javascript;
+  gzip_disable     "MSIE [1-6]\.";
+  gzip_comp_level  4;
+
+  <% unless @bare %>
+  location / {
+    index index.html index.htm index.php;
+  }
+  <% end %>
+
+  <% if @php %>
+  location ~ .*\.php$ {
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+  <% end %>
+  include conf.d/<%= @name %>.d/*.conf;
+}
+<% end %>
+
+server {
+  listen <%= @ssl ? "443" : "80" %>;
+  server_name <%= @name %>;
+  root <%= @root %>/html;
+  access_log <%= @root %>/logs/access.log combined;
+  error_log <%= @root %>/logs/error.log info;
+
+  gzip             on;
+  gzip_proxied     any;
+  gzip_vary        on;
+  gzip_types       text/plain application/xml application/json application/javascript text/css image/svg+xml application/x-javascript;
+  gzip_disable     "MSIE [1-6]\.";
+  gzip_comp_level  4;
+
+  <% if @ssl %>
+  ssl on;
+  ssl_certificate  <%= @root %>/ssl/server.crt;
+  ssl_certificate_key <%= @root %>/ssl/server.key;
+  ssl_session_timeout  5m;
+  ssl_protocols  SSLv2 SSLv3 TLSv1;
+  ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+  ssl_prefer_server_ciphers on;
+  <% end %>
+  <% unless @bare %>
+  location / {
+    index index.html index.htm index.php;
+  }
+  <% end %>
+  
+  <% if @php %>
+  location ~ .*\.php$ {
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+  <% end %>
+  include conf.d/<%= @name %>.d/*.conf;
+
+}
