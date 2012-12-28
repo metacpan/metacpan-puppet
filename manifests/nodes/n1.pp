@@ -23,7 +23,8 @@ node n1 {
     $vhosts = [ "munin" ]
     include nginx
 
-    include munin::web
-    include munin-server
+    # Don't enable munin on dev machines
+    # include munin::web
+    # include munin-server
 
 }
