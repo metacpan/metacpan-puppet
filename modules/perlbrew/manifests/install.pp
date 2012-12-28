@@ -9,10 +9,6 @@ class perlbrew::install {
   # }
 
   file {
-    [$perlbrew::params::perlbrew_root, "$perlbrew::params::perlbrew_bin/bin"]:
-      ensure => directory,
-  }->
-  file {
     $perlbrew::params::perlbrew_bin:
       owner   => root,
       group   => root,
