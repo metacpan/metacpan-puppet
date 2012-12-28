@@ -1,5 +1,5 @@
 class metacpan {
-    $perl = "perl-5.16.1"    
+    $perl = "perl-5.16.2"    
     include metacpan::packages
     metacpan::user { metacpan: }
     metacpan::perl {  $perl: }
