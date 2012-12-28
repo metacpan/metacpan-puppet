@@ -12,14 +12,14 @@ class metacpan::configs {
             owner => "root",
             group => "root",
             mode => 644,
-            source => "$moduleserver/metacpan/default/etc/aliases",
+            source => "puppet:///modules/metacpan/default/etc/aliases",
     }
     # resolv
     file { "/etc/resolv.conf":
             owner => "root",
             group => "root",
             mode => 644,
-            source => "$moduleserver/metacpan/default/etc/resolv.conf",
+            source => "puppet:///modules/metacpan/default/etc/resolv.conf",
     }
     
     # apticron
@@ -33,7 +33,7 @@ class metacpan::configs {
             owner => "root",
             group => "root",
             mode => 644,
-            source => "$moduleserver/metacpan/default/etc/apticron/apticron.conf",
+            source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
     }
     
     
@@ -48,13 +48,13 @@ class metacpan::configs {
             owner  => "metacpan",
             group  => "metacpan",
             mode   => 644,
-            source => "$moduleserver/metacpan/default/home/metacpan/certs/self-signed/metacpan.pem",
+            source => "puppet:///modules/metacpan/default/home/metacpan/certs/self-signed/metacpan.pem",
     }
     file { "/home/metacpan/certs/metacpan.key":
             owner  => "metacpan",
             group  => "metacpan",
             mode   => 644,
-            source => "$moduleserver/metacpan/default/home/metacpan/certs/self-signed/metacpan.key",
+            source => "puppet:///modules/metacpan/default/home/metacpan/certs/self-signed/metacpan.key",
     }
 
     # make logrotate use dateext for all logs

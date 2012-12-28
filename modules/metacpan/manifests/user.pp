@@ -44,8 +44,8 @@ define metacpan::user(
             group   => $user,
             mode    => '0700', # make everything executible
             source  => [
-                    "$moduleserver/metacpan/default/$path/$user/bin",
-                    "$moduleserver/metacpan/default/$path/default/bin",
+                    "puppet:///modules/metacpan/default/$path/$user/bin",
+                    "puppet:///modules/metacpan/default/$path/default/bin",
             ];
 
         # Little RC file to setup the env
@@ -69,9 +69,9 @@ define metacpan::user(
         group => $user,
         mode  => 600,
         source => [
-                "$moduleserver/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
-                "$moduleserver/metacpan/location/$location/$path/$user/ssh/authorized_keys",
-                "$moduleserver/metacpan/default/$path/$user/ssh/authorized_keys"
+                "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
+                "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
+                "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
                 ],
     }
 

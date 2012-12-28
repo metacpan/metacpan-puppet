@@ -18,7 +18,7 @@ class metacpan::ssh::server {
             owner => "root",
             group => "root",
             mode => 644,
-            source => "$moduleserver/metacpan/default/etc/ssh/sshd_config",
+            source => "puppet:///modules/metacpan/default/etc/ssh/sshd_config",
             notify => Service["ssh"],
     }
 

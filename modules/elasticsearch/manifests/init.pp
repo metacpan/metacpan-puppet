@@ -33,7 +33,7 @@ class elasticsearch {
             owner  => 'root',
             group  => 'root',
             mode   => 0644,
-            source => "$moduleserver/elasticsearch/etc/security/elasticsearch";
+            source => "puppet:///modules/elasticsearch/etc/security/elasticsearch";
     }
         
     define install_version() {
@@ -61,7 +61,7 @@ class elasticsearch {
                     owner => "$user",
                     group => "$user",
                     mode => '0744', # make everything executible
-                    source => "$moduleserver/elasticsearch/service",
+                    source => "puppet:///modules/elasticsearch/service",
                     require => Exec[ "es-download-and-extract-$name" ];
         }
     }

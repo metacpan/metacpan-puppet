@@ -18,13 +18,13 @@ class munin-node {
             group   => "root",
             mode    => 755,
             recurse => true,
-            source => "$moduleserver/munin/plugin-conf.d";
+            source => "puppet:///modules/munin/plugin-conf.d";
             
         "/etc/munin/munin-node.conf":
             owner  => "root",
             group  => "root",
             mode   => 644,
-            source => "$moduleserver/munin/munin-node.conf",
+            source => "puppet:///modules/munin/munin-node.conf",
             alias  => "munin-node.conf";
 
         "$munin_plugin_path":
@@ -50,7 +50,7 @@ class munin-node {
             owner   => "root",
             group   => "root",
             recurse => true,
-            source => "$moduleserver/munin/plugins"
+            source => "puppet:///modules/munin/plugins"
             # FIXME: Does not seem to get activated when dir
             # changes from an update
             # notify      => Exec["munin-node-restart"];
