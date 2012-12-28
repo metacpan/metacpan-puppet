@@ -3,7 +3,7 @@
 # This file was created and transferred by puppet
 # Do not edit manually!
 
-# Start/stop the starman daemon.
+# Start/stop the starman SERVER.
 #
 ### BEGIN INIT INFO
 # Provides:          <%= filename %>
@@ -22,15 +22,17 @@ PSGIAPP="$APPDIR/app.psgi"
 
 # starman defaults
 NAME=<%= filename %>
-DAEMON=<%= perlbin %>/starman
+SERVER=<%= perlbin %>/starman
+DAEMON=<%= perlbin %>/start_server
 WORKERS=<%= starman_workers %>
 PORT=<%= starman_port %>
-PIDDIR=/tmp
+PIDDIR=/var/run
 PIDFILE=$PIDDIR/${NAME}.pid
+STATUSFILE=$PIDDIR/${NAME}.status
 USER=metacpan
 GROUP=users
 
-test -f ${DAEMON} || exit 0
+test -f ${SERVER} || exit 0
 
 . /lib/lsb/init-functions
 
@@ -49,7 +51,7 @@ if [ ! -d $APPDIR ]; then
     exit 1
 fi
 
-STARMAN="$DAEMON -- $PSGIAPP --workers $WORKERS --pid $PIDFILE --port $PORT --preload-app --daemonize --user $USER --group $GROUP"
+STARMAN="$DAEMON --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
 
 check_running() {
     [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
@@ -63,7 +65,7 @@ _start() {
 
   echo "Starting $PSGIAPP, pidfile $PIDFILE..."
 
-  /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+  /sbin/start-stop-daemon --start \
   --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
 
   echo "Waiting for $NAME to start..."
@@ -78,7 +80,7 @@ _start() {
 
   # sometimes it takes two tries.
   echo "Failed. Trying again..."
-  /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+  /sbin/start-stop-daemon --start \
   --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
 
   for i in 1 2 3 4 ; do
@@ -130,8 +132,7 @@ restart() {
         exit 1
     fi
 
-    /sbin/start-stop-daemon --stop --oknodo --pidfile $PIDFILE
-    _start
+    $DAEMON --pid-file=$PIDFILE --status-file=$STATUSFILE --restart
     log_end_msg $?
     return $?
 }
