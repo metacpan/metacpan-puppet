@@ -10,5 +10,5 @@ class metacpan {
     include metacpan::ssh
     include metacpan::configs
     include metacpan::cron
-    include metacpan::website
+    include metacpan::web
 }
