@@ -89,6 +89,7 @@ define metacpan::user(
 
 
 class metacpan::user::admins {
+    package { zsh: ensure => present }-> # for rafl
     metacpan::user {
         leo:
             admin    => true,

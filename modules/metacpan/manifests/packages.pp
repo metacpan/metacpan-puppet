@@ -9,7 +9,6 @@ class metacpan::packages {
 	package { mtr: ensure => present }
 	package { bzip2: ensure => present }
 	package { diffutils: ensure => present }
-	package { zsh: ensure => present } # for rafl
 
     package { htop: ensure => present }
     package { psmisc: ensure => present } # killall pstree fuser commands
