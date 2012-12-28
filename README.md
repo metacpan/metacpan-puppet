@@ -2,6 +2,29 @@
 
 All machines will be setup identically for now...
 
+## Using Vagrant for development/testing
+
+For development and/or testing the puppet configuration
+[vagrant](http://vagrantup.com) can be very handy.
+
+Set up a Debian Squeeze 64bit base box:
+Pick one from [vagrantbox.es](http://vagrantbox.es) and add it locally:
+
+    vagrant box add squeeze64 $url
+
+Then (from the repo root directory):
+
+    vagrant up
+
+To create a virtual machine and provision it
+(which includes the steps in 'init.sh').
+
+Then ssh in to your vm and start testing:
+
+    vagrant ssh
+
+To build your own machine continue reading...
+
 # Install Debian stable (6.0.4)
     Base iso from http://www.debian.org/distrib/
 
