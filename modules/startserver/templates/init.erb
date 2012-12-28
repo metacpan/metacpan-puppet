@@ -11,7 +11,7 @@
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: <%= desc %>
+# Short-Description: <%= description %>
 ### END INIT INFO
 
 export PATH=<%= perlbin %>:$PATH
@@ -26,7 +26,7 @@ SERVER=<%= perlbin %>/starman
 DAEMON=<%= perlbin %>/start_server
 WORKERS=<%= workers %>
 PORT=<%= port %>
-PIDDIR=/var/run
+PIDDIR=/var/run/startserver
 PIDFILE=$PIDDIR/${NAME}.pid
 STATUSFILE=$PIDDIR/${NAME}.status
 USER=metacpan
@@ -51,7 +51,7 @@ if [ ! -d $APPDIR ]; then
     exit 1
 fi
 
-STARMAN="$DAEMON --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
+STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
 
 check_running() {
     [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
@@ -65,7 +65,7 @@ _start() {
 
   echo "Starting $PSGIAPP, pidfile $PIDFILE..."
 
-  /sbin/start-stop-daemon --start \
+  /sbin/start-stop-daemon -b --start --pidfile $PIDFILE \
   --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
 
   echo "Waiting for $NAME to start..."
@@ -80,7 +80,7 @@ _start() {
 
   # sometimes it takes two tries.
   echo "Failed. Trying again..."
-  /sbin/start-stop-daemon --start \
+  /sbin/start-stop-daemon -b --start --pidfile $PIDFILE \
   --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
 
   for i in 1 2 3 4 ; do
