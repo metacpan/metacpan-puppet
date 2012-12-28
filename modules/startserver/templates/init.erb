@@ -1,0 +1,179 @@
+#!/bin/bash
+
+# This file was created and transferred by puppet
+# Do not edit manually!
+
+# Start/stop the starman SERVER.
+#
+### BEGIN INIT INFO
+# Provides:          <%= filename %>
+# Required-Start:    $ALL
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: <%= desc %>
+### END INIT INFO
+
+export PATH=<%= perlbin %>:$PATH
+
+# psgi defaults
+APPDIR="<%= root %>"
+PSGIAPP="$APPDIR/app.psgi"
+
+# starman defaults
+NAME=<%= filename %>
+SERVER=<%= perlbin %>/starman
+DAEMON=<%= perlbin %>/start_server
+WORKERS=<%= workers %>
+PORT=<%= port %>
+PIDDIR=/var/run
+PIDFILE=$PIDDIR/${NAME}.pid
+STATUSFILE=$PIDDIR/${NAME}.status
+USER=metacpan
+GROUP=users
+
+test -f ${SERVER} || exit 0
+
+. /lib/lsb/init-functions
+
+if [ ! $WORKERS ]; then
+    echo "\$WORKERS is not defined"
+    exit 1
+fi
+
+if [ ! $PORT ]; then
+    echo "\$PORT is not defined"
+    exit 1
+fi
+
+if [ ! -d $APPDIR ]; then
+    echo "$APPDIR does not exist"
+    exit 1
+fi
+
+STARMAN="$DAEMON --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
+
+check_running() {
+    [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
+}
+
+check_compile() {
+    perl -c $PSGIAPP || return 0
+}
+
+_start() {
+
+  echo "Starting $PSGIAPP, pidfile $PIDFILE..."
+
+  /sbin/start-stop-daemon --start \
+  --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
+
+  echo "Waiting for $NAME to start..."
+
+  for i in 1 2 3 4 ; do
+    sleep 1
+    if check_running ; then
+      echo "$NAME is now starting up"
+      return 0
+    fi
+  done
+
+  # sometimes it takes two tries.
+  echo "Failed. Trying again..."
+  /sbin/start-stop-daemon --start \
+  --chdir $APPDIR -c $USER:$GROUP --startas $STARMAN
+
+  for i in 1 2 3 4 ; do
+    sleep 1
+    if check_running ; then
+      echo "$NAME is now starting up"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+start() {
+    log_daemon_msg "Starting" $NAME
+    echo ""
+
+    if check_running; then
+        log_progress_msg "already running"
+        log_end_msg 0
+        exit 0
+    fi
+
+    rm -f $PIDFILE 2>/dev/null
+
+    _start
+    log_end_msg $?
+    return $?
+}
+
+stop() {
+    log_daemon_msg "Stopping" $NAME
+    echo ""
+
+    /sbin/start-stop-daemon --stop --oknodo --pidfile $PIDFILE
+    sleep 3
+    log_end_msg $?
+    return $?
+}
+
+restart() {
+    log_daemon_msg "Restarting" $NAME
+    echo ""
+
+    check_compile 
+    if [ $? != 0 ] ; then
+        log_failure_msg "Error detected; not restarting."
+        log_end_msg 1
+        exit 1
+    fi
+
+    $DAEMON --pid-file=$PIDFILE --status-file=$STATUSFILE --restart
+    log_end_msg $?
+    return $?
+}
+
+reload() {
+    log_daemon_msg "Reloading" $NAME
+    echo ""
+
+    if [ $? != 0 ] ; then
+       log_failure_msg "Error detected; not reloading."
+       log_end_msg 1
+       exit 1
+    fi
+
+    /sbin/start-stop-daemon --stop --signal HUP --oknodo --pidfile $PIDFILE
+    log_end_msg $?
+    return $?
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+    ;;
+    stop)
+        stop
+    ;;
+    restart|force-reload)
+        restart
+    ;;
+    status)
+        check_running
+    ;;
+    reload)
+        reload
+    ;;
+    check_compile)
+	check_compile
+    ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart|reload|check_compile|status}"
+        exit 1
+esac
+exit $?
