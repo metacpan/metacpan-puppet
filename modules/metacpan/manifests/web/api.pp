@@ -1,4 +1,4 @@
-class metacpan::web:api {
+class metacpan::web::api {
 	nginx::vhost { "api.metacpan.org":
 		bare => true,
 		ssl  => true,
@@ -18,7 +18,7 @@ class metacpan::web:api {
 
 	startserver { "metacpan-api":
 		root    => "/home/metacpan/api.metacpan.org",
-		perlbin => $::perlbin,
+		perlbin => $perlbin,
 	}->
 	service { "metacpan-api":
 		ensure => running,

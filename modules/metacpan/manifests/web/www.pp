@@ -1,10 +1,10 @@
-class metacpan::web:www {
+class metacpan::web::www {
 	nginx::vhost { "metacpan.org":
 		bare     => true,
 		ssl_only => true,
 	}
 
-	nginx::proxy {
+	nginx::proxy { "metacpan.org":
 		target   => "http://localhost:5001",
 		vhost    => "metacpan.org",
 		location => "",
@@ -12,7 +12,8 @@ class metacpan::web:www {
 
 	startserver { "metacpan-www":
 		root    => "/home/metacpan/metacpan.org",
-		perlbin => $::perlbin,
+		perlbin => $perlbin,
+                port    => 5001,
 	}->
 	service { "metacpan-www":
 		ensure => running,
