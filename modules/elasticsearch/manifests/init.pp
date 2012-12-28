@@ -144,9 +144,7 @@ class elasticsearch {
 class elasticsearch::install inherits elasticsearch {
     
     install_version {
-        '0.18.5':
-            ;
-        '0.19.3':
+        '0.20.2':
             ;
     }
     make_live {
