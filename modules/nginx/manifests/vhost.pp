@@ -5,6 +5,7 @@ define nginx::vhost(
         $ssl = $ssl_only,
         $php = false,
         $bare = false,
+	$aliases = "",
 ) {
 
         file { [$root, $html, "$root/logs"]:

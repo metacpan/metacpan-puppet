@@ -2,6 +2,7 @@ class metacpan::web::api {
 	nginx::vhost { "api.metacpan.org":
 		bare => true,
 		ssl  => true,
+		aliases => ["api.$hostname.metacpan.org", "api.beta.metacpan.org"],
 	}
 
 	nginx::proxy { "api-root":

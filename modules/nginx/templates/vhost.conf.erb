@@ -8,7 +8,7 @@ server {
 <% elsif @ssl %>
 server {
   listen 80;
-  server_name <%= @name %>;
+  server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   root <%= @html %>;
   access_log <%= @root %>/logs/access.log combined;
   error_log <%= @root %>/logs/error.log info;
@@ -16,7 +16,7 @@ server {
   gzip             on;
   gzip_proxied     any;
   gzip_vary        on;
-  gzip_types       text/plain application/xml application/json application/javascript text/css image/svg+xml application/x-javascript;
+  gzip_types       text/html text/plain application/xml application/json application/javascript text/css image/svg+xml application/x-javascript;
   gzip_disable     "MSIE [1-6]\.";
   gzip_comp_level  4;
 
