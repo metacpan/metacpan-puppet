@@ -10,7 +10,7 @@ define elasticsearch(
     $tar_name  = "elasticsearch-$version.tar.gz"
     $url       = "http://download.elasticsearch.org/elasticsearch/elasticsearch/$tar_name"
 
-    group { $user: }->
+    group { $user: ensure => present }->
     user { $user:
             comment => "ElasticSearch User",
             shell   => "/bin/false",
