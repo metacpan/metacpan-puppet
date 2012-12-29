@@ -39,7 +39,7 @@ server {
 
 server {
   listen <%= @ssl ? "443" : "80" %>;
-  server_name <%= @name %>;
+  server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   root <%= @root %>/html;
   access_log <%= @root %>/logs/access.log combined;
   error_log <%= @root %>/logs/error.log info;
