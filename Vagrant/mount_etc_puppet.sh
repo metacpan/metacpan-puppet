@@ -17,17 +17,17 @@ echo "Vagrant should mount the repo root over this directory" > /etc/puppet/VAGR
 # Now remount it with root as the owner so puppet works correctly
 mount -t vboxsf -o uid=0,gid=0 v-puppet /etc/puppet/
 
-ssldisk=/etc/puppet-ssl.disk
-if ! test -e $ssldisk; then
-  # build a 10MB disk for the ssl certs so it can be mounted as another user
-  dd if=/dev/zero of=$ssldisk bs=1K count=10K
-  yes | mke2fs -q $ssldisk > /dev/null
-  chown puppet $ssldisk
-fi
+# Mount another fs on top of the share so we can change the owner
+# since the 'puppet' user needs to be able to write to the ssl dir
+# (but we can't change the owner on a subdir of the vboxsf).
+# This way we can keep the same config as production (no vagrant).
 
 mkdir -p $ssldir
-chown -R puppet:puppet $ssldir
 
-# mount this disk over the shared folder mount so we can change the owner
-mount -o loop $ssldisk $ssldir
+ssl_bind_src=/etc/puppet-ssl
+mkdir -p $ssl_bind_src
+chown puppet:puppet $ssl_bind_src
+
+mount --bind $ssl_bind_src $ssldir
+
 chown -R puppet:puppet $ssldir
