@@ -22,8 +22,11 @@ To create a virtual machine and provision it
 Then ssh in to your vm and start testing:
 
     vagrant ssh
+    sudo /etc/puppet/run.sh dev
 
-To build your own machine continue reading...
+Basically, after you run Vagrant, you can skip to the "To Run" section below
+and keep working from there. If you don't want to use Vagrant, but would rather
+build your own box manually, continue reading...
 
 # Install Debian stable (6.0.4)
     Base iso from http://www.debian.org/distrib/
