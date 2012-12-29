@@ -7,7 +7,7 @@ class metacpan::cron {
       require => Package["cron"],
   }
 
-  $path_env = 'PATH=/usr/local/perlbrew/perls/metalib/bin:/usr/local/bin:/usr/bin:/bin'
+  $path_env = 'PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin'
 
   define meta_cron($cmd, $user = 'metacpan', $hour = '*', $minute, $weekday = '*', $ensure = 'present') {
 

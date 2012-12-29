@@ -17,5 +17,4 @@ node bm-n2 {
 
     # include munin::web
     # include munin-server
-
 }
