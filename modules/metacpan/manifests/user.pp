@@ -89,7 +89,8 @@ define metacpan::user(
 
 
 class metacpan::user::admins {
-    package { zsh: ensure => present }-> # for rafl
+    package { zsh: ensure => present } # for rafl
+    package { byobu: ensure => present } # for mo
     metacpan::user {
         leo:
             admin    => true,
@@ -99,7 +100,8 @@ class metacpan::user::admins {
             fullname => "Clinton Gormley <clint@traveljury.com>";
         mo:
             admin    => true,
-            fullname => "Moritz Onken <onken@netcubed.de>";
+            fullname => "Moritz Onken <onken@netcubed.de>",
+            require  => Package["byobu"];
         olaf:
             admin    => true,
             fullname => "Olaf Alders <olaf.alders@gmail.com>";
