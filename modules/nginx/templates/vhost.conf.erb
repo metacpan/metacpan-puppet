@@ -1,7 +1,7 @@
 <% if @ssl && @ssl_only %>
 server {
   listen 80;
-  server_name <%= @name %>;
+  server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   rewrite ^(.*)$ https://<%= @name %>$1 permanent;
 }
 
