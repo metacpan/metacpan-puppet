@@ -35,7 +35,7 @@ if test -z "$VAGRANT_IS_PROVISIONING"; then
 
 cd /etc
 rm -rf puppet
-git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
+git clone https://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
 mkdir -p /etc/puppet/files
 
 fi
