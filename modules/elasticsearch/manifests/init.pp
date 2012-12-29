@@ -33,6 +33,11 @@ define elasticsearch(
                 
         "/etc/security/limits.d/elasticsearch":
             source => "puppet:///modules/elasticsearch/etc/security/elasticsearch";
+    }->
+
+    line { "/etc/pam.d/session-common":
+        ensure => present,
+        line   => "session required pam_limits.so",
     }
         
     exec {
