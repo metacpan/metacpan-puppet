@@ -1,10 +1,10 @@
-$default_munin_plugin_path = "/usr/share/munin/plugins"
-$metacpan_munin_plugin_path = "/etc/metacpan/munin/plugins"
-$munin_plugin_path = "/etc/munin/plugins"
-
 class munin-node {
+    $default_munin_plugin_path = "/usr/share/munin/plugins"
+    $metacpan_munin_plugin_path = "/etc/metacpan/munin/plugins"
+    $munin_plugin_path = "/etc/munin/plugins"
+
     package { "munin-node": ensure => present }
-        
+
     file {
         "/etc/munin":
             ensure => directory,
