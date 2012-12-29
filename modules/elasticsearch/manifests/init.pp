@@ -4,11 +4,11 @@ define elasticsearch(
     $user    = "elasticsearch",
     $path    = "/opt",
 ) {
-    $url       = "http://download.elasticsearch.org/elasticsearch/elasticsearch/$tar_name"
     $opt       = "$path/elasticsearch"
+    $extracted = "elasticsearch-$version"
     $es_path   = "$path/$extracted"
     $tar_name  = "elasticsearch-$version.tar.gz"
-    $extracted = "elasticsearch-$version"
+    $url       = "http://download.elasticsearch.org/elasticsearch/elasticsearch/$tar_name"
 
     user { $user:
             comment => "ElasticSearch User",
@@ -18,7 +18,7 @@ define elasticsearch(
     
     file {
         $path:
-            user   => $user,
+            owner  => $user,
             group  => $user,
             ensure => directory;
                 
