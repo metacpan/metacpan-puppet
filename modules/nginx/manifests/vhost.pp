@@ -1,6 +1,6 @@
 define nginx::vhost(
         $root = "/var/www/$name",
-        $html = "/var/www/$name/html",
+        $html = "",
         $ssl_only = false,
         $ssl = $ssl_only,
         $php = false,
@@ -8,7 +8,17 @@ define nginx::vhost(
 	    $aliases = "",
 ) {
         include nginx
-        file { [$root, $html, "$root/logs"]:
+        if $html {
+            $html_root = $html
+        } else {
+            $html_root = "$root/html"
+            file { "$root/html":
+                ensure => directory,
+                require => File[$root],
+            }
+        }
+
+        file { [$root, "$root/logs"]:
                 ensure => directory,
                 require => Package["nginx"],
         }->
