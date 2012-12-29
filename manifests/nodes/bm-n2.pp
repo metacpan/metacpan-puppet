@@ -4,7 +4,7 @@ node bm-n2 {
     include nginx
     include metacpan
 
-    #include metacpan::ssh::server
+    #include metacpan::ssh
 
     include metacpan::user::admins
 

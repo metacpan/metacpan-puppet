@@ -5,7 +5,7 @@ node dev {
     # Load all the generic metacpan stuff
     include metacpan
 
-    include metacpan::ssh::server
+    include metacpan::ssh
 
     # Choose what we want
     include metacpan::user::admins
