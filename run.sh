@@ -15,10 +15,12 @@ cd /etc/puppet
 
 # Aways specify the cername so we get the right config
 # the arg should really exist in the autosign.conf if possible
-if [ ! $1 ]
+CERTNAME=$1
+if [ ! $CERTNAME ]
 then
-	echo "Supply a node arg (dev, or one of the live machines: n1, n2..)"
-	exit;
+	CERTNAME=$(hostname -s)
+	echo "Assuming node $CERTNAME"
+	echo "Supply a node arg to override (dev, or one of the live machines: n1, n2..)"
 fi
 
 # First run we need a default for the master to work inc autosign
@@ -30,5 +32,5 @@ fi
 /etc/init.d/puppetmaster start
 
 #git pull
-puppetd -t --certname=$1
+puppetd -t --certname=$CERTNAME
 /etc/init.d/puppetmaster stop
