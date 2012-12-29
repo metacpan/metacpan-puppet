@@ -1,47 +1,29 @@
-class metacpan::cron {
-  package { cron: ensure => latest }
-
-  service { cron:
-      ensure => running,
-      pattern => "cron",
-      require => Package["cron"],
-  }
-
-  $path_env = 'PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin'
-
-  define meta_cron($cmd, $user = 'metacpan', $hour = '*', $minute, $weekday = '*', $ensure = 'present') {
-
-      cron {
-          "cron_$name":
-              user    => "$user",
-              environment => "$path_env",
-              command => "$cmd",
-              hour => "$hour",
-              minute  => "$minute",
-              weekday => "$weekday",
-              ensure  => "$ensure";
-      }
-  }
-
-  define api_cron($cmd, $user = 'metacpan', $hour = '*', $minute, $weekday = '*', $ensure = 'absent') {
-      $metacpan_cmd = '$HOME/api.metacpan.org/bin/metacpan'
-
-      cron {
-          "cron_$name":
-              user    => "$user",
-              environment => "$path_env",
-              command => "$metacpan_cmd $cmd",
-              hour => "$hour",
-              minute  => "$minute",
-              weekday => "$weekday",
-              ensure  => "$ensure";
-      }
+define metacpan::cron(
+  $cmd,
+  $minute,
+  $user    = "metacpan",
+  $hour    = "*",
+  $weekday = "*",
+  $ensure  = present,
+  $metacpan = "\$HOME/api.metacpan.org/bin/metacpan",
+  $path_env = "PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin",
+) {
+  include metacpan::cron::environment
+  cron {
+      "metacpan_$name":
+          user        => $user,
+          environment => $path_env,
+          command     => "$metacpan $cmd",
+          hour        => $hour,
+          minute      => $minute,
+          weekday     => $weekday,
+          ensure      => $ensure;
   }
 }
 
-class metacpan::cron::api inherits metacpan::cron {
+class metacpan::cron::api {
 
-    api_cron{
+    metacpan::cron {
         "author":
             cmd => 'author',
             minute => '0';
@@ -82,14 +64,4 @@ class metacpan::cron::api inherits metacpan::cron {
             hour => '3';
     }
 }
-
-class metacpan::cron::sysadmin inherits metacpan::cron {
-    # To add to later
-}
-
-class metacpan::cron::web inherits metacpan::cron {
-    # To add to later
-}
-
-
 
