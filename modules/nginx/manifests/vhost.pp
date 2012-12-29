@@ -5,10 +5,19 @@ define nginx::vhost(
         $ssl = $ssl_only,
         $php = false,
         $bare = false,
-	$aliases = "",
+	    $aliases = "",
 ) {
-
+        include nginx
         file { [$root, $html, "$root/logs"]:
+                ensure => directory,
+                require => Package["nginx"],
+        }->
+        file { "/etc/nginx/conf.d/$name.conf":
+                ensure => file,
+                content => template("nginx/vhost.conf.erb"),
+                notify => Service["nginx"],
+        }->
+        @file { "/etc/nginx/conf.d/$name.d":
                 ensure => directory,
         }
 
@@ -35,15 +44,5 @@ define nginx::vhost(
                         notify => Service["nginx"],
                         mode => "0400",
                 }
-        }
-
-        file { "/etc/nginx/conf.d/$name.conf":
-                ensure => file,
-                content => template("nginx/vhost.conf.erb"),
-                notify => Service["nginx"],
-        }
-
-	@file { "/etc/nginx/conf.d/$name.d":
-                ensure => directory,
         }
 }
