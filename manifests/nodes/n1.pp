@@ -15,10 +15,7 @@ node n1 {
 
     include metacpan::website::www
 
-    # 14336 = live elasticsearch_memory_mb
-    $elasticsearch_memory_mb = '50'
-    $es_live_version = '0.18.5'
-    include elasticsearch::install
+    elasticsearch { "0.20.2": }
 
     $vhosts = [ "munin" ]
     include nginx

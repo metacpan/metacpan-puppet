@@ -4,16 +4,16 @@ node bm-n2 {
     include nginx
     include metacpan
 
-    #include metacpan::ssh
+    include metacpan::ssh
 
     include metacpan::user::admins
 
     # include metacpan::cron::api
 
 
-    $elasticsearch_memory_mb = 14336
-    $es_live_version = '0.20.2'
-    include elasticsearch::install
+    elasticsearch { "0.20.2":
+        memory  => 15000,
+    }
 
     # include munin::web
     # include munin-server
