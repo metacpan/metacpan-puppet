@@ -34,7 +34,6 @@ class metacpan::packages {
     package { mosh: ensure => present }
 
     package { ntp: ensure => present }
-    package { apticron: ensure => present }
     # package { exim: ensure => present } # TODO: FIX
 
     # Stuff for firewall / security

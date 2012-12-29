@@ -9,59 +9,23 @@ class metacpan::configs {
 
     # Aliases
     file { "/etc/aliases":
-            owner => "root",
-            group => "root",
-            mode => 644,
             source => "puppet:///modules/metacpan/default/etc/aliases",
     }
     # resolv
     file { "/etc/resolv.conf":
-            owner => "root",
-            group => "root",
-            mode => 644,
             source => "puppet:///modules/metacpan/default/etc/resolv.conf",
     }
     
-    # apticron
-    file {
-        "/etc/apticron":
-            ensure  => "directory",
-            owner   => "root",
-            group   => "root";
-    }
+    package { apticron: ensure => present }->
     file { "/etc/apticron/apticron.conf":
-            owner => "root",
-            group => "root",
-            mode => 644,
             source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
-    }
-    
-    
-    # SSL
-    file {
-        "/home/metacpan/certs":
-            ensure => "directory",
-            owner  => "metacpan",
-            group  => "metacpan",
-    }
-    file { "/home/metacpan/certs/metacpan.pem":
-            owner  => "metacpan",
-            group  => "metacpan",
-            mode   => 644,
-            source => "puppet:///modules/metacpan/default/home/metacpan/certs/self-signed/metacpan.pem",
-    }
-    file { "/home/metacpan/certs/metacpan.key":
-            owner  => "metacpan",
-            group  => "metacpan",
-            mode   => 644,
-            source => "puppet:///modules/metacpan/default/home/metacpan/certs/self-signed/metacpan.key",
     }
 
     # make logrotate use dateext for all logs
     # speeds up backups because file names don't change
+    include logrotate::base
     file { "/etc/logrotate.d/dateext":
             content => "dateext",
-            ensure => file,
             require => Package["logrotate"],
     }
 }
