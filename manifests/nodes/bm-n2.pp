@@ -1,20 +1,10 @@
 node bm-n2 {
     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
-    # Load all the generic metacpan stuff
-    include nginx
     include metacpan
-
-    include metacpan::ssh
-
+    include metacpan::exim
     include metacpan::user::admins
-
     include metacpan::cron::api
+    include metacpan::munin
 
-
-    elasticsearch { "0.20.2":
-        memory  => 15000,
-    }
-
-    # include munin::web
-    # include munin-server
+    elasticsearch { "0.20.2": memory  => 18000 }
 }

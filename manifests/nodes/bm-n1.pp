@@ -1,4 +1,5 @@
 node bm-n1 {
 	include metacpan::packages
-	include metacpan::user::admins
+	include metacpan::exim
+    include metacpan::user::admins
 }
