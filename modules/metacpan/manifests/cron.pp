@@ -8,7 +8,6 @@ define metacpan::cron(
   $metacpan = "\$HOME/api.metacpan.org/bin/metacpan",
   $path_env = "PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin",
 ) {
-  include metacpan::cron::environment
   cron {
       "metacpan_$name":
           user        => $user,
