@@ -1,4 +1,4 @@
-define line($file = $name, $line, $ensure = 'present') {
+define line($file = $name, $line, $with = "", $ensure = 'present') {
     case $ensure {
         default : { err ( "unknown ensure value ${ensure}" ) }
         present: {
@@ -20,6 +20,11 @@ define line($file = $name, $line, $ensure = 'present') {
             exec { "/bin/sed -i -e'/${line}/s/\(.\+\)$/#\1/' '${file}'" :
                         onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep -v '^#' | /usr/bin/wc -l` -ne 0"
                 }
+        }
+        replace: {
+            exec { "/usr/bin/perl -pi -e 's/${line}/${with}/g' '${file}'" :
+                onlyif => "/bin/grep -qFx '${line}' '${file}'"
+            }
         }
     }
 }

@@ -13,10 +13,18 @@ define elasticsearch(
     group { $user: ensure => present }->
     user { $user:
             comment => "ElasticSearch User",
-            shell   => "/bin/false",
+            shell   => "/bin/bash",
             gid     => $user,
     }->
     
+
+    file {
+        "/var/elasticsearch":
+            owner  => $user,
+            group  => $user,
+            ensure => directory,
+    }->
+
     file {
         $path:
             owner  => $user,
