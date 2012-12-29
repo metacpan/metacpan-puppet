@@ -16,9 +16,10 @@ define nginx::vhost(
                 ensure => file,
                 content => template("nginx/vhost.conf.erb"),
                 notify => Service["nginx"],
-        }->
+        }
         @file { "/etc/nginx/conf.d/$name.d":
                 ensure => directory,
+                require => Package["nginx"],
         }
 
         if $ssl {

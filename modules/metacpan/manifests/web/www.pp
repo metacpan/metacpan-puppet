@@ -10,7 +10,7 @@ class metacpan::web::www {
 		ssl     => true,
 		aliases => [".beta.metacpan.org"],
 	}
-        realize File["/etc/nginx/conf.d/www.metacpan.org.d"]
+    realize File["/etc/nginx/conf.d/www.metacpan.org.d"]
 	file { "/etc/nginx/conf.d/www.metacpan.org.d/redirect.conf":
 		ensure => file,
 		content => "rewrite /(.*)$ https://metacpan.org/$1 permanent;",
