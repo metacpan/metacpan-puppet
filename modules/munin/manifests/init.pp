@@ -145,7 +145,6 @@ class munin::web inherits munin-node {
 
     munin-node::add_default_plugin {
         [
-        "http_loadtime",
         "nginx_status",
         "nginx_request"
         ]:     
@@ -153,6 +152,7 @@ class munin::web inherits munin-node {
     
     munin-node::add_metacpan_plugin {
         [
+        "http_loadtime"               ,
         "elasticsearch_cache"         ,
         "elasticsearch_cluster_shards",
         "elasticsearch_docs"          ,
