@@ -8,7 +8,7 @@ node bm-n2 {
 
     include metacpan::user::admins
 
-    # include metacpan::cron::api
+    include metacpan::cron::api
 
 
     elasticsearch { "0.20.2":
