@@ -4,6 +4,7 @@ define metacpan::user(
     $path = "/home",
     $shell = "/bin/bash",
     $admin = false,
+    $expire_password = true,
 ) {
 
     user { $user:
@@ -22,12 +23,16 @@ define metacpan::user(
         path        => "/usr/sbin",
         subscribe   => User[$user],
         refreshonly => true,
-    }->
-    # force user to set password on first login
-    exec { "chage -d 0 $user":
-        path        => "/usr/bin",
-        subscribe   => User[$user],
-        refreshonly => true,
+    }
+
+    if $expire_password {
+        # force user to set password on first login
+        exec { "chage -d 0 $user":
+            path        => "/usr/bin",
+            subscribe   => User[$user],
+            refreshonly => true,
+            require     => Exec["usermod --password '$password' $user"],
+        }
     }
 
     # Where perl lives
