@@ -27,6 +27,10 @@ class metacpan::configs {
     file { "/etc/logrotate.d/dateext":
             content => "dateext",
             require => Package["logrotate"],
+    }->
+    file { "/etc/logrotate.d/compress":
+        content => "compresscmd /usr/bin/bzip2\nuncompresscmd /usr/bin/bunzip2",
+        require => Package["bzip2"],
     }
 }
 
