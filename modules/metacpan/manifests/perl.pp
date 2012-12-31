@@ -11,7 +11,9 @@ define metacpan::perl(
         # for Test::XPath 
         'libxml2-dev': ensure => present;
         # for XML::Parser (used by Test::XPath)
-        'libexpat1-dev': ensure => present;        
+        'libexpat1-dev': ensure => present;
+        # AnyEvent::Curl::Multi
+        'libcurl4-openssl-dev': ensure => present;
     }->
 
     # install the perl
