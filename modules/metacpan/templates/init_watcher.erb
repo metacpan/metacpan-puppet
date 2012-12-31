@@ -6,7 +6,7 @@
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: <%= desc %>
+# Short-Description: <%= description %>
 ### END INIT INFO
 
 # Check for missing binaries (stale symlinks should not happen)
@@ -29,7 +29,7 @@ test -x $WATCHERBIN || { echo "$WATCHER_BIN not installed";
 case "$1" in
     start)
 	echo -n "Starting metacpan-watcher "
-	HOME=/home/metacpan /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+	HOME=/home/metacpan /sbin/start-stop-daemon -b --start --pidfile $PIDFILE \
     -c $USER:$GROUP --startas $WATCHER
 	;;
     stop)

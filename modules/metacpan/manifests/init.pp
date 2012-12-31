@@ -7,4 +7,5 @@ class metacpan {
     include metacpan::ssh
     include metacpan::configs
     include metacpan::web
+    include metacpan::watcher
 }
