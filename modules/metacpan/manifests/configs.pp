@@ -29,7 +29,7 @@ class metacpan::configs {
             require => Package["logrotate"],
     }->
     file { "/etc/logrotate.d/compress":
-        content => "compresscmd /usr/bin/bzip2\nuncompresscmd /usr/bin/bunzip2",
+        content => "compresscmd /bin/bzip2\nuncompresscmd /bin/bunzip2",
         require => Package["bzip2"],
     }
 }
