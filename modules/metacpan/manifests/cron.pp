@@ -54,7 +54,7 @@ class metacpan::cron::api {
             hour   => '4',
             weekday => '3';
         "release":
-            cmd => 'release --skip --age 25 --latest /home/metacpan/CPAN/authors/id/',
+            cmd => 'release --skip --age 25 --detect_backpan --latest /home/metacpan/CPAN/authors/id/',
             hour => '0',
             minute => '5';
         "tickets":
