@@ -6,13 +6,13 @@ class metacpan::web::api {
 	}
 
 	nginx::proxy { "api-root":
-		target   => "http://localhost:5000",
+		target   => "http://localhost:5000/",
 		vhost    => "api.metacpan.org",
 		location => "",
 	}
 
 	nginx::proxy { "api-v0":
-		target   => "http://localhost:5000",
+		target   => "http://localhost:5000/",
 		vhost    => "api.metacpan.org",
 		location => "/v0",
 	}
