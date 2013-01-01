@@ -20,6 +20,7 @@ class metacpan::web::api {
 	startserver { "metacpan-api":
 		root    => "/home/metacpan/api.metacpan.org",
 		perlbin => $perlbin,
+		workers => 10,
 	}->
 	service { "metacpan-api":
 		ensure => running,
