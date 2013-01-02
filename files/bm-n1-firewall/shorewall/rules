@@ -1,0 +1,16 @@
+SSH(ACCEPT) net $FW
+SSH(ACCEPT) net loc
+
+Ping(ACCEPT) net $FW
+Ping(ACCEPT) net loc
+
+# Unix traceroute
+ACCEPT net $FW udp 33434:33534
+ACCEPT net loc udp 33434:33534
+
+# bm-n2 SSH
+DNAT net loc:n2:2202 tcp 2202
+
+# bm-n2 HTTP
+DNAT net loc:n2:80 tcp 80
+DNAT net loc:n2:443 tcp 443

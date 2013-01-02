@@ -1,0 +1,2 @@
+net eth0 detect
+loc virbr0 detect

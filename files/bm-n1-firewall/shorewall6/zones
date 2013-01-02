@@ -1,0 +1,3 @@
+fw firewall
+net ipv6
+loc ipv6
