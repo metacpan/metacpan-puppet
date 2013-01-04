@@ -15,6 +15,7 @@ class metacpan::web::www {
 		ensure => file,
 		content => 'rewrite /(.*)$ https://metacpan.org/$1 permanent;',
 		require => File["/etc/nginx/conf.d/www.metacpan.org.d"],
+		notify  => Service['nginx'],
 	}
 
 	nginx::proxy { "metacpan.org":
