@@ -13,7 +13,7 @@ class metacpan::web::www {
     realize File["/etc/nginx/conf.d/www.metacpan.org.d"]
 	file { "/etc/nginx/conf.d/www.metacpan.org.d/redirect.conf":
 		ensure => file,
-		content => "rewrite /(.*)$ https://metacpan.org/$1 permanent;",
+		content => 'rewrite /(.*)$ https://metacpan.org/$1 permanent;',
 		require => File["/etc/nginx/conf.d/www.metacpan.org.d"],
 	}
 
