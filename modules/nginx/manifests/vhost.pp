@@ -5,8 +5,7 @@ define nginx::vhost(
         $ssl = $ssl_only,
         $php = false,
         $bare = false,
-        $aliases = "",
-	$default_vhost = false
+	    $aliases = "",
 ) {
         include nginx
         if $html {

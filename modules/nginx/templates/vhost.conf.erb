@@ -1,10 +1,6 @@
 <% if @ssl && @ssl_only %>
 server {
-  <% if @default_vhost %>
-  listen [::]:80 default;
-  <% else %>
-  listen [::]:80;
-  <% end %>
+  listen 80;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   rewrite ^(.*)$ https://$host$1 permanent;
 }
