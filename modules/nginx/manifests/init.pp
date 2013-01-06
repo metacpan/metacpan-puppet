@@ -12,6 +12,11 @@ class nginx {
                 ensure => file,
         }->
 
+        file { "/etc/nginx/conf.d/types.conf":
+                source => "puppet:///modules/nginx/types.conf",
+                ensure => file,
+        }->
+
 	file { "/var/www":
 		ensure => directory,
 	}->
