@@ -1,5 +1,5 @@
 server {
-	listen 80;
+	listen [::]:80;
 	server_name .<%= hostname %>.munin.metacpan.org .munin.metacpan.org;
 	root /srv/www/htdocs/munin/;
 }
