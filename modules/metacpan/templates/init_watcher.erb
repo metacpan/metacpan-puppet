@@ -20,7 +20,7 @@ GROUP=users
 
 WATCHER="$WATCHERBIN -- watcher"
 
-test -x $WATCHERBIN || { echo "$WATCHER_BIN not installed"; 
+test -x $WATCHERBIN || { echo "$WATCHERBIN not installed";
 	if [ "$1" = "stop" ]; then exit 0;
 	else exit 5; fi; }
 
