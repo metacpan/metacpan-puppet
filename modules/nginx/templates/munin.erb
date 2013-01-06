@@ -1,6 +1,5 @@
 server {
 	listen 80;
-	listen [::]:80 default ipv6only=on;
 	server_name .<%= hostname %>.munin.metacpan.org .munin.metacpan.org;
 	root /srv/www/htdocs/munin/;
 }
