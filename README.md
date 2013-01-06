@@ -56,9 +56,9 @@ To follow the steps manually, copy/paste the commands belo
 Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
 
     # We don't want puppet running automatically
-    update-rc.d -n puppetmaster remove
-    update-rc.d -n puppet remove
-    update-rc.d -n puppetqd remove
+    update-rc.d puppetmaster remove
+    update-rc.d puppet remove
+    update-rc.d puppetqd remove
 
 # Setup
     cd /etc

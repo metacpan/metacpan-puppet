@@ -27,9 +27,9 @@ apt-get --assume-yes install vim sudo openssh-server git
 apt-get --assume-yes -t squeeze-backports install puppetmaster puppet
 
 # We don't want puppet running automatically
-update-rc.d -n puppetmaster remove
-update-rc.d -n puppet remove
-update-rc.d -n puppetqd remove
+update-rc.d puppetmaster remove
+update-rc.d puppet remove
+update-rc.d puppetqd remove
 
 if test -z "$VAGRANT_IS_PROVISIONING"; then
 
