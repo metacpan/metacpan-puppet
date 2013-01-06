@@ -1,6 +1,10 @@
 <% if @ssl && @ssl_only %>
 server {
-  listen 80;
+  <% if @default_vhost %>
+  listen [::]:80 default;
+  <% else %>
+  listen [::]:80;
+  <% end %>
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   rewrite ^(.*)$ https://$host$1 permanent;
 }
@@ -65,7 +69,7 @@ server {
     index index.html index.htm index.php;
   }
   <% end %>
-  
+
   <% if @php %>
   location ~ .*\.php$ {
     fastcgi_pass unix:/var/run/php5-fpm.sock;

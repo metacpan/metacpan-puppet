@@ -1,8 +1,9 @@
 class metacpan::web::www {
 	nginx::vhost { "metacpan.org":
-		bare     => true,
-		ssl_only => true,
-		aliases => ["$hostname.metacpan.org", "lo.metacpan.org"],
+		bare          => true,
+		ssl_only      => true,
+		default_vhost => true,
+		aliases       => ["$hostname.metacpan.org", "lo.metacpan.org"],
 	}
 
 	nginx::vhost { "www.metacpan.org":
