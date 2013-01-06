@@ -1,13 +1,13 @@
 <% if @ssl && @ssl_only %>
 server {
-  listen [::]:80;
+  listen 80;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   rewrite ^(.*)$ https://$host$1 permanent;
 }
 
 <% elsif @ssl %>
 server {
-  listen [::]:80;
+  listen 80;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   root <%= @html_root %>;
   access_log <%= @root %>/logs/access.log combined;
@@ -38,7 +38,7 @@ server {
 <% end %>
 
 server {
-  listen [::]:<%= @ssl ? "443" : "80" %>;
+  listen <%= @ssl ? "443" : "80" %>;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   root <%= @html_root %>;
   access_log <%= @root %>/logs/access.log combined;
