@@ -7,10 +7,9 @@ All machines will be setup identically for now...
 For development and/or testing the puppet configuration
 [vagrant](http://vagrantup.com) can be very handy.
 
-Set up a Debian Squeeze 64bit base box:
-Pick one from [vagrantbox.es](http://vagrantbox.es) and add it locally:
-
-    vagrant box add squeeze64 $url
+If you don't have a vagrant base box named "squeeze64"
+a suitable one will be downloaded from [vagrantbox.es](http://vagrantbox.es).
+It's ~270MB in size, so be prepared.
 
 Then (from the repo root directory):
 

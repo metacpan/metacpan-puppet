@@ -1,5 +1,7 @@
 Vagrant::Config.run do |config|
   # download from http://vagrantbox.es (or build your own)
+  config.vm.box_url = "https://dl.dropbox.com/u/1543052/Boxes/DebianSqueeze64.box"
+
   config.vm.box = "squeeze64"
 
   # currently the puppet setup is designed to be bootstrapped
