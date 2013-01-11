@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# root/sudo
+if ! [[ "`id -u`" == "0" ]]; then
+  echo 'run with sudo'
+  exit 1
+fi
+
+# get the right perl
+source /home/metacpan/.metacpanrc
+
+perl=`which perl`
+perlbin=${perl%/*}
+
+PERLBREW_ROOT="${PERLBREW_ROOT:-/usr/local/perlbrew}"
+
+# prompt for confirmation
+$perl -e '$|=1; $,="\n"; print qq{  install into $^X ($^V) ?\n}, @ARGV, qq{\n [yes/no]: }; <STDIN> =~ /^yes$/i or exit 1;' "$@" || exit 1
+
+cpan_log=${PERLBREW_ROOT}/cpanm-install.log
+cpan_user=perlbrew
+
+chown -R $cpan_user:$cpan_user "$PERLBREW_ROOT"
+
+# install as $cpan_user
+/bin/su - -c "umask 022; $perl ${perlbin}/cpanm $*" $cpan_user 2>&1 | tee -a $cpan_log
