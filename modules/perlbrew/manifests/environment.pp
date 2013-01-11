@@ -15,6 +15,7 @@ class perlbrew::environment {
       home     => $perlbrew::params::perlbrew_root,
       uid      => 300,
       gid      => "perlbrew",
+      shell    => '/bin/bash', # so that "source ${PERLBREW_ROOT}/etc/bashrc" works
       ensure   => present,
   }
 
