@@ -59,7 +59,7 @@ define metacpan::user(
             owner   => $user,
             group   => $user,
             mode    => 0700,
-            content => $export_path;
+            content => "${export_path}\n";
     }
 
     # Sort out ssh file, need dir first
