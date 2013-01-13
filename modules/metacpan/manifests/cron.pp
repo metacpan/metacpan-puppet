@@ -48,11 +48,6 @@ class metacpan::cron::api {
         "backup_user":
             cmd => 'backup --index user',
             minute => '25';
-        "backup_purge":
-            cmd => 'backup ',
-            minute => '10',
-            hour   => '4',
-            weekday => '3';
         "release":
             cmd => 'release --skip --age 25 --detect_backpan --latest /home/metacpan/CPAN/authors/id/',
             hour => '0',
