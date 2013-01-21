@@ -23,6 +23,7 @@ server {
   <% unless @bare %>
   location / {
     index index.html index.htm index.php;
+    <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
 
@@ -63,6 +64,7 @@ server {
   <% unless @bare %>
   location / {
     index index.html index.htm index.php;
+    <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
 
