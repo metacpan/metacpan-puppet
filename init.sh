@@ -41,4 +41,4 @@ mkdir -p /etc/puppet/files
 fi
 
 echo 'Now follow the rest of the steps from:'
-echo 'https://github.com/CPAN-API/Metacpan-Puppet#to-run-start-master-run-puppet-client-stop-master'
+echo 'https://github.com/CPAN-API/Metacpan-Puppet/blob/master/documentation/INSTALL_FINALIZING.md'
