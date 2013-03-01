@@ -14,6 +14,27 @@ perlbin=${perl%/*}
 
 PERLBREW_ROOT="${PERLBREW_ROOT:-/usr/local/perlbrew}"
 
+dir="`pwd`"
+
+function su_cpanm () {
+  user="$1"; shift;
+  /bin/su - -c "umask 022; cd '$dir'; $perl ${perlbin}/cpanm $*" "$user"
+}
+
+# if trying to installdeps we need to get the list first (too much su-ing)
+if echo "$*" | grep -qE '^(--installdeps)?[[:space:]]+\.$'; then
+  # TODO: add --show-only-missing to make this list smaller (less scary)
+  # https://github.com/miyagawa/cpanminus/pull/207
+
+  # set positional parameters to the list of modules
+  eval set -- `su_cpanm metacpan --showdeps .`
+
+  if [[ $# -eq 0 ]]; then
+    echo 'Nothing to install' 1>&2
+    exit;
+  fi
+fi
+
 # prompt for confirmation
 $perl -e '$|=1; $,="\n"; print qq{  install into $^X ($^V) ?\n}, @ARGV, qq{\n [yes/no]: }; <STDIN> =~ /^yes$/i or exit 1;' -- "$@" || exit 1
 
@@ -23,4 +44,5 @@ cpan_user=perlbrew
 chown -R $cpan_user:$cpan_user "$PERLBREW_ROOT"
 
 # install as $cpan_user
-/bin/su - -c "umask 022; $perl ${perlbin}/cpanm $*" $cpan_user 2>&1 | tee -a $cpan_log
+# NOTE: cannot do --installdeps here because the perlbrew user doesn't have perms in metacpan dir
+su_cpanm "$cpan_user" "$@" 2>&1 | tee -a $cpan_log
