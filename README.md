@@ -1,12 +1,12 @@
 # metacpan puppet configuration
 
-This repo is for building and running the [metacpan.org](https://metacpan.org) servers, including development and test servers
+This repo is for building and running the [metacpan.org](https://metacpan.org) development, test and live servers
 
 ## Options
 
-1. For development and testing we strongly recommend using [vagrant](http://vagrantup.com) read our [vagrant instructions](documentation/INSTALL_VAGRANT.md).
+1. [Vagrant instructions](documentation/INSTALL_VAGRANT.md) - strongly recommend for development and testing.
 
-2. [Manual instructions](documentation/INSTALL_MANUALLY.md), for new live servers
+2. [Manual instructions](documentation/INSTALL_MANUALLY.md) - for new live servers
 
 ## Repository setup
 
