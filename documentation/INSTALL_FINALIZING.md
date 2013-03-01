@@ -15,8 +15,13 @@ Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
     Copy /home/metacpan/certs directory from existing machine
 
 # Create or update repositories: www, api and others
-    # as 'metacpan' user
-    perl ~/bin/update_repos
+
+    sudo /home/metacpan/bin/update_repos
+
+This will also check each repo for prerequisite perl modules and prompt to install.
 
 # INSTALL PERL MODULES...
 
+To install specific modules rather than 'everything required by the repo':
+
+    sudo /home/metacpan/bin/install_modules Foo::Bar Fluffy::Bunny ...
