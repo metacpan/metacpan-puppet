@@ -6,6 +6,12 @@
 use strict;
 use warnings;
 my $HOMEDIR = '/home/metacpan';
+my $USER    = 'metacpan';
+my $AS_ROOT = ($> == 0);
+
+sub git {
+  system( ($AS_ROOT ? (qw(sudo -u), $USER) : ()), git => @_ );
+}
 
 my %sites = (
 
@@ -31,10 +37,17 @@ foreach my $site ( keys %sites ) {
         # Check it out
         my $repo = $sites{$site};
         chdir($HOMEDIR);
-        system("git clone $repo $site");
+        git('clone', $repo => $site);
     } else {
         chdir($site_dir);
-        my $bar = system("git pull");
-        # TODO: cpanm --installdeps .
+        git('pull');
+    }
+
+    if( $AS_ROOT ){
+        chdir($site_dir);
+        system("$HOMEDIR/bin/install_modules --installdeps .");
+    }
+    else {
+        print "\n - Remember to run install_modules to install any new deps -\n\n";
     }
 }
