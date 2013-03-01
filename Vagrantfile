@@ -1,6 +1,6 @@
 Vagrant::Config.run do |config|
   # download from http://vagrantbox.es (or build your own)
-  config.vm.box_url = "https://dl.dropbox.com/u/1543052/Boxes/DebianSqueeze64.box"
+  # TODO: provide working url
 
   config.vm.box = "squeeze64"
 
