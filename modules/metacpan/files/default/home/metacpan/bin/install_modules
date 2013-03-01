@@ -23,11 +23,10 @@ function su_cpanm () {
 
 # if trying to installdeps we need to get the list first (too much su-ing)
 if echo "$*" | grep -qE '^(--installdeps)?[[:space:]]+\.$'; then
-  # TODO: add --show-only-missing to make this list smaller (less scary)
-  # https://github.com/miyagawa/cpanminus/pull/207
+  # TODO: --show-deps may be deprecated so we should find another way to do this
 
   # set positional parameters to the list of modules
-  eval set -- `su_cpanm metacpan --showdeps .`
+  eval set -- `su_cpanm metacpan --showdeps . 2> /dev/null`
 
   if [[ $# -eq 0 ]]; then
     echo 'Nothing to install' 1>&2
