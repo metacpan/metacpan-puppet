@@ -3,7 +3,7 @@ define elasticsearch(
     $memory  = 64,
     $user    = "elasticsearch",
     $path    = "/opt",
-    $delete_old_logs_after = "5d",
+    $delete_old_logs_after = "5",
 ) {
     $opt       = "$path/elasticsearch"
     $extracted = "elasticsearch-$version"
