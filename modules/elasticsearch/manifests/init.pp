@@ -3,6 +3,7 @@ define elasticsearch(
     $memory  = 64,
     $user    = "elasticsearch",
     $path    = "/opt",
+    $delete_old_logs_after = "5d",
 ) {
     $opt       = "$path/elasticsearch"
     $extracted = "elasticsearch-$version"
@@ -110,5 +111,18 @@ define elasticsearch(
             File["$es_path/config/elasticsearch.yml"],
             File["$es_path/bin/service/elasticsearch.conf"]
         ],
+    }->
+    
+    # Clean out old log files
+    cron {
+        "elastic_cron_delete":
+            user        => $user,
+            command     => "/usr/bin/find $opt/logs/ -mtime +$delete_old_logs_after -delete",
+            hour        => 3,
+            minute      => 0,
+            ensure      => "present";
     }
+    
+    
+    
 }
