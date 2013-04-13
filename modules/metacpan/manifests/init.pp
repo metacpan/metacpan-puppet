@@ -3,7 +3,6 @@ class metacpan {
     include metacpan::packages
     metacpan::user { metacpan: expire_password => false }
     metacpan::perl {  $perl: }
-    include metacpan::rrrclient
     include metacpan::ssh
     include metacpan::configs
     include metacpan::web
