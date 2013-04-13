@@ -1,13 +1,12 @@
 # Steps for finalizing an install
 # Final steps once server/VM is setup...
 
-To Run (start master, run puppet client, stop master)
-    /etc/puppet/run.sh dev
+# To Run - as root (start master, run puppet client, stop master)
+    /etc/puppet/run.sh
 
 You may have to run this a couple of times to get everything setup
-correctly (e.g. you have to add lines to /etc/hosts), the very
-first time it will take quite a while to run (it has a lot to do!)
-You can also use 'n1' for the live server, others will be added over time
+correctly. The very first time it will take quite a while to run 
+(it has a lot to do!)
 
 Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 
@@ -20,7 +19,7 @@ Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 
 This will also check each repo for prerequisite perl modules and prompt to install.
 
-# INSTALL PERL MODULES...
+# Install a Perl module manually
 
 To install specific modules rather than 'everything required by the repo':
 
