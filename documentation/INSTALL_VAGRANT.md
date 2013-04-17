@@ -21,6 +21,6 @@ To create a virtual machine and provision it
 Then ssh in to your vm and start testing:
 
     vagrant ssh
-    sudo /etc/puppet/run.sh dev
+    sudo /etc/puppet/run.sh default
 
 Now look at the [final steps](INSTALL_FINALIZING.md)
