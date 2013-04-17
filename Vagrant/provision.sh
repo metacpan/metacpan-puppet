@@ -40,3 +40,12 @@ echo Y | $dir/init-for-vagrant.sh
 
 # Now remount so puppet works correctly
 $dir/mount_etc_puppet.sh
+
+# TODO: good way to check out the repos (rather than /home/metacpan/bin/update_repos)
+# if we checked them out into this dir (./repos/*) we could do shared mounts
+# then files could be edited locally and git used naturally
+
+# FIXME: do this with puppet?
+# this only works if the repos have been checked out
+for service in elasticsearch metacpan-api metacpan-www;
+  { service $service restart; }
