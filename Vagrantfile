@@ -9,6 +9,9 @@ Vagrant::Config.run do |config|
 
   config.vm.provision :shell, :path => 'Vagrant/provision.sh'
 
+  config.vm.forward_port 5000, 5000 # api
+  config.vm.forward_port 5001, 5001 # www
+
   # see "To Run" in README.md
 
   config.vm.share_folder('v-puppet', '/etc/puppet', '.')
