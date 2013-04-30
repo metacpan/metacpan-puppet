@@ -16,6 +16,7 @@ sub git {
 my %sites = (
 
     # Directory        => (read only) repo
+    "explorer.metacpan.org" => 'git://github.com/CPAN-API/metacpan-explorer.git',
     "metacpan.org"     => 'git://github.com/CPAN-API/metacpan-web.git',
     "api.metacpan.org" => 'git://github.com/CPAN-API/cpan-api.git',
     "contest.metacpan.org"         #
