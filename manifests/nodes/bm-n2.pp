@@ -7,5 +7,9 @@ node bm-n2 {
     include metacpan::user::admins
     include metacpan::cron::api
 
+    # Only need this on live really atm
+    # probably going to be replaced by Mo's JS version
+    include metacpan::web::explorer
+
     elasticsearch { "0.20.2": memory  => 18000 }
 }
