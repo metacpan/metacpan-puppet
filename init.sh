@@ -35,10 +35,10 @@ if test -z "$VAGRANT_IS_PROVISIONING"; then
 
 cd /etc
 rm -rf puppet
-git clone https://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
+git clone https://github.com/CPAN-API/metacpan-puppet.git ./puppet
 mkdir -p /etc/puppet/files
 
 fi
 
 echo 'Now follow the rest of the steps from:'
-echo 'https://github.com/CPAN-API/Metacpan-Puppet/blob/master/documentation/INSTALL_FINALIZING.md'
+echo 'https://github.com/CPAN-API/metacpan-puppet/blob/master/documentation/INSTALL_FINALIZING.md'

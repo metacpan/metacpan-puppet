@@ -1,6 +1,6 @@
 # Files here can be managed through
-# Metacpan-Puppet/files/default/home/<user>/bin
+# metacpan-puppet/files/default/home/<user>/bin
 
 
-# This is a default file from Metacpan-Puppet/files/default/home/default/bin/
+# This is a default file from metacpan-puppet/files/default/home/default/bin/
 # Just here because git does not let you have an empty dir :(

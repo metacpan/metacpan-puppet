@@ -11,7 +11,7 @@ To do the pre-Puppet install in one step, run this command from somewhere other
 than /etc/puppet and then skip to the "To Run" section below:
 
     aptitude install curl
-    bash <(curl -s https://raw.github.com/CPAN-API/Metacpan-Puppet/master/init.sh)
+    bash <(curl -s https://raw.github.com/CPAN-API/metacpan-puppet/master/init.sh)
 
 If you prefer not to run the script above, continue on below.
 
@@ -38,6 +38,6 @@ Should get you puppet 2.7.14 (which fixes a issue with update-rc.d)
 # Setup
     cd /etc
     rm -rf puppet
-    git clone git://github.com/CPAN-API/Metacpan-Puppet.git ./puppet
+    git clone git://github.com/CPAN-API/metacpan-puppet.git ./puppet
 
 Now look at the [final steps](INSTALL_FINALIZING.md)
