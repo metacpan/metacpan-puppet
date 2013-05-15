@@ -1,6 +1,6 @@
 # Installing a server manually
 
-We strongly recommend using [vagrant setup](INSTALL_VAGRANT.md) for all testing or development machines.
+We strongly recommend using our [Virtual machine](https://github.com/CPAN-API/metacpan-developer) for all testing or development machines.
 
 # Install Debian stable (6.0.4)
     Base iso from http://www.debian.org/distrib/
