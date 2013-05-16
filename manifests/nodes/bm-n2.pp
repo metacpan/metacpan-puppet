@@ -6,6 +6,7 @@ node bm-n2 {
     include metacpan::exim
     include metacpan::user::admins
     include metacpan::cron::api
+    include metacpan::web::vmbox
 
     # Only need this on live really atm
     # probably going to be replaced by Mo's JS version
