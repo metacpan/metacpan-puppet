@@ -19,11 +19,11 @@ my %sites = (
     "explorer.metacpan.org" => 'git://github.com/CPAN-API/metacpan-explorer.git',
     "metacpan.org"     => 'git://github.com/CPAN-API/metacpan-web.git',
     "api.metacpan.org" => 'git://github.com/CPAN-API/cpan-api.git',
-    "contest.metacpan.org"         #
-        => 'git://github.com/CPAN-API/contest-metacpan-org.git',
 
 
     # Sites no longer used
+    # "contest.metacpan.org"         #
+    #    => 'git://github.com/CPAN-API/contest-metacpan-org.git',
     # "vote.contest.metacpan.org"    #
     #     => 'git://github.com/CPAN-API/logo-vote.git',
 
