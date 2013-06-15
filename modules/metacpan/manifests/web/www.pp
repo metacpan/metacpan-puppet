@@ -5,6 +5,14 @@ class metacpan::web::www {
 		aliases => ["$hostname.metacpan.org", "lo.metacpan.org"],
 	}
 
+    realize File["/etc/nginx/conf.d/metacpan.org.d"]
+	file { "/etc/nginx/conf.d/metacpan.org.d/trailing_slash.conf":
+		ensure => file,
+		content => 'rewrite ^/(.*)/$ /$1 permanent;',
+		require => File["/etc/nginx/conf.d/metacpan.org.d"],
+		notify  => Service['nginx'],
+	}
+
 	nginx::vhost { "www.metacpan.org":
 		bare    => true,
 		ssl     => true,
