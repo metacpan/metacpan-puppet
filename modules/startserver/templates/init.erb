@@ -53,7 +53,7 @@ if [ ! -d $APPDIR ]; then
     exit 1
 fi
 
-STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --log-file=$LOGFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
+STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP --error-log=$LOGFILE"
 
 check_running() {
     [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
