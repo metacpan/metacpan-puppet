@@ -7,6 +7,8 @@ define startserver(
 	$port = 5000,
 ) {
     include startserver::environment
+    include startserver::logs
+    $logdir = $startserver::logs::dir
 
     file { "/etc/init.d/$filename":
         ensure => file,

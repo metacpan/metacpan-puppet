@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim: set syntax=sh.eruby:
 
 # This file was created and transferred by puppet
 # Do not edit manually!
@@ -31,6 +32,7 @@ PIDFILE=$PIDDIR/${NAME}.pid
 STATUSFILE=$PIDDIR/${NAME}.status
 USER=metacpan
 GROUP=users
+LOGFILE=<%= logdir %>/${NAME}.log
 
 test -f ${SERVER} || exit 0
 
@@ -51,7 +53,7 @@ if [ ! -d $APPDIR ]; then
     exit 1
 fi
 
-STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
+STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --log-file=$LOGFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP"
 
 check_running() {
     [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
