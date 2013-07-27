@@ -5,6 +5,7 @@ define metacpan::user(
     $shell = "/bin/bash",
     $admin = false,
     $expire_password = true,
+    $source_metacpanrc = false,
 ) {
 
     user { $user:
@@ -62,6 +63,16 @@ define metacpan::user(
             content => "${export_path}\n";
     }
 
+    if $source_metacpanrc {
+      # Turn "/bin/(bash|zsh)" into "/home/$user/.${1}rc".
+      $shell_rc_file = regsubst($shell, '^(?:.+?/)?([^/]+)$', "$path/$user/.\\1rc")
+      line { $shell_rc_file:
+        ensure  => present,
+        line    => "source $path/$user/.metacpanrc",
+        require => User[$user],
+      }
+    }
+
     # Sort out ssh file, need dir first
     file{ "$path/$user/.ssh":
         owner  => $user,
@@ -109,6 +120,7 @@ class metacpan::user::admins {
             require  => Package["byobu"];
         olaf:
             admin    => true,
+            source_metacpanrc => true,
             fullname => "Olaf Alders <olaf.alders@gmail.com>";
         rafl:
             admin    => true,
@@ -120,6 +132,7 @@ class metacpan::user::admins {
             fullname => "Chris Nehren";
         rwstauner:
             admin    => true,
+            source_metacpanrc => true,
             fullname => "Randy Stauner";
     }
 }
