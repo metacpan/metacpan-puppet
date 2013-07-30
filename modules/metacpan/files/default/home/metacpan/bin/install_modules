@@ -25,9 +25,22 @@ function su_cpanm () {
 if echo "$*" | grep -qE '^(--installdeps)?[[:space:]]+\.$'; then
   # TODO: --show-deps may be deprecated so we should find another way to do this
 
-  # set positional parameters to the list of modules
-  eval set -- `su_cpanm metacpan --showdeps . 2> /dev/null`
+  # Ensure we check deps as the same user that owns the directory
+  # in case it needs to write files (like a Makefile).
+  # On the server this will be 'metacpan' but on the vagrant vm it's a shared
+  # folder so it will be 'vagrant'.
+  dir_owner="`stat -c '%U' .`"
 
+  # Use -l to quiet large warning about not having permission for a system
+  # install (since we're executing this as an unprivileged user).
+  # We're not actually going to install anything, but this is better than
+  # doing '2> /dev/null' which hides any useful debugging info.
+  cpanm_args='-l /tmp/perl5'
+
+  # set positional parameters to the list of modules
+  eval set -- `su_cpanm "${dir_owner:-metacpan}" $cpanm_args --showdeps .`
+
+  # Check that we determined a list of modules to install.
   if [[ $# -eq 0 ]]; then
     echo 'Nothing to install' 1>&2
     exit;
