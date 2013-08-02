@@ -36,9 +36,6 @@ define metacpan::user(
         }
     }
 
-    # Where perl lives
-    $export_path = "export PATH=${perlbin}:\$PATH"
-
     # Set up user
     file {
         # Copy the whole of the users bin dir
@@ -60,7 +57,7 @@ define metacpan::user(
             owner   => $user,
             group   => $user,
             mode    => 0700,
-            content => "${export_path}\n";
+            content => template("metacpan/user/metacpanrc.erb");
     }
 
     if $source_metacpanrc {
