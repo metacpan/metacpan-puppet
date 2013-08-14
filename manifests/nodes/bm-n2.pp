@@ -6,7 +6,7 @@ node bm-n2 {
     include metacpan::exim
     include metacpan::user::admins
     include metacpan::cron::api
-    include metacpan::cron::cleanupsource
+    include metacpan::cron::clean_up_source
     include metacpan::web::vmbox
 
     # Only need this on live really atm
