@@ -20,6 +20,20 @@ define metacpan::cron(
   }
 }
 
+class metacpan::cron::cleanupsource {
+# Cleanup metacpan's source dir so it doesn't max out
+  cron {
+      "metacpan_cleanupsource":
+          user        => 'metacpan',
+          command     => "find /var/tmp/metacpan/source/ -mindepth 2 -maxdepth 2 -type d -mtime +215 | head -20000 | xargs rm -rf",
+          hour        => '3',
+          minute      => '22',
+          ensure      => "present";
+  }
+
+
+}
+
 class metacpan::cron::api {
 
     metacpan::cron {
