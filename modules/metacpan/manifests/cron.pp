@@ -25,7 +25,7 @@ class metacpan::cron::clean_up_source {
   cron {
       "metacpan_clean_up_source":
           user        => 'metacpan',
-          command     => "find /var/tmp/metacpan/source/ -mindepth 2 -maxdepth 2 -type d -mtime +215 | head -20000 | xargs rm -rf",
+          command     => "find /var/tmp/metacpan/source/ -mindepth 2 -maxdepth 2 -type d -mtime +175 | head -50000 | xargs rm -rf",
           hour        => '3',
           minute      => '22',
           ensure      => "present";
