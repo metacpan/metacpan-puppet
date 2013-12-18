@@ -10,7 +10,7 @@ class metacpan::web::cpan {
 	file { "/etc/nginx/conf.d/cpan.metacpan.org.d/cdn-fastly.conf":
 		ensure => file,
 		source => ["puppet:///modules/metacpan/www/cpan.conf"],
-		require => File["/etc/nginx/conf.d/cpan.metacpan.d"],
+		require => File["/etc/nginx/conf.d/cpan.metacpan.org.d"],
 	}
 
 }
