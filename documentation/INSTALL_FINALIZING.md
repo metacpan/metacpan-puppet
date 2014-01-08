@@ -10,8 +10,8 @@ correctly. The very first time it will take quite a while to run
 
 Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
 
-# Copy http certificates (for the live servers)
-    Copy /home/metacpan/certs directory from existing machine
+# Copy credentials (including http certificates for the live servers)
+    Copy /home/metacpan/credentials directory from existing machine
 
 # Create or update repositories: www, api and others
 
