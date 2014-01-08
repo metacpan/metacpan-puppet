@@ -131,6 +131,10 @@ class metacpan::user::admins {
             admin    => true,
             source_metacpanrc => true,
             fullname => "Randy Stauner";
+        trs:
+            admin    => true,
+            source_metacpanrc => true,
+            fullname => "Thomas Sibley <tsibley@cpan.org>";
     }
 }
 
