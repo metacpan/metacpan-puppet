@@ -6,7 +6,7 @@ class npm {
     command => "curl https://npmjs.org/install.sh | sh",
     path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
     cwd => "/tmp",
-    onlyif => "/usr/bin/test !-f /usr/local/bin/npm",
+    onlyif => "test ! -f /usr/local/bin/npm",
     require => [ Exec["nodejs"] ]
   }
 
