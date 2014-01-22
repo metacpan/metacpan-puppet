@@ -13,5 +13,8 @@ node bm-n2 {
     # probably going to be replaced by Mo's JS version
     include metacpan::web::explorer
 
+    include metacpan::web::bootstrap
+
+
     elasticsearch { "0.20.2": memory  => 18000 }
 }
