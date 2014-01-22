@@ -7,8 +7,8 @@ class metacpan::web::bootstrap {
 		vhost    => "bootstrap.metacpan.org",
 		location => "",
 	}
-	startserver { "metacpan-boostrap":
-		root    => "/home/metacpan/boostrap.metacpan.org",
+	startserver { "metacpan-bootstrap":
+		root    => "/home/metacpan/bootstrap.metacpan.org",
 		perlbin => $perlbin,
         port    => 5032,
 	}->
