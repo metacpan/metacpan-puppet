@@ -15,7 +15,7 @@ class metacpan::configs {
     file { "/etc/resolv.conf":
             source => "puppet:///modules/metacpan/default/etc/resolv.conf",
     }
-    
+
     package { apticron: ensure => present }->
     file { "/etc/apticron/apticron.conf":
             source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",

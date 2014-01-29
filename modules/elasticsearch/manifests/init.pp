@@ -17,7 +17,7 @@ define elasticsearch(
             shell   => "/bin/bash",
             gid     => $user,
     }->
-    
+
 
     file {
         "/var/elasticsearch":
@@ -31,7 +31,7 @@ define elasticsearch(
             owner  => $user,
             group  => $user,
             ensure => directory;
-                
+
         "/etc/security/limits.d/elasticsearch":
             source => "puppet:///modules/elasticsearch/etc/security/elasticsearch";
     }->
@@ -40,7 +40,7 @@ define elasticsearch(
         ensure => present,
         line   => "session required pam_limits.so",
     }
-        
+
     exec {
         "es-download-and-extract-$version":
             cwd     => $path,
@@ -50,7 +50,7 @@ define elasticsearch(
             creates => "$path/$extracted",
             require => File[ "$path" ];
     }->
-    
+
     file {
         # Install the service folder downloaded from (f24dc18)
         # https://github.com/elasticsearch/elasticsearch-servicewrapper
@@ -77,7 +77,7 @@ define elasticsearch(
             ensure  => link,
             require => File[ "$path/$extracted/bin/service"],
             target  => "$opt/bin/service/elasticsearch";
-                       
+
         # make sure config files are sorted
         "$es_path/config/elasticsearch.yml":
             owner   => $user,
@@ -87,19 +87,19 @@ define elasticsearch(
             owner   => $user,
             group   => $user,
             content => template('elasticsearch/service/elasticsearch_conf.erb');
-            
+
     }->
-    
+
     # If the symlink changes, or the init.d is missing, run the installer
     exec {
         "update-service-elasticsearch":
             cwd       => $opt,
             command   => "$opt/bin/service/elasticsearch install",
             creates   => "/etc/init.d/elasticsearch",
-            require   => File[ "$path/$extracted/bin/service"], 
+            require   => File[ "$path/$extracted/bin/service"],
             subscribe => File[ "/opt/elasticsearch" ];
     }->
-    
+
     package { "openjdk-6-jre": ensure => 'present' }->
     service{ "elasticsearch":
         hasstatus  => true,
@@ -112,7 +112,7 @@ define elasticsearch(
             File["$es_path/bin/service/elasticsearch.conf"]
         ],
     }->
-    
+
     # Clean out old log files
     cron {
         "elastic_cron_delete":
@@ -122,7 +122,5 @@ define elasticsearch(
             minute      => 0,
             ensure      => "present";
     }
-    
-    
-    
+
 }
