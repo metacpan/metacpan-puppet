@@ -1,20 +1,20 @@
 class metacpan::packages {
-	# Editors
-	package { vim: ensure => present }
+    # Editors
+    package { vim: ensure => present }
 
-	# System Tools
-	package { curl: ensure => present }
-	package { wget: ensure => present }
-	package { lynx: ensure => present }
-	package { mtr: ensure => present }
-	package { bzip2: ensure => present }
-	package { diffutils: ensure => present }
+    # System Tools
+    package { bzip2: ensure => present }
+    package { curl: ensure => present }
+    package { diffutils: ensure => present }
+    package { lynx: ensure => present }
+    package { mtr: ensure => present }
+    package { wget: ensure => present }
 
     package { htop: ensure => present }
+    package { locate: ensure => present }
     package { psmisc: ensure => present } # killall pstree fuser commands
     package { rsync: ensure => present }
     package { screen: ensure => present }
-    package { locate: ensure => present }
 
     # ensure locate actually works after install
     # comment this out to save a few seconds on initial install
@@ -25,23 +25,25 @@ class metacpan::packages {
         refreshonly => true,
     }
 
-    package { sudo: ensure => present }
-    package { less: ensure => present }
-    package { sysstat: ensure => present }
-    package { whois: ensure => present }
     package { ack-grep: ensure => present }
-    package { tree: ensure => present }
+    package { less: ensure => present }
     package { mosh: ensure => present }
+    package { tig: ensure => present }
+    package { sudo: ensure => present }
+    package { sysstat: ensure => present }
+    package { tree: ensure => present }
+    package { whois: ensure => present }
 
     package { ntp: ensure => present }
     # package { exim: ensure => present } # TODO: FIX
 
     # Stuff for firewall / security
-    package { iptables: ensure => installed }
     package { chkrootkit: ensure => present }
+    package { iptables: ensure => installed }
 
     # Euuu - nasty, remove
     package { nano: ensure => absent }
+
     package{ build-essential: ensure => present }
 
     case $operatingsystem {
@@ -52,6 +54,3 @@ class metacpan::packages {
       }
     }
 }
-
-
-
