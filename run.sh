@@ -6,9 +6,9 @@ find /etc/puppet -type f -exec chmod a+r {} \;
 # Make sure puppet is in our hosts file (on the local machine)
 if ! grep -q puppet "/etc/hosts"
 then
-	echo "Add the following line to your /etc/hosts file then re-run:"
-	echo "127.0.0.1    puppet"
-	exit
+    echo "Add the following line to your /etc/hosts file then re-run:"
+    echo "127.0.0.1    puppet"
+    exit
 fi
 
 cd /etc/puppet
@@ -18,15 +18,15 @@ cd /etc/puppet
 CERTNAME=$1
 if [ ! $CERTNAME ]
 then
-	CERTNAME=$(hostname -s)
-	echo "Assuming node $CERTNAME"
-	echo "Supply a node arg to override (dev, or one of the live machines: n1, n2..)"
+    CERTNAME=$(hostname -s)
+    echo "Assuming node $CERTNAME"
+    echo "Supply a node arg to override -- not required for vagrant (use n1 or n2 for one of the live machines)"
 fi
 
 # First run we need a default for the master to work inc autosign
 if [ ! -f "/etc/puppet/puppet.conf" ]
 then
-	cp /etc/puppet/puppet.conf.default /etc/puppet/puppet.conf
+    cp /etc/puppet/puppet.conf.default /etc/puppet/puppet.conf
 fi
 
 /etc/init.d/puppetmaster start
