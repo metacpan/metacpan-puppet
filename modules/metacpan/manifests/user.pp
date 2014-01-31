@@ -95,7 +95,7 @@ define metacpan::user(
             owner => "root",
             group => "root",
             mode => "440",
-            content => "$user   ALL = ALL";
+            content => "$user   ALL = (ALL) ALL";
         }
     }
 }
