@@ -29,7 +29,7 @@ env.names starman watcher
 #env.mysqlopts -u someuser
 
 [exim*]
-group mail
+user Debian-exim
 
 [cps*]
 user root
@@ -52,6 +52,3 @@ env.ports 5000 5001
 
 [elasticsearch_open_files]
 user elasticsearch
-
-[exim4_*]
-user Debian-exim
