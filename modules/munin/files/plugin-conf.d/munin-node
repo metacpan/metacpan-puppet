@@ -12,6 +12,9 @@
 #
 #
 
+[munin_stats]
+user munin
+
 [http_loadtime]
 env.target https://metacpan.org/recent
 
