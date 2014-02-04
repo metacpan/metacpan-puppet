@@ -142,6 +142,8 @@ class munin::web inherits munin-node {
     package { ['time']: ensure => present }
     # for nginx_request and nginx_status
     package { "libwww-perl": ensure => present }
+    # for elasticsearch_jvm_memory
+    package { "libjson-perl": ensure => present }
 
     munin-node::add_default_plugin {
         [
