@@ -18,7 +18,7 @@ if [ "$1" = "config" ]; then
 	exit 0
 fi
 
-NUMBER=`ls /srv/elasticsearch/metacpan_v1/nodes/0/indices/*/*/translog/* | wc -l`
-SIZE=`du -s /srv/elasticsearch/metacpan_v1/nodes/0/indices/*/*/translog/* | awk '{sum+=$1};END{print sum}'`
+NUMBER=`ls /var/elasticsearch/metacpan_v1/nodes/0/indices/*/*/translog/* | wc -l`
+SIZE=`du -s /var/elasticsearch/metacpan_v1/nodes/0/indices/*/*/translog/* | awk '{sum+=$1};END{print sum}'`
 echo "number.value $NUMBER"
 echo "size.value $SIZE"
