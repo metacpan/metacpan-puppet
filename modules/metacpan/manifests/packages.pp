@@ -1,6 +1,6 @@
 class metacpan::packages {
     # Editors
-    package { vim: ensure => present }
+    package { 'vim': ensure => present }
 
     # System Tools
     package { bzip2: ensure => present }
