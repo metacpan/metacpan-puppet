@@ -131,7 +131,7 @@ class metacpan::user::admins {
         rwstauner:
             admin    => true,
             source_metacpanrc => true,
-            fullname => "Randy Stauner";
+            fullname => 'Randy Stauner <rwstauner@cpan.org>';
         trs:
             admin    => true,
             source_metacpanrc => true,
