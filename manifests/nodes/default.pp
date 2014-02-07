@@ -3,6 +3,7 @@
 node default {
     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
     $apiworkers = 1
+    $wwwworkers = 3
 
     include metacpan
     include metacpan::ssh

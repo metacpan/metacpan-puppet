@@ -1,7 +1,7 @@
 
 
 class metacpan::web::vmbox {
-	
+
 	$user = 'metacpan'
 	file {
 	    # Copy vmbox.metacpan.org
@@ -12,7 +12,7 @@ class metacpan::web::vmbox {
 	        owner   => $user,
 	        group   => $user,
 	        mode    => '0644', # make everything readable
-	        source  => 
+	        source  =>
 	            "puppet:///modules/metacpan/default/home/metacpan/vmbox.metacpan.org",
 
 	}

@@ -1,6 +1,7 @@
 node bm-n2 {
     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
     $apiworkers = 10
+    $wwwworkers = 7
 
     include metacpan::munin
     include metacpan
@@ -14,9 +15,6 @@ node bm-n2 {
     # Only need this on live really atm
     # probably going to be replaced by Mo's JS version
     include metacpan::web::explorer
-
-    include metacpan::web::bootstrap
-
 
     elasticsearch { "0.20.2": memory  => 18000 }
 }

@@ -36,6 +36,7 @@ class metacpan::web::www {
         root    => "/home/metacpan/metacpan.org",
         perlbin => $perlbin,
         port    => 5001,
+        workers => $wwwworkers,
     }->
     service { "metacpan-www":
         ensure => running,
