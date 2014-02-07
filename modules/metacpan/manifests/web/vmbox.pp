@@ -29,6 +29,7 @@ class metacpan::web::vmbox {
 		root    => "/home/metacpan/vmbox.metacpan.org",
 		perlbin => $perlbin,
         port    => 5005,
+        workers => 2,
 	}->
 	service { "metacpan-vmbox":
 		ensure => running,
