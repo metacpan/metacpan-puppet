@@ -104,6 +104,7 @@ define metacpan::user(
 class metacpan::user::admins {
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
+    package { tmux:  ensure => present } # for rwstauner
     metacpan::user {
         leo:
             admin    => true,
@@ -130,11 +131,15 @@ class metacpan::user::admins {
         rwstauner:
             admin    => true,
             source_metacpanrc => true,
-            fullname => "Randy Stauner";
+            fullname => 'Randy Stauner <rwstauner@cpan.org>';
         trs:
             admin    => true,
             source_metacpanrc => true,
             fullname => "Thomas Sibley <tsibley@cpan.org>";
+        matthewt:
+            admin    => true,
+            source_metacpanrc => true,
+            fullname => "Matt S Trout <perl-stuff@trout.me.uk>";
     }
 }
 
