@@ -26,14 +26,19 @@ class metacpan::web::www {
         notify  => Service['nginx'],
     }
 
+    $app_root = '/home/metacpan/metacpan.org'
+
     nginx::proxy { "metacpan.org":
         target   => "http://localhost:5001",
         vhost    => "metacpan.org",
         location => "",
+        location_roots => {
+            '/static/' => "${app_root}/root",
+        },
     }
 
     startserver { "metacpan-www":
-        root    => "/home/metacpan/metacpan.org",
+        root    => $app_root,
         perlbin => $perlbin,
         port    => 5001,
         workers => $wwwworkers,
