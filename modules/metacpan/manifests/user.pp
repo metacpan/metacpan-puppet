@@ -140,6 +140,10 @@ class metacpan::user::admins {
             admin    => true,
             source_metacpanrc => true,
             fullname => "Matt S Trout <perl-stuff@trout.me.uk>";
+        haarg:
+            admin    => true,
+            source_metacpanrc => true,
+            fullname => "Graham Knop <haarg@haarg.org>";
     }
 }
 
