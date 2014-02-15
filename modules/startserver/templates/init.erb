@@ -53,7 +53,8 @@ if [ ! -d $APPDIR ]; then
     exit 1
 fi
 
-STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --preload-app $PSGIAPP --error-log=$LOGFILE"
+# do NOT use --preload-app option, causes problems on restart
+STARMAN="$DAEMON -- --port=$PORT --pid-file=$PIDFILE --status-file=$STATUSFILE --signal-on-hup=QUIT  --signal-on-term=QUIT -- $SERVER --workers $WORKERS --error-log=$LOGFILE"
 
 check_running() {
     [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1
@@ -127,7 +128,7 @@ restart() {
     log_daemon_msg "Restarting" $NAME
     echo ""
 
-    check_compile 
+    check_compile
     if [ $? != 0 ] ; then
         log_failure_msg "Error detected; not restarting."
         log_end_msg 1
