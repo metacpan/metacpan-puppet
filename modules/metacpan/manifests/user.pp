@@ -148,6 +148,10 @@ class metacpan::user::admins {
             admin    => true,
             source_metacpanrc => true,
             fullname => "Matthew Horsfall (alh) <wolfsage@gmail.com>";
+        ben:
+            admin    => true,
+            source_metacpanrc => true,
+            fullname => "Ben Hundley <ben@qbox.io>";
     }
 }
 
