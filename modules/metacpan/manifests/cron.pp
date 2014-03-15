@@ -21,7 +21,7 @@ define metacpan::cron(
 }
 
 class metacpan::cron::clean_up_source {
-# Cleanup metacpan's source dir so it doesn't max out
+# Clean up metacpan's source dir so it doesn't max out
   cron {
       "metacpan_clean_up_source":
           user        => 'metacpan',
@@ -30,9 +30,26 @@ class metacpan::cron::clean_up_source {
           minute      => '22',
           ensure      => "present";
   }
-
-
 }
+
+class metacpan::cron::restart_rrr_client {
+
+# BARBIE pointed out an issue where rrr_client misses arbitrary uploads. He and
+# ANDK have not been able to pinpoint the problem.  It's rare, but a restart of
+# the rrr-client causes it to pick up missed uploads.  It's possible that this
+# is the source of some of the issues we have with dists which are a) not
+# indexed and b) index cleanly once we trigger a manual indexing
+
+    cron {
+      'metacpan_restart_rrr_client':
+          user        => 'metacpan',
+          command     => '/etc/init.d/rrrclient-metacpan restart',
+          hour        => '3',
+          minute      => '30',
+          ensure      => 'present';
+  }
+}
+
 
 class metacpan::cron::api {
 
