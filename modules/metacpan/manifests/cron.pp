@@ -42,7 +42,7 @@ class metacpan::cron::restart_rrr_client {
 
     cron {
       'metacpan_restart_rrr_client':
-          user        => 'metacpan',
+          user        => 'root',
           command     => '/etc/init.d/rrrclient-metacpan restart',
           hour        => '3',
           minute      => '30',
