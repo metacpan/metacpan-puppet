@@ -48,4 +48,10 @@ class metacpan::web::www {
         enable => true,
         require => Service[ 'metacpan-api' ],
     }
+
+    file { '/home/metacpan/metacpan.org/root/static/sitemaps':
+        ensure => directory,
+        owner => 'metacpan',
+        group => 'metacpan',
+    }
 }

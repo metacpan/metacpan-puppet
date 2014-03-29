@@ -50,6 +50,16 @@ class metacpan::cron::restart_rrr_client {
   }
 }
 
+class metacpan::cron::sitemaps {
+   cron {
+      'metacpan_sitemaps':
+          user        => 'metacpan',
+          command     => '/home/metacpan/metacpan.org/bin/generate_sitemap.pl',
+          hour        => '2',
+          minute      => '30',
+          ensure      => 'present';
+  }
+}
 
 class metacpan::cron::api {
 
