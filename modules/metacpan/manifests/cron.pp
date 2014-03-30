@@ -43,7 +43,7 @@ class metacpan::cron::restart_rrr_client {
     cron {
       'metacpan_restart_rrr_client':
           user        => 'root',
-          command     => '/etc/init.d/rrrclient-metacpan restart',
+          command     => '/etc/init.d/rrrclient-metacpan restart > /tmp/restart-rrrclient.txt 2>&1',
           environment => [
             # On bm-n2 start-stop-daemon is in /sbin.
             'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
