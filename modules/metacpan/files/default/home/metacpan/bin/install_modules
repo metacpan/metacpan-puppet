@@ -38,7 +38,7 @@ if echo "$*" | grep -qE '^(--installdeps)?[[:space:]]+\.$'; then
   cpanm_args='-l /tmp/perl5'
 
   # set positional parameters to the list of modules
-  eval set -- `su_cpanm "${dir_owner:-metacpan}" $cpanm_args --showdeps .`
+  eval set -- `su_cpanm "${dir_owner:-metacpan}" $cpanm_args --installdeps --showdeps .`
 
   # Check that we determined a list of modules to install.
   if [[ $# -eq 0 ]]; then
