@@ -54,6 +54,22 @@ class metacpan::cron::restart_rrr_client {
   }
 }
 
+class metacpan::cron::daily_rsync {
+    # Catch up with any files we might have missed.
+    # Another job should find any unindexed releases this gets and index them.
+    # http://www.cpan.org/misc/how-to-mirror.html#rsync
+    cron {
+      'metacpan_daily_rsync':
+          user        => 'root',
+          # NOTE: No "--delete" arg since we're also a backpan.
+          # TODO: $metacpan::cpan_dir = '/var/cpan' ?
+          command     => 'sleep $(expr $RANDOM \% 7200); /usr/bin/rsync -a cpan-rsync.perl.org::CPAN /var/cpan/',
+          hour        => '4',
+          minute      => '40',
+          ensure      => 'present';
+  }
+}
+
 class metacpan::cron::sitemaps {
    cron {
       'metacpan_sitemaps':

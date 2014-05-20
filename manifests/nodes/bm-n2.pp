@@ -11,6 +11,7 @@ node bm-n2 {
     include metacpan::cron::api
     include metacpan::cron::clean_up_source
     include metacpan::cron::restart_rrr_client
+    include metacpan::cron::daily_rsync
     include metacpan::web::vmbox
 
     # Only need this on live really atm
