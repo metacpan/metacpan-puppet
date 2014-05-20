@@ -29,8 +29,14 @@ then
     cp /etc/puppet/puppet.conf.default /etc/puppet/puppet.conf
 fi
 
+if test -z "${USE_PUPPETD}"; then
+  puppet apply --verbose --show_diff --certname=$CERTNAME manifests/site.pp
+else
+
 /etc/init.d/puppetmaster start
 
 #git pull
 puppetd -t --certname=$CERTNAME
 /etc/init.d/puppetmaster stop
+
+fi
