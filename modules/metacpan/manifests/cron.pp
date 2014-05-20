@@ -60,7 +60,7 @@ class metacpan::cron::daily_rsync {
     # http://www.cpan.org/misc/how-to-mirror.html#rsync
     cron {
       'metacpan_daily_rsync':
-          user        => 'root',
+          user        => 'metacpan',
           # NOTE: No "--delete" arg since we're also a backpan.
           # TODO: $metacpan::cpan_dir = '/var/cpan' ?
           command     => 'sleep $(expr $RANDOM \% 7200); /usr/bin/rsync -a cpan-rsync.perl.org::CPAN /var/cpan/',
