@@ -1,4 +1,5 @@
 #!/bin/sh
+<%# vim: set syn=sh.eruby: %>
 
 #
 # FIXME: this needs to be converted to debian init style
@@ -15,6 +16,7 @@
 
 export PATH=<%= path%>:$PATH
 
+BIN='<%= bin %>'
 # Check for missing binaries (stale symlinks should not happen)
 # Note: Special treatment of stop for LSB conformance
 test -x $BIN || { echo "$BIN not installed"; 
