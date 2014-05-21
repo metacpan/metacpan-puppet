@@ -29,5 +29,14 @@ define metacpan::perl(
 
     # install cpanm
     perlbrew::install_cpanm { $version: }
+
+    # Use carton to handle project dependencies.
+    # Use Daemon::Control for simple init scripts.
+    -> perlbrew::install_module { [
+        'Carton',
+        'Daemon::Control',
+      ]:
+        perl => $version,
+    }
 }
 
