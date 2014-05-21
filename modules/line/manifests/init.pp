@@ -12,12 +12,12 @@ define line($file = $name, $line, $with = "", $ensure = 'present') {
             }
         }
         uncomment: {
-                exec { "/bin/sed -i -e'/${line}/s/#\+//' '${file}'" :
+                exec { "/bin/sed -i -e'/${line}/s/#\\+//' '${file}'" :
                     onlyif => "/bin/grep '${line}' '${file}' | /bin/grep '^#' | /usr/bin/wc -l"
                 }
         }
         comment: {
-            exec { "/bin/sed -i -e'/${line}/s/\(.\+\)$/#\1/' '${file}'" :
+            exec { "/bin/sed -i -e'/${line}/s/\\(.\\+\\)$/#\\1/' '${file}'" :
                         onlyif => "/usr/bin/test `/bin/grep '${line}' '${file}' | /bin/grep -v '^#' | /usr/bin/wc -l` -ne 0"
                 }
         }
