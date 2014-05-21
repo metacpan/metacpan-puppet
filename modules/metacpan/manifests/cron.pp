@@ -63,9 +63,9 @@ class metacpan::cron::daily_rsync {
           user        => 'metacpan',
           # NOTE: No "--delete" arg since we're also a backpan.
           # TODO: $metacpan::cpan_dir = '/var/cpan' ?
-          command     => 'sleep $(expr $RANDOM \% 7200); /usr/bin/rsync -a cpan-rsync.perl.org::CPAN /var/cpan/',
-          hour        => '4',
-          minute      => '40',
+          command     => '/usr/bin/rsync -a cpan-rsync.perl.org::CPAN /var/cpan/',
+          hour        => '23',
+          minute      => '13',
           ensure      => 'present';
   }
 }
