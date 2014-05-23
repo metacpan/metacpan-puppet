@@ -32,9 +32,6 @@ class metacpan::web::www {
         target   => "http://localhost:5001",
         vhost    => "metacpan.org",
         location => "",
-        location_roots => {
-            '/static/' => "${app_root}/root",
-        },
     }
 
     startserver { "metacpan-www":
