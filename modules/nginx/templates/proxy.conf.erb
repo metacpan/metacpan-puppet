@@ -4,6 +4,7 @@ rewrite ^(<%= @location %>)$ $1/ permanent;
   <% @location_roots.each_pair do |loc, root| %>
   location <%= loc %> {
     root <%= root %>;
+    add_header Surrogate-Control max-age=86400;
   }
   <% end %>
 <% end -%>
