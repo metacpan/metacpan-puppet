@@ -8,6 +8,7 @@ class metacpan {
 
     include lessc
     include js-beautify
+    include cssunminifier
 
     metacpan::perl {  $perl: }
     include metacpan::ssh
