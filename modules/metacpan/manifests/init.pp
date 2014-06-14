@@ -7,6 +7,7 @@ class metacpan {
     }
 
     include lessc
+    include js-beautify
 
     metacpan::perl {  $perl: }
     include metacpan::ssh
