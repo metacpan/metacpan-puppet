@@ -53,4 +53,16 @@ class metacpan::packages {
         Package{ provider => apt }
       }
     }
+
+    # Install a few utilities through node/npm.
+    npm::install {
+        [
+            'js-beautify',
+            'cssunminifier',
+        ]:
+    }
+    npm::install { 'less':
+      exe => 'lessc',
+    }
+
 }

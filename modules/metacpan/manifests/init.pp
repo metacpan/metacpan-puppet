@@ -6,10 +6,6 @@ class metacpan {
         source_metacpanrc => true,
     }
 
-    include lessc
-    include js-beautify
-    include cssunminifier
-
     metacpan::perl {  $perl: }
     include metacpan::ssh
     include metacpan::configs
