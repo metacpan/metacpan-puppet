@@ -7,32 +7,32 @@
 # Start/stop the starman SERVER.
 #
 ### BEGIN INIT INFO
-# Provides:          <%= filename %>
+# Provides:          <%= @filename %>
 # Required-Start:    $ALL
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: <%= description %>
+# Short-Description: <%= @description %>
 ### END INIT INFO
 
-export PATH=<%= perlbin %>:$PATH
+export PATH=<%= @perlbin %>:$PATH
 
 # psgi defaults
-APPDIR="<%= root %>"
+APPDIR="<%= @root %>"
 PSGIAPP="$APPDIR/app.psgi"
 
 # starman defaults
-NAME=<%= filename %>
-SERVER=<%= perlbin %>/starman
-DAEMON=<%= perlbin %>/start_server
-WORKERS=<%= workers %>
-PORT=<%= port %>
+NAME=<%= @filename %>
+SERVER=<%= @perlbin %>/starman
+DAEMON=<%= @perlbin %>/start_server
+WORKERS=<%= @workers %>
+PORT=<%= @port %>
 PIDDIR=/var/run/startserver
 PIDFILE=$PIDDIR/${NAME}.pid
 STATUSFILE=$PIDDIR/${NAME}.status
 USER=metacpan
 GROUP=users
-LOGFILE=<%= logdir %>/${NAME}.log
+LOGFILE=<%= @logdir %>/${NAME}.log
 
 test -f ${SERVER} || exit 0
 

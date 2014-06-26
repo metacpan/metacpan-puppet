@@ -1,20 +1,20 @@
 #!/bin/sh
 #
 ### BEGIN INIT INFO
-# Provides:          <%= filename %>
+# Provides:          <%= @filename %>
 # Required-Start:    $ALL
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: <%= description %>
+# Short-Description: <%= @description %>
 ### END INIT INFO
 
 # Check for missing binaries (stale symlinks should not happen)
 # Note: Special treatment of stop for LSB conformance
-export PATH=<%= perlbin %>:$PATH
-WATCHERBIN=<%= app_root %>/bin/metacpan
-PIDFILE=/var/run/<%= filename %>.pid
-ROOT=<%= app_root %>
+export PATH=<%= @perlbin %>:$PATH
+WATCHERBIN=<%= @app_root %>/bin/metacpan
+PIDFILE=/var/run/<%= @filename %>.pid
+ROOT=<%= @app_root %>
 USER=metacpan
 GROUP=users
 
