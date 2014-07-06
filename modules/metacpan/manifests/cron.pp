@@ -101,14 +101,18 @@ class metacpan::cron::api {
             cmd => 'latest 2&>1 > /dev/null',
             minute => '30';
         "backup_favorite":
-            cmd => 'backup --purge --index cpan --type favorite',
+            cmd => 'backup --index cpan --type favorite',
             minute => '22';
         "backup_author":
-            cmd => 'backup --purge --index cpan --type author',
+            cmd => 'backup --index cpan --type author',
             minute => '28';
         "backup_user":
-            cmd => 'backup --purge --index user',
+            cmd => 'backup --index user',
             minute => '25';
+        "backup_purge":
+            cmd => 'backup --purge',
+            minute => '25',
+            hour => '1';
         "release":
             cmd => 'release --skip --age 25 --detect_backpan --latest /home/metacpan/CPAN/authors/id/',
             hour => '0',
