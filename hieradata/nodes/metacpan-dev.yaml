@@ -1,0 +1,6 @@
+
+wibble: 'from nodes/metacpan-dev.yaml'
+
+starman:
+  apiworkers: '5'
+  wwwworkers: '5'

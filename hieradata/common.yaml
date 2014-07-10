@@ -1,0 +1,7 @@
+---
+
+# Defaults, mostly for dev boxes
+
+starman:
+  apiworkers: '2'
+  wwwworkers: '2'
