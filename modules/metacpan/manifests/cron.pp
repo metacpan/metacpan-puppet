@@ -102,12 +102,15 @@ class metacpan::cron::api {
             minute => '30';
         "backup_favorite":
             cmd => 'backup --index cpan --type favorite',
+            hour => 2,
             minute => '22';
         "backup_author":
             cmd => 'backup --index cpan --type author',
+            hour => 2,
             minute => '28';
         "backup_user":
             cmd => 'backup --index user',
+            hour => 2,
             minute => '25';
         "backup_purge":
             cmd => 'backup --purge',
