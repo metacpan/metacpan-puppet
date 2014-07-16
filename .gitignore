@@ -1,3 +1,4 @@
+.DS_Store
 puppet.conf
 ssl/*
 !ssl/vagrant.txt

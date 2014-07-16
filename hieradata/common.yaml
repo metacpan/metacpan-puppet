@@ -1,6 +1,7 @@
 ---
 
-# Defaults, mostly for dev boxes
+# Defaults
+perl::version: '5.16.2'
 
 starman:
   apiworkers: '2'

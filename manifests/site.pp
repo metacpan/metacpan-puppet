@@ -31,8 +31,10 @@ node bm-n2 {
 
 node default {
 
-$foo = hiera('wibble', 33)
-notice("The value is... ${foo}")
+
+  perl::module{'Carton':
+    module => 'Carton'
+  }
 
 #    $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
 #    $apiworkers = 1
