@@ -12,11 +12,13 @@ define perl::module (
     $perl_version = hiera('perl::version', '5.16.2'),
 ) {
 
+  require stdlib
+
   if $module == 'notset' {
     warn("You did not set a module for ${name} when calling perl::module")
   } else {
 
-    perl::build { $perl_version: }
+    ensure_resource('perl::build', $perl_version )
 
     $bin_dir = "/opt/perl-${perl_version}/bin"
     $perldoc = "${bin_dir}/perldoc"
@@ -28,7 +30,7 @@ define perl::module (
       command     => "${cpanm} ${module}",
       cwd         => '/tmp',
       path        => ["${bin_dir}", '/bin', '/usr/bin', '/usr/local/bin'],
-      timeout     => 100,
+      timeout     => 300,
       require     => Exec["perl_cpanm_${perl_version}"]
     }
   }

@@ -36,6 +36,10 @@ node default {
     module => 'Carton'
   }
 
+ perl::module{'FileRsyncMirrorRecent':
+  module => 'File::Rsync::Mirror::Recent'
+}
+
 #    $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
 #    $apiworkers = 1
 #    $wwwworkers = 3
