@@ -1,44 +1,56 @@
-node bm-n1 {
-  include metacpan::packages
-  include metacpan::exim
-    include metacpan::user::admins
+# Default file attributes - this is done as a security precaution
+
+File {
+  owner => 'root',
+  group => 'root',
+  mode  => '0644',
 }
 
-node bm-n2 {
-    $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
-    $apiworkers = 10
-    $wwwworkers = 7
+import 'nodes/*.pp'
 
-    include metacpan::munin
-    include metacpan
-    include metacpan::rrrclient
-    include metacpan::exim
-    include metacpan::user::admins
-    include metacpan::cron::api
-    include metacpan::cron::clean_up_source
-    include metacpan::cron::restart_rrr_client
-    include metacpan::cron::daily_rsync
-    include metacpan::web::vmbox
-
-    # Only need this on live really atm
-    # probably going to be replaced by Mo's JS version
-    include metacpan::web::explorer
-
-    elasticsearch { "0.20.2": memory  => 18000 }
-}
-
-# dev server
-
-node default {
-
-
-  perl::module{'Carton':
-    module => 'Carton'
-  }
-
- perl::module{'FileRsyncMirrorRecent':
-  module => 'File::Rsync::Mirror::Recent'
-}
+#
+#
+# node bm-n1 {
+#   include metacpan::packages
+#   include metacpan::exim
+#     include metacpan::user::admins
+# }
+#
+# node bm-n2 {
+#     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
+#     $apiworkers = 10
+#     $wwwworkers = 7
+#
+#     include metacpan::munin
+#     include metacpan
+#     include metacpan::rrrclient
+#     include metacpan::exim
+#     include metacpan::user::admins
+#     include metacpan::cron::api
+#     include metacpan::cron::clean_up_source
+#     include metacpan::cron::restart_rrr_client
+#     include metacpan::cron::daily_rsync
+#     include metacpan::web::vmbox
+#
+#     # Only need this on live really atm
+#     # probably going to be replaced by Mo's JS version
+#     include metacpan::web::explorer
+#
+#     elasticsearch { "0.20.2": memory  => 18000 }
+# }
+#
+# # dev server
+#
+# node default {
+#
+#
+#   perl::module{'Carton':
+#     module => 'Carton'
+#   }
+#
+#  perl::module{'FileRsyncMirrorRecent':
+#   module => 'File::Rsync::Mirror::Recent'
+# }
 
 #    $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
 #    $apiworkers = 1
