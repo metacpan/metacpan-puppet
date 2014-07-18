@@ -9,6 +9,8 @@ class metacpan {
     include metacpan::perl
     include metacpan::ssh
     include metacpan::configs
+    include metacpan::exim
+
     # include metacpan::web
     include metacpan::watcher
 

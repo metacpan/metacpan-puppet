@@ -8,24 +8,11 @@ File {
 
 import 'nodes/*.pp'
 
-#
-#
-# node bm-n1 {
-#   include metacpan::packages
-#   include metacpan::exim
-#     include metacpan::user::admins
-# }
-#
 # node bm-n2 {
-#     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
-#     $apiworkers = 10
-#     $wwwworkers = 7
 #
 #     include metacpan::munin
-#     include metacpan
 #     include metacpan::rrrclient
 #     include metacpan::exim
-#     include metacpan::user::admins
 #     include metacpan::cron::api
 #     include metacpan::cron::clean_up_source
 #     include metacpan::cron::restart_rrr_client
@@ -36,28 +23,11 @@ import 'nodes/*.pp'
 #     # probably going to be replaced by Mo's JS version
 #     include metacpan::web::explorer
 #
-#     elasticsearch { "0.20.2": memory  => 18000 }
 # }
 #
 # # dev server
 #
 # node default {
-#
-#
-#   perl::module{'Carton':
-#     module => 'Carton'
-#   }
-#
-#  perl::module{'FileRsyncMirrorRecent':
-#   module => 'File::Rsync::Mirror::Recent'
-# }
-
-#    $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
-#    $apiworkers = 1
-#    $wwwworkers = 3
-
-#    include metacpan
-#    include metacpan::ssh
 #    elasticsearch { "0.20.2":
 #      # Give es 70% of the available memory.
       # As of 20140526 the 'facter' installed on the vm is too old to have
