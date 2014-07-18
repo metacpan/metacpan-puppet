@@ -1,0 +1,3 @@
+class metacpan::role::production {
+
+}

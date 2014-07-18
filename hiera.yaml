@@ -5,4 +5,5 @@
   :datadir: /etc/puppet/hieradata
 :hierarchy:
   - "nodes/%{hostname}"
+  - "env/%{env}"
   - common

@@ -1,0 +1,3 @@
+class metacpan::role::developer {
+
+}
