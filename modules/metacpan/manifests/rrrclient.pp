@@ -1,4 +1,6 @@
-class metacpan::rrrclient {
+class metacpan::rrrclient(
+  $perl_version = hiera('perl::version', '5.16.2'),
+) {
     file { "/var/cpan":
         ensure  => directory,
         owner   => metacpan,
@@ -12,7 +14,7 @@ class metacpan::rrrclient {
         group  => metacpan,
     }->
     rrrclient { metacpan:
-        perl   => $metacpan::perl,
+        perl   => $perl_version,
         target => "/var/cpan",
     }->
     service { "rrrclient-metacpan":

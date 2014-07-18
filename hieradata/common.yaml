@@ -3,6 +3,5 @@
 # Defaults
 perl::version: '5.16.2'
 
-starman:
-  apiworkers: '2'
-  wwwworkers: '2'
+# We don't want watcher enabled
+metacpan::watcher::enable: false

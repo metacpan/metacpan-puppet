@@ -5,8 +5,8 @@ define metacpan::cron(
   $hour    = "*",
   $weekday = "*",
   $ensure  = present,
-  $metacpan = '/home/metacpan/api.metacpan.org/bin/run bin/metacpan',
   $path_env = "PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin",
+  $path_env = "PATH=/opt/perls-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin",
 ) {
   cron {
       "metacpan_$name":
@@ -126,4 +126,3 @@ class metacpan::cron::api {
             hour => '3';
     }
 }
-

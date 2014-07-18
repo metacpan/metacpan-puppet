@@ -1,6 +1,4 @@
-define metacpan::perl(
-    $version = $name,
-) {
+class metacpan::perl() {
     # This assumes Debian.  As of 20140624 we have 6 on bm-n2 and 7 on the vm.
     $gmp_dev_pkg = $lsbmajdistrelease ? {
       6       => 'libgmp3-dev',
@@ -9,12 +7,12 @@ define metacpan::perl(
     }
 
     # Packages we need to build stuff
-    package { 
+    package {
         # for https
         'libssl-dev': ensure => present;
         # for gzip
         'zlib1g-dev': ensure => present;
-        # for Test::XPath 
+        # for Test::XPath
         'libxml2-dev': ensure => present;
         # for XML::Parser (used by Test::XPath)
         'libexpat1-dev': ensure => present;
@@ -22,19 +20,15 @@ define metacpan::perl(
         'libcurl4-openssl-dev': ensure => present;
         # Net::OpenID::Consumer depends on Crypt::DH::GMP.
         $gmp_dev_pkg: ensure => present;
-    }->
-
-    # install the perl
-    perlbrew::build { $version: }->
-
-    # install cpanm
-    perlbrew::install_cpanm { $version: }
-
-    # Use carton to handle project dependencies.
-    -> perlbrew::install_module { [
-        'Carton',
-      ]:
-        perl => $version,
     }
-}
 
+    # # install cpanm
+    # perlbrew::install_cpanm { $version: }
+    #
+    # # Use carton to handle project dependencies.
+    # -> perlbrew::install_module { [
+    #     'Carton',
+    #   ]:
+    #     perl => $version,
+    # }
+}
