@@ -36,29 +36,34 @@ define metacpan::user(
         }
     }
 
-    # Set up user
-    file {
-        # Copy the whole of the users bin dir
-        "$path/$user/bin":
-            ensure  => directory,
-            require => User[$user],
-            recurse => true,
-            owner   => $user,
-            group   => $user,
-            mode    => '0700', # make everything executible
-            source  => [
-                    "puppet:///modules/metacpan/default/$path/$user/bin",
-                    "puppet:///modules/metacpan/default/$path/default/bin",
-            ];
+    if( $user == 'metacpan') {
 
-        # Little RC file to setup the env
+      # Set up user
+      file {
+          # Copy the whole of the users bin dir
+          "$path/$user/bin":
+              ensure  => directory,
+              require => User[$user],
+              recurse => true,
+              owner   => $user,
+              group   => $user,
+              mode    => '0700', # make everything executible
+              source  => [
+                      "puppet:///modules/metacpan/default/$path/$user/bin",
+                      "puppet:///modules/metacpan/default/$path/default/bin",
+              ];
 
-        "$path/$user/.metacpanrc":
-            owner   => $user,
-            group   => $user,
-            mode    => 0700,
-            content => template("metacpan/user/metacpanrc.erb");
-    }
+          # Little RC file to setup the env
+
+          "$path/$user/.metacpanrc":
+              owner   => $user,
+              group   => $user,
+              mode    => 0700,
+              content => template("metacpan/user/metacpanrc.erb");
+      }
+
+  }
+
 
     if $source_metacpanrc {
       # Turn "/bin/(bash|zsh)" into "/home/$user/.${1}rc".
@@ -156,4 +161,3 @@ class metacpan::user::admins {
             fullname => "Ben Hundley <ben@qbox.io>";
     }
 }
-
