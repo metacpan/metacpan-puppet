@@ -53,14 +53,18 @@ define metacpan::user(
                       "puppet:///modules/metacpan/default/$path/default/bin",
               ];
 
-          # Little RC file to setup the env
-
-          "$path/$user/.metacpanrc":
-              owner   => $user,
-              group   => $user,
-              mode    => 0700,
-              content => template("metacpan/user/metacpanrc.erb");
       }
+
+  }
+
+  file {
+    # Little RC file to setup the env
+
+    "$path/$user/.metacpanrc":
+        owner   => $user,
+        group   => $user,
+        mode    => 0700,
+        content => template("metacpan/user/metacpanrc.erb");
 
   }
 
@@ -130,9 +134,6 @@ class metacpan::user::admins {
             fullname => "Florian Ragwitz <rafl@perldition.org>",
             shell    => "/bin/zsh",
             require  => Package["zsh"];
-        apeiron:
-            admin    => true,
-            fullname => "Chris Nehren";
         rwstauner:
             admin    => true,
             source_metacpanrc => true,
