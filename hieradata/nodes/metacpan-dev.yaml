@@ -1,5 +1,7 @@
 ---
 
+# elasticsearch::enable: true
+
 
 wibble: 'from nodes/metacpan-dev.yaml'
 

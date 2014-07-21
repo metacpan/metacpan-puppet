@@ -5,3 +5,8 @@ perl::version: '5.16.2'
 
 # We don't want watcher enabled
 metacpan::watcher::enable: false
+
+# Elasticsearch basic options
+elasticsearch::version: 1.2.2
+elasticsearch::memory: 80
+elasticsearch::enable: false

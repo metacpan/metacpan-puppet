@@ -4,8 +4,6 @@ define perl::build (
     $ensure   = 'present',
 ) {
 
-  require perl::directories
-
   $dir = "/opt/perl-${name}"
   $bin_dir = "${dir}/bin"
 
