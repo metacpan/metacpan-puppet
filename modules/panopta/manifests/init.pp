@@ -5,6 +5,6 @@ class panopta() {
   require panopta::packages
 
   # To get the cert run
-  # python /usr/bin/panopta_agent/panopta_agent.py status
+  # python /usr/bin/panopta-agent/panopta_agent.py
 
 }
