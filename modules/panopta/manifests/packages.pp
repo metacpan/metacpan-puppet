@@ -4,8 +4,8 @@ class panopta::packages() {
       command => "/usr/bin/apt-get update",
   }
 
-  package{ "panopta_agent":
-    require  => [ File['/etc/apt/sources.list.d/panopta'], Exec['apt-get update'] ],
+  package{ "panopta-agent":
+    require  => [ File['/etc/apt/sources.list.d/panopta.list'], Exec['apt-get update'] ],
   }
 
 }
