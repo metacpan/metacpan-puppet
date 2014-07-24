@@ -1,7 +1,5 @@
 node bm-n2 {
     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
-    $apiworkers = 10
-    $wwwworkers = 7
 
     include metacpan::munin
     include metacpan

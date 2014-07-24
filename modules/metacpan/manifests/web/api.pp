@@ -17,14 +17,23 @@ class metacpan::web::api {
 		location => "/v0",
 	}
 
-	startserver { "metacpan-api":
-		root    => "/home/metacpan/api.metacpan.org",
-		perlbin => $perlbin,
-		workers => $apiworkers,
-	}->
-	service { "metacpan-api":
-		ensure => running,
-		enable => true,
-		require => Service[ 'elasticsearch' ],
-	}
+    $app_root = '/home/metacpan/api.metacpan.org'
+
+    $old_service = 'metacpan-api'
+    startserver::remove { $old_service: }
+
+    # NOTE: The www service uses this $service var:
+    $service = 'api-metacpan-org'
+
+    # NOTE: Config for workers and port are set in bin/daemon-control.pl.
+    # $perlbin isn't needed because the script sources the metacpanrc file.
+    daemon_control { $service:
+        root    => $app_root,
+        require => [
+            # Ensure the old service removes itself so we can use the port.
+            Startserver::Remove[$old_service],
+            # API needs ES.
+            Service[ 'elasticsearch' ],
+        ],
+    }
 }
