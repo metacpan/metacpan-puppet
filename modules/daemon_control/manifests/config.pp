@@ -19,4 +19,11 @@ class daemon_control::config (
         owner  => $user,
     }
 
+    file { "/etc/logrotate.d/${basename}":
+        ensure  => file,
+        content => template("${module_name}/logrotate.conf.erb"),
+        # logrotate requires these to be owned by root.
+        owner   => 'root',
+        group   => 'root',
+    }
 }
