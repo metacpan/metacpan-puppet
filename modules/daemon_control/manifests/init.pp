@@ -5,6 +5,7 @@ define daemon_control (
     $service_enable = true,
     $user           = 'metacpan',
 ) {
+    include daemon_control::deps
 
     $init     = "/etc/init.d/${service}"
     $env_file = '/home/metacpan/.metacpanrc'
