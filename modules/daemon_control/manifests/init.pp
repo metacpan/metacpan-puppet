@@ -5,11 +5,36 @@ define daemon_control (
     $service_enable = true,
     $user           = 'metacpan',
 ) {
+    include daemon_control::config
     include daemon_control::deps
 
     $init     = "/etc/init.d/${service}"
     $env_file = '/home/metacpan/.metacpanrc'
     $script   = "${root}/bin/daemon-control.pl"
+
+    if $daemon_control::config::link_dirs {
+        $link_root = "${root}/var"
+        $log_dir   = "${daemon_control::config::log_dir}/${service}"
+        $run_dir   = "${daemon_control::config::run_dir}/${service}"
+
+        file { [$log_dir, $run_dir]:
+            ensure => directory,
+            owner  => $user,
+            mode   => '0755',
+            before => Service[$service],
+        }
+
+        file { "${link_root}/log":
+            ensure => link,
+            target => $log_dir,
+            before => Service[$service],
+        }
+        file { "${link_root}/run":
+            ensure => link,
+            target => $run_dir,
+            before => Service[$service],
+        }
+    }
 
     file { $init:
         ensure  => file,
