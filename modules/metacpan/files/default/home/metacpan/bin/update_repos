@@ -45,12 +45,14 @@ my %sites = (
 
 );
 
-foreach my $site ( keys %sites ) {
+# Use @ARGV if given, otherwise update all.
+foreach my $site ( @ARGV ? @ARGV : keys %sites ) {
+    exists($sites{$site}) or do { warn "unknown arg: $site"; next; };
+
     my $site_dir = "$HOMEDIR/$site";
     print "Processing: $site_dir\n";
 
     unless ( -d $site_dir ) {
-
         # Check it out
         my $repo = $sites{$site};
         chdir($HOMEDIR);

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. /home/metacpan/.metacpanrc
+
+exec $(dirname $0)/update_repos $(basename $PWD)
