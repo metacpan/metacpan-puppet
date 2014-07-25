@@ -1,4 +1,16 @@
-# perl::build{'5.16.2'}
+# Installs a version of perl into /opt/perl-${version}
+# Dont' call directly, instead use
+#
+# perl::module{'Carton':
+#   module => 'Carton'
+# }
+#
+# which in tern calls
+#
+# perl::build{$perl_version}
+# where $perl_version comes from
+# hiera('perl::version', '5.16.2')
+#
 
 define perl::build (
     $ensure   = 'present',

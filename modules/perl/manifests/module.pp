@@ -31,7 +31,7 @@ define perl::module (
       cwd         => '/tmp',
       path        => ["${bin_dir}", '/bin', '/usr/bin', '/usr/local/bin'],
       timeout     => 300,
-      require     => Exec["perl_cpanm_${perl_version}"]
+      require     => [ Exec["perl_cpanm_${perl_version}"], File["/opt"] ],
     }
   }
 }
