@@ -131,6 +131,8 @@ class metacpan::user::admins {
         rwstauner:
             admin    => true,
             source_metacpanrc => true,
+            shell    => '/bin/zsh',
+            require  => Package['zsh'],
             fullname => 'Randy Stauner <rwstauner@cpan.org>';
         trs:
             admin    => true,
