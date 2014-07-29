@@ -20,4 +20,9 @@ class metacpan::role::base {
     module => 'Carton'
   }
 
+  perl::module{'DaemonControl':
+    module => 'Daemon::Control'
+  }
+
+
 }
