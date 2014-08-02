@@ -46,6 +46,10 @@ class metacpan::packages {
 
     package{ build-essential: ensure => present }
 
+    # Helped get Elasticsearch running
+    # https://ask.puppetlabs.com/question/2147/could-not-find-a-suitable-provider-for-augeas/
+    package{ libaugeas-ruby: ensure => present }
+
     case $operatingsystem {
       Debian: {
       }

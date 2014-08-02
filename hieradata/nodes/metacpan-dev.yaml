@@ -1,9 +1,5 @@
 ---
-
-# elasticsearch::enable: true
-
-
-wibble: 'from nodes/metacpan-dev.yaml'
+elasticsearch::pkg_version: 0.20.2
 
 starman:
   apiworkers: '5'

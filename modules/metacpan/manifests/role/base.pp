@@ -1,4 +1,5 @@
-class metacpan::role::base {
+class metacpan::role::base(
+) {
 
   # We install most stuff in here
   file {
@@ -10,10 +11,7 @@ class metacpan::role::base {
 
   include metacpan
   include metacpan::user::admins
-
-  # Install ES everywhere, but common.yaml defaults
-  # to it being disabled
-  # elasticsearch{'install_es':}
+  include metacpan-elasticsearch
 
   # basic stuff EVERY box needs
   perl::module{'Carton':
