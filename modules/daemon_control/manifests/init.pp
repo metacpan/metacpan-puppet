@@ -10,7 +10,6 @@ define daemon_control (
 
     $init     = "/etc/init.d/${service}"
     $env_file = '/home/metacpan/.metacpanrc'
-    $script   = "${root}/bin/daemon-control.pl"
 
     if $daemon_control::config::link_dirs {
         $link_root = "${root}/var"
@@ -41,7 +40,7 @@ define daemon_control (
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('daemon_control/init.sh.erb'),
+        content => template('daemon_control/init.pl.erb'),
     }
 
     service { $service:
