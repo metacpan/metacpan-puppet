@@ -18,7 +18,8 @@ ROOT=<%= app_root %>
 USER=metacpan
 GROUP=users
 
-WATCHER="$WATCHERBIN -- watcher"
+DAEMON="<%= app_root %>/bin/carton"
+DAEMON_ARGS="exec $WATCHERBIN watcher"
 
 test -x $WATCHERBIN || { echo "$WATCHERBIN not installed";
 	if [ "$1" = "stop" ]; then exit 0;
@@ -30,7 +31,7 @@ case "$1" in
     start)
 	echo -n "Starting metacpan-watcher "
 	HOME=/home/metacpan /sbin/start-stop-daemon -b -m --start --pidfile $PIDFILE \
-    -c $USER:$GROUP --startas $WATCHER
+	  -c $USER:$GROUP --chdir $ROOT --startas $DAEMON -- $DAEMON_ARGS
 	;;
     stop)
 	echo -n "Shutting down metacpan-watcher "
