@@ -1,4 +1,4 @@
-define elasticsearch(
+define elasticsearchold(
     $version = $name,
     $memory  = 64,
     $user    = "elasticsearch",
