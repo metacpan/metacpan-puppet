@@ -1,4 +1,8 @@
-class metacpan::web::www {
+class metacpan::web::www (
+    # FIXME: This $wwwworkers var is set in the node manifest.
+    # FIXME: Make this a sensible default and override with hiera.
+    $workers = $wwwworkers,
+) {
     include metacpan::web::api
 
     nginx::vhost { "metacpan.org":
@@ -41,11 +45,11 @@ class metacpan::web::www {
 
     $service = 'metacpan-org'
 
-    # NOTE: Config for workers and port are set in bin/daemon-control.pl.
     # $perlbin isn't needed because the script sources the metacpanrc file.
     daemon_control { $service:
         root    => $app_root,
         port    => 5001,
+        workers => $workers,
         require => [
             # Ensure the old service removes itself so we can use the port.
             Startserver::Remove[$old_service],
