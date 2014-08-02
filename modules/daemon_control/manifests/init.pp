@@ -1,6 +1,7 @@
 # Install init script for Daemon::Control wrapper.
 define daemon_control (
     $root,
+    $port,
     $service        = $name,
     $service_enable = true,
     $user           = 'metacpan',
