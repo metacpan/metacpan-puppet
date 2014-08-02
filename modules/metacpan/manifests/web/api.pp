@@ -29,6 +29,7 @@ class metacpan::web::api {
     # $perlbin isn't needed because the script sources the metacpanrc file.
     daemon_control { $service:
         root    => $app_root,
+        port    => 5000,
         require => [
             # Ensure the old service removes itself so we can use the port.
             Startserver::Remove[$old_service],
