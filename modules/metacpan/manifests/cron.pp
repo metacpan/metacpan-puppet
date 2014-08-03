@@ -98,7 +98,7 @@ class metacpan::cron::api {
             hour => '*/6',
             minute => '42';
         "latest":
-            cmd => 'latest 2&>1 > /dev/null',
+            cmd => 'latest 2>&1 > /dev/null',
             minute => '30';
         "backup_favorite":
             cmd => 'backup --index cpan --type favorite',
