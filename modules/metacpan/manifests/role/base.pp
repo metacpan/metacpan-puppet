@@ -11,7 +11,7 @@ class metacpan::role::base(
 
   include metacpan
   include metacpan::user::admins
-  include metacpan-elasticsearch
+  include metacpan_elasticsearch
 
   # basic stuff EVERY box needs
   perl::module{'Carton':

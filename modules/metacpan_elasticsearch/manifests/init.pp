@@ -1,4 +1,4 @@
-class metacpan-elasticsearch(
+class metacpan_elasticsearch(
   $es_version = hiera('elasticsearch::pkg_version', '1.3.1'),
   $memory = hiera('elasticsearch::memory', '64'),
 ) {
@@ -6,7 +6,7 @@ class metacpan-elasticsearch(
   # Set ulimits
   file {
       "/etc/security/limits.d/elasticsearch":
-          source => "puppet:///modules/metacpan-elasticsearch/etc/security/elasticsearch";
+          source => "puppet:///modules/metacpan_elasticsearch/etc/security/elasticsearch";
   }
 
   # Install ES, but don't run
