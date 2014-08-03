@@ -20,7 +20,7 @@ use Daemon::Control;
 use File::Path 2.06 ();    # core
 
 my $name = '<%= @service %>';
-my $user = 'metacpan';
+my $user = '<%= @user %>';
 my $home = '<%= @root %>';
 my %dirs = (
     pid => "$home/var/run",
@@ -28,15 +28,7 @@ my %dirs = (
 );
 my $carton    = '<%= @perlbin %>/carton';
 my $workers   = <%= @workers %>;
-my $plack_env = 'production';
-
-# FIXME: Make all of these parameters in puppet.
-# If running in the development vm change the user to avoid permission problems.
-if ( -d '/vagrant' ) {
-    $user      = 'vagrant';
-    $workers   = 3;
-    $plack_env = 'development';
-}
+my $plack_env = '<%= @plack_env %>';
 
 # TODO: Should we use the ./bin/carton wrapper instead of setting this here?
 $ENV{PERL_CARTON_PATH} = "/home/$user/carton/<%= @service.gsub(%r/-/, '.') %>";

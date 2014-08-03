@@ -5,8 +5,12 @@ node default {
     $apiworkers = 3
     $wwwworkers = 3
 
-    # FIXME: Set `daemon_control::config::link_dirs: false` in hiera.
-    class { 'daemon_control::config': link_dirs => false }
+    # FIXME: Set these in hiera.
+    class { 'daemon_control::config':
+      link_dirs => false,
+      plack_env => 'development',
+      user      => 'vagrant',
+    }
 
     include metacpan
     include metacpan::ssh

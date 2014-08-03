@@ -5,10 +5,12 @@ define daemon_control (
     $port,
     $service        = $name,
     $service_enable = true,
-    $user           = 'metacpan',
 ) {
     include daemon_control::config
     include daemon_control::deps
+
+    $user      = $daemon_control::config::user
+    $plack_env = $daemon_control::config::plack_env
 
     $init     = "/etc/init.d/${service}"
     $env_file = '/home/metacpan/.metacpanrc'
