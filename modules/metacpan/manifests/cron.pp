@@ -5,7 +5,7 @@ define metacpan::cron(
   $hour    = "*",
   $weekday = "*",
   $ensure  = present,
-  $metacpan = "\$HOME/api.metacpan.org/bin/metacpan",
+  $metacpan = '/home/metacpan/api.metacpan.org/bin/run bin/metacpan',
   $path_env = "PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin",
 ) {
   cron {
@@ -74,7 +74,7 @@ class metacpan::cron::sitemaps {
    cron {
       'metacpan_sitemaps':
           user        => 'metacpan',
-          command     => '/home/metacpan/metacpan.org/bin/generate_sitemap.pl',
+          command     => '/home/metacpan/metacpan.org/bin/run bin/generate_sitemap.pl',
           hour        => '2',
           minute      => '30',
           ensure      => 'present';
