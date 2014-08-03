@@ -19,14 +19,35 @@ class metacpan-elasticsearch(
     'ES_MAX_MEM' => $memory,
   }
 
+  # From: https://github.com/CPAN-API/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
   $config_hash = {
-    'cluster.name' => $env
+    'network.host' => '127.0.0.1',
+    'http.port' => '9200',
+
+    'cluster.name' => $env,
+    'cluster.routing.allocation.concurrent_recoveries' =>  '2',
+
+    'index.translog.flush_threshold' => '20000',
+
+    'index.search.slowlog.threshold.query.warn' => '10s',
+    'index.search.slowlog.threshold.query.info' => '2s',
+    'index.search.slowlog.threshold.fetch.warn' => '1s',
+
+    'gateway.recover_after_nodes' => '1',
+    'gateway.recover_after_time' => '2m',
+    'gateway.expected_nodes' => '1',
+    'gateway.local.compress' => 'false',
+    'gateway.local.pretty' => 'true',
+
+    'action.auto_create_index' => '0',
+
+    'bootstrap.mlockall' => '1',
   }
 
   elasticsearch::instance { 'es-01':
     config => $config_hash,
     init_defaults => $init_hash,
-    #datadir => [],       # Data directory
+    datadir => '/var/elasticsearch',
   }
 
 }
