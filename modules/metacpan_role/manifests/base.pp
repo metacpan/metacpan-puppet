@@ -1,4 +1,4 @@
-class metacpan::role::base(
+class metacpan_role::base(
 ) {
 
   # We install most stuff in here

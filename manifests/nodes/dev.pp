@@ -1,3 +1,3 @@
 node metacpan-dev {
-  include metacpan::role::developer
+  include metacpan_role::developer
 }

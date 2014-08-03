@@ -22,13 +22,4 @@ class metacpan::perl() {
         $gmp_dev_pkg: ensure => present;
     }
 
-    # # install cpanm
-    # perlbrew::install_cpanm { $version: }
-    #
-    # # Use carton to handle project dependencies.
-    # -> perlbrew::install_module { [
-    #     'Carton',
-    #   ]:
-    #     perl => $version,
-    # }
 }
