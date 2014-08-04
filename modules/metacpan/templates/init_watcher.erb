@@ -18,7 +18,7 @@ ROOT=<%= @app_root %>
 USER=metacpan
 GROUP=users
 
-DAEMON="<%= app_root %>/bin/carton"
+DAEMON="<%= @app_root %>/bin/carton"
 DAEMON_ARGS="exec $WATCHERBIN watcher"
 
 test -x $WATCHERBIN || { echo "$WATCHERBIN not installed";

@@ -6,6 +6,6 @@ class metacpan_system {
   include metacpan_system::ssh
 
   # TODO: make smarter about what to monitor
-  include munin::web
+#  include munin::web
 #    include munin-server
 }
