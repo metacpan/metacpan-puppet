@@ -1,11 +1,4 @@
 class metacpan_system::configs {
-    # Somewhere for our metacpan config files
-    file {
-        "/etc/metacpan":
-            ensure  => "directory",
-            owner   => "root",
-            group   => "root";
-    }
 
     # Aliases
     file { "/etc/aliases":

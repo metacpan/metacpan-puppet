@@ -1,4 +1,6 @@
 class metacpan_system {
+
+  include metacpan_system::directories
   include metacpan_system::configs
   include metacpan_system::exim
   include metacpan_system::packages

@@ -1,14 +1,6 @@
 class metacpan_role::base(
 ) {
 
-  # We install most stuff in here
-  file {
-      '/opt':
-          owner  => 'root',
-          group  => 'root',
-          ensure => directory;
-  }
-
   include metacpan
   include metacpan::user::admins
   include metacpan_elasticsearch
