@@ -1,4 +1,4 @@
-class metacpan::configs {
+class metacpan_system::configs {
     # Somewhere for our metacpan config files
     file {
         "/etc/metacpan":
@@ -33,4 +33,3 @@ class metacpan::configs {
         require => Package["bzip2"],
     }
 }
-

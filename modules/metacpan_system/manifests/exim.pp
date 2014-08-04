@@ -1,4 +1,4 @@
-class metacpan::exim {
+class metacpan_system::exim {
     package { "exim4-daemon-light":
         ensure => installed,
     }->

@@ -1,4 +1,4 @@
-class metacpan::packages {
+class metacpan_system::packages {
     # Editors
     package { 'vim': ensure => present }
 
@@ -15,6 +15,11 @@ class metacpan::packages {
     package { psmisc: ensure => present } # killall pstree fuser commands
     package { rsync: ensure => present }
     package { screen: ensure => present }
+
+    # Shells
+    package { zsh: ensure => present } # for rafl
+    package { byobu: ensure => present } # for mo
+    package { tmux:  ensure => present } # for rwstauner
 
     # ensure locate actually works after install
     # comment this out to save a few seconds on initial install

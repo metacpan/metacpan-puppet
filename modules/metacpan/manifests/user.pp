@@ -111,9 +111,6 @@ define metacpan::user(
 
 
 class metacpan::user::admins {
-    package { zsh: ensure => present } # for rafl
-    package { byobu: ensure => present } # for mo
-    package { tmux:  ensure => present } # for rwstauner
     metacpan::user {
         leo:
             admin    => true,

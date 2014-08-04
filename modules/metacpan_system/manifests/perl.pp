@@ -1,4 +1,4 @@
-class metacpan::perl() {
+class metacpan_system::perl() {
     # This assumes Debian.  As of 20140624 we have 6 on bm-n2 and 7 on the vm.
     $gmp_dev_pkg = $lsbmajdistrelease ? {
       6       => 'libgmp3-dev',
