@@ -1,12 +1,6 @@
-class metacpan_system::perl() {
-    # This assumes Debian.  As of 20140624 we have 6 on bm-n2 and 7 on the vm.
-    $gmp_dev_pkg = $lsbmajdistrelease ? {
-      6       => 'libgmp3-dev',
-      # 7 has this virtual package; assume later versions do too.
-      default => 'libgmp-dev',
-    }
+class metacpan_system::perlpackages() {
 
-    # Packages we need to build stuff
+    # Packages we need to build perl stuff
     package {
         # for https
         'libssl-dev': ensure => present;
@@ -19,7 +13,7 @@ class metacpan_system::perl() {
         # AnyEvent::Curl::Multi
         'libcurl4-openssl-dev': ensure => present;
         # Net::OpenID::Consumer depends on Crypt::DH::GMP.
-        $gmp_dev_pkg: ensure => present;
+        'libgmp-dev': ensure => present;
     }
 
 }
