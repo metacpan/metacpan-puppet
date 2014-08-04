@@ -1,4 +1,4 @@
-class munin-node {
+  class munin-node {
     $default_munin_plugin_path = "/usr/share/munin/plugins"
     $metacpan_munin_plugin_path = "/etc/metacpan/munin/plugins"
     $munin_plugin_path = "/etc/munin/plugins"
@@ -11,7 +11,7 @@ class munin-node {
             owner   => "root",
             group   => "root",
             mode    => 755;
-            
+
         "/etc/munin/plugin-conf.d":
             ensure => directory,
             owner   => "root",
@@ -19,7 +19,7 @@ class munin-node {
             mode    => 755,
             recurse => true,
             source => "puppet:///modules/munin/plugin-conf.d";
-            
+
         "/etc/munin/munin-node.conf":
             owner  => "root",
             group  => "root",
@@ -57,7 +57,7 @@ class munin-node {
             # notify      => Service["munin-node"];
 
     }
-    
+
     # make sure it's running and reloads when the config files change
     service { munin-node:
         ensure    => running,
@@ -97,9 +97,9 @@ class munin-node {
         file {
             "$munin_plugin_path/${name}":
                 ensure => absent
-        }    
+        }
     }
-    
+
     # need to restart munin-node to load new plugins
     exec { "munin-node-restart":
         command     => "/etc/init.d/munin-node restart",
@@ -113,16 +113,16 @@ class munin::default inherits munin-node {
 
     munin-node::add_default_plugin {
         [
-        "cpu", 
-        "df", "df_inode", "diskstats", 
-        "fw_packets", 
-        "forks", "interrupts", 
-        "iostat_ios", "iostat", 
+        "cpu",
+        "df", "df_inode", "diskstats",
+        "fw_packets",
+        "forks", "interrupts",
+        "iostat_ios", "iostat",
         "irqstats", "load", "memory", "munin_stats",
-        "netstat", "open_inodes", "proc_pri", 
-        "processes", "swap", "threads", 
+        "netstat", "open_inodes", "proc_pri",
+        "processes", "swap", "threads",
         "uptime", "users"
-        ]:     
+        ]:
     }
 
     # If you wanted to specify args could do:
@@ -149,9 +149,9 @@ class munin::web inherits munin-node {
         [
         "nginx_status",
         "nginx_request"
-        ]:     
+        ]:
     }
-    
+
     munin-node::add_metacpan_plugin {
         [
         "http_loadtime"               ,
@@ -167,13 +167,13 @@ class munin::web inherits munin-node {
         "multimemory"                 ,
         ]:
     }
-    
+
 }
 
 class munin-server {
     package { "munin": ensure => installed }
     package { "telnet": ensure => installed }
-    
+
     # # it's not a service, runs from cron
     file { "/etc/munin/munin.conf":
         owner   => "root",
