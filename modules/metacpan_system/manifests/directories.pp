@@ -14,7 +14,7 @@ class metacpan_system::directories {
     file {
         "/etc/metacpan":
             owner   => "root",
-            group   => "root";
+            group   => "root",
             ensure  => "directory",
     }
 }
