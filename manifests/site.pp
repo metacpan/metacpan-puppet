@@ -6,6 +6,54 @@ File {
   mode  => '0644',
 }
 
+resources { "firewall":
+  purge => true
+}
+
+  firewall { "000 accept related established rules":
+    ensure  => present,
+    proto   => 'all',
+    state   => ['RELATED', 'ESTABLISHED'],
+    action  => 'accept',
+  }
+
+  ->
+
+  firewall { "001 accept all icmp":
+    alias   => 'icmp',
+    ensure  => present,
+    proto   => 'icmp',
+    action  => 'accept',
+  }
+
+  ->
+
+  firewall { "002 accept all to lo interface":
+    alias   => 'localhost',
+    ensure  => present,
+    proto   => 'all',
+    iniface => 'lo',
+    action  => 'accept',
+  }
+
+  ->
+
+    firewall { "100 allow ssh access":
+      ensure  => present,
+      port    => [ 22 ],
+      proto   => tcp,
+      action  => 'accept',
+      source  => '0.0.0.0/0', # anywhere
+    }
+   ->
+
+  firewall { "999 drop all":
+    proto   => 'all',
+    action  => 'drop',
+    before  => undef,
+  }
+
+
 import 'nodes/*.pp'
 
 # node bm-n2 {
