@@ -1,2 +1,0 @@
-net eth0 detect forward=1
-loc virbr0 detect forward=1

@@ -1,7 +1,0 @@
-fw net ACCEPT
-fw loc ACCEPT
-loc fw ACCEPT
-loc net ACCEPT
-loc loc ACCEPT
-net all REJECT info
-all all REJECT info
