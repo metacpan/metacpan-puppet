@@ -1,5 +1,5 @@
 class metacpan::rrrclient(
-  $perl_version = hiera('perl::version', '5.16.2'),
+  $enable = hiera('metacpan::rrrclient::enable', 'false')
 ) {
     file { "/var/cpan":
         ensure  => directory,
@@ -14,11 +14,14 @@ class metacpan::rrrclient(
         group  => metacpan,
     }->
     rrrclient { metacpan:
-        perl   => $perl_version,
+        enable => $enable,
         target => "/var/cpan",
     }->
     service { "rrrclient-metacpan":
-        ensure => running,
-        enable => true,
+      ensure => $enable ? {
+          true => running,
+          false => stopped,
+      },
+      enable => $enable,
     }
 }

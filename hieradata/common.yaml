@@ -6,6 +6,9 @@ perl::version: '5.16.2'
 # We don't want watcher enabled
 metacpan::watcher::enable: false
 
+# We don't want to have CPAN synced
+metacpan::rrrclient::enable: false
+
 # Elasticsearch basic options
 elasticsearch::pkg_version: 1.3.1
 elasticsearch::memory: 40

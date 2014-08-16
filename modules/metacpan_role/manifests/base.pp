@@ -15,4 +15,6 @@ class metacpan_role::base(
   }
 
 
+  include metacpan::rrrclient
+
 }
