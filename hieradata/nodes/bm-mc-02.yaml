@@ -1,2 +1,3 @@
 ---
 metacpan::rrrclient::enable: true
+metacpan::rrrclient::cpan_path: /mnt/lv-cpan
