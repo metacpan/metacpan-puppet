@@ -8,7 +8,7 @@ class metacpan {
         source_metacpanrc => true,
     }
 
-    # include metacpan::web
+    include metacpan::web
     include metacpan::watcher
 
 }
