@@ -2,6 +2,12 @@ class nginx {
         package { "nginx":
                 ensure => installed,
         }->
+        file { "/etc/nginx/nginx.conf":
+                ensure => file,
+                content => template("nginx/nginx.conf.erb"),
+                notify => Service["nginx"],
+        }->
+
         file { "/etc/nginx/conf.d/basics.conf":
                 source => "puppet:///modules/nginx/basics.conf",
                 ensure => file,
@@ -17,9 +23,9 @@ class nginx {
                 ensure => file,
         }->
 
-	file { "/var/www":
-		ensure => directory,
-	}->
+      	file { "/var/www":
+      		ensure => directory,
+      	}->
 
         service { "nginx":
                 ensure => running,
