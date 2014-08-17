@@ -1,6 +1,7 @@
 ---
 :backends:
   - yaml
+:merge_behavior: deeper
 :yaml:
   :datadir: /etc/puppet/hieradata
 :hierarchy:

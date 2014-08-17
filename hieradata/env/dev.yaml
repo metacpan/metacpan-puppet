@@ -1,3 +1,4 @@
 ---
-starman::apiworkers: 2
-starman::wwwworkers: 2
+
+metacpan::api::workers: 2
+metacpan::www::workers: 2

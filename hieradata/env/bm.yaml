@@ -1,2 +1,12 @@
 ---
 elasticsearch::pkg_version: 0.20.2
+
+metacpan::gitrepos:
+  www:
+    ensure: present
+  api:
+    ensure: present
+  explorer:
+    ensure: present
+  web-socket:
+    ensure: present
