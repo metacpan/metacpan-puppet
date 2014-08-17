@@ -9,7 +9,8 @@ class metacpan_system::configs {
             source => "puppet:///modules/metacpan/default/etc/resolv.conf",
     }
 
-    package { apticron: ensure => present }->
+    # FIXME: turn on after panopta repo fix
+    package { apticron: ensure => absent }->
     file { "/etc/apticron/apticron.conf":
             source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
     }
