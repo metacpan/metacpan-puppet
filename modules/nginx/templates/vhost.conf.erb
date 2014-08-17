@@ -10,8 +10,8 @@ server {
   listen 80;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   root <%= @html_root %>;
-  access_log <%= @root %>/logs/access.log combined;
-  error_log <%= @root %>/logs/error.log info;
+  access_log <%= @log_dir %>/access.log combined;
+  error_log <%= @log_di %>/error.log info;
 
   gzip             on;
   gzip_proxied     any;
@@ -42,8 +42,8 @@ server {
   listen <%= @ssl ? "443" : "80" %>;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
   root <%= @html_root %>;
-  access_log <%= @root %>/logs/access.log combined;
-  error_log <%= @root %>/logs/error.log info;
+  access_log <%= @log_dir %>/access.log combined;
+  error_log <%= @log_dir %>/error.log info;
 
   gzip             on;
   gzip_proxied     any;

@@ -6,9 +6,12 @@ define nginx::vhost(
         $php = false,
         $bare = false,
         $autoindex = false,
-	    $aliases = "",
+	      $aliases = "",
 ) {
         include nginx
+
+        $log_dir = "/var/log/nginx/${name}"
+
         if $html {
             $html_root = $html
         } else {
@@ -19,7 +22,7 @@ define nginx::vhost(
             }
         }
 
-        file { [$root, "$root/logs"]:
+        file { [$root, $log_dir]:
                 ensure => directory,
                 require => Package["nginx"],
         }->
