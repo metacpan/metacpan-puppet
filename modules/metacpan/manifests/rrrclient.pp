@@ -1,8 +1,8 @@
 class metacpan::rrrclient(
   $enable = hiera('metacpan::rrrclient::enable', 'false'),
-  $cpan_path = hiera('metacpan::rrrclient::cpan_path', '/var/cpan')
+  $cpan_mirror = hiera('metacpan::cpan_mirror', '/var/cpan')
 ) {
-    file { $cpan_path:
+    file { $cpan_mirror:
         ensure  => directory,
         owner   => metacpan,
         group   => metacpan,
@@ -10,13 +10,13 @@ class metacpan::rrrclient(
     }->
     file { "/home/metacpan/CPAN":
         ensure => link,
-        target => $cpan_path,
+        target => $cpan_mirror,
         owner  => metacpan,
         group  => metacpan,
     }->
     rrrclient { metacpan:
         enable => $enable,
-        target => $cpan_path,
+        target => $cpan_mirror,
     }->
     service { "rrrclient-metacpan":
       ensure => $enable ? {

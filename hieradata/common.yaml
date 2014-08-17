@@ -3,6 +3,10 @@
 # Defaults
 perl::version: '5.16.2'
 
+# Where we mirror cpan with the rrrclient
+# also where cpan.metacpan.org serves from
+metacpan::cpan_mirror: '/mnt/lv-cpan'
+
 # We don't want watcher enabled
 metacpan::watcher::enable: false
 
