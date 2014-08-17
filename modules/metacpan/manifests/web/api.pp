@@ -23,9 +23,6 @@ class metacpan::web::api (
 
     $app_root = '/home/metacpan/api.metacpan.org'
 
-    $old_service = 'metacpan-api'
-    startserver::remove { $old_service: }
-
     # NOTE: The www service uses this $service var:
     $service = 'api-metacpan-org'
 
@@ -35,8 +32,6 @@ class metacpan::web::api (
         port    => 5000,
         workers => $workers,
         require => [
-            # Ensure the old service removes itself so we can use the port.
-            Startserver::Remove[$old_service],
             # API needs ES.
             Service[ 'elasticsearch' ],
         ],

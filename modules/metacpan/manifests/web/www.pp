@@ -40,9 +40,6 @@ class metacpan::web::www (
         location => "",
     }
 
-    $old_service = 'metacpan-www'
-    startserver::remove { $old_service: }
-
     $service = 'metacpan-org'
 
     # $perlbin isn't needed because the script sources the metacpanrc file.
@@ -51,8 +48,6 @@ class metacpan::web::www (
         port    => 5001,
         workers => $workers,
         require => [
-            # Ensure the old service removes itself so we can use the port.
-            Startserver::Remove[$old_service],
             # Web needs API.
             Service[ $metacpan::web::api::service ],
         ],
