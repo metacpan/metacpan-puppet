@@ -45,6 +45,7 @@ class metacpan_system::packages {
     # Stuff for firewall / security
     package { chkrootkit: ensure => present }
     package { iptables: ensure => installed }
+    package { iptables-persistent: ensure => present }
 
     # Euuu - nasty, remove
     package { nano: ensure => absent }
