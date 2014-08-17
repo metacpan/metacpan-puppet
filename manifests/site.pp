@@ -47,6 +47,25 @@ resources { "firewall":
     }
    ->
 
+firewall { "200 allow 80 http access":
+  ensure  => present,
+  port    => [ 80 ],
+  proto   => tcp,
+  action  => 'accept',
+  source  => '0.0.0.0/0', # anywhere
+}
+->
+
+firewall { "210 allow 443 https access":
+  ensure  => present,
+  port    => [ 443 ],
+  proto   => tcp,
+  action  => 'accept',
+  source  => '0.0.0.0/0', # anywhere
+}
+->
+
+
   firewall { "999 drop all":
     proto   => 'all',
     action  => 'drop',
