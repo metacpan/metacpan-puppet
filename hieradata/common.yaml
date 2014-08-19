@@ -33,7 +33,6 @@ metacpan::websites:
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
     git_revision: 'master'
     vhost_domain: 'metacpan.org'
-    vhost_ssl: true
     vhost_ssl_only: true
     vhost_bare: true
     vhost_aliases:
