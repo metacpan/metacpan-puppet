@@ -2,18 +2,18 @@
 #
 # In Hiera:
 #
-#   metacpan::gitrepos:
-#     metacpan-puppet:
+#   metacpan::website:
+#     www:
+#       enable_git_repo: true
 #       path: '/home/metacpan/metacpan.org'
-#       source: 'https://github.com/CPAN-API/metacpan-puppet.git'
-#       revision: 'master'
-#       owner: 'metacpan'
-#       group: 'metacpan'
-#       identity: '/home/user/.ssh/id_dsa'
+#       source: 'https://github.com/CPAN-API/metacpan-web.git'
+#       revision: 'master' # optional
+#       owner: 'metacpan' # default
+#       group: 'metacpan' # default
 #
 #
 define metacpan::gitrepo (
-    $ensure   = absent,
+    $enable_git_repo   = absent,
     $path     = 'UNSET',
     $source   = 'UNSET',
     $revision = 'UNSET',
@@ -22,7 +22,7 @@ define metacpan::gitrepo (
     $identity = 'UNSET',
 ) {
 
-  if($ensure == 'present') {
+  if($enable_git_repo == 'true') {
 
     # create the directory first incase owner does not have permissions
     file { $path:

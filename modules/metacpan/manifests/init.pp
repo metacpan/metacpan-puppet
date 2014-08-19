@@ -5,8 +5,8 @@ class metacpan(
     include metacpan_system
 
     # Sort out our repos
-    $gitrepos = hiera_hash('metacpan::gitrepos', {})
-    create_resources('metacpan::gitrepo', $gitrepos)
+    $websites = hiera_hash('metacpan::websites', {})
+    create_resources('metacpan::website', $websites)
 
     metacpan::user { metacpan:
         expire_password   => false,

@@ -1,4 +1,1 @@
 ---
-
-metacpan::api::workers: 2
-metacpan::www::workers: 2

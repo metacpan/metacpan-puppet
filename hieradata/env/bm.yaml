@@ -1,12 +1,12 @@
 ---
 elasticsearch::pkg_version: 0.20.2
 
-metacpan::gitrepos:
+metacpan::websites:
   www:
-    ensure: present
+    enable_git_repo: present
+    workers: 7
   api:
-    ensure: present
+    enable_git_repo: present
+    workers: 10
   explorer:
-    ensure: present
-  web-socket:
-    ensure: present
+    enable_git_repo: present

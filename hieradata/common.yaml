@@ -13,31 +13,49 @@ metacpan::watcher::enable: false
 # We don't want to have CPAN synced
 metacpan::rrrclient::enable: false
 
-metacpan::api::workers: 10
-metacpan::www::workers: 7
-
 # Elasticsearch basic options
 elasticsearch::pkg_version: 1.3.1
 elasticsearch::memory: 40
 
-metacpan::gitrepos:
-  www:
-    ensure: absent
-    path: '/home/metacpan/metacpan.org'
-    source: 'https://github.com/CPAN-API/metacpan-web.git'
-    revision: 'master'
-  api:
-    ensure: absent
-    path: '/home/metacpan/api.metacpan.org'
-    source: 'https://github.com/CPAN-API/cpan-api.git'
-    revision: 'master'
-  explorer:
-    ensure: absent
-    path: '/home/metacpan/explorer.metacpan.org'
-    source: 'https://github.com/CPAN-API/metacpan-explorer.git'
-    revision: 'master'
-  web-socket:
-    ensure: absent
-    path: '/home/metacpan/p5-metacpan-websocket'
-    source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
-    revision: 'master'
+metacpan::websites:
+  cpan:
+    enable_git_repo: false
+    domain: 'cpan.metacpan.org'
+    vhost_html: "%{hiera('metacpan::cpan_mirror')}"
+    vhost_ssl: true
+    vhost_autoindex: true
+
+      # vhost_aliases: ["cpan.$hostname.metacpan.org", "cpan.lo.metacpan.org"],
+  # www:
+  #   enable_git_repo: absent
+  #   path: '/home/metacpan/metacpan.org'
+  #   source: 'https://github.com/CPAN-API/metacpan-web.git'
+  #   revision: 'master'
+  #   # vhost:
+  #   #   domain: "/var/www/$name",
+  #   #   html: "",
+  #   #   ssl_only: false,
+  #   #   ssl: true,
+  #   #   bare: false,
+  #   #   autoindex: false,
+  #   #   aliases:
+  #   #     - 'y',
+  #   #     - 'z',
+  # api:
+  #   enable_git_repo: absent
+  #   path: '/home/metacpan/api.metacpan.org'
+  #   source: 'https://github.com/CPAN-API/cpan-api.git'
+  #   revision: 'master'
+  #   workers: 1
+  # explorer:
+  #   enable_git_repo: absent
+  #   path: '/home/metacpan/explorer.metacpan.org'
+  #   source: 'https://github.com/CPAN-API/metacpan-explorer.git'
+  #   revision: 'master'
+  #   workers: 1
+  # web-socket:
+  #   enable_git_repo: absent
+  #   path: '/home/metacpan/p5-metacpan-websocket'
+  #   source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
+  #   revision: 'master'
+  #   workers: 1

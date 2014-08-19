@@ -11,15 +11,9 @@ define nginx::vhost(
 
         $log_dir = "/var/log/nginx/${name}"
 
-        if $html {
-            $html_root = $html
-        } else {
-            $html_root = "$root/html"
-            file { "$root/html":
-                ensure => directory,
-                require => File[$root],
-            }
-        }
+        # if $html {
+        #     $html_root = $html
+        # }
 
         file { [$root, $log_dir]:
                 ensure => directory,
