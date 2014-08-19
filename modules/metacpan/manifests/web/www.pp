@@ -13,11 +13,6 @@ class metacpan::web::www (
         notify  => Service['nginx'],
     }
 
-    nginx::vhost { "www.metacpan.org":
-        bare    => true,
-        ssl     => true,
-        aliases => [".beta.metacpan.org"],
-    }
     realize File["/etc/nginx/conf.d/www.metacpan.org.d"]
     file { "/etc/nginx/conf.d/www.metacpan.org.d/redirect.conf":
         ensure => file,
