@@ -24,6 +24,7 @@ define metacpan::website (
     $vhost_html = '',
     $vhost_ssl = false,
     $vhost_autoindex = false,
+    $vhost_aliases = [],
     $domain = 'UNSET',
 ) {
 
@@ -43,7 +44,7 @@ define metacpan::website (
     html      => $vhost_html,
     ssl       => $vhost_ssl,
     autoindex => $vhost_autoindex,
-    aliases   => ["cpan.$hostname.metacpan.org", "cpan.lo.metacpan.org"],
+    aliases   => $vhost_aliases,
   }
 
 
