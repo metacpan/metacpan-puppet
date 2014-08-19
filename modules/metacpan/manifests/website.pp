@@ -5,42 +5,42 @@
 #   metacpan::website:
 #     www:
 #       path: '/home/metacpan/metacpan.org'
-#       source: 'https://github.com/CPAN-API/metacpan-puppet.git'
-#       revision: 'master'
+#       git_source: 'https://github.com/CPAN-API/metacpan-puppet.git'
+#       git_revision: 'master'
 #       owner: 'metacpan'
 #       group: 'metacpan'
-#       identity: '/home/user/.ssh/id_dsa'
+#       git_identity: '/home/user/.ssh/id_dsa'
 #
 #
 define metacpan::website (
-    $enable_git_repo   = false,
     $path     = 'UNSET',
-    $source   = 'UNSET',
-    $revision = 'UNSET',
     $owner    = 'metacpan',
     $group    = 'metacpan',
-    $identity = 'UNSET',
     $workers = 0,
+    $git_enable   = false,
+    $git_source   = 'UNSET',
+    $git_revision = 'UNSET',
+    $git_identity = 'UNSET',
+    $vhost_domain = 'UNSET',
     $vhost_html = '',
     $vhost_ssl = false,
     $vhost_autoindex = false,
     $vhost_aliases = [],
-    $domain = 'UNSET',
 ) {
 
-  if($enable_git_repo == 'true') {
+  if( $git_enable == 'true' ) {
     metacpan::gitrepo{ "gitrepo_${name}":
-      enable_git_repo   => $enable_git_repo,
+      enable_git_repo   => $git_enable,
       path              => $path,
-      source            => $source,
-      revision          => $revision,
+      source            => $git_source,
+      revision          => $git_revision,
       owner             => $owner,
       group             => $group,
-      identity          => $identity,
+      identity          => $git_identity,
     }
   }
 
-  nginx::vhost { $domain:
+  nginx::vhost { $vhost_domain:
     html      => $vhost_html,
     ssl       => $vhost_ssl,
     autoindex => $vhost_autoindex,

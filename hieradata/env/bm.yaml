@@ -3,10 +3,10 @@ elasticsearch::pkg_version: 0.20.2
 
 metacpan::websites:
   www:
-    enable_git_repo: present
+    git_enable: true
     workers: 7
   api:
-    enable_git_repo: present
+    git_enable: true
     workers: 10
   explorer:
-    enable_git_repo: present
+    git_enable: true

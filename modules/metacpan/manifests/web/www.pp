@@ -3,7 +3,7 @@ class metacpan::web::www (
     # FIXME: Make this a sensible default and override with hiera.
     $workers = $wwwworkers,
 ) {
-    include metacpan::web::api
+    # include metacpan::web::api
 
     nginx::vhost { "metacpan.org":
         bare     => true,
