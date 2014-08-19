@@ -22,18 +22,11 @@ server {
 
   <% unless @bare %>
   location / {
-    index index.html index.htm index.php;
+    index index.html index.htm;
     <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
 
-  <% if @php %>
-  location ~ .*\.php$ {
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-  }
-  <% end %>
   include conf.d/<%= @name %>.d/*.conf;
 }
 <% end %>
@@ -63,18 +56,11 @@ server {
   <% end %>
   <% unless @bare %>
   location / {
-    index index.html index.htm index.php;
+    index index.html index.htm;
     <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
 
-  <% if @php %>
-  location ~ .*\.php$ {
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-  }
-  <% end %>
   include conf.d/<%= @name %>.d/*.conf;
 
 }

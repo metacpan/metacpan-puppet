@@ -3,7 +3,6 @@ define nginx::vhost(
         $html = "",
         $ssl_only = false,
         $ssl = $ssl_only,
-        $php = false,
         $bare = false,
         $autoindex = false,
 	      $aliases = "",
