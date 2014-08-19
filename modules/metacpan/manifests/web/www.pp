@@ -5,12 +5,6 @@ class metacpan::web::www (
 ) {
     # include metacpan::web::api
 
-    nginx::vhost { "metacpan.org":
-        bare     => true,
-        ssl_only => true,
-        aliases => ["$hostname.metacpan.org", "lo.metacpan.org"],
-    }
-
     realize File["/etc/nginx/conf.d/metacpan.org.d"]
     file { "/etc/nginx/conf.d/metacpan.org.d/trailing_slash.conf":
         ensure => file,

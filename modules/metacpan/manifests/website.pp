@@ -24,7 +24,9 @@ define metacpan::website (
     $vhost_domain = 'UNSET',
     $vhost_html = '',
     $vhost_ssl = false,
+    $vhost_ssl_only = false,
     $vhost_autoindex = false,
+    $vhost_bare = false,
     $vhost_aliases = [],
 ) {
 
@@ -43,6 +45,8 @@ define metacpan::website (
   nginx::vhost { $vhost_domain:
     html      => $vhost_html,
     ssl       => $vhost_ssl,
+    ssl_only  => $vhost_ssl_only,
+    bare      => $vhost_bare,
     autoindex => $vhost_autoindex,
     aliases   => $vhost_aliases,
   }

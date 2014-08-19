@@ -9,7 +9,7 @@ server {
 server {
   listen 80;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
-  <% if @html %>
+  <% if @html != '' %>
   root <%= @html %>;
   <% end %>
   access_log <%= @log_dir %>/access.log combined;
@@ -36,7 +36,7 @@ server {
 server {
   listen <%= @ssl ? "443" : "80" %>;
   server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
-  <% if @html %>
+  <% if @html != '' %>
   root <%= @html %>;
   <% end %>
   access_log <%= @log_dir %>/access.log combined;
