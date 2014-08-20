@@ -1,13 +1,5 @@
 rewrite ^(<%= @location %>)$ $1/ permanent;
 
-<% if @location_roots -%>
-  <% @location_roots.each_pair do |loc, root| %>
-  location <%= loc %> {
-    root <%= root %>;
-  }
-  <% end %>
-<% end -%>
-
   location <%= @location %>/ {
     proxy_pass <%= @target %>;
     proxy_redirect off;
