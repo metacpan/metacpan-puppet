@@ -5,6 +5,8 @@ class metacpan_role::base(
   include metacpan::user::admins
   include metacpan_elasticsearch
 
+  include starman
+
   # basic stuff EVERY box needs
   perl::module{'Carton':
     module => 'Carton'
@@ -13,7 +15,6 @@ class metacpan_role::base(
   perl::module{'DaemonControl':
     module => 'Daemon::Control'
   }
-
 
   include metacpan::rrrclient
 

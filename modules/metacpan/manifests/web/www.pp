@@ -21,26 +21,26 @@ class metacpan::web::www (
         notify  => Service['nginx'],
     }
 
-    $app_root = '/home/metacpan/metacpan.org'
+    # $app_root = '/home/metacpan/metacpan.org'
 
-    nginx::proxy { "metacpan.org":
-        target   => "http://localhost:5001",
-        vhost    => "metacpan.org",
-        location => "",
-    }
+    # nginx::proxy { "metacpan.org":
+    #     target   => "http://localhost:5001",
+    #     vhost    => "metacpan.org",
+    #     location => "",
+    # }
 
-    $service = 'metacpan-org'
-
-    # $perlbin isn't needed because the script sources the metacpanrc file.
-    daemon_control { $service:
-        root    => $app_root,
-        port    => 5001,
-        workers => $workers,
-        require => [
-            # Web needs API.
-            Service[ $metacpan::web::api::service ],
-        ],
-    }
+    # $service = 'metacpan-org'
+    #
+    # # $perlbin isn't needed because the script sources the metacpanrc file.
+    # daemon_control { $service:
+    #     root    => $app_root,
+    #     port    => 5001,
+    #     workers => $workers,
+    #     require => [
+    #         # Web needs API.
+    #         Service[ $metacpan::web::api::service ],
+    #     ],
+    # }
 
     file { '/home/metacpan/metacpan.org/root/static/sitemaps':
         ensure => directory,

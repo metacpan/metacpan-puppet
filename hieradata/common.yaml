@@ -26,7 +26,7 @@ metacpan::websites:
     vhost_aliases:
       - "cpan.lo.metacpan.org"
       - "cpan.%{hostname}.metacpan.org"
-  main_site:
+  metacpan_org:
     path: '/home/metacpan/metacpan.org'
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
     git_revision: 'master'
@@ -36,6 +36,9 @@ metacpan::websites:
     vhost_aliases:
       - "lo.metacpan.org"
       - "%{hostname}.metacpan.org"
+    proxy_ensure: present
+    starman_port: 5001
+    starman_workers: 1
   www_redirect:
     vhost_domain: 'www.metacpan.org'
     vhost_bare: true
