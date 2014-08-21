@@ -20,6 +20,8 @@ use Daemon::Control;
 use File::Path 2.06 ();    # core
 
 my $name = '<%= @service %>';
+my $service = "<%= @service.gsub(%r/-/, '.') %>";
+
 my $user = '<%= @user %>';
 my $home = '<%= @root %>';
 my %dirs = (
@@ -30,11 +32,14 @@ my $carton    = '<%= @perlbin %>/carton';
 my $workers   = <%= @workers %>;
 my $plack_env = '<%= @plack_env %>';
 
+my $carton_dir = "/home/${$user}/carton";
+my $carton_path = "${carton_dir}/${service}";
+
 # TODO: Should we use the ./bin/carton wrapper instead of setting this here?
-$ENV{PERL_CARTON_PATH} = "/home/$user/carton/<%= @service.gsub(%r/-/, '.') %>";
+$ENV{PERL_CARTON_PATH} = $carton_path;
 
 my @program_args = (
-    'exec', '<%= @perlbin %>/plackup',
+    'exec', "${carton_path}/bin/plackup",
     '--port'    => <%= @port %>,
     '--workers' => $workers,
     '-E'        => $plack_env,
@@ -43,7 +48,8 @@ my @program_args = (
     '-s', => 'Starman',
 );
 
-File::Path::make_path( values %dirs );
+# Puppet should be doing this with symlinks
+#File::Path::make_path( values %dirs );
 
 # Notes on unused args
 # scan_name: seems to be just 'starman master' (not useful)

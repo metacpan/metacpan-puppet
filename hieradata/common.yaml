@@ -3,6 +3,8 @@
 # Defaults
 perl::version: '5.16.2'
 
+metacpan::user: 'metacpan'
+
 # Where we mirror cpan with the rrrclient
 # also where cpan.metacpan.org serves from
 metacpan::cpan_mirror: '/mnt/lv-cpan'

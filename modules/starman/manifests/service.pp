@@ -6,8 +6,10 @@ define starman::service (
     $service        = $name,
     $service_enable = true,
 ) {
+    include perl
     include starman::config
 
+    $perlbin   = $perl::params::bin_dir
     $user      = $starman::config::user
     $plack_env = $starman::config::plack_env
 
@@ -46,9 +48,14 @@ define starman::service (
         content => template('starman/init.pl.erb'),
     }
 
+    starman::carton { "carton_${service}":
+      root => $root,
+      service => $service,
+    }
+
     service { $service:
         ensure  => $service_enable,
         enable  => $service_enable,
-        require => File[$init],
+        require => [ File[$init] ],
     }
 }
