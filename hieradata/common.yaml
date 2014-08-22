@@ -45,6 +45,12 @@ metacpan::websites:
     vhost_domain: 'www.metacpan.org'
     vhost_bare: true
     vhost_ssl: true
+  explorer:
+    path: '/home/metacpan/explorer.metacpan.org'
+    git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
+    git_revision: 'master'
+    vhost_domain: 'explorer.metacpan.org'
+    vhost_html: '/home/metacpan/explorer.metacpan.org/build'
 
   # api:
   #   git_enable: absent
@@ -52,12 +58,7 @@ metacpan::websites:
   #   git_source: 'https://github.com/CPAN-API/cpan-api.git'
   #   git_revision: 'master'
   #   workers: 1
-  # explorer:
-  #   git_enable: absent
-  #   path: '/home/metacpan/explorer.metacpan.org'
-  #   git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
-  #   git_revision: 'master'
-  #   workers: 1
+
   # web-socket:
   #   git_enable: absent
   #   path: '/home/metacpan/p5-metacpan-websocket'
