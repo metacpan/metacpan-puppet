@@ -32,7 +32,7 @@ my $carton    = '<%= @perlbin %>/carton';
 my $workers   = <%= @workers %>;
 my $plack_env = '<%= @plack_env %>';
 
-my $carton_dir = "/home/${$user}/carton";
+my $carton_dir = "/home/${user}/carton";
 my $carton_path = "${carton_dir}/${service}";
 
 # TODO: Should we use the ./bin/carton wrapper instead of setting this here?

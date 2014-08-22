@@ -10,10 +10,12 @@ class starman::config (
 
     $log_dir  =  "/var/log/${basename}"
     $run_dir  =  "/var/run/${basename}"
+    $tmp_dir  =  "/tmp/${basename}"
 
     file { [
             $log_dir,
             $run_dir,
+            $tmp_dir
         ]:
         ensure => directory,
         mode   => '0755',
