@@ -1,4 +1,4 @@
-class metacpan_system {
+class metacpan::system {
 
   include metacpan::system::directories
   include metacpan::system::configs
