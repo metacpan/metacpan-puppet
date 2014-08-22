@@ -1,3 +1,3 @@
 node /bm/ {
-  include metacpan_role::production
+  include metacpan::role::production
 }

@@ -1,3 +1,3 @@
 node /6dg/ {
-  include metacpan_role::production
+  include metacpan::role::production
 }

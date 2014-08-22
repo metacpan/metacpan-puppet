@@ -1,4 +1,4 @@
-class metacpan_role::base(
+class metacpan::role::base(
 ) {
 
   include metacpan
