@@ -2,7 +2,7 @@ class metacpan(
   ) {
 
     # Standard metacpan server setup
-    include metacpan_system
+    include metacpan::system
 
     # Sort out our repos
     $websites = hiera_hash('metacpan::websites', {})

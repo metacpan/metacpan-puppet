@@ -1,4 +1,4 @@
-class metacpan_system::configs {
+class metacpan::system::configs {
 
     # Aliases
     file { "/etc/aliases":

@@ -1,4 +1,4 @@
-class metacpan_system::perlpackages() {
+class metacpan::system::perlpackages() {
 
     # Packages we need to build perl stuff
     package {

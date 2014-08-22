@@ -1,4 +1,4 @@
-class metacpan_system::ssh {
+class metacpan::system::ssh {
   package { ["openssh-server", "openssh-client"]:
     ensure => latest,
   }->

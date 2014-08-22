@@ -1,4 +1,4 @@
-class metacpan_system::directories {
+class metacpan::system::directories {
 
     # We install most stuff in here
     file {
