@@ -51,6 +51,10 @@ metacpan::websites:
     git_revision: 'master'
     vhost_domain: 'explorer.metacpan.org'
     vhost_html: '/home/metacpan/explorer.metacpan.org/build'
+    vhost_aliases:
+      - "explorer.lo.metacpan.org"
+      - "explorer.%{hostname}.metacpan.org"
+
 
   # api:
   #   git_enable: absent
@@ -65,3 +69,17 @@ metacpan::websites:
   #   git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
   #   git_revision: 'master'
   #   workers: 1
+
+metacpan::fw_ports:
+  ssh:
+    order: 100
+    port: 22
+    source: '0.0.0.0/0'
+  http:
+    order: 200
+    port: 80
+    source: '0.0.0.0/0'
+  https:
+    order: 210
+    port: 443
+    source: '0.0.0.0/0'
