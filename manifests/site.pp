@@ -36,6 +36,17 @@ resources { "firewall":
     action  => 'accept',
   }
 
+  ->
+
+    firewall { "010 allow ssh access":
+      ensure  => present,
+      port    => [ 22 ],
+      proto   => tcp,
+      action  => 'accept',
+      source  => '0.0.0.0/0', # anywhere
+    }
+   ->
+
   firewall { "999 drop all":
     proto   => 'all',
     action  => 'drop',

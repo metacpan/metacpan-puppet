@@ -71,10 +71,6 @@ metacpan::websites:
   #   workers: 1
 
 metacpan::fw_ports:
-  ssh:
-    order: 100
-    port: 22
-    source: '0.0.0.0/0'
   http:
     order: 200
     port: 80
