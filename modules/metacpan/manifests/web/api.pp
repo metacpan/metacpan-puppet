@@ -15,11 +15,11 @@ class metacpan::web::api (
 	# 	location => "",
 	# }
 
-	nginx::proxy { "api-v0":
-		target   => "http://localhost:5000/",
-		vhost    => "api.metacpan.org",
-		location => "/v0",
-	}
+	# nginx::proxy { "api-v0":
+	# 	target   => "http://localhost:5000/",
+	# 	vhost    => "api.metacpan.org",
+	# 	location => "/v0",
+	# }
     #
     # $app_root = '/home/metacpan/api.metacpan.org'
     #

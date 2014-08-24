@@ -2,6 +2,12 @@ class nginx {
         package { "nginx":
                 ensure => installed,
         }->
+        file { "/etc/nginx/conf.d":
+          ensure => directory,
+          owner => 'root',
+          mode   => '0755',
+        }->
+
         file { "/etc/nginx/nginx.conf":
                 ensure => file,
                 content => template("nginx/nginx.conf.erb"),
@@ -26,6 +32,12 @@ class nginx {
       	file { "/var/www":
       		ensure => directory,
       	}->
+
+        file { "/var/log/nginx":
+          ensure => directory,
+          owner => 'root',
+          mode   => '0755',
+        }->
 
         service { "nginx":
                 ensure => running,

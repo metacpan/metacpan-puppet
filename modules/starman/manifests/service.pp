@@ -23,7 +23,7 @@ define starman::service (
         $run_dir   = "${starman::config::run_dir}/${service}"
         $tmp_dir   = "${starman::config::tmp_dir}/${service}"
 
-        file { [$link_root, $log_dir, $run_dir ]:
+        file { [$link_root, $log_dir, $run_dir, $tmp_dir ]:
             ensure => directory,
             owner  => $user,
             mode   => '0755',
@@ -45,7 +45,8 @@ define starman::service (
         exec { "${link_root}/tmp_link":
             path    => [ '/bin', '/usr/bin' ],
             command => "ln -s $tmp_dir ${link_root}/tmp",
-            unless  => "test -d ${link_root}/tmp",
+            unless  => "test -e ${link_root}/tmp || test -L ${link_root}/tmp",
+            require => File["${link_root}"],
             before => [ Service[$service_name], File["${link_root}/tmp"] ],
         }
 
