@@ -5,7 +5,6 @@ define metacpan::user(
     $shell = "/bin/bash",
     $admin = false,
     $expire_password = true,
-    $source_metacpanrc = false,
 ) {
 
     user { $user:
@@ -56,28 +55,6 @@ define metacpan::user(
       }
 
   }
-
-  file {
-    # Little RC file to setup the env
-
-    "$path/$user/.metacpanrc":
-        owner   => $user,
-        group   => $user,
-        mode    => 0700,
-        content => template("metacpan/user/metacpanrc.erb");
-
-  }
-
-
-    if $source_metacpanrc {
-      # Turn "/bin/(bash|zsh)" into "/home/$user/.${1}rc".
-      $shell_rc_file = regsubst($shell, '^(?:.+?/)?([^/]+)$', "$path/$user/.\\1rc")
-      line { $shell_rc_file:
-        ensure  => present,
-        line    => "source $path/$user/.metacpanrc",
-        require => User[$user],
-      }
-    }
 
     # Sort out ssh file, need dir first
     file{ "$path/$user/.ssh":
