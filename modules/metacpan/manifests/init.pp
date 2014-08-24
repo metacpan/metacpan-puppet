@@ -14,7 +14,6 @@ class metacpan(
 
     metacpan::user { metacpan:
         expire_password   => false,
-        source_metacpanrc => true,
     }
 
     include metacpan::web

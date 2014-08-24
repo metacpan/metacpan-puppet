@@ -101,7 +101,6 @@ class metacpan::user::admins {
             require  => Package["byobu"];
         olaf:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Olaf Alders <olaf.alders@gmail.com>";
         rafl:
             admin    => true,
@@ -110,29 +109,23 @@ class metacpan::user::admins {
             require  => Package["zsh"];
         rwstauner:
             admin    => true,
-            source_metacpanrc => true,
             shell    => '/bin/zsh',
             require  => Package['zsh'],
             fullname => 'Randy Stauner <rwstauner@cpan.org>';
         trs:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Thomas Sibley <tsibley@cpan.org>";
         matthewt:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Matt S Trout <perl-stuff@trout.me.uk>";
         haarg:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Graham Knop <haarg@haarg.org>";
 	mhorsfall:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Matthew Horsfall (alh) <wolfsage@gmail.com>";
         ben:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Ben Hundley <ben@qbox.io>";
     }
 }
