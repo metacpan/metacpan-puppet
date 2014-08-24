@@ -9,7 +9,7 @@
 #
 # perl::build{$perl_version}
 # where $perl_version comes from
-# hiera('perl::version', '5.16.2')
+# hiera('perl::version', '5.18.2')
 #
 
 define perl::build (

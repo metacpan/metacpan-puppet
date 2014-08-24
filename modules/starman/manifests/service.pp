@@ -5,12 +5,12 @@ define starman::service (
     $port,
     $service        = $name,
     $service_enable = true,
+    $user = hiera('metacpan::user', 'metacpan'),
 ) {
     include perl
     include starman::config
 
     $perlbin   = $perl::params::bin_dir
-    $user      = $starman::config::user
     $plack_env = $starman::config::plack_env
 
     $service_name = "starman_${service}"
@@ -23,7 +23,7 @@ define starman::service (
         $run_dir   = "${starman::config::run_dir}/${service}"
         $tmp_dir   = "${starman::config::tmp_dir}/${service}"
 
-        file { [$link_root, $log_dir, $run_dir, $tmp_dir]:
+        file { [$link_root, $log_dir, $run_dir ]:
             ensure => directory,
             owner  => $user,
             mode   => '0755',
@@ -33,18 +33,36 @@ define starman::service (
         file { "${link_root}/log":
             ensure => link,
             target => $log_dir,
+            require => File[$log_dir],
             before => Service[$service_name],
         }
         file { "${link_root}/run":
             ensure => link,
             target => $run_dir,
+            require => File[$run_dir],
             before => Service[$service_name],
         }
+        exec { "${link_root}/tmp_link":
+            path    => [ '/bin', '/usr/bin' ],
+            command => "ln -s $tmp_dir ${link_root}/tmp",
+            unless  => "test -d ${link_root}/tmp",
+            before => [ Service[$service_name], File["${link_root}/tmp"] ],
+        }
+
         file { "${link_root}/tmp":
-            ensure => link,
-            target => $tmp_dir,
+            owner => $user,
             before => Service[$service_name],
         }
+
+        file { "${link_root}/tmp/scoreboard":
+            ensure => directory,
+            owner  => $user,
+            mode   => '0755',
+            require => File["${link_root}/tmp"],
+            before => Service[$service_name],
+        }
+
+
 
     }
 
@@ -58,7 +76,8 @@ define starman::service (
         content => template('starman/init.pl.erb'),
     }
 
-    starman::carton { "carton_${service}":
+    $carton_name = "carton_${service}"
+    starman::carton { $carton_name:
       root => $root,
       service => $service,
     }
@@ -66,6 +85,9 @@ define starman::service (
     service { $service_name:
         ensure  => $service_enable,
         enable  => $service_enable,
-        require => [ File[$init] ],
+        require => [
+          File[$link_root, $log_dir, $run_dir, $init],
+          Starman::Carton[$carton_name]
+        ],
     }
 }

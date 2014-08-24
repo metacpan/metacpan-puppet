@@ -1,5 +1,5 @@
 class metacpan::watcher(
-	$perl_version = hiera('perl::version', '5.16.2'),
+	$perl_version = hiera('perl::version', '5.18.2'),
 	$enable = hiera('metacpan::watcher::enable', 'false')
 ) {
 	$filename = "metacpan-watcher"

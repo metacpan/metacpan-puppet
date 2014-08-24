@@ -1,6 +1,6 @@
 # Configure starman resources.
 class starman::config (
-    $user      = 'metacpan',
+    $user = hiera('metacpan::user', 'metacpan'),
     # Symlink local app dir to base dirs (likely on a different mount).
     $link_dirs = true,
     $plack_env = 'production',

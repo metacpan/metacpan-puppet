@@ -1,7 +1,7 @@
 ---
 
 # Defaults
-perl::version: '5.16.2'
+perl::version: '5.18.2'
 
 metacpan::user: 'metacpan'
 
@@ -55,6 +55,21 @@ metacpan::websites:
       - "explorer.lo.metacpan.org"
       - "explorer.%{hostname}.metacpan.org"
 
+
+  api:
+    path: '/home/metacpan/api.metacpan.org'
+    git_source: 'https://github.com/CPAN-API/cpan-api.git'
+    git_revision: 'master'
+    vhost_domain: 'api.metacpan.org'
+    vhost_ssl: true
+    vhost_bare: true
+    vhost_aliases:
+      - "api.lo.metacpan.org"
+      - "api.%{hostname}.metacpan.org"
+      - "st.aticpan.org"
+    proxy_ensure: present
+    starman_port: 5000
+    starman_workers: 1
 
   # api:
   #   git_enable: absent
