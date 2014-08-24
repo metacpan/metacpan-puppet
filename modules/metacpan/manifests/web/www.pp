@@ -1,4 +1,10 @@
-class metacpan::web::www {
+class metacpan::web::www (
+    # FIXME: This $wwwworkers var is set in the node manifest.
+    # FIXME: Make this a sensible default and override with hiera.
+    $workers = $wwwworkers,
+) {
+    include metacpan::web::api
+
     nginx::vhost { "metacpan.org":
         bare     => true,
         ssl_only => true,
@@ -34,16 +40,22 @@ class metacpan::web::www {
         location => "",
     }
 
-    startserver { "metacpan-www":
+    $old_service = 'metacpan-www'
+    startserver::remove { $old_service: }
+
+    $service = 'metacpan-org'
+
+    # $perlbin isn't needed because the script sources the metacpanrc file.
+    daemon_control { $service:
         root    => $app_root,
-        perlbin => $perlbin,
         port    => 5001,
-        workers => $wwwworkers,
-    }->
-    service { "metacpan-www":
-        ensure => running,
-        enable => true,
-        require => Service[ 'metacpan-api' ],
+        workers => $workers,
+        require => [
+            # Ensure the old service removes itself so we can use the port.
+            Startserver::Remove[$old_service],
+            # Web needs API.
+            Service[ $metacpan::web::api::service ],
+        ],
     }
 
     file { '/home/metacpan/metacpan.org/root/static/sitemaps':

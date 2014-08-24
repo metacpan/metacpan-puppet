@@ -1,4 +1,8 @@
-class metacpan::web::api {
+class metacpan::web::api (
+    # FIXME: This $apiworkers var is set in the node manifest.
+    # FIXME: Make this a sensible default and override with hiera.
+    $workers = $apiworkers,
+) {
 	nginx::vhost { "api.metacpan.org":
 		bare => true,
 		ssl  => true,
@@ -17,14 +21,24 @@ class metacpan::web::api {
 		location => "/v0",
 	}
 
-	startserver { "metacpan-api":
-		root    => "/home/metacpan/api.metacpan.org",
-		perlbin => $perlbin,
-		workers => $apiworkers,
-	}->
-	service { "metacpan-api":
-		ensure => running,
-		enable => true,
-		require => Service[ 'elasticsearch' ],
-	}
+    $app_root = '/home/metacpan/api.metacpan.org'
+
+    $old_service = 'metacpan-api'
+    startserver::remove { $old_service: }
+
+    # NOTE: The www service uses this $service var:
+    $service = 'api-metacpan-org'
+
+    # $perlbin isn't needed because the script sources the metacpanrc file.
+    daemon_control { $service:
+        root    => $app_root,
+        port    => 5000,
+        workers => $workers,
+        require => [
+            # Ensure the old service removes itself so we can use the port.
+            Startserver::Remove[$old_service],
+            # API needs ES.
+            Service[ 'elasticsearch' ],
+        ],
+    }
 }

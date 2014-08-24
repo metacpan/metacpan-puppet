@@ -1,4 +1,5 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
+# vim: set ft=perl ts=4 sts=4 sw=4 et sta:
 
 # Script to checkout and automatically update the
 # metacpan sites into the metacpan users home directory
@@ -9,14 +10,29 @@ my $HOMEDIR = '/home/metacpan';
 my $USER    = 'metacpan';
 my $AS_ROOT = ($> == 0);
 
+# We need to make sure PATH points to the right carton.
+# FIXME: Get this value from puppet or use a symlink or something.
+my $perlbin = '/usr/local/perlbrew/perls/perl-5.16.2/bin';
+$ENV{PATH} =~ /\Q$perlbin\E/
+    or $ENV{PATH} = "$perlbin:$ENV{PATH}";
+
+sub as_user {
+    system( ($AS_ROOT ? (qw(sudo -H -u), $USER, env => "PATH=$ENV{PATH}") : ()), @_ );
+}
+sub carton {
+    my $carton = 'bin/carton';
+    -x $carton or $carton = 'carton';
+    as_user($carton, @_);
+}
 sub git {
-  system( ($AS_ROOT ? (qw(sudo -u), $USER) : ()), git => @_ );
+    as_user( git => @_ );
 }
 
 my %sites = (
 
     # Directory        => (read only) repo
     "explorer.metacpan.org" => 'git://github.com/CPAN-API/metacpan-explorer.git',
+
     "metacpan.org"     => 'git://github.com/CPAN-API/metacpan-web.git',
     "api.metacpan.org" => 'git://github.com/CPAN-API/cpan-api.git',
 
@@ -29,12 +45,14 @@ my %sites = (
 
 );
 
-foreach my $site ( keys %sites ) {
+# Use @ARGV if given, otherwise update all.
+foreach my $site ( @ARGV ? @ARGV : keys %sites ) {
+    exists($sites{$site}) or do { warn "unknown arg: $site"; next; };
+
     my $site_dir = "$HOMEDIR/$site";
     print "Processing: $site_dir\n";
 
     unless ( -d $site_dir ) {
-
         # Check it out
         my $repo = $sites{$site};
         chdir($HOMEDIR);
@@ -44,8 +62,11 @@ foreach my $site ( keys %sites ) {
         git('pull');
     }
 
-    if( $AS_ROOT ){
-        chdir($site_dir);
+    chdir($site_dir);
+    if( -f 'cpanfile' ){
+        carton('install');
+    }
+    elsif( $AS_ROOT ){
         system("$HOMEDIR/bin/install_modules --installdeps .");
     }
     else {

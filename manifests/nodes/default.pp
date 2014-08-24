@@ -2,8 +2,15 @@
 
 node default {
     $perlbin = "/usr/local/perlbrew/perls/perl-5.16.2/bin"
-    $apiworkers = 1
+    $apiworkers = 3
     $wwwworkers = 3
+
+    # FIXME: Set these in hiera.
+    class { 'daemon_control::config':
+      link_dirs => false,
+      plack_env => 'development',
+      user      => 'vagrant',
+    }
 
     include metacpan
     include metacpan::ssh
