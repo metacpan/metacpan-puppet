@@ -23,22 +23,22 @@ elasticsearch::memory: 40
 metacpan::web::sites:
 
   metacpan_cpan_static:
-    vhost_domain: 'cpan.metacpan.org'
     vhost_html: "%{hiera('metacpan::cpan_mirror')}"
     vhost_ssl: true
     vhost_autoindex: true
     vhost_aliases:
+      - 'cpan.metacpan.org'
       - "cpan.lo.metacpan.org"
       - "cpan.%{hostname}.metacpan.org"
-      
+
   metacpan_web:
     path: '/home/metacpan/metacpan.org'
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
     git_revision: 'master'
-    vhost_domain: 'metacpan.org'
     vhost_ssl_only: true
     vhost_bare: true
     vhost_aliases:
+      - 'metacpan.org'
       - "lo.metacpan.org"
       - "%{hostname}.metacpan.org"
     proxy_ensure: present
@@ -46,7 +46,10 @@ metacpan::web::sites:
     starman_workers: 1
 
   metacpan_web_redirect:
-    vhost_domain: 'www.metacpan.org'
+    vhost_aliases:
+      - 'www.metacpan.org'
+      - 'lo.metacpan.org'
+      - "www.%{hostname}.metacpan.org"
     vhost_bare: true
     vhost_ssl: true
 
@@ -54,9 +57,9 @@ metacpan::web::sites:
     path: '/home/metacpan/explorer.metacpan.org'
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
     git_revision: 'master'
-    vhost_domain: 'explorer.metacpan.org'
     vhost_html: '/home/metacpan/explorer.metacpan.org/build'
     vhost_aliases:
+      - 'explorer.metacpan.org'
       - "explorer.lo.metacpan.org"
       - "explorer.%{hostname}.metacpan.org"
 
@@ -64,10 +67,10 @@ metacpan::web::sites:
     path: '/home/metacpan/api.metacpan.org'
     git_source: 'https://github.com/CPAN-API/cpan-api.git'
     git_revision: 'master'
-    vhost_domain: 'api.metacpan.org'
     vhost_ssl: true
     vhost_bare: true
     vhost_aliases:
+      - 'api.metacpan.org'
       - "api.lo.metacpan.org"
       - "api.%{hostname}.metacpan.org"
       - "st.aticpan.org"
@@ -77,6 +80,29 @@ metacpan::web::sites:
     vhost_extra_proxies:
       proxy_v0:
           location: '/v0'
+
+  # metacpan_sco:
+  #   vhost_domain: 'sco.metacpan.org',
+  #   vhost_bare: true
+  #   vhost_aliases:
+  #     - "sco.lo.metacpan.org"
+  #     - "sco.%{hostname}.metacpan.org"
+  #     - "cpansearch.perl.org"
+  #     - ".mcpan.org"
+  #   vhost_extra_configs:
+  #     rewrite:
+  #         template: 'rewrite.conf'
+
+          #
+          #
+          #
+          #     realize(File["/etc/nginx/conf.d/search.cpan.org.d"])
+          #   file { "/etc/nginx/conf.d/search.cpan.org.d/rewrite.conf":
+          #     ensure => file,
+          #     source => ["puppet:///modules/metacpan/www/sco.conf"],
+          #     require => File["/etc/nginx/conf.d/search.cpan.org.d"],
+          #   }
+          # }
 
   # web-socket:
   #   git_enable: absent

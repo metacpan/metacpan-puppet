@@ -5,7 +5,7 @@ define nginx::vhost(
         $ssl = $ssl_only,
         $bare = false,
         $autoindex = false,
-	      $aliases = [],
+	      $aliases,
 ) {
         include nginx
 

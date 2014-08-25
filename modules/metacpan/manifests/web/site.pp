@@ -22,18 +22,16 @@ define metacpan::web::site (
     $git_revision = 'UNSET',
     $git_identity = 'UNSET',
 
-    $vhost_domain = 'UNSET',
+    $vhost_aliases, # Required as main domain now here
     $vhost_html = '',
     $vhost_ssl_only = false,
     $vhost_ssl = $vhost_ssl_only,
     $vhost_autoindex = false,
     $vhost_bare = false,
-    $vhost_aliases = [],
     $vhost_extra_proxies = {},
 
     $proxy_ensure = absent,
     $proxy_location = '',
-    $proxy_upstreams = [],
 
     $starman_port = 'UNSET',
     $starman_workers = 1,
@@ -51,7 +49,7 @@ define metacpan::web::site (
     }
   }
 
-  nginx::vhost { $vhost_domain:
+  nginx::vhost { $name:
     html      => $vhost_html,
     ssl       => $vhost_ssl,
     ssl_only  => $vhost_ssl_only,
@@ -62,16 +60,16 @@ define metacpan::web::site (
 
 
   if( $proxy_ensure == 'present' ) {
-      nginx::proxy { "proxy_${vhost_domain}":
+      nginx::proxy { "proxy_${name}":
           target   => "http://localhost:${starman_port}",
-          vhost    => $vhost_domain,
+          conf    => $name,
           location => $proxy_location,
       }
 
       # Add all the extra proxy / config gumpf
       create_resources('nginx::proxy', $vhost_extra_proxies, {
         target   => "http://localhost:${starman_port}",
-        vhost    => $vhost_domain,
+        conf    =>  $name,
         location => $proxy_location,
       })
 
