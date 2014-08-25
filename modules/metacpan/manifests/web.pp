@@ -7,9 +7,4 @@ class metacpan::web {
 			group => 'metacpan',
 	}
 
-
-	# include metacpan::web::www
-	# include metacpan::web::sco
-	# include metacpan::web::cpan
-	# include metacpan::web::status
 }

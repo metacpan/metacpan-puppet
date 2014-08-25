@@ -30,6 +30,10 @@ metacpan::web::sites:
       - 'cpan.metacpan.org'
       - "cpan.lo.metacpan.org"
       - "cpan.%{hostname}.metacpan.org"
+    vhost_extra_configs:
+      fastly_surrogate_headers:
+          template: 'fastly'
+
 
   metacpan_web:
     path: '/home/metacpan/metacpan.org'
@@ -43,6 +47,9 @@ metacpan::web::sites:
       - "%{hostname}.metacpan.org"
     starman_port: 5001
     starman_workers: 1
+    vhost_extra_configs:
+      trailing_slash_rewrite:
+          template: 'trailing_slash'
 
   metacpan_web_redirect:
     vhost_aliases:
@@ -51,6 +58,9 @@ metacpan::web::sites:
       - "www.%{hostname}.metacpan.org"
     vhost_bare: true
     vhost_ssl: true
+    vhost_extra_configs:
+      rewrite_to_https:
+          template: 'rewrite'
 
   metacpan_explorer:
     path: '/home/metacpan/explorer.metacpan.org'
@@ -91,16 +101,8 @@ metacpan::web::sites:
       rewrite:
           template: 'rewrite'
 
-          #
-          #
-          #
-          #     realize(File["/etc/nginx/conf.d/search.cpan.org.d"])
-          #   file { "/etc/nginx/conf.d/search.cpan.org.d/rewrite.conf":
-          #     ensure => file,
-          #     source => ["puppet:///modules/metacpan/www/sco.conf"],
-          #     require => File["/etc/nginx/conf.d/search.cpan.org.d"],
-          #   }
-          # }
+  # metacpan_vmbox:
+  # TODO
 
   # web-socket:
   #   git_enable: absent
