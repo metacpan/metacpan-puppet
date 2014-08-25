@@ -89,7 +89,7 @@ metacpan::web::sites:
       - ".mcpan.org"
     vhost_extra_configs:
       rewrite:
-          template: 'rewrite.conf'
+          template: 'rewrite'
 
           #
           #

@@ -2,8 +2,8 @@ define nginx::proxy(
         $ensure   = 'present',
         $target,
         $location = "/$name",
-        $conf,
-        $vhost_root = "/etc/nginx/conf.d/$conf",
+        $site,
+        $vhost_root = "/etc/nginx/conf.d/${site}",
 ) {
         include nginx
         realize File["$vhost_root.d"]

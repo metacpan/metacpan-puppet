@@ -59,17 +59,20 @@ define metacpan::web::site (
   # Add all the extra proxy / config gumpf
   create_resources('nginx::proxy', $vhost_extra_proxies, {
     target   => "http://localhost:${starman_port}",
-    conf    =>  $name,
+    site    =>  $name,
     location => '',
   })
 
+  create_resources('metacpan::web::nginx_extra_confs', $vhost_extra_configs, {
+    site    =>  $name,
+  })
 
   if( $starman_port != 'UNSET' ) {
       # One or more proxies going on
 
       nginx::proxy { "proxy_${name}":
           target   => "http://localhost:${starman_port}",
-          conf    => $name,
+          site    => $name,
           location => '',
       }
 
