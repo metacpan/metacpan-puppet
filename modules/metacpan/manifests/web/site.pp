@@ -29,9 +29,7 @@ define metacpan::web::site (
     $vhost_autoindex = false,
     $vhost_bare = false,
     $vhost_extra_proxies = {},
-
-    $proxy_ensure = absent,
-    $proxy_location = '',
+    $vhost_extra_configs = {},
 
     $starman_port = 'UNSET',
     $starman_workers = 1,
@@ -58,21 +56,22 @@ define metacpan::web::site (
     aliases   => $vhost_aliases,
   }
 
+  # Add all the extra proxy / config gumpf
+  create_resources('nginx::proxy', $vhost_extra_proxies, {
+    target   => "http://localhost:${starman_port}",
+    conf    =>  $name,
+    location => '',
+  })
 
-  if( $proxy_ensure == 'present' ) {
+
+  if( $starman_port != 'UNSET' ) {
+      # One or more proxies going on
+
       nginx::proxy { "proxy_${name}":
           target   => "http://localhost:${starman_port}",
           conf    => $name,
-          location => $proxy_location,
+          location => '',
       }
-
-      # Add all the extra proxy / config gumpf
-      create_resources('nginx::proxy', $vhost_extra_proxies, {
-        target   => "http://localhost:${starman_port}",
-        conf    =>  $name,
-        location => $proxy_location,
-      })
-
 
       starman::service { "starman_${name}":
           service => $name,

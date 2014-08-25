@@ -41,7 +41,6 @@ metacpan::web::sites:
       - 'metacpan.org'
       - "lo.metacpan.org"
       - "%{hostname}.metacpan.org"
-    proxy_ensure: present
     starman_port: 5001
     starman_workers: 1
 
@@ -74,24 +73,23 @@ metacpan::web::sites:
       - "api.lo.metacpan.org"
       - "api.%{hostname}.metacpan.org"
       - "st.aticpan.org"
-    proxy_ensure: present
     starman_port: 5000
     starman_workers: 1
     vhost_extra_proxies:
       proxy_v0:
           location: '/v0'
 
-  # metacpan_sco:
-  #   vhost_domain: 'sco.metacpan.org',
-  #   vhost_bare: true
-  #   vhost_aliases:
-  #     - "sco.lo.metacpan.org"
-  #     - "sco.%{hostname}.metacpan.org"
-  #     - "cpansearch.perl.org"
-  #     - ".mcpan.org"
-  #   vhost_extra_configs:
-  #     rewrite:
-  #         template: 'rewrite.conf'
+  metacpan_sco:
+    vhost_bare: true
+    vhost_aliases:
+      - 'sco.metacpan.org'
+      - "sco.lo.metacpan.org"
+      - "sco.%{hostname}.metacpan.org"
+      - "cpansearch.perl.org"
+      - ".mcpan.org"
+    vhost_extra_configs:
+      rewrite:
+          template: 'rewrite.conf'
 
           #
           #
