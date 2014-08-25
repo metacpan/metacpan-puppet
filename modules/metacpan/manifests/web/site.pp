@@ -2,7 +2,7 @@
 #
 # In Hiera:
 #
-#   metacpan::website:
+#   metacpan::web::site:
 #     www:
 #       path: '/home/metacpan/metacpan.org'
 #       git_source: 'https://github.com/CPAN-API/metacpan-puppet.git'
@@ -12,8 +12,8 @@
 #       git_identity: '/home/user/.ssh/id_dsa'
 #
 #
-define metacpan::website (
-    $path,
+define metacpan::web::site (
+    $path = 'UNSET',
     $owner = hiera('metacpan::user', 'metacpan'),
     $group = hiera('metacpan::group', 'metacpan'),
     $workers = 0,
@@ -29,6 +29,7 @@ define metacpan::website (
     $vhost_autoindex = false,
     $vhost_bare = false,
     $vhost_aliases = [],
+    $vhost_extra_proxies = {},
 
     $proxy_ensure = absent,
     $proxy_location = '',
@@ -59,12 +60,21 @@ define metacpan::website (
     aliases   => $vhost_aliases,
   }
 
+
   if( $proxy_ensure == 'present' ) {
       nginx::proxy { "proxy_${vhost_domain}":
           target   => "http://localhost:${starman_port}",
           vhost    => $vhost_domain,
           location => $proxy_location,
       }
+
+      # Add all the extra proxy / config gumpf
+      create_resources('nginx::proxy', $vhost_extra_proxies, {
+        target   => "http://localhost:${starman_port}",
+        vhost    => $vhost_domain,
+        location => $proxy_location,
+      })
+
 
       starman::service { "starman_${name}":
           service => $name,

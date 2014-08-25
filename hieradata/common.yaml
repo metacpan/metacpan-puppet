@@ -20,7 +20,8 @@ metacpan::rrrclient::enable: false
 elasticsearch::pkg_version: 1.3.1
 elasticsearch::memory: 40
 
-metacpan::websites:
+metacpan::web::sites:
+
   metacpan_cpan_static:
     vhost_domain: 'cpan.metacpan.org'
     vhost_html: "%{hiera('metacpan::cpan_mirror')}"
@@ -29,6 +30,7 @@ metacpan::websites:
     vhost_aliases:
       - "cpan.lo.metacpan.org"
       - "cpan.%{hostname}.metacpan.org"
+      
   metacpan_web:
     path: '/home/metacpan/metacpan.org'
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
@@ -42,10 +44,12 @@ metacpan::websites:
     proxy_ensure: present
     starman_port: 5001
     starman_workers: 1
+
   metacpan_web_redirect:
     vhost_domain: 'www.metacpan.org'
     vhost_bare: true
     vhost_ssl: true
+
   metacpan_explorer:
     path: '/home/metacpan/explorer.metacpan.org'
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
@@ -70,10 +74,9 @@ metacpan::websites:
     proxy_ensure: present
     starman_port: 5000
     starman_workers: 1
-
-
-metacpan::web::proxies:
-  metacpan_api_v0:
+    vhost_extra_proxies:
+      proxy_v0:
+          location: '/v0'
 
   # web-socket:
   #   git_enable: absent

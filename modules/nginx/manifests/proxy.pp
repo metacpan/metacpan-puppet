@@ -7,7 +7,7 @@ define nginx::proxy(
 ) {
         include nginx
         realize File["$vhost_root.d"]
-        file { "${vhost_root}.d/proxy.conf":
+        file { "${vhost_root}.d/${name}.conf":
                 ensure  => $ensure,
                 content => template("nginx/proxy.conf.erb"),
                 notify => Service["nginx"],
