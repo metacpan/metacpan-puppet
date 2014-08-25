@@ -13,9 +13,9 @@
 #
 #
 define metacpan::website (
-    $path     = 'UNSET',
-    $owner    = 'metacpan',
-    $group    = 'metacpan',
+    $path,
+    $owner = hiera('metacpan::user', 'metacpan'),
+    $group = hiera('metacpan::group', 'metacpan'),
     $workers = 0,
     $git_enable   = false,
     $git_source   = 'UNSET',

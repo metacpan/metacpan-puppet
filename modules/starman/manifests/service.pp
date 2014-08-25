@@ -6,6 +6,7 @@ define starman::service (
     $service        = $name,
     $service_enable = true,
     $user = hiera('metacpan::user', 'metacpan'),
+    $group = hiera('metacpan::group', 'metacpan'),
 ) {
     include perl
     include starman::config
@@ -26,6 +27,7 @@ define starman::service (
         file { [$link_root, $log_dir, $run_dir, $tmp_dir ]:
             ensure => directory,
             owner  => $user,
+            group  => $user,
             mode   => '0755',
             before => Service[$service_name],
         }
@@ -42,22 +44,17 @@ define starman::service (
             require => File[$run_dir],
             before => Service[$service_name],
         }
-        exec { "${link_root}/tmp_link":
-            path    => [ '/bin', '/usr/bin' ],
-            command => "ln -s $tmp_dir ${link_root}/tmp",
-            unless  => "test -e ${link_root}/tmp || test -L ${link_root}/tmp",
-            require => File["${link_root}"],
-            before => [ Service[$service_name], File["${link_root}/tmp"] ],
-        }
-
         file { "${link_root}/tmp":
-            owner => $user,
+            ensure => link,
+            target => $tmp_dir,
+            require => File[$tmp_dir],
             before => Service[$service_name],
         }
 
         file { "${link_root}/tmp/scoreboard":
             ensure => directory,
             owner  => $user,
+            group  => $user,
             mode   => '0755',
             require => File["${link_root}/tmp"],
             before => Service[$service_name],

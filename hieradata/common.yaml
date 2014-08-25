@@ -4,6 +4,7 @@
 perl::version: '5.18.2'
 
 metacpan::user: 'metacpan'
+metacpan::group: 'metacpan'
 
 # Where we mirror cpan with the rrrclient
 # also where cpan.metacpan.org serves from
@@ -70,12 +71,9 @@ metacpan::websites:
     starman_port: 5000
     starman_workers: 1
 
-  # api:
-  #   git_enable: absent
-  #   path: '/home/metacpan/api.metacpan.org'
-  #   git_source: 'https://github.com/CPAN-API/cpan-api.git'
-  #   git_revision: 'master'
-  #   workers: 1
+
+metacpan::web::proxies:
+  metacpan_api_v0:
 
   # web-socket:
   #   git_enable: absent
