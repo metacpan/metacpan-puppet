@@ -58,7 +58,6 @@ import 'nodes/*.pp'
 
 # node bm-n2 {
 #
-#     include metacpan::munin
 #     include metacpan::rrrclient
 #     include metacpan::exim
 #     include metacpan::cron::api
