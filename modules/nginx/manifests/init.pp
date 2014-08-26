@@ -29,6 +29,11 @@ class nginx {
                 ensure => file,
         }->
 
+        file { "/etc/nginx/conf.d/status.conf":
+                ensure => file,
+                source => "puppet:///modules/nginx/status.conf",
+        }->
+
       	file { "/var/www":
       		ensure => directory,
       	}->

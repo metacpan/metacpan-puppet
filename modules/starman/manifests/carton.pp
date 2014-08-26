@@ -22,6 +22,7 @@ define starman::carton (
     command => "carton install",
     require => File[$carton_service_dir],
     timeout => 600, # just incase slow machine
+    onlyif => "test -e ${root}/cpanfile", # only if we have a cpanfile
   }
 
 }

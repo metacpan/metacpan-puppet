@@ -54,13 +54,25 @@ metacpan::web::sites:
   metacpan_web_redirect:
     vhost_aliases:
       - 'www.metacpan.org'
-      - 'lo.metacpan.org'
+      - 'www.lo.metacpan.org'
       - "www.%{hostname}.metacpan.org"
     vhost_bare: true
     vhost_ssl: true
     vhost_extra_configs:
       rewrite_to_https:
           template: 'rewrite'
+
+  metacpan_vmserver:
+    path: '/home/metacpan/vmbox.metacpan.org'
+    git_enable: true
+    git_source: 'https://github.com/CPAN-API/metacpan-vmbox-server.git'
+    git_revision: 'master'
+    vhost_aliases:
+      - 'vmbox.metacpan.org'
+    vhost_bare: true
+    starman_port: 5005
+    starman_workers: 1
+
 
   metacpan_explorer:
     path: '/home/metacpan/explorer.metacpan.org'

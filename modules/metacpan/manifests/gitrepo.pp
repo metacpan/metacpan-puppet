@@ -13,7 +13,7 @@
 #
 #
 define metacpan::gitrepo (
-    $enable_git_repo   = absent,
+    $enable_git_repo   = false,
     $path     = 'UNSET',
     $source   = 'UNSET',
     $revision = 'UNSET',
@@ -22,7 +22,7 @@ define metacpan::gitrepo (
     $identity = 'UNSET',
 ) {
 
-  if($enable_git_repo == 'true') {
+  if($enable_git_repo == true) {
 
     # create the directory first incase owner does not have permissions
     file { $path:

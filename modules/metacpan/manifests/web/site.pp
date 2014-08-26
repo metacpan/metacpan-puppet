@@ -35,7 +35,8 @@ define metacpan::web::site (
     $starman_workers = 1,
 ) {
 
-  if( $git_enable == 'true' ) {
+
+  if( $git_enable == true ) {
     metacpan::gitrepo{ "gitrepo_${name}":
       enable_git_repo   => $git_enable,
       path              => $path,

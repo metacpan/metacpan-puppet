@@ -8,7 +8,5 @@ You may have to run this a couple of times to get everything setup
 correctly. The very first time it will take quite a while to run
 (it has a lot to do!)
 
-Users have ~/.metacpanrc which they may want to 'source' in their .bash_profile
-
 # Copy credentials (including http certificates for the live servers)
     Copy /home/metacpan/credentials directory from existing machine
