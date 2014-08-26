@@ -16,8 +16,6 @@ define starman::service (
 
     $service_name = "starman_${service}"
 
-    $env_file = '/home/metacpan/.metacpanrc'
-
     if $starman::config::link_dirs {
         $link_root = "${root}/var"
         $log_dir   = "${starman::config::log_dir}/${service}"

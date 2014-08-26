@@ -14,8 +14,6 @@
 # Description:       Starts <%= @service %>
 ### END INIT INFO`
 
-[ -r <%= @env_file %> ] && . <%= @env_file %>
-
 if [ -x <%= @script %> ];
 then
     <%= @script %> $1
