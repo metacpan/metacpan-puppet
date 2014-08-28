@@ -116,9 +116,6 @@ metacpan::web::sites:
       rewrite:
           template: 'rewrite'
 
-  # metacpan_vmbox:
-  # TODO
-
   # web-socket:
   #   git_enable: absent
   #   path: '/home/metacpan/p5-metacpan-websocket'
