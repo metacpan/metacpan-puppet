@@ -7,6 +7,21 @@ class metacpan(
 
     # Standard metacpan server setup
     include metacpan::system
+    include metacpan::user::admins
+    include metacpan_elasticsearch
+    include metacpan::watcher
+    include metacpan::rrrclient
+
+    include starman
+
+    # basic stuff EVERY box needs
+    perl::module{'Carton':
+      module => 'Carton'
+    }
+
+    perl::module{'DaemonControl':
+      module => 'Daemon::Control'
+    }
 
     # Sort out our repos and basic websites
     $websites = hiera_hash('metacpan::web::sites', {})
@@ -34,6 +49,5 @@ class metacpan(
     }
 
     include metacpan::web
-    include metacpan::watcher
 
 }

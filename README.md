@@ -22,3 +22,20 @@ which shows a very rough outline of how things are setup
 
 3. After puppet has been run, the new user can SSH in to the production machine
    using hostname bm-n2.metacpan.org and port 2202
+
+## How hiera works:
+
+21:20 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/modules/facts/lib/facter/env.rb -
+                  to set an 'env' value
+21:21 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hiera.yaml sets the order config
+                  files should be examined ( top overlaying data in the ones below )
+21:21 < ranguard> so common.yaml is the ground work, but there are customisations in:
+                  https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hieradata/env/bm.yaml
+21:22 < ranguard> ^^ that is for all ByteMark servers
+21:22 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hieradata/nodes/bm-mc-02.yaml would
+                  be specifically for bm-mc-02 node
+21:23 < ranguard> the config files are EVERYTHING, there should be no specific logic in modules, they become dumb
+21:25 < ranguard> https://github.com/CPAN-API/metacpan-puppet/tree/leo/puppet3/manifests/site.pp is called, which
+                  loads nodes/*.pp...
+21:25 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/manifests/nodes/bm.pp - says if the
+                  hostname matches 'bm' then run a specific role and the rest comes from hiera
