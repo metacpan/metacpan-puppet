@@ -5,7 +5,7 @@ define metacpan::cron(
   $hour    = "*",
   $weekday = "*",
   $ensure  = present,
-  $path_env = "PATH=/usr/local/perlbrew/perls/$metacpan::perl/bin:/usr/local/bin:/usr/bin:/bin",
+  $perl_version = hiera('perl::version','5.18.2'),
   $path_env = "PATH=/opt/perls-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin",
 ) {
   cron {
