@@ -1,4 +1,8 @@
 class metacpan(
+  $tmp_dir = hiera('metacpan::tmp_dir','/tmp'),
+  $user = hiera('metacpan::user', 'metacpan'),
+  $group = hiera('metacpan::group', 'metacpan'),
+
   ) {
 
     # Standard metacpan server setup
@@ -14,6 +18,19 @@ class metacpan(
 
     metacpan::user { metacpan:
         expire_password   => false,
+    }
+
+    file { $tmp_dir:
+      ensure => directory,
+      owner  => $user,
+      group  => $group,
+      mode   => '0755',
+    }
+
+    file { "/var/tmp/metacpan":
+        ensure => link,
+        target => $tmp_dir,
+        require => File[$tmp_dir],
     }
 
     include metacpan::web

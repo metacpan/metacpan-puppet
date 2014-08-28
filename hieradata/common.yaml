@@ -9,6 +9,8 @@ metacpan::group: 'metacpan'
 # Where we mirror cpan with the rrrclient
 # also where cpan.metacpan.org serves from
 metacpan::cpan_mirror: '/mnt/lv-cpan'
+# linked to var/tmp/metacpan
+metacpan::tmp_dir: '/mnt/lv-metacpan--tmp'
 
 # We don't want watcher enabled
 metacpan::watcher::enable: false

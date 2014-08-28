@@ -25,7 +25,7 @@ define starman::service (
         file { [$link_root, $log_dir, $run_dir, $tmp_dir ]:
             ensure => directory,
             owner  => $user,
-            group  => $user,
+            group  => $group,
             mode   => '0755',
             before => Service[$service_name],
         }
@@ -52,13 +52,11 @@ define starman::service (
         file { "${link_root}/tmp/scoreboard":
             ensure => directory,
             owner  => $user,
-            group  => $user,
+            group  => $group,
             mode   => '0755',
             require => File["${link_root}/tmp"],
             before => Service[$service_name],
         }
-
-
 
     }
 
