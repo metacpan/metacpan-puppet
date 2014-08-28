@@ -35,7 +35,7 @@ server {
 
 server {
   listen <%= @ssl ? "443" : "80" %>;
-  server_name <%= @domain %> <% @aliases.each do |val| %><%= val %> <% end %>;
+  server_name <% @aliases.each do |val| %><%= val %> <% end %>;
   <% if @html != '' %>
   root <%= @html %>;
   <% end %>
