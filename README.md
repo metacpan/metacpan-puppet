@@ -24,7 +24,7 @@ which shows a very rough outline of how things are setup
    using hostname bm-n2.metacpan.org and port 2202
 
 ## How hiera works:
-
+```
 21:20 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/modules/facts/lib/facter/env.rb -
                   to set an 'env' value
 21:21 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hiera.yaml sets the order config
@@ -39,3 +39,4 @@ which shows a very rough outline of how things are setup
                   loads nodes/*.pp...
 21:25 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/manifests/nodes/bm.pp - says if the
                   hostname matches 'bm' then run a specific role and the rest comes from hiera
+```
