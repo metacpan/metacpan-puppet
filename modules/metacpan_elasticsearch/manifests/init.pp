@@ -1,6 +1,7 @@
 class metacpan_elasticsearch(
   $es_version = hiera('elasticsearch::pkg_version', '1.3.1'),
   $memory = hiera('elasticsearch::memory', '64'),
+  $data_dir = hiera('elasticsearch::datadir', '/var/elasticsearch'),
 ) {
 
   # Set ulimits
@@ -53,7 +54,7 @@ class metacpan_elasticsearch(
   elasticsearch::instance { 'es-01':
     config => $config_hash,
     init_defaults => $init_hash,
-    datadir => '/var/elasticsearch',
+    datadir => $data_dir,
   }
 
 }
