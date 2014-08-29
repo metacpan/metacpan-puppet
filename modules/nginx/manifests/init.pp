@@ -41,10 +41,6 @@ class nginx {
                 source => "puppet:///modules/nginx/status.conf",
         }->
 
-      	file { "/var/www":
-      		ensure => directory,
-      	}->
-
         file { "/var/log/nginx":
           ensure => directory,
           owner => 'root',

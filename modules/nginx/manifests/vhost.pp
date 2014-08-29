@@ -36,8 +36,8 @@ define nginx::vhost(
                         ensure => file,
                         source => [
                         	"puppet:///private/ssl/$name/server.crt",
-                                "puppet:///private/ssl/server.crt",
-                                "puppet:///files/certs/server.crt",
+                          "puppet:///private/ssl/server.crt",
+                          "puppet:///dev_fallback/ssl/server.crt",
                         ],
                         notify => Service["nginx"],
                         mode => "0400";
@@ -47,7 +47,7 @@ define nginx::vhost(
                         source => [
                         	"puppet:///private/ssl/$name/server.key",
                         	"puppet:///private/ssl/server.key",
-                                "puppet:///files/certs/server.key",
+                          "puppet:///dev_fallback/ssl/server.key",
                         ],
                         notify => Service["nginx"],
                         mode => "0400",
