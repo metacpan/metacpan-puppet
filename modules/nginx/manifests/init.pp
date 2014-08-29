@@ -2,10 +2,17 @@ class nginx {
         package { "nginx":
                 ensure => installed,
         }->
+
         file { "/etc/nginx/conf.d":
           ensure => directory,
           owner => 'root',
           mode   => '0755',
+        }->
+
+        file { "/etc/nginx/ssl_certs":
+          ensure => directory,
+          owner => 'root',
+          mode   => '0700',
         }->
 
         file { "/etc/nginx/nginx.conf":

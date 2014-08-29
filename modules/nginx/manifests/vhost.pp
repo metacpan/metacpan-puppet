@@ -1,5 +1,4 @@
 define nginx::vhost(
-        $root = "/var/www/$name",
         $html = "",
         $ssl_only = false,
         $ssl = $ssl_only,
@@ -10,12 +9,9 @@ define nginx::vhost(
         include nginx
 
         $log_dir = "/var/log/nginx/${name}"
+        $ssl_dir = "/etc/nginx/ssl_certs/${name}"
 
-        # if $html {
-        #     $html_root = $html
-        # }
-
-        file { [$root, $log_dir]:
+        file { $log_dir:
                 ensure => directory,
                 require => Package["nginx"],
         }->
@@ -30,10 +26,13 @@ define nginx::vhost(
         }
 
         if $ssl {
-                file { "$root/ssl":
+                file {
+                  "${ssl_dir}":
                         ensure => directory,
-                        require => File[$root];
-                       "$root/ssl/server.crt":
+                        mode => '0700',
+                        require => File['/etc/nginx/ssl_certs'];
+
+                  "${ssl_dir}/server.crt":
                         ensure => file,
                         source => [
                         	"puppet:///private/ssl/$name/server.crt",
@@ -42,7 +41,8 @@ define nginx::vhost(
                         ],
                         notify => Service["nginx"],
                         mode => "0400";
-                       "$root/ssl/server.key":
+
+                  "${ssl_dir}/server.key":
                         ensure => file,
                         source => [
                         	"puppet:///private/ssl/$name/server.key",
