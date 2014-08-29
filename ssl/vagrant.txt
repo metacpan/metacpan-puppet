@@ -1,4 +1,7 @@
 If using vagrant this dir should not be removed
 so this file is used as a placeholder.
 
+Puppet stores it's own ssl certs in here
+nothing to do with nginx
+
 If not using vagrant this file should be harmless.
