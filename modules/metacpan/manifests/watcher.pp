@@ -1,11 +1,12 @@
 class metacpan::watcher(
-	$perl_version = hiera('perl::version', '5.18.2'),
 	$enable = hiera('metacpan::watcher::enable', 'false')
 ) {
+	include perl
+
 	$filename = "metacpan-watcher"
 	$description = "Watcher script for PAUSE uploads"
-	$perlbin = "/opt/perl-${perl_version}/bin"
 	$app_root = "/home/metacpan/api.metacpan.org"
+	$perlbin = $perl::params::bin_dir
 
 	file { "/etc/init.d/metacpan-watcher":
 		content => template("metacpan/init_watcher.erb"),
