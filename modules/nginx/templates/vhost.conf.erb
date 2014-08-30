@@ -12,7 +12,7 @@ server {
   <% if @html != '' %>
   root <%= @html %>;
   <% end %>
-  access_log <%= @log_dir %>/access.log combined;
+  access_log <%= @log_dir %>/access.log custom_v1;
   error_log <%= @log_di %>/error.log info;
 
   gzip             on;
@@ -39,7 +39,7 @@ server {
   <% if @html != '' %>
   root <%= @html %>;
   <% end %>
-  access_log <%= @log_dir %>/access.log combined;
+  access_log <%= @log_dir %>/access.log custom_v1;
   error_log <%= @log_dir %>/error.log info;
 
   gzip             on;

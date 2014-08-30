@@ -33,6 +33,16 @@ http {
 	access_log off;
 	error_log /var/log/nginx/error.log;
 
+  # This is a custom log format. DO NOT EDIT IT. Instead, add a
+  # new custom log format, and modify sites accordingly.
+  # Eventually old ones can be commented out, but never deleted
+  # since they are useful for making sense of older logs.
+
+	# $upstream_response_time will be empty until we use upstreams
+	# instead of proxies
+
+	log_format custom_v1 '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $connection $request_time $server_port $host $upstream_response_time';
+
 	##
 	# Gzip Settings
 	##
