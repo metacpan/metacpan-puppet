@@ -5,6 +5,7 @@ define metacpan::cron(
   $hour    = "*",
   $weekday = "*",
   $ensure  = present,
+  $metacpan = '/home/metacpan/api.metacpan.org/bin/run bin/metacpan',
   $perl_version = hiera('perl::version','5.18.2'),
   $path_env = "PATH=/opt/perls-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin",
 ) {

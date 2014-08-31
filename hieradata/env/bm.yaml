@@ -1,12 +1,16 @@
 ---
 elasticsearch::pkg_version: 0.20.2
 
+# Let's have rrr on all BM machines for now
+# we can setup cpan.mc.org with a failover!
+metacpan::rrrclient::enable: true
+
 metacpan::websites:
-  www:
+  metacpan_web:
     git_enable: true
     workers: 7
-  api:
+  metacpan_api:
     git_enable: true
     workers: 10
-  explorer:
+  metacpan_explorer:
     git_enable: true
