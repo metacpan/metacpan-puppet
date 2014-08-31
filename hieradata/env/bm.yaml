@@ -5,7 +5,7 @@ elasticsearch::pkg_version: 0.20.2
 # we can setup cpan.mc.org with a failover!
 metacpan::rrrclient::enable: true
 
-metacpan::websites:
+metacpan::web::sites:
   metacpan_web:
     git_enable: true
     workers: 7
