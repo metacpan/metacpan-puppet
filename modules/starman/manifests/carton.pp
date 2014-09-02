@@ -6,12 +6,32 @@ define starman::carton (
 
   include perl
 
+  $perlbin = $perl::params::bin_dir
+
   $carton_service_dir = "/home/${user}/carton/${service}"
   file { $carton_service_dir:
       ensure => directory,
       mode   => '0755',
       owner  => $user,
       require => File["/home/${user}/carton"],
+  }
+
+  $carton = "/home/${user}/bin/${service}-carton"
+  file { $carton:
+      ensure => file,
+      mode   => '0755',
+      owner  => $user,
+      content => template('starman/carton.erb'),
+      require => File["/home/${user}/bin"],
+  }
+
+  $carton_exec = "/home/${user}/bin/${service}-carton-exec"
+  file { $carton_exec:
+      ensure => file,
+      mode   => '0755',
+      owner  => $user,
+      content => template('starman/carton-exec.erb'),
+      require => File["/home/${user}/bin"],
   }
 
   #
