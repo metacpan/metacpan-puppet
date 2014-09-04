@@ -32,18 +32,24 @@ define starman::service (
 
         file { "${link_root}/log":
             ensure => link,
+            owner  => $user,
+            group  => $group,
             target => $log_dir,
             require => File[$log_dir],
             before => Service[$service_name],
         }
         file { "${link_root}/run":
             ensure => link,
+            owner  => $user,
+            group  => $group,
             target => $run_dir,
             require => File[$run_dir],
             before => Service[$service_name],
         }
         file { "${link_root}/tmp":
             ensure => link,
+            owner  => $user,
+            group  => $group,
             target => $tmp_dir,
             require => File[$tmp_dir],
             before => Service[$service_name],
