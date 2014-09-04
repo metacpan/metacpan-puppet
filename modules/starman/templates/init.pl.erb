@@ -19,8 +19,7 @@ use warnings;
 use Daemon::Control;
 use File::Path 2.06 ();    # core
 
-my $name = '<%= @service %>';
-my $service = "<%= @service.gsub(%r/-/, '.') %>";
+my $service = "<%= @service %>";
 
 my $user = '<%= @user %>';
 my $home = '<%= @root %>';
@@ -60,10 +59,10 @@ my $args = {
     fork         => 2,
     group        => $user,
 #    init_config  => '<%= @env_file %>',
-    lsb_desc     => "Starts $name",
-    lsb_sdesc    => "Starts $name",
-    name         => $name,
-    pid_file     => "$dirs{pid}/$name.pid",
+    lsb_desc     => "Starts $service",
+    lsb_sdesc    => "Starts $service",
+    name         => $service,
+    pid_file     => "$dirs{pid}/$service.pid",
     program      => $carton,
     program_args => \@program_args,
     stderr_file  => "$dirs{log}/starman_error.log",
