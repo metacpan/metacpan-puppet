@@ -15,6 +15,12 @@ define metacpan::user(
         shell      => "$shell",
         provider   => "useradd",
     }->
+    file {
+      "$path/$user":
+        ensure => directory,
+        owner   => $user,
+        group   => $user,
+    }
     # force empty password
     # setting password => "" above will result
     # in a locked user account in the first run
