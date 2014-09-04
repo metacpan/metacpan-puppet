@@ -25,7 +25,7 @@ elasticsearch::datadir: '/mnt/lv-elasticsearch'
 
 metacpan::web::sites:
 
-  metacpan_cpan_static:
+  metacpan-cpan-static:
     vhost_html: "%{hiera('metacpan::cpan_mirror')}"
     vhost_ssl: true
     vhost_autoindex: true
@@ -38,8 +38,7 @@ metacpan::web::sites:
           template: 'fastly'
 
 
-  metacpan_web:
-    path: '/home/metacpan/metacpan.org'
+  metacpan-web:
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
     git_revision: 'master'
     vhost_ssl_only: true
@@ -54,7 +53,7 @@ metacpan::web::sites:
       trailing_slash_rewrite:
           template: 'trailing_slash'
 
-  metacpan_web_redirect:
+  metacpan-web-redirect:
     vhost_aliases:
       - 'www.metacpan.org'
       - 'www.lo.metacpan.org'
@@ -65,8 +64,7 @@ metacpan::web::sites:
       rewrite_to_https:
           template: 'rewrite'
 
-  metacpan_vmserver:
-    path: '/home/metacpan/vmbox.metacpan.org'
+  metacpan-vmserver:
     git_enable: true
     git_source: 'https://github.com/CPAN-API/metacpan-vmbox-server.git'
     git_revision: 'master'
@@ -77,8 +75,7 @@ metacpan::web::sites:
     starman_workers: 1
 
 
-  metacpan_explorer:
-    path: '/home/metacpan/explorer.metacpan.org'
+  metacpan-explorer:
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
     git_revision: 'master'
     vhost_html: '/home/metacpan/explorer.metacpan.org/build'
@@ -87,8 +84,7 @@ metacpan::web::sites:
       - "explorer.lo.metacpan.org"
       - "explorer.%{hostname}.metacpan.org"
 
-  metacpan_api:
-    path: '/home/metacpan/api.metacpan.org'
+  metacpan-api:
     git_source: 'https://github.com/CPAN-API/cpan-api.git'
     git_revision: 'master'
     vhost_ssl: true
@@ -104,7 +100,7 @@ metacpan::web::sites:
       proxy_v0:
           location: '/v0'
 
-  metacpan_sco:
+  metacpan-sco:
     vhost_bare: true
     vhost_aliases:
       - 'sco.metacpan.org'

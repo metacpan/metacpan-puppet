@@ -13,7 +13,6 @@
 #
 #
 define metacpan::web::site (
-    $path = 'UNSET',
     $owner = hiera('metacpan::user', 'metacpan'),
     $group = hiera('metacpan::group', 'metacpan'),
     $workers = 0,
@@ -35,6 +34,7 @@ define metacpan::web::site (
     $starman_workers = 1,
 ) {
 
+  $path = "/home/metacpan/${name}"
 
   if( $git_enable == true ) {
     metacpan::gitrepo{ "gitrepo_${name}":

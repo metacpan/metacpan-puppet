@@ -6,11 +6,11 @@ elasticsearch::pkg_version: 0.20.2
 metacpan::rrrclient::enable: true
 
 metacpan::web::sites:
-  metacpan_web:
+  metacpan-web:
     git_enable: true
     workers: 7
-  metacpan_api:
+  metacpan-api:
     git_enable: true
     workers: 10
-  metacpan_explorer:
+  metacpan-explorer:
     git_enable: true
