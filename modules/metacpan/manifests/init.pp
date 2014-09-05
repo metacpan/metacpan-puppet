@@ -31,6 +31,15 @@ class metacpan(
     $fw_rules = hiera_hash('metacpan::fw_ports', {})
     create_resources('metacpan::system::firewall', $fw_rules)
 
+    # Cron jobs for anything
+    $crons = hiera_hash('metacpan::crons::general', {})
+    create_resources('metacpan::cron::general', $crons)
+
+    # Cron jobs for the API
+    $api_crons = hiera_hash('metacpan::crons::api', {})
+    create_resources('metacpan::cron::api', $api_crons)
+
+
     metacpan::user { metacpan:
         expire_password   => false,
     }

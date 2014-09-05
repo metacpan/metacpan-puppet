@@ -107,12 +107,31 @@ metacpan::web::sites:
       rewrite:
           template: 'rewrite'
 
+  # FIXME! - get this working
   # web-socket:
   #   git_enable: absent
   #   path: '/home/metacpan/p5-metacpan-websocket'
   #   git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
   #   git_revision: 'master'
   #   workers: 1
+
+
+# NOTE: set to `absent` here!
+metacpan::crons::general:
+    metacpan_clean_up_source:
+      user : metacpan
+      cmd : find /var/tmp/metacpan/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf
+      hour : 3
+      minute : 22
+      ensure : absent
+
+    metacpan_sitemaps:
+      user : metacpan
+      cmd : /home/metacpan/bin/metacpan-web-carton-exec bin/generate_sitemap.pl
+      hour : 2
+      minute : 30
+      ensure : absent
+
 
 metacpan::fw_ports:
   http:
