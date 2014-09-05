@@ -64,16 +64,10 @@ metacpan::web::sites:
       rewrite_to_https:
           template: 'rewrite'
 
-  metacpan-vmserver:
-    git_enable: true
-    git_source: 'https://github.com/CPAN-API/metacpan-vmbox-server.git'
-    git_revision: 'master'
+  metacpan-vmbox:
+    vhost_html: "/home/metacpan/metacpan-vmbox"
     vhost_aliases:
       - 'vmbox.metacpan.org'
-    vhost_bare: true
-    starman_port: 5005
-    starman_workers: 1
-
 
   metacpan-explorer:
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
