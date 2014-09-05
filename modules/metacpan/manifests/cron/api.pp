@@ -10,8 +10,10 @@ define metacpan::cron::api(
   $ensure  = present,
   $metacpan = '/home/metacpan/bin/metacpan-api-carton-exec bin/metacpan',
   $perl_version = hiera('perl::version','5.18.2'),
-  $path_env = "PATH=/opt/perls-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin",
 ) {
+  
+  $path_env = "PATH=/opt/perl-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin",
+
   cron {
       "metacpan_api_$name":
           user        => $user,
