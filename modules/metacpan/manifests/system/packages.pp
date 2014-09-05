@@ -16,6 +16,9 @@ class metacpan::system::packages {
     package { rsync: ensure => present }
     package { screen: ensure => present }
 
+    # for backup mounts on bytemark servers
+    package { "nfs-common": ensure => present }
+
     # Shells
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
