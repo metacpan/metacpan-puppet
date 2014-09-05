@@ -10,7 +10,7 @@ define metacpan::cron::general(
   $perl_version = hiera('perl::version','5.18.2'),
 ) {
 
-  $path_env = "PATH=/opt/perl-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin",
+  $path_env = "PATH=/opt/perl-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin"
 
   cron {
       $name:
