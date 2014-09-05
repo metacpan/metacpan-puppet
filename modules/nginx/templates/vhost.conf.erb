@@ -1,17 +1,19 @@
 <% if @ssl && @ssl_only %>
 server {
   listen 80;
-  server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
+  server_name <% @aliases.each do |val| %><%= val %> <% end %>;
   rewrite ^(.*)$ https://$host$1 permanent;
 }
 
 <% elsif @ssl %>
 server {
   listen 80;
-  server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
-  root <%= @html_root %>;
-  access_log <%= @root %>/logs/access.log combined;
-  error_log <%= @root %>/logs/error.log info;
+  server_name <% @aliases.each do |val| %><%= val %> <% end %>;
+  <% if @html != '' %>
+  root <%= @html %>;
+  <% end %>
+  access_log <%= @log_dir %>/access.log custom_v1;
+  error_log <%= @log_di %>/error.log info;
 
   gzip             on;
   gzip_proxied     any;
@@ -22,28 +24,23 @@ server {
 
   <% unless @bare %>
   location / {
-    index index.html index.htm index.php;
+    index index.html index.htm;
     <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
 
-  <% if @php %>
-  location ~ .*\.php$ {
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-  }
-  <% end %>
   include conf.d/<%= @name %>.d/*.conf;
 }
 <% end %>
 
 server {
   listen <%= @ssl ? "443" : "80" %>;
-  server_name <%= @name %> <% @aliases.each do |val| %><%= val %> <% end %>;
-  root <%= @html_root %>;
-  access_log <%= @root %>/logs/access.log combined;
-  error_log <%= @root %>/logs/error.log info;
+  server_name <% @aliases.each do |val| %><%= val %> <% end %>;
+  <% if @html != '' %>
+  root <%= @html %>;
+  <% end %>
+  access_log <%= @log_dir %>/access.log custom_v1;
+  error_log <%= @log_dir %>/error.log info;
 
   gzip             on;
   gzip_proxied     any;
@@ -54,8 +51,8 @@ server {
 
   <% if @ssl %>
   ssl on;
-  ssl_certificate  <%= @root %>/ssl/server.crt;
-  ssl_certificate_key <%= @root %>/ssl/server.key;
+  ssl_certificate  <%= @ssl_dir %>/server.crt;
+  ssl_certificate_key <%= @ssl_dir %>/server.key;
   ssl_session_timeout  5m;
   ssl_protocols  SSLv3 TLSv1 TLSv1.1 TLSv1.2;
   ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+EXP;
@@ -63,18 +60,11 @@ server {
   <% end %>
   <% unless @bare %>
   location / {
-    index index.html index.htm index.php;
+    index index.html index.htm;
     <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
 
-  <% if @php %>
-  location ~ .*\.php$ {
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-  }
-  <% end %>
   include conf.d/<%= @name %>.d/*.conf;
 
 }

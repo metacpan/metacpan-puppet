@@ -5,7 +5,6 @@ define metacpan::user(
     $shell = "/bin/bash",
     $admin = false,
     $expire_password = true,
-    $source_metacpanrc = false,
 ) {
 
     user { $user:
@@ -16,6 +15,12 @@ define metacpan::user(
         shell      => "$shell",
         provider   => "useradd",
     }->
+    file {
+      "$path/$user":
+        ensure => directory,
+        owner   => $user,
+        group   => $user,
+    }
     # force empty password
     # setting password => "" above will result
     # in a locked user account in the first run
@@ -36,39 +41,26 @@ define metacpan::user(
         }
     }
 
-    # Set up user
-    file {
-        # Copy the whole of the users bin dir
-        "$path/$user/bin":
-            ensure  => directory,
-            require => User[$user],
-            recurse => true,
-            owner   => $user,
-            group   => $user,
-            mode    => '0700', # make everything executible
-            source  => [
-                    "puppet:///modules/metacpan/default/$path/$user/bin",
-                    "puppet:///modules/metacpan/default/$path/default/bin",
-            ];
+    if( $user == 'metacpan') {
 
-        # Little RC file to setup the env
+      # Set up user
+      file {
+          # Copy the whole of the users bin dir
+          "$path/$user/bin":
+              ensure  => directory,
+              require => User[$user],
+              recurse => true,
+              owner   => $user,
+              group   => $user,
+              mode    => '0700', # make everything executible
+              source  => [
+                      "puppet:///modules/metacpan/default/$path/$user/bin",
+                      "puppet:///modules/metacpan/default/$path/default/bin",
+              ];
 
-        "$path/$user/.metacpanrc":
-            owner   => $user,
-            group   => $user,
-            mode    => 0700,
-            content => template("metacpan/user/metacpanrc.erb");
-    }
-
-    if $source_metacpanrc {
-      # Turn "/bin/(bash|zsh)" into "/home/$user/.${1}rc".
-      $shell_rc_file = regsubst($shell, '^(?:.+?/)?([^/]+)$', "$path/$user/.\\1rc")
-      line { $shell_rc_file:
-        ensure  => present,
-        line    => "source $path/$user/.metacpanrc",
-        require => User[$user],
       }
-    }
+
+  }
 
     # Sort out ssh file, need dir first
     file{ "$path/$user/.ssh":
@@ -102,9 +94,6 @@ define metacpan::user(
 
 
 class metacpan::user::admins {
-    package { zsh: ensure => present } # for rafl
-    package { byobu: ensure => present } # for mo
-    package { tmux:  ensure => present } # for rwstauner
     metacpan::user {
         leo:
             admin    => true,
@@ -118,42 +107,31 @@ class metacpan::user::admins {
             require  => Package["byobu"];
         olaf:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Olaf Alders <olaf.alders@gmail.com>";
         rafl:
             admin    => true,
             fullname => "Florian Ragwitz <rafl@perldition.org>",
             shell    => "/bin/zsh",
             require  => Package["zsh"];
-        apeiron:
-            admin    => true,
-            fullname => "Chris Nehren";
         rwstauner:
             admin    => true,
-            source_metacpanrc => true,
             shell    => '/bin/zsh',
             require  => Package['zsh'],
             fullname => 'Randy Stauner <rwstauner@cpan.org>';
         trs:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Thomas Sibley <tsibley@cpan.org>";
         matthewt:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Matt S Trout <perl-stuff@trout.me.uk>";
         haarg:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Graham Knop <haarg@haarg.org>";
 	mhorsfall:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Matthew Horsfall (alh) <wolfsage@gmail.com>";
         ben:
             admin    => true,
-            source_metacpanrc => true,
             fullname => "Ben Hundley <ben@qbox.io>";
     }
 }
-

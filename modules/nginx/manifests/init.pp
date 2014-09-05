@@ -2,6 +2,25 @@ class nginx {
         package { "nginx":
                 ensure => installed,
         }->
+
+        file { "/etc/nginx/conf.d":
+          ensure => directory,
+          owner => 'root',
+          mode   => '0755',
+        }->
+
+        file { "/etc/nginx/ssl_certs":
+          ensure => directory,
+          owner => 'root',
+          mode   => '0700',
+        }->
+
+        file { "/etc/nginx/nginx.conf":
+                ensure => file,
+                content => template("nginx/nginx.conf.erb"),
+                notify => Service["nginx"],
+        }->
+
         file { "/etc/nginx/conf.d/basics.conf":
                 source => "puppet:///modules/nginx/basics.conf",
                 ensure => file,
@@ -17,9 +36,16 @@ class nginx {
                 ensure => file,
         }->
 
-	file { "/var/www":
-		ensure => directory,
-	}->
+        file { "/etc/nginx/conf.d/status.conf":
+                ensure => file,
+                source => "puppet:///modules/nginx/status.conf",
+        }->
+
+        file { "/var/log/nginx":
+          ensure => directory,
+          owner => 'root',
+          mode   => '0755',
+        }->
 
         service { "nginx":
                 ensure => running,

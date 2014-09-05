@@ -1,0 +1,10 @@
+---
+:backends:
+  - yaml
+:merge_behavior: deeper
+:yaml:
+  :datadir: /etc/puppet/hieradata
+:hierarchy:
+  - "nodes/%{hostname}"
+  - "env/%{env}"
+  - common

@@ -1,22 +1,26 @@
-class metacpan::rrrclient {
-    file { "/var/cpan":
+class metacpan::rrrclient(
+  $enable = hiera('metacpan::rrrclient::enable', 'false'),
+  $cpan_mirror = hiera('metacpan::cpan_mirror', '/var/cpan'),
+  $user = hiera('metacpan::user', 'metacpan'),
+  $group = hiera('metacpan::group', 'metacpan'),
+) {
+    include rrrclient
+
+    file { $cpan_mirror:
         ensure  => directory,
-        owner   => metacpan,
-        group   => metacpan,
-        require => User[metacpan],
+        owner   => $user,
+        group   => $group,
+        require => User[$user],
     }->
     file { "/home/metacpan/CPAN":
         ensure => link,
-        target => "/var/cpan",
-        owner  => metacpan,
-        group  => metacpan,
+        target => $cpan_mirror,
+        owner  => $user,
+        group  => $group,
     }->
-    rrrclient { metacpan:
-        perl   => $metacpan::perl,
-        target => "/var/cpan",
-    }->
-    service { "rrrclient-metacpan":
-        ensure => running,
-        enable => true,
+    rrrclient::service { metacpan:
+        enable => $enable,
+        cpan_mirror => $cpan_mirror,
     }
+
 }

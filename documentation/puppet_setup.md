@@ -19,8 +19,6 @@ How is this puppet repository setup?..
     # static files and templates are in
     modules/metacpan/files or modules/metacpan/templates
 
-    # Other modules that get used, these are customised
-    modules/munin
     modules/elasticsearch
     modules/logrotate
     modules/nginx

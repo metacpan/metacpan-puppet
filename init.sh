@@ -6,33 +6,28 @@ do
     read goon
     if [ $goon != 'Y' ]
     then
-       exit 
+       exit
     fi
 done
 
-aptsource="deb http://backports.debian.org/debian-backports squeeze-backports main"
-aptlists=/etc/apt/sources.list
-test -d $aptlists.d && aptlistsdir=$aptlists.d
-if ! grep -q -R -F "$aptsource" $aptlists $aptlistsdir; then
-  if [ $aptlistsdir ]; then
-    echo "$aptsource" >> $aptlistsdir/backports.list
-  else
-    echo "$aptsource" >> $aptlists
-  fi
-fi
-
+# Install some basics
 apt-get update
-
 apt-get --assume-yes install vim sudo openssh-server git
-apt-get --assume-yes -t squeeze-backports install puppetmaster puppet
+
+# Get puppet repo setup and installed
+cd /tmp/
+wget http://apt.puppetlabs.com/puppetlabs-release-wheezy.deb
+dpkg -i puppetlabs-release-wheezy.deb
+apt-get update
+apt-get install -y puppet
 
 # We don't want puppet running automatically
-update-rc.d puppetmaster remove
+service puppet stop
 update-rc.d puppet remove
-update-rc.d puppetqd remove
 
 if test -z "$VAGRANT_IS_PROVISIONING"; then
 
+# Clone the latest repo
 cd /etc
 rm -rf puppet
 git clone https://github.com/CPAN-API/metacpan-puppet.git ./puppet

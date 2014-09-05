@@ -1,0 +1,12 @@
+---
+elasticsearch::pkg_version: 0.20.2
+elasticsearch::datadir: '/var/elasticsearch'
+
+# Open up ports for development
+metacpan::fw_ports:
+  metacpan_web:
+    port: 5001
+    source: '0.0.0.0/0'
+  metacpan_api:
+    port: 5000
+    source: '0.0.0.0/0'

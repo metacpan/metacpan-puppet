@@ -1,25 +1,17 @@
 define nginx::vhost(
-        $root = "/var/www/$name",
         $html = "",
         $ssl_only = false,
         $ssl = $ssl_only,
-        $php = false,
         $bare = false,
         $autoindex = false,
-	    $aliases = "",
+	      $aliases,
 ) {
         include nginx
-        if $html {
-            $html_root = $html
-        } else {
-            $html_root = "$root/html"
-            file { "$root/html":
-                ensure => directory,
-                require => File[$root],
-            }
-        }
 
-        file { [$root, "$root/logs"]:
+        $log_dir = "/var/log/nginx/${name}"
+        $ssl_dir = "/etc/nginx/ssl_certs/${name}"
+
+        file { $log_dir:
                 ensure => directory,
                 require => Package["nginx"],
         }->
@@ -34,24 +26,28 @@ define nginx::vhost(
         }
 
         if $ssl {
-                file { "$root/ssl":
+                file {
+                  "${ssl_dir}":
                         ensure => directory,
-                        require => File[$root];
-                       "$root/ssl/server.crt":
+                        mode => '0700',
+                        require => File['/etc/nginx/ssl_certs'];
+
+                  "${ssl_dir}/server.crt":
                         ensure => file,
                         source => [
                         	"puppet:///private/ssl/$name/server.crt",
-                                "puppet:///private/ssl/server.crt",
-                                "puppet:///files/certs/server.crt",
+                          "puppet:///private/ssl/server.crt",
+                          "puppet:///dev_fallback/ssl/server.crt",
                         ],
                         notify => Service["nginx"],
                         mode => "0400";
-                       "$root/ssl/server.key":
+
+                  "${ssl_dir}/server.key":
                         ensure => file,
                         source => [
                         	"puppet:///private/ssl/$name/server.key",
                         	"puppet:///private/ssl/server.key",
-                                "puppet:///files/certs/server.key",
+                          "puppet:///dev_fallback/ssl/server.key",
                         ],
                         notify => Service["nginx"],
                         mode => "0400",
