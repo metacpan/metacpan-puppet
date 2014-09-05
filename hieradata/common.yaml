@@ -66,6 +66,7 @@ metacpan::web::sites:
 
   metacpan-vmbox:
     vhost_html: "/home/metacpan/metacpan-vmbox"
+    vhost_autoindex: true
     vhost_aliases:
       - 'vmbox.metacpan.org'
 
