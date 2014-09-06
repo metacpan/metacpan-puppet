@@ -65,7 +65,7 @@ metacpan::web::sites:
           template: 'rewrite'
 
   metacpan-vmbox:
-    vhost_html: "/home/metacpan/metacpan-vmbox"
+    vhost_html: /home/%{hiera('metacpan::user')}/metacpan-vmbox
     vhost_autoindex: true
     vhost_aliases:
       - 'vmbox.metacpan.org'
@@ -73,7 +73,7 @@ metacpan::web::sites:
   metacpan-explorer:
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
     git_revision: 'master'
-    vhost_html: '/home/metacpan/explorer.metacpan.org/build'
+    vhost_html: /home/%{hiera('metacpan::user')}/explorer.metacpan.org/build
     vhost_aliases:
       - 'explorer.metacpan.org'
       - "explorer.lo.metacpan.org"
@@ -110,7 +110,7 @@ metacpan::web::sites:
   # FIXME! - get this working
   # web-socket:
   #   git_enable: absent
-  #   path: '/home/metacpan/p5-metacpan-websocket'
+  #   path: /home/%{hiera('metacpan::user')}/p5-metacpan-websocket
   #   git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
   #   git_revision: 'master'
   #   workers: 1
@@ -119,13 +119,13 @@ metacpan::web::sites:
 # NOTE: set to `absent` here!
 metacpan::crons::general:
     metacpan_clean_up_source:
-      cmd : find /var/tmp/metacpan/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf
+      cmd : find /var/tmp/%{hiera('metacpan::user')}/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf
       hour : 3
       minute : 22
       ensure : absent
 
     metacpan_sitemaps:
-      cmd : /home/metacpan/bin/metacpan-web-carton-exec bin/generate_sitemap.pl
+      cmd : /home/%{hiera('metacpan::user')}/bin/metacpan-web-carton-exec bin/generate_sitemap.pl
       hour : 2
       minute : 30
       ensure : absent

@@ -34,7 +34,7 @@ define metacpan::web::site (
     $starman_workers = 1,
 ) {
 
-  $path = "/home/metacpan/${name}"
+  $path = "/home/${owner}/${name}"
 
   if( $git_enable == true ) {
     metacpan::gitrepo{ "gitrepo_${name}":

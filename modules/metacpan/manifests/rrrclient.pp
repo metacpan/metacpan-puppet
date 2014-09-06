@@ -12,7 +12,7 @@ class metacpan::rrrclient(
         group   => $group,
         require => User[$user],
     }->
-    file { "/home/metacpan/CPAN":
+    file { "/home/${user}/CPAN":
         ensure => link,
         target => $cpan_mirror,
         owner  => $user,
