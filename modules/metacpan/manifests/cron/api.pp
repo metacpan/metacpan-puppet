@@ -4,7 +4,7 @@
 define metacpan::cron::api(
   $cmd,
   $minute,
-  $user    = "metacpan",
+  $user    = hiera('metacpan::user','metacpan'),
   $hour    = "*",
   $weekday = "*",
   $ensure  = present,

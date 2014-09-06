@@ -119,14 +119,12 @@ metacpan::web::sites:
 # NOTE: set to `absent` here!
 metacpan::crons::general:
     metacpan_clean_up_source:
-      user : metacpan
       cmd : find /var/tmp/metacpan/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf
       hour : 3
       minute : 22
       ensure : absent
 
     metacpan_sitemaps:
-      user : metacpan
       cmd : /home/metacpan/bin/metacpan-web-carton-exec bin/generate_sitemap.pl
       hour : 2
       minute : 30

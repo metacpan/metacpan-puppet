@@ -3,7 +3,7 @@
 define metacpan::cron::general(
   $cmd,
   $minute,
-  $user    = "metacpan",
+  $user    = hiera('metacpan::user','metacpan'),
   $hour    = "*",
   $weekday = "*",
   $ensure  = present,
