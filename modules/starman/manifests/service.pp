@@ -76,8 +76,7 @@ define starman::service (
         content => template('starman/init.pl.erb'),
     }
 
-    $carton_name = "carton_${service}"
-    starman::carton { $carton_name:
+    carton::run { $service:
       root => $root,
       service => $service,
     }
@@ -87,7 +86,7 @@ define starman::service (
         enable  => $service_enable,
         require => [
           File[$link_root, $log_dir, $run_dir, $init],
-          Starman::Carton[$carton_name]
+          Carton::Run[$service]
         ],
     }
 }

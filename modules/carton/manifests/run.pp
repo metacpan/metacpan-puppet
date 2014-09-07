@@ -1,4 +1,4 @@
-define starman::carton (
+define carton::run (
   $root,
   $service,
   $user = hiera('metacpan::user', 'metacpan'),
@@ -21,7 +21,7 @@ define starman::carton (
       ensure => file,
       mode   => '0755',
       owner  => $user,
-      content => template('starman/carton.erb'),
+      content => template('carton/carton.erb'),
       require => File["/home/${user}/bin"],
   }
 
@@ -30,7 +30,7 @@ define starman::carton (
       ensure => file,
       mode   => '0755',
       owner  => $user,
-      content => template('starman/carton-exec.erb'),
+      content => template('carton/carton-exec.erb'),
       require => File["/home/${user}/bin"],
   }
 

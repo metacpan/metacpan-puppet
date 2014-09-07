@@ -14,11 +14,6 @@ class metacpan(
 
     include starman
 
-    # basic stuff EVERY box needs
-    perl::module{'Carton':
-      module => 'Carton'
-    }
-
     perl::module{'DaemonControl':
       module => 'Daemon::Control'
     }
