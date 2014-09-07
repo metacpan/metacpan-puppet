@@ -22,6 +22,10 @@ class metacpan(
     $websites = hiera_hash('metacpan::web::sites', {})
     create_resources('metacpan::web::site', $websites)
 
+    # Sort out our repos and twiggy things
+    $twiggies = hiera_hash('metacpan::twiggy::sites', {})
+    create_resources('metacpan::web::twiggy', $twiggies)
+
     # Run any fire wall stuff here
     $fw_rules = hiera_hash('metacpan::fw_ports', {})
     create_resources('metacpan::system::firewall', $fw_rules)

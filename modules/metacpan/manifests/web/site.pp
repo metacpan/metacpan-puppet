@@ -2,9 +2,8 @@
 #
 # In Hiera:
 #
-#   metacpan::web::site:
+#   metacpan::web::sites:
 #     www:
-#       path: '/home/metacpan/metacpan.org'
 #       git_source: 'https://github.com/CPAN-API/metacpan-puppet.git'
 #       git_revision: 'master'
 #       owner: 'metacpan'

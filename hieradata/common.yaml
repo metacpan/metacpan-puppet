@@ -107,14 +107,10 @@ metacpan::web::sites:
       rewrite:
           template: 'rewrite'
 
-  # FIXME! - get this working
-  # web-socket:
-  #   git_enable: absent
-  #   path: /home/%{hiera('metacpan::user')}/p5-metacpan-websocket
-  #   git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
-  #   git_revision: 'master'
-  #   workers: 1
-
+metacpan::twiggy::sites:
+  metacpan-web-socket:
+    enable: true
+    git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
 
 # NOTE: set to `absent` here!
 metacpan::crons::general:
