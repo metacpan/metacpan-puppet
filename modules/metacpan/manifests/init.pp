@@ -7,10 +7,13 @@ class metacpan(
 
     # Standard metacpan server setup
     include metacpan::system
-    include metacpan::user::admins
     include metacpan_elasticsearch
     include metacpan::watcher
     include metacpan::rrrclient
+
+    # Setup users
+    $users = hiera_hash('metacpan::users', {})
+    create_resources('metacpan::user', $users)
 
     include starman
 
@@ -37,11 +40,6 @@ class metacpan(
     # Cron jobs for the API
     $api_crons = hiera_hash('metacpan::crons::api', {})
     create_resources('metacpan::cron::api', $api_crons)
-
-
-    metacpan::user { metacpan:
-        expire_password   => false,
-    }
 
     file { $tmp_dir:
       ensure => directory,

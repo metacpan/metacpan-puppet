@@ -1,4 +1,14 @@
 ---
+metacpan::user: 'vagrant'
+metacpan::group: 'vagrant'
+
+metacpan::users:
+    vagrant:
+        expire_password : false
+        admin    : true
+        fullname : "Vagrant dev user <noc@metacpan.org>"
+        no_passwd_sudo : true
+
 elasticsearch::pkg_version: 0.20.2
 elasticsearch::datadir: '/var/elasticsearch'
 

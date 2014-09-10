@@ -14,3 +14,40 @@ metacpan::web::sites:
     workers: 10
   metacpan-explorer:
     git_enable: true
+
+metacpan::users:
+    leo:
+        admin    : true
+        fullname : "Leo Lapworth <leo@cuckoo.org>"
+    clinton:
+        admin    : true
+        fullname : "Clinton Gormley <clint@traveljury.com>"
+    mo:
+        admin    : true
+        fullname : "Moritz Onken <onken@netcubed.de>"
+    olaf:
+        admin    : true
+        fullname : "Olaf Alders <olaf.alders@gmail.com>"
+    rafl:
+        admin    : true
+        fullname : "Florian Ragwitz <rafl@perldition.org>"
+        shell    : /bin/zsh
+    rwstauner:
+        admin    : true
+        fullname : 'Randy Stauner <rwstauner@cpan.org>'
+        shell    : /bin/zsh
+    trs:
+        admin    : true
+        fullname : "Thomas Sibley <tsibley@cpan.org>"
+    matthewt:
+        admin    : true
+        fullname : "Matt S Trout <perl-stuff@trout.me.uk>"
+    haarg:
+        admin    : true
+        fullname : "Graham Knop <haarg@haarg.org>"
+mhorsfall:
+        admin    : true
+        fullname : "Matthew Horsfall (alh) <wolfsage@gmail.com>"
+    ben:
+        admin    : true
+        fullname : "Ben Hundley <ben@qbox.io>"

@@ -1,10 +1,13 @@
-# Variour bits that don't fit into hiera yet
-class metacpan::web {
+# Various bits that don't fit into hiera yet
+class metacpan::web(
+		$user = hiera('metacpan::user', 'metacpan'),
+		$group = hiera('metacpan::group', 'metacpan'),
+) {
 
-	file { '/home/metacpan/metacpan-web/root/static/sitemaps':
+	file { "/home/${user}/metacpan-web/root/static/sitemaps":
 			ensure => directory,
-			owner => 'metacpan',
-			group => 'metacpan',
+			owner => $user,
+			group => $group,
 	}
 
 }

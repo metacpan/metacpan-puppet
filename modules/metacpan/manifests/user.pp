@@ -5,6 +5,7 @@ define metacpan::user(
     $shell = "/bin/bash",
     $admin = false,
     $expire_password = true,
+    $no_passwd_sudo = false,
 ) {
 
     user { $user:
@@ -41,7 +42,7 @@ define metacpan::user(
         }
     }
 
-    if( $user == 'metacpan') {
+    if( $user == 'metacpan' or $user == 'vagrant') {
 
       # Set up user
       file {
@@ -59,7 +60,6 @@ define metacpan::user(
               ];
 
       }
-
   }
 
     # Sort out ssh file, need dir first
@@ -80,58 +80,33 @@ define metacpan::user(
                 ],
     }
 
-    if($admin) {
-        # Also add to sudoers
-        file {
-          "/etc/sudoers.d/$user":
-            owner => "root",
-            group => "root",
-            mode => "440",
-            content => "$user   ALL = (ALL) ALL";
+
+    if $admin {
+
+        if $no_passwd_sudo {
+
+          # Also add to sudoers, no password needed
+          file {
+            "/etc/sudoers.d/$user":
+              owner => "root",
+              group => "root",
+              mode => "440",
+              content => "$user  ALL = NOPASSWD: ALL";
+          }
+
+
+        } else {
+
+            # Also add to sudoers
+            file {
+              "/etc/sudoers.d/$user":
+                owner => "root",
+                group => "root",
+                mode => "440",
+                content => "$user   ALL = (ALL) ALL";
+            }
+
         }
-    }
-}
 
-
-class metacpan::user::admins {
-    metacpan::user {
-        leo:
-            admin    => true,
-            fullname => "Leo Lapworth <leo@cuckoo.org>";
-        clinton:
-            admin    => true,
-            fullname => "Clinton Gormley <clint@traveljury.com>";
-        mo:
-            admin    => true,
-            fullname => "Moritz Onken <onken@netcubed.de>",
-            require  => Package["byobu"];
-        olaf:
-            admin    => true,
-            fullname => "Olaf Alders <olaf.alders@gmail.com>";
-        rafl:
-            admin    => true,
-            fullname => "Florian Ragwitz <rafl@perldition.org>",
-            shell    => "/bin/zsh",
-            require  => Package["zsh"];
-        rwstauner:
-            admin    => true,
-            shell    => '/bin/zsh',
-            require  => Package['zsh'],
-            fullname => 'Randy Stauner <rwstauner@cpan.org>';
-        trs:
-            admin    => true,
-            fullname => "Thomas Sibley <tsibley@cpan.org>";
-        matthewt:
-            admin    => true,
-            fullname => "Matt S Trout <perl-stuff@trout.me.uk>";
-        haarg:
-            admin    => true,
-            fullname => "Graham Knop <haarg@haarg.org>";
-	mhorsfall:
-            admin    => true,
-            fullname => "Matthew Horsfall (alh) <wolfsage@gmail.com>";
-        ben:
-            admin    => true,
-            fullname => "Ben Hundley <ben@qbox.io>";
     }
 }

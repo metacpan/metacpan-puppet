@@ -6,6 +6,10 @@ perl::version: '5.18.2'
 metacpan::user: 'metacpan'
 metacpan::group: 'metacpan'
 
+metacpan::users:
+    metacpan:
+        expire_password : false
+
 # Where we mirror cpan with the rrrclient
 # also where cpan.metacpan.org serves from
 metacpan::cpan_mirror: '/mnt/lv-cpan'
