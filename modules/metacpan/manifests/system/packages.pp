@@ -1,4 +1,5 @@
 class metacpan::system::packages {
+
     # Editors
     package { 'vim': ensure => present }
 

@@ -1,7 +1,17 @@
 class nginx {
-        package { "nginx":
-                ensure => installed,
+
+        $backport_nginx = '1.6.1-1~bpo70+1'
+
+        # Hard code versions
+        package { "nginx-common":
+          ensure => $backport_nginx,
         }->
+        package { "nginx-full":
+          ensure => $backport_nginx,
+        }->
+        package { "nginx":
+          ensure => $backport_nginx,
+        }
 
         file { "/etc/nginx/conf.d":
           ensure => directory,
