@@ -98,6 +98,10 @@ metacpan::web::sites:
     vhost_extra_proxies:
       proxy_v0:
           location: '/v0'
+    vhost_extra_configs:
+      socket_io:
+          template: 'socket_io'
+
 
   metacpan-sco:
     vhost_bare: true
