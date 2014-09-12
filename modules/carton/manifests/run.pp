@@ -40,6 +40,7 @@ define carton::run (
     path    => [$perl::params::bin_dir, '/usr/bin', '/bin' ],
     environment => "PERL_CARTON_PATH=${carton_service_dir}",
     command => "carton install",
+    user    => $user,
     require => File[$carton_service_dir],
     timeout => 600, # just incase slow machine
     onlyif => "test -e ${root}/cpanfile", # only if we have a cpanfile
