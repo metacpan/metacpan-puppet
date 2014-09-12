@@ -1,7 +1,8 @@
 class metacpan::role::production {
 
   include metacpan
-
-  include panopta
+  include metacpan::web::production
   
+  include panopta
+
 }
