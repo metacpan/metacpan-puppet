@@ -77,7 +77,7 @@ metacpan::web::sites:
   metacpan-explorer:
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
     git_revision: 'master'
-    vhost_html: /home/%{hiera('metacpan::user')}/explorer.metacpan.org/build
+    vhost_html: /home/%{hiera('metacpan::user')}/metacpan-explorer/build
     vhost_aliases:
       - 'explorer.metacpan.org'
       - "explorer.lo.metacpan.org"
