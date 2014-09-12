@@ -120,8 +120,14 @@ metacpan::twiggy::sites:
     enable: true
     git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
 
-# NOTE: set to `absent` here!
+# NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
+    backup_api:
+      cmd : 'rsync -a /home/metacpan/metacpan-api/var/backup /mnt/backup/api >/dev/null 2>&1'
+      hour : 4
+      minute : 0
+      ensure : absent
+
     metacpan_clean_up_source:
       cmd : find /var/tmp/%{hiera('metacpan::user')}/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf
       hour : 3

@@ -1,5 +1,9 @@
 ---
 
+metacpan::crons::general:
+    backup_api:
+      ensure : present
+
 metacpan::crons::api:
     author:
         cmd : author
