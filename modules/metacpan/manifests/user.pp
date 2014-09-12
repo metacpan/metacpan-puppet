@@ -58,8 +58,15 @@ define metacpan::user(
                       "puppet:///modules/metacpan/default/$path/$user/bin",
                       "puppet:///modules/metacpan/default/$path/default/bin",
               ];
-
       }
+
+      line { "/home/$user/.bashrc":
+        ensure  => absent,
+        line    => 'source /home/metacpan/.metacpanrc',
+        require => User[$user],
+      }
+
+
   }
 
     # Sort out ssh file, need dir first
