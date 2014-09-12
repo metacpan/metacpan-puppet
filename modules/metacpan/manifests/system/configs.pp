@@ -15,6 +15,14 @@ class metacpan::system::configs {
             source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
     }
 
+    # Turn on sysstat
+    line { "replace":
+        file => "/etc/default/sysstat",
+        ensure => replace,
+        line => "ENABLED=\"false\"",
+        with => "ENABLED=\"true\"",
+    }
+
     # make logrotate use dateext for all logs
     # speeds up backups because file names don't change
     include logrotate::base
