@@ -2,6 +2,7 @@ define carton::run (
   $root,
   $service,
   $user = hiera('metacpan::user', 'metacpan'),
+  $group = hiera('metacpan::group', 'metacpan'),
 ) {
 
   include perl
@@ -13,6 +14,7 @@ define carton::run (
       ensure => directory,
       mode   => '0755',
       owner  => $user,
+      group => $group,
       require => File["/home/${user}/carton"],
   }
 
@@ -21,6 +23,7 @@ define carton::run (
       ensure => file,
       mode   => '0755',
       owner  => $user,
+      group => $group,
       content => template('carton/carton.erb'),
       require => File["/home/${user}/bin"],
   }
@@ -30,18 +33,21 @@ define carton::run (
       ensure => file,
       mode   => '0755',
       owner  => $user,
+      group => $group,
       content => template('carton/carton-exec.erb'),
       require => File["/home/${user}/bin"],
   }
 
   #
   exec { "run_carton_${service}":
-    cwd     => $root,
     path    => [$perl::params::bin_dir, '/usr/bin', '/bin' ],
-    environment => "PERL_CARTON_PATH=${carton_service_dir}",
-    command => "carton install",
+    command => "${carton} install",
+    # needed HOME because `user` does not set it, don't know
+    # why carton actually need it, but puppet gets error otherwise
+    environment => "HOME=/home/${user}",
     user    => $user,
-    require => File[$carton_service_dir],
+    group   => $group,
+    require => [ File[$carton_service_dir], File[$carton] ],
     timeout => 600, # just incase slow machine
     onlyif => "test -e ${root}/cpanfile", # only if we have a cpanfile
   }
