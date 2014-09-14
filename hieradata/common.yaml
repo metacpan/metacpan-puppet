@@ -106,10 +106,11 @@ metacpan::web::sites:
   metacpan-sco:
     vhost_bare: true
     vhost_aliases:
+      - 'search.cpan.org' # not fastly
+      - "cpansearch.perl.org" # not fastly
       - 'sco.metacpan.org'
       - "sco.lo.metacpan.org"
       - "sco.%{hostname}.metacpan.org"
-      - "cpansearch.perl.org"
       - ".mcpan.org"
     vhost_extra_configs:
       rewrite:
