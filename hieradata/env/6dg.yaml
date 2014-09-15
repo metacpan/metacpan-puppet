@@ -1,1 +1,4 @@
 ---
+
+classes:
+    - metacpan::role::production
