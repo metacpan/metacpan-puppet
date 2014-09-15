@@ -22,10 +22,13 @@ define perl::module (
     # cpanm will work out if already installed/latest or not
     # so we won't bother
     exec { "perl_module_${name}":
-      command     => "${cpanm} ${module}",
-      cwd         => '/tmp',
-      path        => ["${bin_dir}", '/bin', '/usr/bin', '/usr/local/bin'],
-      timeout     => 300,
-      require     => [ Exec["perl_cpanm_${perl_version}"], File["/opt"] ],
+        command     => "${cpanm} ${module}",
+        cwd         => '/tmp',
+        path        => [$bin_dir, '/bin', '/usr/bin', '/usr/local/bin'],
+        timeout     => 300,
+        require     => [
+            Exec["perl_cpanm_${perl_version}"],
+            File['/opt'],
+        ],
     }
 }

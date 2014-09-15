@@ -1,3 +1,4 @@
+# Setup various system resources for metacpan.
 class metacpan(
   $tmp_dir = hiera('metacpan::tmp_dir','/tmp'),
   $user = hiera('metacpan::user', 'metacpan'),
@@ -47,7 +48,7 @@ class metacpan(
       mode   => '0755',
     }
 
-    file { "/var/tmp/metacpan":
+    file { '/var/tmp/metacpan':
         ensure => link,
         target => $tmp_dir,
         require => File[$tmp_dir],

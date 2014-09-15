@@ -40,7 +40,7 @@ define perl::build (
             command     => $cpanm_cmd,
             creates     => "${bin_dir}/cpanm",
             cwd         => '/tmp',
-            path        => ["${bin_dir}", '/bin', '/usr/bin'],
+            path        => [$bin_dir, '/bin', '/usr/bin'],
             timeout     => 100,
             require     => Exec["perl_${name}"]
           }
