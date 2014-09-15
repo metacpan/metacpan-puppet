@@ -1,22 +1,17 @@
-# perl::module{'FileRsyncMirrorRecent':
-#  module => 'File::Rsync::Mirror::Recent',
+# perl::module{ 'File::Rsync::Mirror::Recent':
 #}
 
-# Most of the time us a local carton, NOT this
-# this is for bootstraping and other things that
-# can not use Carton easily,
+# Specific projects should use carton/cpanfile.
+# This is for bootstraping and other things that
+# can not use Carton easily.
 
 define perl::module (
     $ensure   = 'present',
-    $module   = 'notset',
+    $module   = $name,
     $perl_version = hiera('perl::version', '5.18.2'),
 ) {
 
-  require stdlib
-
-  if $module == 'notset' {
-    warn("You did not set a module for ${name} when calling perl::module")
-  } else {
+    require stdlib
 
     ensure_resource('perl::build', $perl_version )
 
@@ -33,5 +28,4 @@ define perl::module (
       timeout     => 300,
       require     => [ Exec["perl_cpanm_${perl_version}"], File["/opt"] ],
     }
-  }
 }

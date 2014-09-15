@@ -5,8 +5,7 @@ define rrrclient::service(
     $enable = false,
 ) {
     include perl
-    perl::module{'File-Rsync-Mirror-Recent':
-      module => 'File::Rsync::Mirror::Recent'
+    perl::module{ 'File::Rsync::Mirror::Recent':
     }
 
     $path = "$perl::params::bin_dir"

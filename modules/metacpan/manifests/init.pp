@@ -17,8 +17,7 @@ class metacpan(
 
     include starman
 
-    perl::module{'DaemonControl':
-      module => 'Daemon::Control'
+    perl::module{ 'Daemon::Control':
     }
 
     # Sort out our repos and basic websites

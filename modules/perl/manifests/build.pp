@@ -2,7 +2,6 @@
 # Dont' call directly, instead use
 #
 # perl::module{'Carton':
-#   module => 'Carton'
 # }
 #
 # which in tern calls
