@@ -3,7 +3,6 @@ define carton::run (
   $service,
   $user = hiera('metacpan::user', 'metacpan'),
   $group = hiera('metacpan::group', 'metacpan'),
-  $group = hiera('metacpan::group', 'metacpan'),
   $carton_args = hiera('metacpan::carton_args', ''),
 
 ) {
