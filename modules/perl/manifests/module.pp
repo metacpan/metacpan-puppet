@@ -20,8 +20,6 @@ define perl::module (
     $perldoc = "${bin_dir}/perldoc"
     $cpanm = "${bin_dir}/cpanm"
 
-    # cpanm will work out if already installed/latest or not
-    # so we won't bother
     exec { "perl_module_${name}":
         command     => "${cpanm} ${module}~${version}",
         cwd         => '/tmp',
@@ -31,5 +29,6 @@ define perl::module (
             Exec["perl_cpanm_${perl_version}"],
             File['/opt'],
         ],
+        unless      => "${bin_dir}/perl -c '-M${module} ${version}' -e1",
     }
 }
