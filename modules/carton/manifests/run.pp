@@ -3,6 +3,9 @@ define carton::run (
   $service,
   $user = hiera('metacpan::user', 'metacpan'),
   $group = hiera('metacpan::group', 'metacpan'),
+  $group = hiera('metacpan::group', 'metacpan'),
+  $carton_args = hiera('metacpan::carton_args', ''),
+
 ) {
 
   include perl
@@ -41,7 +44,7 @@ define carton::run (
   #
   exec { "run_carton_${service}":
     path    => [$perl::params::bin_dir, '/usr/bin', '/bin' ],
-    command => "${carton} install",
+    command => "${carton} install ${carton_args}",
     # needed HOME because `user` does not set it, don't know
     # why carton actually need it, but puppet gets error otherwise
     environment => "HOME=/home/${user}",

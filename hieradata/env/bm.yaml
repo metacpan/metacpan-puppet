@@ -3,6 +3,8 @@
 classes:
     - metacpan::role::production
 
+metacpan::carton_args: '--deployment'
+
 elasticsearch::pkg_version: 0.20.2
 
 # Let's have rrr on all BM machines for now
