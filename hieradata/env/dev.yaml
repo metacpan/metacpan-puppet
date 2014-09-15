@@ -1,2 +1,6 @@
 ---
+
+classes:
+    - metacpan::role::developer
+
 metacpan::tmp_dir: '/tmp/metacpan'

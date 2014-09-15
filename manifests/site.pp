@@ -54,7 +54,8 @@ resources { "firewall":
   }
 
 
-import 'nodes/*.pp'
+hiera_include('classes')
+
 
 # node bm-n2 {
 #
