@@ -8,6 +8,7 @@
 define perl::module (
     $ensure   = 'present',
     $module   = $name,
+    $version  = '0',
     $perl_version = hiera('perl::version', '5.18.2'),
 ) {
 
@@ -22,7 +23,7 @@ define perl::module (
     # cpanm will work out if already installed/latest or not
     # so we won't bother
     exec { "perl_module_${name}":
-        command     => "${cpanm} ${module}",
+        command     => "${cpanm} ${module}~${version}",
         cwd         => '/tmp',
         path        => [$bin_dir, '/bin', '/usr/bin', '/usr/local/bin'],
         timeout     => 300,
