@@ -1,7 +1,7 @@
+# Install Carton for project dependencies.
 class carton() {
 
-  perl::module{'Carton':
-    module => 'Carton'
+  perl::module{ 'Carton':
   }
 
 }

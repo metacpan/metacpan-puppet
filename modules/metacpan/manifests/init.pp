@@ -1,3 +1,4 @@
+# Setup various system resources for metacpan.
 class metacpan(
   $tmp_dir = hiera('metacpan::tmp_dir','/tmp'),
   $user = hiera('metacpan::user', 'metacpan'),
@@ -17,8 +18,7 @@ class metacpan(
 
     include starman
 
-    perl::module{'DaemonControl':
-      module => 'Daemon::Control'
+    perl::module{ 'Daemon::Control':
     }
 
     # Sort out our repos and basic websites
@@ -48,7 +48,7 @@ class metacpan(
       mode   => '0755',
     }
 
-    file { "/var/tmp/metacpan":
+    file { '/var/tmp/metacpan':
         ensure => link,
         target => $tmp_dir,
         require => File[$tmp_dir],
