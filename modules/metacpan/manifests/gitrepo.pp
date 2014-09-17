@@ -16,7 +16,7 @@ define metacpan::gitrepo (
     $enable_git_repo   = false,
     $path     = 'UNSET',
     $source   = 'UNSET',
-    $revision = 'UNSET',
+    $revision = 'master',
     $owner    = 'metacpan',
     $group    = 'metacpan',
     $identity = 'UNSET',
@@ -33,31 +33,15 @@ define metacpan::gitrepo (
         require => [ User[$owner] ],
     }
 
-    if $revision == 'UNSET' {
-
-        vcsrepo { $path:
-            ensure   => $ensure,
-            provider => git,
-            source   => $source,
-            user     => $owner,
-            owner    => $owner,
-            group    => $group,
-#            identity => $identity ? ,
-        }
-
-    } else {
-
-        vcsrepo { $path:
-            ensure   => $ensure,
-            provider => git,
-            source   => $source,
-            revision => $revision,
-            user     => $owner,
-            owner    => $owner,
-            group    => $group,
-#            identity => $identity,
-        }
-
+    vcsrepo { $path:
+        ensure   => $ensure,
+        provider => git,
+        source   => $source,
+        revision => $revision,
+        user     => $owner,
+        owner    => $owner,
+        group    => $group,
+#       identity => $identity,
     }
   }
 }

@@ -44,6 +44,12 @@ define metacpan::web::site (
       owner             => $owner,
       group             => $group,
       identity          => $git_identity,
+
+      # Should tell carton to run and starman to restart
+      notify            => [
+                  Carton::Run[$name],
+                  Starman::Service["starman_${name}"],
+      ],
     }
   }
 
