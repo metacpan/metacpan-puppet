@@ -47,8 +47,8 @@ define metacpan::web::site (
 
       # Should tell carton to run and starman to restart
       notify            => [
-                  Carton::Run[$name],
-                  Starman::Service["starman_${name}"],
+#                  Carton::Run[$name],
+#                  Starman::Service["starman_${name}"],
       ],
     }
   }
