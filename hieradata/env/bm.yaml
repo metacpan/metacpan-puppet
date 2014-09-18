@@ -14,10 +14,10 @@ metacpan::rrrclient::enable: true
 metacpan::web::starman:
   metacpan-web:
     git_enable: true
-    workers: 7
+    starman_workers: 7
   metacpan-api:
     git_enable: true
-    workers: 10
+    starman_workers: 10
 
 metacpan::web::static:
   metacpan-explorer:
