@@ -1,25 +1,21 @@
-# === Definition metacpan::website
+# === Definition metacpan::web::starman
 #
 # In Hiera:
 #
-#   metacpan::web::sites:
-#     www:
-#       git_source: 'https://github.com/CPAN-API/metacpan-puppet.git'
-#       git_revision: 'master'
-#       owner: 'metacpan'
-#       group: 'metacpan'
-#       git_identity: '/home/user/.ssh/id_dsa'
+#   metacpan::web::starman:
 #
 #
-define metacpan::web::site (
+define metacpan::web::starman (
     $owner = hiera('metacpan::user', 'metacpan'),
     $group = hiera('metacpan::group', 'metacpan'),
-    $workers = 0,
+
+    # git
     $git_enable   = false,
     $git_source   = 'UNSET',
     $git_revision = 'UNSET',
     $git_identity = 'UNSET',
 
+    # nginx
     $vhost_aliases, # Required as main domain now here
     $vhost_html = '',
     $vhost_ssl_only = false,
@@ -29,6 +25,7 @@ define metacpan::web::site (
     $vhost_extra_proxies = {},
     $vhost_extra_configs = {},
 
+    # starman
     $starman_port = 'UNSET',
     $starman_workers = 1,
 ) {

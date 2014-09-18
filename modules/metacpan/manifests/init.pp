@@ -22,8 +22,8 @@ class metacpan(
     }
 
     # Sort out our repos and basic websites
-    $websites = hiera_hash('metacpan::web::sites', {})
-    create_resources('metacpan::web::site', $websites)
+    $websites = hiera_hash('metacpan::web::starman', {})
+    create_resources('metacpan::web::starman', $websites)
 
     # Sort out our repos and twiggy things
     $twiggies = hiera_hash('metacpan::twiggy::sites', {})

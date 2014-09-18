@@ -30,7 +30,7 @@ elasticsearch::pkg_version: 1.3.1
 elasticsearch::memory: 40
 elasticsearch::datadir: '/mnt/lv-elasticsearch'
 
-metacpan::web::sites:
+metacpan::web::starman:
 
   metacpan-cpan-static:
     vhost_html: "%{hiera('metacpan::cpan_mirror')}"
