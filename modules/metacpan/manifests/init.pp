@@ -21,12 +21,16 @@ class metacpan(
     perl::module{ 'Daemon::Control':
     }
 
-    # Sort out our repos and basic websites
+    # Static sites
+    $statics = hiera_hash('metacpan::web::static', {})
+    create_resources('metacpan::web::static', $statics)
+
+    # Starman sites
     $websites = hiera_hash('metacpan::web::starman', {})
     create_resources('metacpan::web::starman', $websites)
 
-    # Sort out our repos and twiggy things
-    $twiggies = hiera_hash('metacpan::twiggy::sites', {})
+    # Twiggy sites
+    $twiggies = hiera_hash('metacpan::web::twiggy', {})
     create_resources('metacpan::web::twiggy', $twiggies)
 
     # Run any fire wall stuff here

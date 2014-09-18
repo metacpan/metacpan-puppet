@@ -32,19 +32,6 @@ elasticsearch::datadir: '/mnt/lv-elasticsearch'
 
 metacpan::web::starman:
 
-  metacpan-cpan-static:
-    vhost_html: "%{hiera('metacpan::cpan_mirror')}"
-    vhost_ssl: true
-    vhost_autoindex: true
-    vhost_aliases:
-      - 'cpan.metacpan.org'
-      - "cpan.lo.metacpan.org"
-      - "cpan.%{hostname}.metacpan.org"
-    vhost_extra_configs:
-      fastly_surrogate_headers:
-          template: 'fastly'
-
-
   metacpan-web:
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
     git_revision: 'master'
@@ -59,6 +46,40 @@ metacpan::web::starman:
     vhost_extra_configs:
       trailing_slash_rewrite:
           template: 'trailing_slash'
+
+  metacpan-api:
+    git_source: 'https://github.com/CPAN-API/cpan-api.git'
+    git_revision: 'master'
+    vhost_ssl: true
+    vhost_bare: true
+    vhost_aliases:
+      - 'api.metacpan.org'
+      - "api.lo.metacpan.org"
+      - "api.%{hostname}.metacpan.org"
+      - "st.aticpan.org"
+    starman_port: 5000
+    starman_workers: 1
+    vhost_extra_proxies:
+      proxy_v0:
+          location: '/v0'
+    vhost_extra_configs:
+      socket_io:
+          template: 'socket_io'
+
+
+metacpan::web::static:
+
+  metacpan-cpan-static:
+    vhost_html: "%{hiera('metacpan::cpan_mirror')}"
+    vhost_ssl: true
+    vhost_autoindex: true
+    vhost_aliases:
+      - 'cpan.metacpan.org'
+      - "cpan.lo.metacpan.org"
+      - "cpan.%{hostname}.metacpan.org"
+    vhost_extra_configs:
+      fastly_surrogate_headers:
+          template: 'fastly'
 
   metacpan-web-redirect:
     vhost_aliases:
@@ -86,26 +107,6 @@ metacpan::web::starman:
       - "explorer.lo.metacpan.org"
       - "explorer.%{hostname}.metacpan.org"
 
-  metacpan-api:
-    git_source: 'https://github.com/CPAN-API/cpan-api.git'
-    git_revision: 'master'
-    vhost_ssl: true
-    vhost_bare: true
-    vhost_aliases:
-      - 'api.metacpan.org'
-      - "api.lo.metacpan.org"
-      - "api.%{hostname}.metacpan.org"
-      - "st.aticpan.org"
-    starman_port: 5000
-    starman_workers: 1
-    vhost_extra_proxies:
-      proxy_v0:
-          location: '/v0'
-    vhost_extra_configs:
-      socket_io:
-          template: 'socket_io'
-
-
   metacpan-sco:
     vhost_bare: true
     vhost_aliases:
@@ -119,7 +120,8 @@ metacpan::web::starman:
       rewrite:
           template: 'rewrite'
 
-metacpan::twiggy::sites:
+metacpan::web::twiggy:
+  
   metacpan-web-socket:
     enable: true
     git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
