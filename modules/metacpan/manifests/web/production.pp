@@ -9,7 +9,7 @@ class metacpan::web::production(
       owner => $user,
       group => $group,
       source => "puppet:///private/metacpan-web/metacpan_web_local.conf",
-      notify => Starman::Service['starman_metacpan-web'],
+      notify => Starman::Service['metacpan-web'],
   }
 
 }
