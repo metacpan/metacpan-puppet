@@ -13,6 +13,7 @@
 #
 #
 define metacpan::gitrepo (
+    $ensure = present, # set to latest to force
     $enable_git_repo   = false,
     $path     = 'UNSET',
     $source   = 'UNSET',

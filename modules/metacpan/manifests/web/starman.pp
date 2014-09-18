@@ -41,6 +41,7 @@ define metacpan::web::starman (
       owner             => $owner,
       group             => $group,
       identity          => $git_identity,
+      ensure            => latest, # force update
 
       # Should tell carton to run and starman to restart
       notify            => [
