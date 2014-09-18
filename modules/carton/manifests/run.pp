@@ -1,17 +1,15 @@
 define carton::run (
   $root,
-  $service,
   $user = hiera('metacpan::user', 'metacpan'),
   $group = hiera('metacpan::group', 'metacpan'),
   $carton_args = hiera('metacpan::carton_args', ''),
-
 ) {
 
   include perl
 
   $perlbin = $perl::params::bin_dir
 
-  $carton_service_dir = "/home/${user}/carton/${service}"
+  $carton_service_dir = "/home/${user}/carton/${name}"
   file { $carton_service_dir:
       ensure => directory,
       mode   => '0755',
@@ -20,7 +18,7 @@ define carton::run (
       require => File["/home/${user}/carton"],
   }
 
-  $carton = "/home/${user}/bin/${service}-carton"
+  $carton = "/home/${user}/bin/${name}-carton"
   file { $carton:
       ensure => file,
       mode   => '0755',
@@ -30,7 +28,7 @@ define carton::run (
       require => File["/home/${user}/bin"],
   }
 
-  $carton_exec = "/home/${user}/bin/${service}-carton-exec"
+  $carton_exec = "/home/${user}/bin/${name}-carton-exec"
   file { $carton_exec:
       ensure => file,
       mode   => '0755',
@@ -41,7 +39,7 @@ define carton::run (
   }
 
   #
-  exec { "run_carton_${service}":
+  exec { "run_carton_${name}":
     path    => [$perl::params::bin_dir, '/usr/bin', '/bin' ],
     command => "${carton} install ${carton_args}",
     # needed HOME because `user` does not set it, don't know

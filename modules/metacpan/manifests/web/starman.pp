@@ -44,8 +44,8 @@ define metacpan::web::starman (
 
       # Should tell carton to run and starman to restart
       notify            => [
-#                  Carton::Run[$name],
-#                  Starman::Service["starman_${name}"],
+           Carton::Run[$name],
+           Starman::Service[$name],
       ],
     }
   }
@@ -70,21 +70,17 @@ define metacpan::web::starman (
     site    =>  $name,
   })
 
-  if( $starman_port != 'UNSET' ) {
-      # One or more proxies going on
+  # Setup rev-proxt to starman
+  nginx::proxy { "proxy_${name}":
+      target   => "http://localhost:${starman_port}",
+      site    => $name,
+      location => '',
+  }
 
-      nginx::proxy { "proxy_${name}":
-          target   => "http://localhost:${starman_port}",
-          site    => $name,
-          location => '',
-      }
-
-      starman::service { "starman_${name}":
-          service => $name,
-          root    => $path,
-          port    => $starman_port,
-          workers => $starman_workers,
-      }
+  starman::service { $name:
+      root    => $path,
+      port    => $starman_port,
+      workers => $starman_workers,
   }
 
 

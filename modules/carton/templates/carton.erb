@@ -1,4 +1,4 @@
 #!/bin/sh
 
-chdir /home/<%= @user %>/<%= @service %>/
+chdir /home/<%= @user %>/<%= @name %>/
 PERL_CARTON_PATH=<%= @carton_service_dir %> <%= @perlbin %>/carton "$@"

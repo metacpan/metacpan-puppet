@@ -3,7 +3,6 @@ define starman::service (
     $root,
     $workers,
     $port,
-    $service        = $name,
     $service_enable = true,
     $user = hiera('metacpan::user', 'metacpan'),
     $group = hiera('metacpan::group', 'metacpan'),
@@ -11,16 +10,16 @@ define starman::service (
     include perl
     include starman::config
 
+    $service_name = "starman_${name}"
+
     $perlbin   = $perl::params::bin_dir
     $plack_env = $starman::config::plack_env
 
-    $service_name = "starman_${service}"
-
     if $starman::config::link_dirs {
         $link_root = "${root}/var"
-        $log_dir   = "${starman::config::log_dir}/${service}"
-        $run_dir   = "${starman::config::run_dir}/${service}"
-        $tmp_dir   = "${starman::config::tmp_dir}/${service}"
+        $log_dir   = "${starman::config::log_dir}/${name}"
+        $run_dir   = "${starman::config::run_dir}/${name}"
+        $tmp_dir   = "${starman::config::tmp_dir}/${name}"
 
         file { [$link_root, $log_dir, $run_dir, $tmp_dir ]:
             ensure => directory,
@@ -76,9 +75,8 @@ define starman::service (
         content => template('starman/init.pl.erb'),
     }
 
-    carton::run { $service:
+    carton::run { $name:
       root => $root,
-      service => $service,
     }
 
     service { $service_name:
@@ -86,7 +84,7 @@ define starman::service (
         enable  => $service_enable,
         require => [
           File[$link_root, $log_dir, $run_dir, $init],
-          Carton::Run[$service]
+          Carton::Run[$name]
         ],
     }
 }

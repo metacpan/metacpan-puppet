@@ -33,7 +33,6 @@ define metacpan::web::twiggy (
 
     carton::run { $name:
       root => $root,
-      service => $name,
     }
 
   }
