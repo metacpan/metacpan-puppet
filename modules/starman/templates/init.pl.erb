@@ -44,6 +44,7 @@ my @program_args = (
     '-Ilib',
     '-a'  => 'app.psgi',
     '-s', => 'Starman',
+    '--disable-proctitle', # so we know which processes are what
 );
 
 # Puppet should be doing this with symlinks
