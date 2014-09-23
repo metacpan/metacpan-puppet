@@ -73,6 +73,7 @@ define starman::service (
         owner   => 'root',
         group   => 'root',
         content => template('starman/init.pl.erb'),
+        notify => Service[$service_name],
     }
 
     carton::run { $name:
