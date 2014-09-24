@@ -1,5 +1,5 @@
 # Things in /authors/ that arn't likely to change
-location ~ /authors/.*\.(gz|gzip|readme|meta|bz2)$ {
+location ~ /authors/.+/.*\.(gz|gzip|readme|meta|bz2)$ {
     # Telling fastly to cache for a week
     add_header Surrogate-Control max-age=604800;
 }
