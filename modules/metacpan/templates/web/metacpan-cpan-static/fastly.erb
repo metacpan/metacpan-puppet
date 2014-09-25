@@ -1,5 +1,34 @@
-# Things in /authors/ that arn't likely to change
-location ~ /authors/.+/.*\.(gz|gzip|readme|meta|bz2)$ {
-    # Telling fastly to cache for a day
-    add_header Surrogate-Control max-age=86400;
+# http://nginx.org/en/docs/http/request_processing.html
+
+# nginx first searches for the most specific prefix
+# location given by literal strings regardless of the
+# listed order. In the example configuration the only prefix
+# location is ''/' and since it matches any request it will
+# be used as a last resort. Then nginx checks locations
+# given by regular expression in the order listed in the
+# configuration file. The first matching expression stops
+# the search and nginx will use this location. If no regular
+# expression matches a request, then nginx uses the most
+# specific prefix location found earlier.
+
+location ~ /authors/.*/CHECKSUMS$ {
+  # checksum files can change with any upload
+}
+location ~* /authors/.*(readme|\.html|\.txt|\.[xy]ml|\.json|\.[pr]df|\.pod)(\.gz|\.bz2)?$ {
+  # allowed to be overwritten by authors see:
+  # http://pause.perl.org/pause/query?ACTION=pause_04about#upload
+}
+location ~ /authors/.*/$ {
+  # directories
+}
+location ~ /authors/id/[^/]+$ {
+  # files directly in /id/
+}
+location ~ /authors/.*/.*$ {
+  # files in author directories, basically the
+  # other regexes are above are the exceptions for this rule
+  add_header Surrogate-Control max-age=31104000;
+}
+location ~ /authors/ {
+  # anything else
 }
