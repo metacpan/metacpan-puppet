@@ -20,6 +20,7 @@ location ~* /authors/.*(readme|\.html|\.txt|\.[xy]ml|\.json|\.[pr]df|\.pod)(\.gz
 }
 location ~ /authors/.*/$ {
   # directories
+  autoindex on;
 }
 location ~ /authors/id/[^/]+$ {
   # files directly in /id/
@@ -31,4 +32,5 @@ location ~ /authors/.*/.*$ {
 }
 location ~ /authors/ {
   # anything else
+  autoindex on;
 }
