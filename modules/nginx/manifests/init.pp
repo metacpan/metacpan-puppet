@@ -1,6 +1,6 @@
 class nginx {
 
-        $backport_nginx = '1.6.1-1~bpo70+1'
+        $backport_nginx = '1.6.2-1~bpo70+1'
 
         # Hard code versions
         package { "nginx-common":
