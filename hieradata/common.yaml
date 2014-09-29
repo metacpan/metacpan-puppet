@@ -121,10 +121,11 @@ metacpan::web::static:
           template: 'rewrite'
 
 metacpan::web::twiggy:
-  
+
   metacpan-web-socket:
-    enable: true
+    git_enable: true
     git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
+    twiggy_port: 5099
 
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
