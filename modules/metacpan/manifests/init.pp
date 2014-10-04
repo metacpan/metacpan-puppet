@@ -21,6 +21,15 @@ class metacpan(
     perl::module{ 'Daemon::Control':
     }
 
+    perl::module{ 'Code::TidyAll':
+    }
+
+    perl::module{ 'Perl::Tidy':
+    }
+
+    perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
+    }
+
     # Static sites
     $statics = hiera_hash('metacpan::web::static', {})
     create_resources('metacpan::web::static', $statics)
