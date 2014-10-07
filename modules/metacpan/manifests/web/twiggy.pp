@@ -28,6 +28,8 @@ define metacpan::web::twiggy (
       revision          => $git_revision,
       owner             => $owner,
       group             => $group,
+      ensure            => latest, # force update
+
       notify            => [
            Carton::Run[$name],
            Twiggy::Service[$name],
