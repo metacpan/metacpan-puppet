@@ -52,7 +52,7 @@ define metacpan::web::static (
 
   # Add all the extra proxy / config gumpf
   create_resources('nginx::proxy', $vhost_extra_proxies, {
-    target   => "http://localhost:${starman_port}",
+    target   => "http://localhost:${starman_port}/",
     site    =>  $name,
     location => '',
   })

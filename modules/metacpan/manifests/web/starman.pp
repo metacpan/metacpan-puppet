@@ -62,7 +62,7 @@ define metacpan::web::starman (
 
   # Add all the extra proxy / config gumpf
   create_resources('nginx::proxy', $vhost_extra_proxies, {
-    target   => "http://localhost:${starman_port}",
+    target   => "http://localhost:${starman_port}/",
     site    =>  $name,
     location => '',
   })
@@ -73,7 +73,7 @@ define metacpan::web::starman (
 
   # Setup rev-proxt to starman
   nginx::proxy { "proxy_${name}":
-      target   => "http://localhost:${starman_port}",
+      target   => "http://localhost:${starman_port}/",
       site    => $name,
       location => '',
   }
