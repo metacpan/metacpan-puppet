@@ -12,4 +12,12 @@ class metacpan::web::production(
       notify => Starman::Service['metacpan-web'],
   }
 
+  file { "/home/${user}/metacpan-api/metacpan_web_local.conf":
+      ensure => file,
+      owner => $user,
+      group => $group,
+      source => "puppet:///private/metacpan-api/metacpan_web_local.conf",
+      notify => Starman::Service['metacpan-api'],
+  }
+
 }
