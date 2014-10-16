@@ -31,6 +31,7 @@ define metacpan::web::static (
 
   if( $git_enable == true ) {
     metacpan::gitrepo{ "gitrepo_${name}":
+      ensure            => latest, # force update
       enable_git_repo   => $git_enable,
       path              => $path,
       source            => $git_source,
