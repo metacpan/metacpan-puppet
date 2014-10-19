@@ -22,8 +22,8 @@ class metacpan_elasticsearch(
   $init_hash = {
     'ES_USER' => 'elasticsearch',
     'ES_GROUP' => 'elasticsearch',
-    'ES_MIN_MEM' => $memory,
-    'ES_MAX_MEM' => $memory,
+    # Set min/max to the same value (recommended by es).
+    'ES_HEAP_SIZE' => $memory,
   }
 
   # From: https://github.com/CPAN-API/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
