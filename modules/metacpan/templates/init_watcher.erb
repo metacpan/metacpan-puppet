@@ -18,8 +18,8 @@ ROOT=<%= @app_root %>
 USER=metacpan
 GROUP=users
 
-DAEMON="<%= @app_root %>/bin/carton"
-DAEMON_ARGS="exec $WATCHERBIN watcher"
+DAEMON="/home/<%= @user %>/bin/metacpan-api-carton-exec"
+DAEMON_ARGS="$WATCHERBIN watcher"
 
 test -x $WATCHERBIN || { echo "$WATCHERBIN not installed";
 	if [ "$1" = "stop" ]; then exit 0;
