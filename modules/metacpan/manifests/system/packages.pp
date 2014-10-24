@@ -38,6 +38,7 @@ class metacpan::system::packages {
     package { less: ensure => present }
     package { mosh: ensure => present }
     package { tig: ensure => present }
+    package { sqlite3: ensure => present }
     package { sudo: ensure => present }
     package { sysstat: ensure => present }
     package { tree: ensure => present }
