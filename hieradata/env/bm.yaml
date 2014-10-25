@@ -8,6 +8,9 @@ metacpan::carton_args: '--deployment'
 elasticsearch::pkg_version: 0.20.2
 elasticsearch::memory: '18g'
 
+# We want watcher enabled
+metacpan::watcher::enable: true
+
 # Let's have rrr on all BM machines for now
 # we can setup cpan.mc.org with a failover!
 metacpan::rrrclient::enable: true
