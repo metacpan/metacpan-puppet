@@ -1,6 +1,10 @@
 #Each line describes a limit for a user in the form:
 #
 #<domain>        <type>  <item>  <value>
+
+# NOTE: The es init script does its own ulimit call (as root) using
+# MAX_OPEN_FILES=65535 which overrides this.
 elasticsearch     -	nofile    65000
+
 elasticsearch     -	memlock   unlimited
 metacpan          -	nofile    65000
