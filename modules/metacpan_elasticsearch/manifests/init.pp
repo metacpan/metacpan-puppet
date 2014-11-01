@@ -15,7 +15,7 @@ class metacpan_elasticsearch(
     package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${es_version}.deb",
     java_install => true,
     # Defaults can be in here...
-    config => { 'cluster.name' => $env }
+    config => { 'cluster.name' => 'metacpan_cluster' }
   }
 
   # Setup an actual running instance
@@ -31,7 +31,7 @@ class metacpan_elasticsearch(
     'network.host' => '127.0.0.1',
     'http.port' => '9200',
 
-    'cluster.name' => $env,
+    'cluster.name' => 'metacpan_cluster',
     'cluster.routing.allocation.concurrent_recoveries' =>  '2',
 
     'index.translog.flush_threshold' => '20000',
