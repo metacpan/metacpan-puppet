@@ -1,6 +1,6 @@
 class panopta() {
 
-  require panopta::files
+  require panopta::apt
 
   require panopta::packages
 
