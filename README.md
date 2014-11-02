@@ -30,8 +30,8 @@ which shows a very rough outline of how things are setup
 21:21 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hiera.yaml sets the order config
                   files should be examined ( top overlaying data in the ones below )
 21:21 < ranguard> so common.yaml is the ground work, but there are customisations in:
-                  https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hieradata/env/bm.yaml
-21:22 < ranguard> ^^ that is for all ByteMark servers
+                  https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hieradata/env/productions.yaml
+21:22 < ranguard> ^^ that is for all production servers
 21:22 < ranguard> https://github.com/CPAN-API/metacpan-puppet/blob/leo/puppet3/hieradata/nodes/bm-mc-02.yaml would
                   be specifically for bm-mc-02 node
 21:23 < ranguard> the config files are EVERYTHING, there should be no specific logic in modules, they become dumb
