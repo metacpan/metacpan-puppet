@@ -9,6 +9,7 @@ class metacpan::web::production(
       owner => $user,
       group => $group,
       source => "puppet:///private/metacpan-web/metacpan_web_local.conf",
+      require => Starman::Service['metacpan-web'], # after repo created
       notify => Starman::Service['metacpan-web'],
   }
 
@@ -17,6 +18,7 @@ class metacpan::web::production(
       owner => $user,
       group => $group,
       source => "puppet:///private/metacpan-api/metacpan_server_local.conf",
+      require => Starman::Service['metacpan-api'], # after repo created
       notify => Starman::Service['metacpan-api'],
   }
 
