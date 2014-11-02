@@ -16,6 +16,9 @@ class panopta::apt() {
 
   exec { "panopta_update":
       command => "/usr/bin/apt-get update",
+      # ok, so it doesn't create this, but if we have it we don't
+      # need to do this update, so make it quicker!
+      creates => '/usr/bin/panopta-agent/panopta_agent.py',
       require => [ Exec['panopta_key'] ],
   }
 
