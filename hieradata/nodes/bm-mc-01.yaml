@@ -10,42 +10,24 @@ metacpan::crons::general:
 
 metacpan::crons::api:
     author:
-        cmd : author
-        minute : 0
+      ensure : present
     ratings:
-        cmd : ratings
-        minute : 20
+      ensure : present
     mirrors:
-        cmd : mirrors
-        minute : 0
+      ensure : present
     cpantesters:
-        cmd : cpantesters
-        hour : '*/6'
-        minute : 42
+      ensure : present
     latest:
-        cmd : 'latest >/dev/null 2>&1'
-        minute : 30
+      ensure : present
     backup_favorite:
-        cmd : 'backup --index cpan --type favorite'
-        hour : 2
-        minute : 22
+      ensure : present
     backup_author:
-        cmd : 'backup --index cpan --type author'
-        hour : 2
-        minute : 28
+      ensure : present
     backup_user:
-        cmd : 'backup --index user'
-        hour : 2
-        minute : 25
+      ensure : present
     backup_purge:
-        cmd : 'backup --purge'
-        minute : 25
-        hour : 1
+      ensure : present
     release:
-        cmd : "release --skip --age 25 --detect_backpan --latest /home/%{hiera('metacpan::user')}/CPAN/authors/id/"
-        hour : 0
-        minute : 5
+      ensure : present
     tickets:
-        cmd : tickets
-        minute : 12
-        hour : 3
+      ensure : present
