@@ -5,7 +5,8 @@ classes:
 
 metacpan::carton_args: '--deployment'
 
-elasticsearch::pkg_version: 0.20.2
+# default to latest ES
+elasticsearch::pkg_version: 1.3.4
 elasticsearch::memory: '18g'
 
 # We want watcher enabled
