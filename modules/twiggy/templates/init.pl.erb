@@ -37,7 +37,8 @@ $ENV{PERL_CARTON_PATH} = $carton_path;
 
 my @program_args = (
     'exec', "${carton_path}/bin/plackup",
-    '--listen'    => <%= @port %>,
+    # The listen arg needs a colon to signify port (rather than unix socket).
+    '--listen'    => ":<%= @port %>",
     '-E'        => $plack_env,
     '-Ilib',
     '-a'  => 'app.psgi',
