@@ -48,6 +48,7 @@ define metacpan::web::starman (
            Carton::Run[$name],
            Starman::Service[$name],
       ],
+      require => [ Metacpan::User[$owner] ],
     }
   }
 

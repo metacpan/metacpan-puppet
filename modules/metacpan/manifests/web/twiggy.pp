@@ -34,6 +34,7 @@ define metacpan::web::twiggy (
            Carton::Run[$name],
            Twiggy::Service[$name],
       ],
+      require => [ Metacpan::User[$owner] ],
     }
   }
 
