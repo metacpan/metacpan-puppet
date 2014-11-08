@@ -11,6 +11,9 @@ metacpan::users:
 
 metacpan::elasticsearch::version: 0.20.2
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
+#metacpan::elasticsearch::cluster_hosts:
+#  - 1.2.3.4
+#  - 1.2.3.5
 
 # Open up ports for development
 metacpan::fw_ports:

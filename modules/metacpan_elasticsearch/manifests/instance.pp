@@ -4,7 +4,10 @@ class metacpan_elasticsearch::instance(
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
 ) {
 
-  $cluster_hosts = hiera_hash('metacpan::elasticsearch::cluser_hash')
+  $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
+
+  # Add the port for unicast to the IP addresses
+  $source_with_port = $cluster_hosts.map |$s| { "${s}:9300" }
 
   # Set ulimits
   file {
@@ -27,6 +30,7 @@ class metacpan_elasticsearch::instance(
     # Set min/max to the same value (recommended by es).
     'ES_HEAP_SIZE' => $memory,
   }
+
 
   # From: https://github.com/CPAN-API/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
   $config_hash = {
