@@ -7,6 +7,7 @@ ssldir=/etc/puppet/ssl
 factpath=$vardir/lib/facter
 #pluginsync=true
 node_name=cert
+parser=future
 
 [agent]
 server=puppet
