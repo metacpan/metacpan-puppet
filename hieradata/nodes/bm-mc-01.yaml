@@ -1,7 +1,7 @@
 ---
 # Put ES in different place for now
-elasticsearch::datadir: '/var/elasticsearch'
-elasticsearch::pkg_version: 0.20.2
+metacpan::elasticsearch::datadir: '/var/elasticsearch'
+metacpan::elasticsearch::version: 0.20.2
 
 # Run all the usual crons on here as well
 metacpan::crons::general:
