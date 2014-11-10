@@ -37,6 +37,7 @@ class metacpan::system::packages {
     package { ack-grep: ensure => present }
     package { less: ensure => present }
     package { mosh: ensure => present }
+    package { ncdu: ensure => present }
     package { tig: ensure => present }
     package { sqlite3: ensure => present }
     package { sudo: ensure => present }
