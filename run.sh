@@ -15,4 +15,18 @@ then
     echo "Supply a node arg to override"
 fi
 
+# Just create a basic conf to set parser=future
+if [ ! -e "puppet.conf" ]
+  then
+    echo "[main]\nparser=future" > blaa
+fi
+
+if grep -Fq "parser=future" puppet.conf
+then
+    echo "parser=future enabled, carry on..."
+else
+    echo "You need to add 'parser=future' to the puppet.conf"
+    exit
+fi
+
 puppet apply --verbose --show_diff --certname=$CERTNAME manifests/site.pp
