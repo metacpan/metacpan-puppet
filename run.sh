@@ -18,7 +18,7 @@ fi
 # Just create a basic conf to set parser=future
 if [ ! -e "puppet.conf" ]
   then
-    echo "[main]\nparser=future" > blaa
+    echo "[main]\nparser=future" > puppet.conf
 fi
 
 if grep -Fq "parser=future" puppet.conf
