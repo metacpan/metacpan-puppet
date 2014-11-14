@@ -79,7 +79,7 @@ define metacpan::user(
     file { "$path/$user/.ssh/authorized_keys":
         owner => $user,
         group => $user,
-        mode  => 600,
+        mode  => 0600,
         source => [
                 "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
                 "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
