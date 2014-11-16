@@ -89,7 +89,7 @@ class metacpan_elasticsearch::instance(
 
     # Turn OFF multicast, and explisitly do only unicast to listed hosts
     'discovery.zen.ping.multicast.enabled' => false,
-    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_port,
+    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_transport_port,
 
     'marvel.agent.exporter.es.hosts' => $cluster_hosts_with_port,
 
