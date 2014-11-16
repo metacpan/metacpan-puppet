@@ -190,6 +190,11 @@ metacpan::crons::api:
         minute : 25
         hour : 1
         ensure : absent
+    session:  # clear out old sessions
+        cmd : session
+        minute : 30
+        hour: 3
+        ensure : absent
     release:
         cmd : "release --skip --age 25 --detect_backpan --latest /home/%{hiera('metacpan::user')}/CPAN/authors/id/"
         hour : 0

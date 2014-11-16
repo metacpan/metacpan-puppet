@@ -27,6 +27,8 @@ metacpan::crons::api:
       ensure : present
     backup_purge:
       ensure : present
+    session:
+      ensure : present
     release:
       ensure : present
     tickets:
