@@ -10,7 +10,9 @@ class metacpan_elasticsearch::instance(
   $instance_name = 'es-01'
 
   # Add the port for unicast to the IP addresses
-  $cluster_hosts_with_port = $cluster_hosts.map |$s| { "${s}:9300" }
+  $cluster_hosts_with_transport_port = $cluster_hosts.map |$s| { "${s}:9300" }
+  # Main port (used by marvel)
+  $cluster_hosts_with_port = $cluster_hosts.map |$s| { "${s}:9200" }
 
   # Set ulimits
   file {
@@ -89,7 +91,13 @@ class metacpan_elasticsearch::instance(
     'discovery.zen.ping.multicast.enabled' => false,
     'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_port,
 
-    'action.auto_create_index' => '0',
+    'marvel.agent.exporter.es.hosts' => $cluster_hosts_with_port,
+
+    # for now once a min, so we don't get too much data
+    'marvel.agent.interval' => '60s',
+
+    # Let marvel auto create indexes, but nothing else
+    'action.auto_create_index' => '.marvel-*',
 
   }
 
