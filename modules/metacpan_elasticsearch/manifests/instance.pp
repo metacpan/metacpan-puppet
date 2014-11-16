@@ -100,7 +100,6 @@ class metacpan_elasticsearch::instance(
       elasticsearch::plugin{ 'elasticsearch/marvel/latest':
           module_dir  => 'marvel',
           instances  => $instance_name,
-          require => Elasticsearch::Instance[$instance_name],
       }
 
     }
