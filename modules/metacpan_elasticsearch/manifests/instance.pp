@@ -1,13 +1,14 @@
 class metacpan_elasticsearch::instance(
-  $es_version = hiera('metacpan::elasticsearch::version'),
+  $version = hiera('metacpan::elasticsearch::version'),
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
+  $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
 ) {
 
   $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
 
   # Add the port for unicast to the IP addresses
-  $source_with_port = $cluster_hosts.map |$s| { "${s}:9300" }
+  $cluster_hosts_with_port = $cluster_hosts.map |$s| { "${s}:9300" }
 
   # Set ulimits
   file {
@@ -17,7 +18,7 @@ class metacpan_elasticsearch::instance(
 
   # Install ES, but don't run
   class { 'elasticsearch':
-    package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${es_version}.deb",
+    package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${$version}.deb",
     java_install => true,
     # Defaults can be in here...
     config => { 'cluster.name' => 'bm' }
@@ -34,7 +35,7 @@ class metacpan_elasticsearch::instance(
 
   # From: https://github.com/CPAN-API/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
   $config_hash = {
-    'network.host' => '127.0.0.1',
+    'network.host' => $ip_address,
     'http.port' => '9200',
 
     'cluster.name' => 'bm',
@@ -45,6 +46,10 @@ class metacpan_elasticsearch::instance(
     'index.search.slowlog.threshold.query.warn' => '10s',
     'index.search.slowlog.threshold.query.info' => '2s',
     'index.search.slowlog.threshold.fetch.warn' => '1s',
+
+    # Turn OFF multicast, and explisitly do only unicast to listed hosts
+    'discovery.zen.ping.multicast.enabled' => false,
+    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_port,
 
     'gateway.recover_after_nodes' => '1',
     'gateway.recover_after_time' => '2m',
