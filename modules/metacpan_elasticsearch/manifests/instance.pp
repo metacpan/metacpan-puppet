@@ -7,6 +7,8 @@ class metacpan_elasticsearch::instance(
 
   $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
 
+  $instance_name = 'es-01'
+
   # Add the port for unicast to the IP addresses
   $cluster_hosts_with_port = $cluster_hosts.map |$s| { "${s}:9300" }
 
@@ -92,14 +94,24 @@ class metacpan_elasticsearch::instance(
   }
 
   case $version {
-    default : { $config_hash = $config_hash_cluster }
+    default : {
+      $config_hash = $config_hash_cluster
+
+      elasticsearch::plugin{ 'elasticsearch/marvel/latest':
+          module_dir  => 'marvel',
+          instances  => $instance_name,
+          require => Elasticsearch::Instance[$instance_name],
+      }
+
+    }
     '0.20.2' : { $config_hash = $config_hash_old }
   }
 
-  elasticsearch::instance { 'es-01':
+  elasticsearch::instance { $instance_name:
     config => $config_hash,
     init_defaults => $init_hash,
     datadir => $data_dir,
   }
+
 
 }
