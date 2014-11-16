@@ -34,8 +34,9 @@ class metacpan_elasticsearch::instance(
 
 
   # From: https://github.com/CPAN-API/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
-  $config_hash = {
-    'network.host' => $ip_address,
+  # For 0.20.x installs
+  $config_hash_old = {
+    'network.host' => '127.0.0.1',
     'http.port' => '9200',
 
     'cluster.name' => 'bm',
@@ -47,9 +48,6 @@ class metacpan_elasticsearch::instance(
     'index.search.slowlog.threshold.query.info' => '2s',
     'index.search.slowlog.threshold.fetch.warn' => '1s',
 
-    # Turn OFF multicast, and explisitly do only unicast to listed hosts
-    'discovery.zen.ping.multicast.enabled' => false,
-    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_port,
 
     'gateway.recover_after_nodes' => '1',
     'gateway.recover_after_time' => '2m',
@@ -60,6 +58,42 @@ class metacpan_elasticsearch::instance(
     'action.auto_create_index' => '0',
 
     'bootstrap.mlockall' => '1',
+  }
+
+  # As recommended by clinton, for ES 1.4 as a cluster
+  # This should really be via hiera or something
+  $config_hash_cluster = {
+    'network.host' => $ip_address,
+    'http.port' => '9200',
+
+    'cluster.name' => 'bm',
+
+    'index.search.slowlog.threshold.query.warn' => '10s',
+    'index.search.slowlog.threshold.query.info' => '2s',
+    'index.search.slowlog.threshold.fetch.warn' => '1s',
+
+    'gateway.recover_after_nodes' => '2',
+    'gateway.recover_after_time' => '2m',
+    'gateway.expected_nodes' => '3',
+
+    # only allow one node to start on each box
+    'node.max_local_storage_nodes' => '1',
+
+    # require at least two nodes to be able to see each other
+    # this prevents split brains
+    'discovery.zen.minimum_master_nodes' => '2',
+
+    # Turn OFF multicast, and explisitly do only unicast to listed hosts
+    'discovery.zen.ping.multicast.enabled' => false,
+    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_port,
+
+    'action.auto_create_index' => '0',
+
+  }
+
+  case $version {
+    default : { $config_hash = $config_hash_cluster }
+    '0.20.2' : { $config_hash = $config_hash_old }
   }
 
   elasticsearch::instance { 'es-01':
