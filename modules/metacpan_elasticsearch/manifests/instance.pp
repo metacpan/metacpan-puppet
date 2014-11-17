@@ -110,6 +110,11 @@ class metacpan_elasticsearch::instance(
           instances  => $instance_name,
       }
 
+      elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
+        module_dir => 'kopf',
+        instances  => $instance_name,
+      }
+
     }
     '0.20.2' : { $config_hash = $config_hash_old }
   }
