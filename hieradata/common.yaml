@@ -30,6 +30,9 @@ metacpan::elasticsearch::version: 1.4.0
 metacpan::elasticsearch::memory: '40m'
 metacpan::elasticsearch::datadir: '/mnt/lv-elasticsearch'
 
+# Install logstash but don't run by default
+metacpan::logstash::status: disabled
+
 metacpan::web::starman:
 
   metacpan-web:
