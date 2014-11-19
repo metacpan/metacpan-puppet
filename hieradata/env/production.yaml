@@ -30,6 +30,7 @@ metacpan::users:
     leo:
         admin    : true
         fullname : "Leo Lapworth <leo@cuckoo.org>"
+        no_passwd_sudo : true
     clinton:
         admin    : true
         fullname : "Clinton Gormley <clint@traveljury.com>"
