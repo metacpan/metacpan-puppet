@@ -97,7 +97,7 @@ class metacpan_elasticsearch::instance(
     'marvel.agent.interval' => '60s',
 
     # Let marvel auto create indexes, but nothing else
-    'action.auto_create_index' => '.marvel-*',
+    'action.auto_create_index' => '.marvel-*,logstash-*',
 
   }
 
