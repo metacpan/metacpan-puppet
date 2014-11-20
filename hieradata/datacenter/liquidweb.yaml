@@ -5,5 +5,7 @@ metacpan::elasticsearch::cluster_hosts:
   - 50.28.18.168 # lw-mc-03
 
 # Run on our public IP address (firewall limits access
-# to other nodes in our cluster)  
+# to other nodes in our cluster)
 metacpan::elasticsearch::ipaddress: "%{::ipaddress}"
+
+metacpan::logstash::status: 'enable'
