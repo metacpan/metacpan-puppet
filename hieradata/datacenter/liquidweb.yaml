@@ -8,4 +8,4 @@ metacpan::elasticsearch::cluster_hosts:
 # to other nodes in our cluster)
 metacpan::elasticsearch::ipaddress: "%{::ipaddress}"
 
-metacpan::logstash::status: 'enable'
+metacpan::logstash::status: 'enabled'
