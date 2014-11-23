@@ -1,5 +1,4 @@
 ---
-metacpan::elasticsearch::autoupgrade: true
 metacpan::elasticsearch::cluster_hosts:
   - 50.28.18.102 # lw-mc-01
   - 50.28.18.103 # lw-mc-02
