@@ -23,9 +23,10 @@ class metacpan_elasticsearch::instance(
 
   # Install ES, but don't run
   class { 'elasticsearch':
+    version => $version,
     package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${$version}.deb",
     java_install => true,
-    autoupgrade => $autoupgrade,
+#    autoupgrade => $autoupgrade,
     # Defaults can be in here...
     config => { 'cluster.name' => 'bm' }
   }
