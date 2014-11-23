@@ -1,5 +1,6 @@
 class metacpan_elasticsearch::instance(
   $version = hiera('metacpan::elasticsearch::version'),
+  $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', 'false'),
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
@@ -24,6 +25,7 @@ class metacpan_elasticsearch::instance(
   class { 'elasticsearch':
     package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${$version}.deb",
     java_install => true,
+    autoupgrade => $autoupgrade,
     # Defaults can be in here...
     config => { 'cluster.name' => 'bm' }
   }
