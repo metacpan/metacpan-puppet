@@ -30,6 +30,11 @@ location ~ /authors/.*/.*$ {
   # other regexes are above are the exceptions for this rule
   add_header Surrogate-Control max-age=31104000;
 }
+location ~ /robots.txt$ {
+  # robots gets requested a lot - let fastly cache
+  # for an hour
+  add_header Surrogate-Control max-age=3600;
+}
 location ~ /authors/ {
   # anything else
   autoindex on;
