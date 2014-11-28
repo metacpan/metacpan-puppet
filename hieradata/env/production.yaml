@@ -14,6 +14,10 @@ metacpan::watcher::enable: true
 # we can setup cpan.mc.org with a failover!
 metacpan::rrrclient::enable: true
 
+metacpan::crons::general:
+    metacpan_clean_up_source:
+      ensure : present
+
 metacpan::web::starman:
   metacpan-web:
     git_enable: true
