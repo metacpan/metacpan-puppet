@@ -1,6 +1,6 @@
 # Setup various system resources for metacpan.
 class metacpan(
-  $tmp_dir = hiera('metacpan::tmp_dir','/tmp'),
+  $tmp_dir = hiera('metacpan::tmp_dir'),
   $user = hiera('metacpan::user', 'metacpan'),
   $group = hiera('metacpan::group', 'metacpan'),
 

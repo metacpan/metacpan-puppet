@@ -1,6 +1,8 @@
 # Configure starman resources.
 class starman::config (
     $user = hiera('metacpan::user', 'metacpan'),
+    $starman_tmp_dir = hiera('metacpan::tmp_dir'),
+
     # Symlink local app dir to base dirs (likely on a different mount).
     $link_dirs = true,
     $plack_env = 'production',
@@ -10,7 +12,7 @@ class starman::config (
 
     $log_dir  =  "/var/log/${basename}"
     $run_dir  =  "/var/run/${basename}"
-    $tmp_dir  =  "/tmp/${basename}"
+    $tmp_dir  =  "${starman_tmp_dir}/${basename}"
 
     file { [
             $log_dir,
@@ -20,6 +22,7 @@ class starman::config (
         ensure => directory,
         mode   => '0755',
         owner  => $user,
+        require => File[ $starman_tmp_dir ],
     }
 
     file { "/etc/logrotate.d/${basename}":
