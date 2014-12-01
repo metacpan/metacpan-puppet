@@ -55,7 +55,17 @@ server {
   ssl_certificate_key <%= @ssl_dir %>/server.key;
   ssl_session_timeout  5m;
   ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
-  ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+EXP;
+
+  ssl_ciphers  ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:3DES:!AES256:!aNULL:!eNULL:!MD5:!DSS:!PSK:!SRP;
+  # ssl_ciphers suggested on #fastly by dstufft
+  # http://bugs.python.org/issue20995 - discussion of this
+  # You get PFS in everything but IE8 on Windows XP, you don't get
+  # any RC4 and basically everything supports it except for
+  # IE6 on Win XP (which POODLE killed anyways)
+
+  # If ONLY Fastly was talking to us we could change to
+  # TLSv1.2:!NULL - but api.mc.org is still public and on same server atm
+
   ssl_prefer_server_ciphers on;
   <% end %>
   <% unless @bare %>
