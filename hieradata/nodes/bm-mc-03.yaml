@@ -1,0 +1,6 @@
+---
+metacpan::elasticsearch::version: 0.20.2
+
+metacpan::crons::general:
+    backup_api:
+      ensure : present
