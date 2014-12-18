@@ -13,3 +13,9 @@ metacpan::users:
     andreea:
         admin    : true
         fullname : "Andreea Pirvulescu"
+
+metacpan::web::starman:
+  metacpan-web:
+    revision: 'stage/bm-mc-03'
+  metacpan-api:
+    revision: 'stage/bm-mc-03'
