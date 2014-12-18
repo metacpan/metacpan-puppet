@@ -10,6 +10,6 @@ metacpan::users:
 
 metacpan::web::starman:
   metacpan-web:
-    revision: 'stage/lw-mc-03'
+    git_revision: stage/lw-mc-03
   metacpan-api:
-    revision: 'stage/lw-mc-03'
+    git_revision: stage/lw-mc-03

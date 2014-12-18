@@ -16,6 +16,6 @@ metacpan::users:
 
 metacpan::web::starman:
   metacpan-web:
-    revision: 'stage/bm-mc-03'
+    git_revision: stage/bm-mc-03
   metacpan-api:
-    revision: 'stage/bm-mc-03'
+    git_revision: stage/bm-mc-03
