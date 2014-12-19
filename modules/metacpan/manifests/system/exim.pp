@@ -17,4 +17,8 @@ class metacpan::system::exim {
         line => "dc_eximconfig_configtype='\"'\"'internet'\"'\"'",
         notify => Service[exim4];
     }
+    file {
+      "/etc/mailname":
+        content => "${::hostname}.metacpan.org\n",
+    }
 }
