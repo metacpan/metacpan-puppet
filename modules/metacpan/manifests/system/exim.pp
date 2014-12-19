@@ -15,10 +15,11 @@ class metacpan::system::exim {
         file => "/etc/exim4/update-exim4.conf.conf",
         ensure => present,
         line => "dc_eximconfig_configtype='\"'\"'internet'\"'\"'",
-        notify => Service[exim4];
+        notify => Service[exim4],
     }
     file {
       "/etc/mailname":
         content => "${::hostname}.metacpan.org\n",
-    }
+        notify => Service[exim4],
+      }
 }
