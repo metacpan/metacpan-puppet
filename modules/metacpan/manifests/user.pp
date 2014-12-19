@@ -65,26 +65,27 @@ define metacpan::user(
         line    => 'source /home/metacpan/.metacpanrc',
         require => User[$user],
       }
+    }
 
+    if ($user != 'vagrant') {
 
-  }
-
-    # Sort out ssh file, need dir first
-    file{ "$path/$user/.ssh":
-        owner  => $user,
-        group  => $user,
-        mode   => 0700,
-        ensure => directory,
-    }->
-    file { "$path/$user/.ssh/authorized_keys":
-        owner => $user,
-        group => $user,
-        mode  => 0600,
-        source => [
-                "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
-                "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
-                "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
-                ],
+        # Sort out ssh file, need dir first
+        file{ "$path/$user/.ssh":
+            owner  => $user,
+            group  => $user,
+            mode   => 0700,
+            ensure => directory,
+        }->
+        file { "$path/$user/.ssh/authorized_keys":
+            owner => $user,
+            group => $user,
+            mode  => 0600,
+            source => [
+                    "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
+                    "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
+                    "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
+                    ],
+        }
     }
 
 
