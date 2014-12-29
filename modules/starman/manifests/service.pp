@@ -47,6 +47,7 @@ define starman::service (
         }
         file { "${link_root}/tmp":
             ensure => link,
+            force => true,
             owner  => $user,
             group  => $group,
             target => $tmp_dir,
