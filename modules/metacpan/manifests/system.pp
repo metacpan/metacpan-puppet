@@ -6,6 +6,7 @@ class metacpan::system {
   class { 'apt::backports':
   }
 
+  include metacpan::system::disableipv6
   include metacpan::system::directories
   include metacpan::system::configs
   include metacpan::system::exim
