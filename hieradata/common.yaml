@@ -12,6 +12,7 @@ metacpan::group: 'metacpan'
 metacpan::users:
     metacpan:
         expire_password : false
+        bin_dir: true
 
 # Where we mirror cpan with the rrrclient
 # also where cpan.metacpan.org serves from

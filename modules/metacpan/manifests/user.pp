@@ -6,6 +6,8 @@ define metacpan::user(
     $admin = false,
     $expire_password = true,
     $no_passwd_sudo = false,
+    $ssh_dir = true,
+    $bin_dir = false,
 ) {
 
     user { $user:
@@ -42,7 +44,7 @@ define metacpan::user(
         }
     }
 
-    if( $user == 'metacpan' or $user == 'vagrant') {
+    if $bin_dir {
 
       # Set up user
       file {
@@ -67,7 +69,7 @@ define metacpan::user(
       }
     }
 
-    if ($user != 'vagrant') {
+    if $ssh_dir {
 
         # Sort out ssh file, need dir first
         file{ "$path/$user/.ssh":

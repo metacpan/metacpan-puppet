@@ -8,6 +8,8 @@ metacpan::users:
         admin    : true
         fullname : "Vagrant dev user <noc@metacpan.org>"
         no_passwd_sudo : true
+        ssh_dir: false
+        bin_dir: true
 
 metacpan::elasticsearch::version: 0.20.2
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
