@@ -1,9 +1,5 @@
 class metacpan::system::configs {
 
-    # Aliases
-    file { "/etc/aliases":
-            source => "puppet:///modules/metacpan/default/etc/aliases",
-    }
     # resolv
     file { "/etc/resolv.conf":
             source => "puppet:///modules/metacpan/default/etc/resolv.conf",
