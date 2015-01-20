@@ -1,0 +1,49 @@
+{
+  "name": "ssm/munin",
+  "version": "0.0.7",
+  "author": "ssm",
+  "summary": "Configure munin master, node and plugins",
+  "license": "Apache License, Version 2.0",
+  "source": "https://github.com/ssm/ssm-munin",
+  "project_page": "https://github.com/ssm/ssm-munin",
+  "issues_url": "https://github.com/ssm/ssm-munin/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS"
+    },
+    {
+      "operatingsystem": "Debian"
+    },
+    {
+      "operatingsystem": "RedHat"
+    },
+    {
+      "operatingsystem": "Scientific"
+    },
+    {
+      "operatingsystem": "SmartOS"
+    },
+    {
+      "operatingsystem": "Ubuntu"
+    },
+    {
+      "operatingsystem": "FreeBSD"
+    },
+    {
+      "operatingsystem": "DragonFly"
+    },
+    {
+      "operatingsystem": "OpenBSD"
+    }
+  ],
+  "tags": [
+    "munin",
+    "monitoring",
+    "graphing",
+    "performance",
+    "trending"
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 2.3.0"}
+  ]
+}

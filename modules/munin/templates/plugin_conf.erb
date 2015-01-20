@@ -1,0 +1,10 @@
+<%
+# Select label from either config_label or from the namevar
+if @config_label == :undef or @config_label.nil? then
+    label = @name
+else
+    label = @config_label
+end
+-%>
+[<%= label %>]
+<%= Array(@config).join("\n") %>
