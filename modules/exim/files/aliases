@@ -1,0 +1,25 @@
+# This file was created and transferred by puppet
+# Do not edit manually!
+# puppet:modules/exim/files/aliases
+mailer-daemon: postmaster
+postmaster: root
+nobody: root
+hostmaster: root
+usenet: root
+news: root
+webmaster: root
+www: root
+ftp: root
+abuse: root
+noc: root
+security: root
+monit: root
+munin: root
+root: web
+web: noc@metacpan.org
+
+# for the metacpan user
+metacpan: web
+
+# amavis
+virusalert:	root

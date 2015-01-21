@@ -3,6 +3,9 @@
 classes:
     - metacpan
 
+exim::smarthost: 'localhost'
+exim::config_type: 'internet'
+
 # Defaults
 perl::version: '5.18.2'
 
