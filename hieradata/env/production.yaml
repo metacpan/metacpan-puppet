@@ -3,9 +3,8 @@
 classes:
     - metacpan::role::production
 
-exim::readhost: 'metacpan.org'
-exim::smarthost: 'smtp.mailgun.org'
 exim::config_type: 'satellite'
+exim::smarthost: 'smtp.mailgun.org'
 exim::relayhost: '*.mailgun.org'
 
 metacpan::carton_args: '--deployment'
