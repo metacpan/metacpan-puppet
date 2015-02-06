@@ -2,9 +2,18 @@
 
 classes:
     - metacpan
+    - munin::node
 
 exim::smarthost: 'localhost'
 exim::config_type: 'internet'
+
+# lw-mc-01
+munin::server: &munin_master 50.28.18.102
+
+munin::node::allow:
+    - *munin_master
+    - 127.0.0.1 # localhost
+munin::node::service_ensure: running
 
 # Defaults
 perl::version: '5.18.2'
@@ -223,3 +232,7 @@ metacpan::fw_ports:
     order: 210
     port: 443
     source: '0.0.0.0/0'
+  munin:
+    order: 110
+    port: 4949
+    source: *munin_master
