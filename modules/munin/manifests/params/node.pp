@@ -14,7 +14,7 @@ class munin::params::node {
   $export_node    = 'enabled'
 
   case $::osfamily {
-    RedHat: {
+    'RedHat': {
       $config_root  = '/etc/munin'
       $log_dir      = '/var/log/munin-node'
       $service_name = 'munin-node'
@@ -22,7 +22,7 @@ class munin::params::node {
       $plugin_share_dir = '/usr/share/munin/plugins'
       $file_group   = 'root'
     }
-    Debian: {
+    'Debian': {
       $config_root  = '/etc/munin'
       $log_dir      = '/var/log/munin'
       $service_name = 'munin-node'
@@ -30,9 +30,9 @@ class munin::params::node {
       $plugin_share_dir = '/usr/share/munin/plugins'
       $file_group   = 'root'
     }
-    Solaris: {
+    'Solaris': {
       case $::operatingsystem {
-        SmartOS: {
+        'SmartOS': {
           $config_root  = '/opt/local/etc/munin'
           $log_dir      = '/var/opt/log/munin'
           $service_name = 'smf:/munin-node'
@@ -45,7 +45,7 @@ class munin::params::node {
         }
       }
     }
-    FreeBSD, DragonFly: {
+    'FreeBSD', 'DragonFly': {
       $config_root  = '/usr/local/etc/munin'
       $log_dir      = '/var/log/munin'
       $service_name = 'munin-node'
@@ -53,7 +53,7 @@ class munin::params::node {
       $plugin_share_dir = '/usr/local/share/munin/plugins'
       $file_group   = 'wheel'
     }
-    OpenBSD: {
+    'OpenBSD': {
       $config_root  = '/etc/munin'
       $log_dir      = '/var/log/munin'
       $service_name = 'munin_node'

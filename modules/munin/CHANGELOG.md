@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.8 - 2015-02-06
+
+Support the future parser.
+
+Contributors to this release: Rike-Benjamin Schuppner, Stig Sandbeck
+Mathisen
+
 ## 0.0.7 - 2014-12-05
 
 This release adds support for DragonFly BSD, FreeBSD, OpenBSD.

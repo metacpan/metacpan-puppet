@@ -1,5 +1,5 @@
 {
-  "CHANGELOG": "c281358ba426b5b8482340984ffc146b",
+  "CHANGELOG.md": "f21c2cbe1b2d1dc9945f718500aeab4d",
   "Gemfile": "5f200cd431802be504f5d1e9143915e4",
   "Guardfile": "5801d6a90ec8dc66c359d099231938e4",
   "README.md": "7c2ea263fba3eaa54cb02409baf9bb3a",
@@ -8,9 +8,9 @@
   "manifests/master.pp": "23b9e147a6d43050df2394302f483ce3",
   "manifests/node.pp": "6b6302c9ec224423ca72116fd743613a",
   "manifests/params/master.pp": "01ec4a371c5cc1bae9a334e94e24d8f0",
-  "manifests/params/node.pp": "45133002320e9832b190a7b71d4504be",
+  "manifests/params/node.pp": "d37eb06756d40fca65bbe2c3508cb4dd",
   "manifests/plugin.pp": "ef17f4589bba321ca8cdf6cb737732be",
-  "metadata.json": "b9adfff3fa160b30806571b783f89d4f",
+  "metadata.json": "609831fed1addd582975df8ec31f4f98",
   "spec/classes/munin_master_spec.rb": "88f8d6a1c213809feab96464901d5889",
   "spec/classes/munin_node_spec.rb": "d9621842ae6e6507b6806dd6f2f00a04",
   "spec/defines/munin_plugin_spec.rb": "48d5df7c5cbf47e3e3cf9d026d5d3fe3",
