@@ -1,0 +1,4 @@
+
+# Make this the master
+classes:
+    - munin::master
