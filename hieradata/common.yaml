@@ -2,9 +2,39 @@
 
 classes:
     - metacpan
+    - munin::node
 
+# Configure munin master here, but
+# load the class on the specific master
+# lw-mc-01
+munin::server: &munin_master 50.28.18.102
+
+munin::master::collect_nodes: disabled
+munin::master::node_definitions:
+    'lw-mc-01.metacpan.org':
+      address: 50.28.18.102
+    'lw-mc-02.metacpan.org':
+      address: 50.28.18.103
+    'lw-mc-03.metacpan.org':
+      address: 50.28.18.168
+    'bm-mc-01.metacpan.org':
+      address: 5.153.225.19
+    'bm-mc-02.metacpan.org':
+      address: 5.153.225.20
+    'bm-mc-03.metacpan.org':
+      address: 46.43.35.68
+
+# Munin node config
+munin::node::allow:
+    - *munin_master
+    - 127.0.0.1 # localhost
+munin::node::service_ensure: running
+munin::node::export_node: disabled
+
+# Email config default (overloaded in production)
 exim::smarthost: 'localhost'
 exim::config_type: 'internet'
+
 
 # Defaults
 perl::version: '5.18.2'
@@ -223,3 +253,7 @@ metacpan::fw_ports:
     order: 210
     port: 443
     source: '0.0.0.0/0'
+  munin:
+    order: 110
+    port: 4949
+    source: *munin_master
