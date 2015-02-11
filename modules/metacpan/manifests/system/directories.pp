@@ -7,5 +7,14 @@ class metacpan::system::directories {
             group  => 'root',
             ensure => directory;
     }
+    # Make this for if any machine becomes the munin master
+    file {
+        '/var/www/munin':
+            owner  => 'munin',
+            group  => 'munin',
+            require => User['munin'],
+            ensure => directory;
+    }
+
 
 }

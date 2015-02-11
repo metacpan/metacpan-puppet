@@ -2,7 +2,6 @@
 
 classes:
     - metacpan
-    - munin::node
 
 # Configure munin master here, but
 # load the class on the specific master
