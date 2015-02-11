@@ -7,9 +7,6 @@ metacpan::crons::general:
 
 # Using this box as a stage box, give OPfW Interns access
 metacpan::users:
-    rose:
-        admin    : true
-        fullname : "Rose Ames"
     andreea:
         admin    : true
         fullname : "Andreea Pirvulescu"
