@@ -34,6 +34,17 @@ munin::node::allow:
 munin::node::service_ensure: running
 munin::node::export_node: disabled
 munin::node::host_name: "%{hostname}.metacpan.org"
+munin::node::plugins:
+    'nfs4_client':
+      ensure: 'absent'
+    'nfs_client':
+      ensure: 'absent'
+    'nfsd4':
+      ensure: 'absent'
+    'nfsd':
+      ensure: 'absent'
+
+
 
 # Email config default (overloaded in production)
 exim::smarthost: 'localhost'
