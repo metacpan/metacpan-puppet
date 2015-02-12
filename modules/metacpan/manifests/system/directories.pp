@@ -12,7 +12,7 @@ class metacpan::system::directories {
         '/var/www/munin':
             owner  => 'munin',
             group  => 'munin',
-            require => User['munin'],
+            require => Class['munin::node'],
             ensure => directory;
     }
 
