@@ -25,15 +25,6 @@ class metacpan::system::packages {
     package { byobu: ensure => present } # for mo
     package { tmux:  ensure => present } # for rwstauner
 
-    # ensure locate actually works after install
-    # comment this out to save a few seconds on initial install
-    exec { "initialize-locate-db":
-        command     => "updatedb",
-        path        => "/usr/bin/",
-        subscribe   => Package["locate"],
-        refreshonly => true,
-    }
-
     package { ack-grep: ensure => present }
     package { less: ensure => present }
     package { mosh: ensure => present }
