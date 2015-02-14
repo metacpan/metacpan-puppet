@@ -12,7 +12,7 @@ class metacpan::system::packages {
     package { wget: ensure => present }
 
     package { htop: ensure => present }
-    package { locate: ensure => present }
+    package { iotop: ensure => present }
     package { psmisc: ensure => present } # killall pstree fuser commands
     package { rsync: ensure => present }
     package { screen: ensure => present }
