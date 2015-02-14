@@ -56,6 +56,9 @@ class metacpan::system::packages {
     # Euuu - nasty, remove
     package { nano: ensure => absent }
 
+    # updatedb was chewing up IO and we don't use it
+    package { locate: ensure => absent }
+
     package{ build-essential: ensure => present }
 
     # Helped get Elasticsearch running
