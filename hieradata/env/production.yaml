@@ -2,6 +2,7 @@
 
 classes:
     - metacpan::role::production
+    - metacpan::system::mongodb
 
 exim::config_type: 'satellite'
 exim::smarthost: 'smtp.mailgun.org'
@@ -29,6 +30,18 @@ metacpan::web::starman:
   metacpan-api:
     git_enable: true
     starman_workers: 14
+
+  github-meets-cpan:
+    git_source: 'https://github.com/CPAN-API/github-meets-cpan.git'
+    git_revision: 'master'
+    git_enable: true
+    vhost_bare: true
+    vhost_aliases:
+      - 'gh.metacpan.org'
+      - "gh.lo.metacpan.org"
+      - "gh.%{hostname}.metacpan.org"
+    starman_port: 5002
+    starman_workers: 1
 
 metacpan::web::static:
   metacpan-explorer:
