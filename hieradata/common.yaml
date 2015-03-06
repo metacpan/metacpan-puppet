@@ -198,6 +198,12 @@ metacpan::crons::general:
       minute : 30
       ensure : absent
 
+    github-meets-cpan:
+      cmd : "/home/%{hiera('metacpan::user')}/bin/github-meets-cpan-carton-exec cron/update.pl"
+      minute : 30
+      ensure : absent
+
+
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::api:
     author:
