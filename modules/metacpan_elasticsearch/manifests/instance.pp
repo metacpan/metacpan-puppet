@@ -1,6 +1,6 @@
 class metacpan_elasticsearch::instance(
   $version = hiera('metacpan::elasticsearch::version'),
-  $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', false),
+  $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', true),
   $ensure = hiera('metacpan::elasticsearch::ensure', 'present'),
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
