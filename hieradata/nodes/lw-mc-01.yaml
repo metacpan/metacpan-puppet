@@ -2,3 +2,7 @@
 # Make this the master
 classes:
     - munin::master
+
+metacpan::crons::general:
+    github-meets-cpan:
+      ensure : present
