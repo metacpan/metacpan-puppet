@@ -5,6 +5,7 @@ class metacpan_elasticsearch::instance(
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
+  $env = hiera('metacpan::elasticsearch::env','production'),
 ) {
 
   $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
@@ -70,7 +71,7 @@ class metacpan_elasticsearch::instance(
 
   # As recommended by clinton, for ES 1.4 as a cluster
   # This should really be via hiera or something
-  $config_hash_cluster = {
+  $config_hash_production_cluster = {
     'network.host' => $ip_address,
     'http.port' => '9200',
 
@@ -80,44 +81,91 @@ class metacpan_elasticsearch::instance(
     'index.search.slowlog.threshold.query.info' => '2s',
     'index.search.slowlog.threshold.fetch.warn' => '1s',
 
-    'gateway.recover_after_nodes' => '2',
-    'gateway.recover_after_time' => '2m',
-    'gateway.expected_nodes' => '3',
+    # Turn OFF multicast, and explisitly do only unicast to listed hosts
+    'discovery.zen.ping.multicast.enabled' => false,
+    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_transport_port,
+
+    # Let marvel auto create indexes, but nothing else
+    'action.auto_create_index' => '.marvel-*,logstash-*',
 
     # only allow one node to start on each box
     'node.max_local_storage_nodes' => '1',
+
+    ##### Stuff to change for DEV ####
+
+    'gateway.recover_after_nodes' => '2',
+    'gateway.recover_after_time' => '2m',
+    'gateway.expected_nodes' => '3',
 
     # require at least two nodes to be able to see each other
     # this prevents split brains
     'discovery.zen.minimum_master_nodes' => '2',
 
-    # Turn OFF multicast, and explisitly do only unicast to listed hosts
-    'discovery.zen.ping.multicast.enabled' => false,
-    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_transport_port,
-
     'marvel.agent.exporter.es.hosts' => $cluster_hosts_with_port,
 
     # for now once a min, so we don't get too much data
     'marvel.agent.interval' => '60s',
+  }
+
+  $config_hash_dev_cluster = {
+    'network.host' => $ip_address,
+    'http.port' => '9200',
+
+    'cluster.name' => 'dev',
+
+    'index.search.slowlog.threshold.query.warn' => '10s',
+    'index.search.slowlog.threshold.query.info' => '2s',
+    'index.search.slowlog.threshold.fetch.warn' => '1s',
+
+    # Turn OFF multicast, and explisitly do only unicast to listed hosts
+    'discovery.zen.ping.multicast.enabled' => false,
+    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_transport_port,
 
     # Let marvel auto create indexes, but nothing else
     'action.auto_create_index' => '.marvel-*,logstash-*',
 
+    # only allow one node to start on each box
+    'node.max_local_storage_nodes' => '1',
+
+    ##### Stuff to change for DEV ####
+
+    'gateway.recover_after_nodes' => '1',
+    'gateway.recover_after_time' => '2m',
+    'gateway.expected_nodes' => '1',
+
+    # require at least two nodes to be able to see each other
+    # this prevents split brains
+    'discovery.zen.minimum_master_nodes' => '1',
+
   }
+
 
   case $version {
     default : {
-      $config_hash = $config_hash_cluster
+      # Version 1.4.x probably
 
-      elasticsearch::plugin{ 'elasticsearch/marvel/latest':
-          module_dir  => 'marvel',
-          instances  => $instance_name,
+      case $env {
+        default : {
+          # Production
+          $config_hash = $config_hash_production_cluster
+
+          # Only put marvel on production for now
+          elasticsearch::plugin{ 'elasticsearch/marvel/latest':
+              module_dir  => 'marvel',
+              instances  => $instance_name,
+          }
+          elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
+            module_dir => 'kopf',
+            instances  => $instance_name,
+          }
+
+        }
+        'dev' : {
+            $config_hash = $config_hash_dev_cluster
+        }
       }
 
-      elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
-        module_dir => 'kopf',
-        instances  => $instance_name,
-      }
+
 
     }
     '0.20.2' : { $config_hash = $config_hash_old }
