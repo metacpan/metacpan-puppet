@@ -71,7 +71,6 @@ class metacpan_elasticsearch::instance(
   # As recommended by clinton, for ES 1.4 as a cluster
   # This should really be via hiera or something
   $config_hash_cluster = {
-    'network.host' => $ip_address,
     'http.port' => '9200',
 
     'cluster.name' => 'bm',
