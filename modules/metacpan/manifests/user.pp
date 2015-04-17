@@ -48,14 +48,14 @@ define metacpan::user(
 
       # Set up user
       file {
-          # Copy the whole of the users bin dir
+          # Copy the whole of the user's bin dir
           "$path/$user/bin":
               ensure  => directory,
               require => User[$user],
               recurse => true,
               owner   => $user,
               group   => $user,
-              mode    => '0700', # make everything executible
+              mode    => '0755', # make everything executable
               source  => [
                       "puppet:///modules/metacpan/default/$path/$user/bin",
                       "puppet:///modules/metacpan/default/$path/default/bin",
