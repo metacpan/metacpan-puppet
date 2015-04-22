@@ -41,7 +41,7 @@ http {
 	# $upstream_response_time will be empty until we use upstreams
 	# instead of proxies
 
-	log_format custom_v1 '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $connection $request_time $server_port $host $upstream_response_time';
+	log_format custom_v1 '$http_fastly_client_ip $remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $connection $request_time $server_port $host $upstream_response_time';
 
 	##
 	# Gzip Settings
