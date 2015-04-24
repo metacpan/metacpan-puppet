@@ -105,6 +105,7 @@ metacpan::web::starman:
     vhost_bare: true
     vhost_aliases:
       - 'api.metacpan.org'
+      - "api.v1.metacpan.org"
       - "api.lo.metacpan.org"
       - "api.%{hostname}.metacpan.org"
       - "st.aticpan.org"
