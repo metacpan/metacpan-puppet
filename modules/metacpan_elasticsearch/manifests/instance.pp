@@ -111,8 +111,8 @@ class metacpan_elasticsearch::instance(
       elasticsearch::plugin{ 'elasticsearch/marvel/latest':
           module_dir  => 'marvel',
           instances  => $instance_name,
-          # PITA when upgrading, so disable for now
-          ensure => 'absent',
+          # PITA when upgrading, so disable and remove first
+          ensure => 'present',
       }
 
       elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
