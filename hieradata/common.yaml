@@ -202,6 +202,7 @@ metacpan::crons::general:
     github-meets-cpan:
       cmd : "/home/%{hiera('metacpan::user')}/bin/github-meets-cpan-carton-exec cron/update.pl"
       minute : 20
+      hour : 1
       ensure : absent
 
 
