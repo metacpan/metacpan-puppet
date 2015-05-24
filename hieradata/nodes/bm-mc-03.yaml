@@ -11,8 +11,34 @@ metacpan::users:
         admin    : true
         fullname : "Andreea Pirvulescu"
 
-metacpan::web::starman:
-  metacpan-web:
-    git_revision: stage/bm-mc-03
-  metacpan-api:
-    git_revision: stage/bm-mc-03
+# metacpan::web::starman:
+#   metacpan-web:
+#     git_revision: stage/bm-mc-03
+#   metacpan-api:
+#     git_revision: stage/bm-mc-03
+
+metacpan::crons::api:
+    author:
+      ensure : present
+    ratings:
+      ensure : present
+    mirrors:
+      ensure : present
+    cpantesters:
+      ensure : present
+    latest:
+      ensure : present
+    backup_favorite:
+      ensure : present
+    backup_author:
+      ensure : present
+    backup_user:
+      ensure : present
+    backup_purge:
+      ensure : present
+    session:
+      ensure : present
+    release:
+      ensure : present
+    tickets:
+      ensure : absent
