@@ -93,7 +93,7 @@ metacpan::web::starman:
       - "lo.metacpan.org"
       - "%{hostname}.metacpan.org"
     starman_port: 5001
-    starman_workers: 1
+    starman_workers: 3
     vhost_extra_configs:
       trailing_slash_rewrite:
           template: 'trailing_slash'
@@ -110,7 +110,7 @@ metacpan::web::starman:
       - "api.%{hostname}.metacpan.org"
       - "st.aticpan.org"
     starman_port: 5000
-    starman_workers: 1
+    starman_workers: 2
     vhost_extra_proxies:
       proxy_v0:
           location: '/v0'
