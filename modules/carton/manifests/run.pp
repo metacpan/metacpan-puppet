@@ -37,17 +37,7 @@ define carton::run (
       content => template('carton/carton-exec.erb'),
       require => File["/home/${user}/bin"],
   }
-
-  $carton_prove = "/home/${user}/bin/${name}-carton-prove"
-  file { $carton_prove:
-      ensure => file,
-      mode   => '0755',
-      owner  => $user,
-      group => $group,
-      content => template('carton/carton-prove.erb'),
-      require => File["/home/${user}/bin"],
-  }
-
+  
   #
   exec { "run_carton_${name}":
     path    => [$perl::params::bin_dir, '/usr/bin', '/bin' ],
