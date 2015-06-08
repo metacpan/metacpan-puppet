@@ -29,12 +29,12 @@ location ~ /authors/.*/.*$ {
   # files in author directories, basically the
   # other regexes are above are the exceptions for this rule
   # See: https://www.fastly.com/blog/stale-while-revalidate/
-  add_header Surrogate-Control max-age=31104000, stale-while-revalidate=31104000, stale-if-error=31104000;
+  add_header Surrogate-Control 'max-age=31104000, stale-while-revalidate=31104000, stale-if-error=31104000';
 }
 location ~ /robots.txt$ {
   # robots gets requested a lot - let fastly cache
   # for an hour, revalidate in the background (up to a day) and serve from cache if error revalidating
-  add_header Surrogate-Control max-age=3600, stale-while-revalidate=86400, stale-if-error=31104000;
+  add_header Surrogate-Control 'max-age=3600, stale-while-revalidate=86400, stale-if-error=31104000';
 }
 location ~ /authors/ {
   # anything else
