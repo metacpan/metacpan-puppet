@@ -84,3 +84,6 @@ metacpan::users:
     ben:
         admin    : true
         fullname : "Ben Hundley <ben@qbox.io>"
+    ether:
+        admin    : true
+        fullname : "Karen Etheridge <ether@cpan.org"
