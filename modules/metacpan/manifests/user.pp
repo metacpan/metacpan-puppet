@@ -1,4 +1,5 @@
 define metacpan::user(
+    $ensure = present,
     $user = $name,
     $fullname = "",
     $path = "/home",
@@ -10,113 +11,133 @@ define metacpan::user(
     $bin_dir = false,
 ) {
 
-    user { $user:
-        home       => "$path/$user",
-        managehome => true,
-        ensure     => "present",
-        comment    => "$fullname",
-        shell      => "$shell",
-        provider   => "useradd",
-    }->
-    file {
-      "$path/$user":
-        ensure => directory,
-        owner   => $user,
-        group   => $user,
-    }
-    # force empty password
-    # setting password => "" above will result
-    # in a locked user account in the first run
-    # puppet bug?
-    exec { "usermod --password '' $user":
-        path        => "/usr/sbin",
-        subscribe   => User[$user],
-        refreshonly => true,
-    }
+  # This could be done better, but works for now!
+  if $ensure == 'present' {
 
-    if $expire_password {
-        # force user to set password on first login
-        exec { "chage -d 0 $user":
-            path        => "/usr/bin",
-            subscribe   => User[$user],
-            refreshonly => true,
-            require     => Exec["usermod --password '$password' $user"],
-        }
-    }
-
-    if $bin_dir {
-
-      # Set up user
+      user { $user:
+          home       => "$path/$user",
+          managehome => true,
+          ensure     => $ensure,
+          comment    => "$fullname",
+          shell      => "$shell",
+          provider   => "useradd",
+      }->
       file {
-          # Copy the whole of the user's bin dir
-          "$path/$user/bin":
-              ensure  => directory,
-              require => User[$user],
-              recurse => true,
-              owner   => $user,
-              group   => $user,
-              mode    => '0755', # make everything executable
-              source  => [
-                      "puppet:///modules/metacpan/default/$path/$user/bin",
-                      "puppet:///modules/metacpan/default/$path/default/bin",
-              ];
+        "$path/$user":
+          ensure => directory,
+          owner   => $user,
+          group   => $user,
+      }
+      # force empty password
+      # setting password => "" above will result
+      # in a locked user account in the first run
+      # puppet bug?
+      exec { "usermod --password '' $user":
+          path        => "/usr/sbin",
+          subscribe   => User[$user],
+          refreshonly => true,
       }
 
-      line { "/home/$user/.bashrc":
-        ensure  => absent,
-        line    => 'source /home/metacpan/.metacpanrc',
-        require => User[$user],
-      }
-    }
-
-    if $ssh_dir {
-
-        # Sort out ssh file, need dir first
-        file{ "$path/$user/.ssh":
-            owner  => $user,
-            group  => $user,
-            mode   => 0700,
-            ensure => directory,
-        }->
-        file { "$path/$user/.ssh/authorized_keys":
-            owner => $user,
-            group => $user,
-            mode  => 0600,
-            source => [
-                    "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
-                    "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
-                    "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
-                    ],
-        }
-    }
-
-
-    if $admin {
-
-        if $no_passwd_sudo {
-
-          # Also add to sudoers, no password needed
-          file {
-            "/etc/sudoers.d/$user":
-              owner => "root",
-              group => "root",
-              mode => "440",
-              content => "$user  ALL = NOPASSWD: ALL";
+      if $expire_password {
+          # force user to set password on first login
+          exec { "chage -d 0 $user":
+              path        => "/usr/bin",
+              subscribe   => User[$user],
+              refreshonly => true,
+              require     => Exec["usermod --password '$password' $user"],
           }
+      }
 
+      if $bin_dir {
 
-        } else {
+        # Set up user
+        file {
+            # Copy the whole of the user's bin dir
+            "$path/$user/bin":
+                ensure  => directory,
+                require => User[$user],
+                recurse => true,
+                owner   => $user,
+                group   => $user,
+                mode    => '0755', # make everything executable
+                source  => [
+                        "puppet:///modules/metacpan/default/$path/$user/bin",
+                        "puppet:///modules/metacpan/default/$path/default/bin",
+                ];
+        }
 
-            # Also add to sudoers
+        # Not sure this is needed any more, should all have cleaned out by now?
+        line { "/home/$user/.bashrc":
+          ensure  => absent,
+          line    => 'source /home/metacpan/.metacpanrc',
+          require => User[$user],
+        }
+      }
+
+      if $ssh_dir {
+
+          # Sort out ssh file, need dir first
+          file{ "$path/$user/.ssh":
+              owner  => $user,
+              group  => $user,
+              mode   => 0700,
+              ensure => directory,
+          }->
+          file { "$path/$user/.ssh/authorized_keys":
+              owner => $user,
+              group => $user,
+              mode  => 0600,
+              source => [
+                      "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
+                      "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
+                      "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
+                      ],
+          }
+      }
+
+      if $admin {
+
+          if $no_passwd_sudo {
+
+            # Also add to sudoers, no password needed
             file {
               "/etc/sudoers.d/$user":
                 owner => "root",
                 group => "root",
                 mode => "440",
-                content => "$user   ALL = (ALL) ALL";
+                content => "$user  ALL = NOPASSWD: ALL";
             }
 
-        }
 
+          } else {
+
+              # Also add to sudoers
+              file {
+                "/etc/sudoers.d/$user":
+                  owner => "root",
+                  group => "root",
+                  mode => "440",
+                  content => "$user   ALL = (ALL) ALL";
+              }
+
+          }
+      }
+  } else {
+
+    # Remove the user and their home dir
+    user { $user:
+        home       => "$path/$user",
+        managehome => true,
+        ensure     => $ensure,
+        comment    => "$fullname",
+        shell      => "$shell",
+        provider   => "useradd",
     }
+
+    # Also remove the sudoers
+    file {
+      "/etc/sudoers.d/$user":
+        ensure => $ensure,
+    }
+  }
 }

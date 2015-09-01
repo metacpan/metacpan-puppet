@@ -2,8 +2,7 @@
 # Using this box as a stage box, give OPfW Interns access
 metacpan::users:
     andreea:
-        admin    : true
-        fullname : "Andreea Pirvulescu"
+        ensure    : absent
 
 metacpan::web::starman:
   metacpan-web:
