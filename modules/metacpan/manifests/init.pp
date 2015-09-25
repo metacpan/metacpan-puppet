@@ -43,6 +43,10 @@ class metacpan(
     $twiggies = hiera_hash('metacpan::web::twiggy', {})
     create_resources('metacpan::web::twiggy', $twiggies)
 
+    # Swat site
+    $swat = hiera_hash('metacpan::system::swat', {})
+    create_resources('metacpan::system::swat', $swat)
+
     # Run any fire wall stuff here
     $fw_rules = hiera_hash('metacpan::fw_ports', {})
     create_resources('metacpan::system::firewall', $fw_rules)
