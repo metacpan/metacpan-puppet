@@ -3,7 +3,7 @@
 # In Hiera:
 #
 #   metacpan::system::swat:
-#     swat:
+#     metacpan-monitoring:
 #       enable: true
 #       git_revision: 'master'
 #
@@ -36,11 +36,12 @@ define metacpan::system::swat (
 
     }
   }
+  carton::run { $name:
+    root => $path,
+  }
 
   # Cron
 
-    carton::run { $name:
-      root => $root,
-    }
+
 
 }

@@ -37,7 +37,7 @@ define carton::run (
       content => template('carton/carton-exec.erb'),
       require => File["/home/${user}/bin"],
   }
-  
+
   #
   exec { "run_carton_${name}":
     path    => [$perl::params::bin_dir, '/usr/bin', '/bin' ],
