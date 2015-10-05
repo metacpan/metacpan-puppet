@@ -118,6 +118,17 @@ metacpan::web::starman:
       socket_io:
           template: 'socket_io'
 
+  github-meets-cpan:
+    git_source: 'https://github.com/CPAN-API/github-meets-cpan.git'
+    git_revision: 'master'
+    vhost_bare: true
+    vhost_aliases:
+      - 'gh.metacpan.org'
+      - "gh.lo.metacpan.org"
+      - "gh.%{hostname}.metacpan.org"
+    starman_port: 5002
+    starman_workers: 1
+
 
 metacpan::web::static:
 
