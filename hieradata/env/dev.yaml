@@ -2,5 +2,6 @@
 
 classes:
     - metacpan::role::developer
+    - metacpan::system::mongodb
 
 metacpan::tmp_dir: '/tmp/metacpan'
