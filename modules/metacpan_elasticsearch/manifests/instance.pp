@@ -112,12 +112,14 @@ class metacpan_elasticsearch::instance(
           module_dir  => 'marvel',
           instances  => $instance_name,
           # PITA when upgrading, so disable and remove first
-          ensure => 'present',
+          ensure => 'disable',
+#          ensure => 'present',
       }
 
       elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
         module_dir => 'kopf',
         instances  => $instance_name,
+        ensure => 'disable',
       }
 
     }
