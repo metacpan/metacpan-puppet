@@ -18,6 +18,7 @@ class metacpan::system {
   include metacpan::system::packages
   include metacpan::system::perlpackages
   include metacpan::system::ssh
+  include metacpan::system::postgress
   include munin::node
   include exim
 
