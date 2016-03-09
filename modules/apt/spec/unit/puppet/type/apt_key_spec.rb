@@ -41,7 +41,7 @@ describe Puppet::Type::type(:apt_key) do
       :id => 'FFFFFFFF4BD6EC30'
     )}
     it 'id is set' do
-      resource[:id].should eq '4BD6EC30'
+      resource[:id].should eq 'FFFFFFFF4BD6EC30'
     end
   end
 
@@ -68,7 +68,7 @@ describe Puppet::Type::type(:apt_key) do
       :id => '0xFFFFFFFF4BD6EC30'
     )}
     it 'id is set' do
-      resource[:id].should eq '4BD6EC30'
+      resource[:id].should eq 'FFFFFFFF4BD6EC30'
     end
   end
 
@@ -82,7 +82,7 @@ describe Puppet::Type::type(:apt_key) do
       resource[:source].should eq 'http://apt.puppetlabs.com/pubkey.gpg'
     end
   end
-  
+
   context 'with content' do
     let(:resource) { Puppet::Type.type(:apt_key).new(
       :id => '4BD6EC30',
@@ -93,7 +93,7 @@ describe Puppet::Type::type(:apt_key) do
       resource[:content].should eq 'http://apt.puppetlabs.com/pubkey.gpg'
     end
   end
-  
+
   context 'with keyserver' do
     let(:resource) { Puppet::Type.type(:apt_key).new(
       :id => '4BD6EC30',
@@ -143,6 +143,13 @@ describe Puppet::Type::type(:apt_key) do
       )}.to_not raise_error
     end
 
+    it 'allows the https URI with username and password' do
+      expect { Puppet::Type.type(:apt_key).new(
+          :id      => '4BD6EC30',
+          :source  => 'https://testme:Password2@pgp.mit.edu'
+      )}.to_not raise_error
+    end
+
     it 'allows the ftp URI scheme in source' do
       expect { Puppet::Type.type(:apt_key).new(
         :id      => '4BD6EC30',
@@ -154,6 +161,20 @@ describe Puppet::Type::type(:apt_key) do
       expect { Puppet::Type.type(:apt_key).new(
         :id      => '4BD6EC30',
         :source  => '/path/to/a/file'
+      )}.to_not raise_error
+    end
+
+    it 'allows 5-digit ports' do
+      expect { Puppet::Type.type(:apt_key).new(
+        :id      => '4BD6EC30',
+        :source  => 'http://pgp.mit.edu:12345/key'
+      )}.to_not raise_error
+    end
+
+    it 'allows 5-digit ports when using key servers' do
+      expect { Puppet::Type.type(:apt_key).new(
+        :id      => '4BD6EC30',
+        :server  => 'http://pgp.mit.edu:12345'
       )}.to_not raise_error
     end
   end

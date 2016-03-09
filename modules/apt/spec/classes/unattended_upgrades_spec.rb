@@ -94,6 +94,14 @@ describe 'apt::unattended_upgrades', :type => :class do
       it { expect { should raise_error(Puppet::Error) } }
     end
 
+    context 'bad randomsleep' do
+      let :params do
+        {
+          'randomsleep' => '4ever'
+        }
+      end
+      it { expect { should raise_error(Puppet::Error) } }
+    end
   end
 
   context 'defaults' do
@@ -123,6 +131,18 @@ describe 'apt::unattended_upgrades', :type => :class do
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::Unattended-Upgrade "1";}}
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::AutocleanInterval "7";}}
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::Verbose "0";}}
+    it { is_expected.to_not contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::RandomSleep}}
+  end
+
+  context 'wheezy' do
+    let :facts do
+      {
+        'lsbdistid'       => 'debian',
+        'lsbdistcodename' => 'wheezy',
+      }
+    end
+
+    it { is_expected.to contain_file("/etc/apt/apt.conf.d/50unattended-upgrades").with_content %r{Unattended-Upgrade::Origins-Pattern \{\n\t"origin=Debian,archive=stable,label=Debian-Security";\n\t"origin=Debian,archive=oldstable,label=Debian-Security";\n\};} }
   end
 
   context 'anything but defaults' do
@@ -135,6 +155,7 @@ describe 'apt::unattended_upgrades', :type => :class do
 
     let :params do
       {
+        'legacy_origin'       => true,
         'enable'              => '0',
         'backup_interval'     => '3',
         'backup_level'        => '1',
@@ -157,10 +178,11 @@ describe 'apt::unattended_upgrades', :type => :class do
         'remove_unused'       => false,
         'auto_reboot'         => true,
         'dl_limit'            => '70',
+        'randomsleep'         => '1799',
       }
     end
 
-    it { is_expected.to contain_file("/etc/apt/apt.conf.d/50unattended-upgrades").with_content %r{Unattended-Upgrade::Origins-Pattern \{\n\t"bananas";\n\};} }
+    it { is_expected.to contain_file("/etc/apt/apt.conf.d/50unattended-upgrades").with_content %r{Unattended-Upgrade::Allowed-Origins \{\n\t"bananas";\n\};} }
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/50unattended-upgrades").with_content %r{Unattended-Upgrade::Package-Blacklist \{\n\t"foo";\n\t"bar";\n\};} }
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/50unattended-upgrades").with_content %r{Unattended-Upgrade::AutoFixInterruptedDpkg "false";}}
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/50unattended-upgrades").with_content %r{Unattended-Upgrade::MinimalSteps "true";}}
@@ -183,6 +205,7 @@ describe 'apt::unattended_upgrades', :type => :class do
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::Unattended-Upgrade "0";}}
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::AutocleanInterval "0";}}
     it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::Verbose "1";}}
+    it { is_expected.to contain_file("/etc/apt/apt.conf.d/10periodic").with_content %r{APT::Periodic::RandomSleep "1799";}}
 
   end
 end
