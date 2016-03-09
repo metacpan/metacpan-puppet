@@ -1,4 +1,7 @@
 ---
+classes:
+    - metacpan::system::postgress
+
 metacpan::elasticsearch::version: 0.20.2
 
 metacpan::crons::general:
