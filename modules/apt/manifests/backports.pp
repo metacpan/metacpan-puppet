@@ -38,14 +38,38 @@ class apt::backports(
     fail('$pin_priority must be an integer')
   }
 
-  $release_real = downcase($release)
-  $key = $::lsbdistid ? {
-    'debian' => '46925553',
-    'ubuntu' => '437D05B5',
+  if $::lsbdistid == 'LinuxMint' {
+    if $::lsbdistcodename == 'debian' {
+      $distid = 'debian'
+      $release_real = 'wheezy'
+    } else {
+      $distid = 'ubuntu'
+      $release_real = $::lsbdistcodename ? {
+        'qiana'  => 'trusty',
+        'petra'  => 'saucy',
+        'olivia' => 'raring',
+        'nadia'  => 'quantal',
+        'maya'   => 'precise',
+      }
+    }
+  } else {
+    $distid = $::lsbdistid
+    $release_real = downcase($release)
   }
-  $repos = $::lsbdistid ? {
+
+  $key = $distid ? {
+    'debian' => 'A1BD8E9D78F7FE5C3E65D8AF8B48AD6246925553',
+    'ubuntu' => '630239CC130E1A7FD81A27B140976EAF437D05B5',
+  }
+  $repos = $distid ? {
     'debian' => 'main contrib non-free',
     'ubuntu' => 'main universe multiverse restricted',
+  }
+
+  apt::pin { 'backports':
+    before   => Apt::Source['backports'],
+    release  => "${release_real}-backports",
+    priority => $pin_priority,
   }
 
   apt::source { 'backports':
@@ -54,6 +78,5 @@ class apt::backports(
     repos      => $repos,
     key        => $key,
     key_server => 'pgp.mit.edu',
-    pin        => $pin_priority,
   }
 }

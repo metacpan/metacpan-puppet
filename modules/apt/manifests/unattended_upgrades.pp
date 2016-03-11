@@ -14,6 +14,7 @@
 # file and in /etc/cron.daily/apt
 #
 class apt::unattended_upgrades (
+  $legacy_origin       = $::apt::params::legacy_origin,
   $origins             = $::apt::params::origins,
   $blacklist           = [],
   $update              = '1',
@@ -28,6 +29,7 @@ class apt::unattended_upgrades (
   $remove_unused       = true,
   $auto_reboot         = false,
   $dl_limit            = 'NONE',
+  $randomsleep         = undef,
   $enable              = '1',
   $backup_interval     = '0',
   $backup_level        = '3',
@@ -39,6 +41,7 @@ class apt::unattended_upgrades (
 ) inherits ::apt::params {
 
   validate_bool(
+    $legacy_origin,
     $auto_fix,
     $minimal_steps,
     $install_on_shutdown,
@@ -47,6 +50,12 @@ class apt::unattended_upgrades (
     $auto_reboot
   )
   validate_array($origins)
+
+  if $randomsleep {
+    unless is_numeric($randomsleep) {
+      fail('randomsleep must be numeric')
+    }
+  }
 
   package { 'unattended-upgrades':
     ensure => present,
@@ -57,7 +66,7 @@ class apt::unattended_upgrades (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('apt/50unattended-upgrades.erb'),
+    content => template('apt/_header.erb', 'apt/50unattended-upgrades.erb'),
     require => Package['unattended-upgrades'],
   }
 
@@ -66,7 +75,7 @@ class apt::unattended_upgrades (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('apt/10periodic.erb'),
+    content => template('apt/_header.erb', 'apt/10periodic.erb'),
     require => Package['unattended-upgrades'],
   }
 }
