@@ -1,4 +1,7 @@
 ---
+classes:
+    - metacpan::system::postgress
+
 # Put ES in different place for now
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
 metacpan::elasticsearch::version: 0.20.2
