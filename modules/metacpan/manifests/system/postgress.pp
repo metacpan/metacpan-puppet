@@ -2,8 +2,21 @@ class metacpan::system::postgress(
   $user = hiera('metacpan::user', 'metacpan'),
   ) {
 
+
+	# Delete this old version
+	file {
+		"/usr/lib/postgresql/9.1":
+			ensure => 'absent',
+			recurse => true,
+		    purge => true,
+		    force => true,
+	}
+
     # Install postgress
-	class { 'postgresql::server': }
+    class { 'postgresql::globals':
+ 		 manage_package_repo => true,
+ 		 version             => '9.5',
+	}->class { 'postgresql::server': }
 
 	postgresql::server::role { $user:
 
@@ -29,6 +42,7 @@ class metacpan::system::postgress(
   	# Add a database for the minion queue
 	postgresql::server::database { 'minion_queue':
 		owner 			   => $user,
+		require => "Postgresql::Server::Role[$user]",
 	}
 
 
