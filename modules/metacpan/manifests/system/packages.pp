@@ -30,6 +30,7 @@ class metacpan::system::packages {
     package { mosh: ensure => present }
     package { ncdu: ensure => present }
     package { tig: ensure => present }
+    package { postgresql-server-dev-all: ensure => present }
     package { sqlite3: ensure => present }
     package { sudo: ensure => present }
     package { sysstat: ensure => present }
