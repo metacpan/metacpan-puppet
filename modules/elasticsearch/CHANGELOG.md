@@ -1,3 +1,339 @@
+##0.10.3 ( Feb 08, 2016 )
+
+###Summary
+Adding support for OpenBSD and minor fixes
+
+####Features
+* Add required changes to work with ES 2.2.x plugins
+* Support for custom log directory
+* Support for OpenBSD
+
+####Bugfixes
+* Add correct relation to file resource and plugin installation
+* Notify service when upgrading the package
+
+####Changes
+* Remove plugin dir when upgrading Elasticsearch
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.10.2 ( Jan 19, 2016 )
+
+###Summary
+Bugfix release and adding Gentoo support
+
+####Features
+* Added Gentoo support
+
+####Bugfixes
+* Create init script when set to unmanaged
+* init_template variable was not passed on correctly to other classes / defines
+* Fix issue with plugin type that caused run to stall
+* Export ES_GC_LOG_FILE in init scripts
+
+####Changes
+* Improve documentation about init_defaults
+* Update common files
+* Removed recurse option on data directory management
+* Add retry functionality to plugin type
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.10.1 ( Dec 17, 2015 )
+
+###Summary
+Bugfix release for proxy functionality in plugin installation
+
+####Features
+
+####Bugfixes
+* Proxy settings were not passed on correctly
+
+####Changes
+* Cleanup .pmtignore to exclude more files
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.10.0 ( Dec 14, 2015 )
+
+###Summary
+Module now works with ES 2.x completely
+
+####Features
+* Work with ES 2.x new plugin system and remain to work with 1.x
+* Implemented datacat module from Richard Clamp so other modules can hook into it for adding configuration options
+* Fixed init and systemd files to work with 1.x and 2.x
+* Made the module work with newer pl-apt module versions
+* Export es_include so it is passed on to ES
+* Ability to supply long gpg key for apt repo
+
+####Bugfixes
+* Documentation and typographical fixes
+* Do not force puppet:/// schema resource
+* Use package resource defaults rather than setting provider and source
+
+####Changes
+
+####Testing changes
+* Improve unit testing and shorten the runtime
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.9 ( Sep 01, 2015 )
+
+###Summary
+Bugfix release and extra features
+
+####Features
+* Work with ES 2.x
+* Add Java 8 detection in debian init script
+* Improve offline plugin installation
+
+####Bugfixes
+* Fix a bug with new ruby versions but older puppet versions causing type error
+* Fix config tempate to use correct ruby scoping
+* Fix regex retrieving proxy port while downloading plugin
+* Fix systemd template for better variable handling
+* Template define was using wrong pathing for removal
+
+
+####Changes
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.8 ( Jul 07, 2015 )
+
+###Summary
+
+
+####Features
+* Work with ES 2.x
+
+####Bugfixes
+* Fix plugin to maintain backwards compatibility
+
+####Changes
+
+####Testing changes
+* ensure testing works with Puppet 4.x ( Rspec and Acceptance )
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.7 ( Jun 24, 2015 )
+
+###Summary
+This releases adds several important features and fixes an important plugin installation issue with ES 1.6 and higher.
+
+####Features
+* Automate plugin dir extraction
+* use init service provider for Amazon Linux
+* Add Puppetlabs/apt and ceritsc/yum as required modules
+* Added Timeout to fetching facts in case ES does not respond
+* Add proxy settings for package download
+
+####Bugfixes
+* Fixed systemd template to fix issue with LimitMEMLOCK setting
+* Improve package version handling when specifying a version
+* Add tmpfiles.d file to manage sub dir in /var/run path
+* Fix plugin installations for ES 1.6 and higher
+
+####Changes
+* Removed Modulefile, only maintaining metadata.json file
+
+####Testing changes
+* Added unit testing for package pinning feature
+* Added integration testing with Elasticsearch to find issues earlier
+* Fix OpenSuse 13 testing
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.6 ( May 28, 2015 )
+
+###Summary
+Bugfix release 0.9.6
+
+####Features
+* Implemented package version pinning to avoid accidental upgrading
+* Added support for Debian 8
+* Added support for upgrading plugins
+* Managing LimitNOFILE and LimitMEMLOCK settings in systemd
+
+####Bugfixes
+
+####Changes
+* Dropped official support for PE 3.1.x and 3.2.x
+
+####Testing changes
+* Several testing changes implemented to increase coverage
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.5( Apr 16, 2015 )
+
+###Summary
+Bugfix release 0.9.5
+
+We reverted the change that implemented the full 40 character for the apt repo key.
+This caused issues with some older versions of the puppetlabs-apt module
+
+####Features
+
+####Bugfixes
+* Revert using the full 40 character for the apt repo key.
+
+####Changes
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.4( Apr 14, 2015 )
+
+###Summary
+Bugfix release 0.9.4
+
+####Features
+* Add the ability to create and populate scripts
+
+####Bugfixes
+* add support for init_defaults_file to elasticsearch::instance
+* Update apt key to full 40characters
+
+####Changes
+* Fix readme regarding module_dir with plugins
+
+####Testing changes
+* Adding staged removal test
+* Convert git urls to https
+* Add centos7 node config
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.3( Mar 24, 2015 )
+
+###Summary
+Bugfix release 0.9.3
+
+####Features
+
+####Bugfixes
+* Not setting repo_version did not give the correct error
+* Systemd file did not contain User/Group values
+
+####Changes
+* Brand rename from Elasticsearch to Elastic
+
+####Testing changes
+* Moved from multiple Gemfiles to single Gemfile
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+##0.9.2( Mar 06, 2015 )
+
+###Summary
+Bugfix release 0.9.2
+
+####Features
+* Introducing es_instance_conn_validator resource to verify instance availability
+
+####Bugfixes
+* Fix missing data path when using the path config setting but not setting the data path
+
+####Changes
+None
+
+####Testing changes
+None
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+##0.9.1 ( Feb 23, 2015 )
+
+###Summary
+This is the first bug fix release for 0.9 version.
+A bug was reported with the recursive file management.
+
+####Features
+None
+
+####Bugfixes
+* Fix recursive file management
+* Set undefined variables to work with strict_variables
+
+####Changes
+None
+
+####Testing changes
+None
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+##0.9.0 ( Feb 02, 2015 )
+
+###Summary
+This release is the first one towards 1.0 release.
+Our planning is to provide LTS releases with the puppet module
+
+####Features
+* Support for using hiera to define instances and plugins.
+* Support for OpenSuSE 13.x
+* Custom facts about the installed Elasticsearch instance(s)
+* Proxy host/port support for the plugin installation
+* Ability to supply a custom logging.yml template
+
+####Bugfixes
+* Ensure file owners are correct accross all related files
+* Fix of possible service name conflict
+* Empty main config would fail with instances
+* Removal of standard files from packages we dont use
+* Ensuring correct sequence of plugin and template defines
+* Added ES_CLASSPATH export to init scripts
+
+####Changes
+* Java installation to use puppetlabs-java module
+* Added Support and testing for Puppet 3.7 and PE 3.7
+* Improve metadata.json based on scoring from Forge
+
+
+####Testing changes
+* Added testing against Puppet 3.7 and PE 3.7
+* Using rspec3
+* Using rspec-puppet-facts gem simplifies rspec testing
+
+####Known Bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
 ##0.4.0 ( Jun 18, 2014 ) - Backwards compatible breaking release
 
 ###Summary

@@ -24,6 +24,8 @@ class metacpan_elasticsearch::instance(
 
   # Install ES, but don't run
   class { 'elasticsearch':
+
+
     package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${$version}.deb",
     java_install => true,
     autoupgrade => $autoupgrade,
@@ -109,17 +111,16 @@ class metacpan_elasticsearch::instance(
       $config_hash = $config_hash_cluster
 
       elasticsearch::plugin{ 'elasticsearch/marvel/latest':
-          module_dir  => 'marvel',
           instances  => $instance_name,
           # PITA when upgrading, so disable and remove first
-          ensure => 'disable',
-#          ensure => 'present',
+#          ensure => 'absent',
+           ensure => 'present',
       }
 
       elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
-        module_dir => 'kopf',
         instances  => $instance_name,
-        ensure => 'disable',
+          ensure => 'absent',
+          # ensure => 'present',
       }
 
     }
