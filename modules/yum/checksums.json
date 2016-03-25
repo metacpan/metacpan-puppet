@@ -1,0 +1,18 @@
+{
+  "CHANGELOG.md": "0b88f028270dc08cc5657b2d08692ffc",
+  "LICENSE": "ae049f0feee6dd1ea35761d62e3cb270",
+  "README.md": "386a9df1dd6f3ccca059ec34e3b73d8e",
+  "manifests/config.pp": "d3a5658b2eccaf9a4f16e87d2050cd6f",
+  "manifests/gpgkey.pp": "9e718f190372ed8bf43c76f0f9764cfc",
+  "manifests/group.pp": "e74b339ed1df6ccf4ba0cec7d9571683",
+  "manifests/init.pp": "e712c77a491b2c4129d1b5f10517498c",
+  "manifests/params.pp": "132523805b400dda5d05ec8496f5f4c7",
+  "manifests/plugin/versionlock.pp": "4e211ab903b849b62e9f3676d0b5239d",
+  "manifests/plugin.pp": "1524e4b5f95bf55eade9980f790facb4",
+  "manifests/versionlock.pp": "da7302493f18346419cb41715e6ddc34",
+  "metadata.json": "1b99301faaa3307c8ae9317699963bc1",
+  "tests/gpgkey.pp": "9f1adecd3c79452762f5d6eb334c4ba2",
+  "tests/group.pp": "594975a6b5b6be1a301236970dd0be7e",
+  "tests/plugin.pp": "685dfad0d335956cb3448a99d7f9a944",
+  "tests/versionlock.pp": "7123d994a637a3ac339b9a3bb24c0ac6"
+}
