@@ -104,86 +104,109 @@ define elasticsearch::service::systemd(
   }
 
   $notify_service = $elasticsearch::restart_on_change ? {
-    true  => [ Exec['systemd_reload'], Service[$name] ],
-    false => Exec['systemd_reload'],
+    true  => [ Exec["systemd_reload_${name}"], Service["elasticsearch-instance-${name}"] ],
+    false => Exec["systemd_reload_${name}"]
   }
 
-  if ( $status != 'unmanaged' and $ensure == 'present' ) {
+  if ( $ensure == 'present' ) {
 
     # defaults file content. Either from a hash or file
     if ($init_defaults_file != undef) {
       file { "${elasticsearch::params::defaults_location}/elasticsearch-${name}":
-        ensure  => $ensure,
-        source  => $init_defaults_file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        before  => Service[$name],
-        notify  => $notify_service
+        ensure => $ensure,
+        source => $init_defaults_file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        before => Service["elasticsearch-instance-${name}"],
+        notify => $notify_service,
       }
 
-    } elsif ($init_defaults != undef and is_hash($init_defaults) ) {
+    } else {
+      if ($init_defaults != undef and is_hash($init_defaults) ) {
 
-      $init_defaults_pre_hash = { 'ES_USER' => $elasticsearch::elasticsearch_user, 'ES_GROUP' => $elasticsearch::elasticsearch_group }
+        if(has_key($init_defaults, 'ES_USER')) {
+          if($init_defaults['ES_USER'] != $elasticsearch::elasticsearch_user) {
+            fail('Found ES_USER setting for init_defaults but is not same as elasticsearch_user setting. Please use elasticsearch_user setting.')
+          }
+        }
+      }
+      $init_defaults_pre_hash = { 'ES_USER' => $elasticsearch::elasticsearch_user, 'ES_GROUP' => $elasticsearch::elasticsearch_group, 'MAX_OPEN_FILES' => '65535' }
       $new_init_defaults = merge($init_defaults_pre_hash, $init_defaults)
 
       augeas { "defaults_${name}":
-        incl     => "${elasticsearch::params::defaults_location}/elasticsearch-${name}",
-        lens     => 'Shellvars.lns',
-        changes  => template("${module_name}/etc/sysconfig/defaults.erb"),
-        before   => Service[$name],
-        notify   => $notify_service
+        incl    => "${elasticsearch::params::defaults_location}/elasticsearch-${name}",
+        lens    => 'Shellvars.lns',
+        changes => template("${module_name}/etc/sysconfig/defaults.erb"),
+        before  => Service["elasticsearch-instance-${name}"],
+        notify  => $notify_service,
       }
-
     }
 
     # init file from template
     if ($init_template != undef) {
 
-      file { "/usr/lib/systemd/system/elasticsearch-${name}.service":
+      $user              = $elasticsearch::elasticsearch_user
+      $group             = $elasticsearch::elasticsearch_group
+      $pid_dir           = $elasticsearch::pid_dir
+      $defaults_location = $elasticsearch::defaults_location
+
+      if ($new_init_defaults != undef and is_hash($new_init_defaults) and has_key($new_init_defaults, 'MAX_OPEN_FILES')) {
+        $nofile = $new_init_defaults['MAX_OPEN_FILES']
+      }else{
+        $nofile = '65535'
+      }
+
+      if ($new_init_defaults != undef and is_hash($new_init_defaults) and has_key($new_init_defaults, 'MAX_LOCKED_MEMORY')) {
+        $memlock = $new_init_defaults['MAX_LOCKED_MEMORY']
+      }else{
+        $memlock = undef
+      }
+
+      file { "/lib/systemd/system/elasticsearch-${name}.service":
         ensure  => $ensure,
         content => template($init_template),
-        before  => Service[$name],
-        notify  => $notify_service
+        before  => Service["elasticsearch-instance-${name}"],
+        notify  => $notify_service,
       }
 
     }
 
-  } elsif($status != 'unmanaged') {
+  $service_require = Exec["systemd_reload_${name}"]
 
-    file { "/usr/lib/systemd/system/elasticsearch-${name}.service":
+  } else {
+
+    file { "/lib/systemd/system/elasticsearch-${name}.service":
       ensure    => 'absent',
-      subscribe => Service[$name],
-      notify    => Exec['systemd_reload']
+      subscribe => Service["elasticsearch-instance-${name}"],
+      notify    => Exec["systemd_reload_${name}"],
     }
 
     file { "${elasticsearch::params::defaults_location}/elasticsearch-${name}":
       ensure    => 'absent',
-      subscribe => Service[$name]
+      subscribe => Service["elasticsearch-instance-${name}"],
+      notify    => Exec["systemd_reload_${name}"],
     }
+
+    $service_require = undef
 
   }
 
-  if(!defined(Exec['systemd_reload'])) {
-    exec { 'systemd_reload':
-      command     => '/bin/systemctl daemon-reload',
-      refreshonly => true,
-    }
+  exec { "systemd_reload_${name}":
+    command     => '/bin/systemctl daemon-reload',
+    refreshonly => true,
   }
 
-  if ($status != 'unmanaged') {
-
-    # action
-    service { $name:
-      ensure     => $service_ensure,
-      enable     => $service_enable,
-      name       => "elasticsearch-${name}.service",
-      hasstatus  => $elasticsearch::params::service_hasstatus,
-      hasrestart => $elasticsearch::params::service_hasrestart,
-      pattern    => $elasticsearch::params::service_pattern,
-      provider   => 'systemd'
-    }
-
+  # action
+  service { "elasticsearch-instance-${name}":
+    ensure     => $service_ensure,
+    enable     => $service_enable,
+    name       => "elasticsearch-${name}.service",
+    hasstatus  => $elasticsearch::params::service_hasstatus,
+    hasrestart => $elasticsearch::params::service_hasrestart,
+    pattern    => $elasticsearch::params::service_pattern,
+    provider   => 'systemd',
+    require    => $service_require,
   }
 
 }
