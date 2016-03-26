@@ -74,6 +74,7 @@ class metacpan_elasticsearch::instance(
   # This should really be via hiera or something
   $config_hash_cluster = {
     'http.port' => '9200',
+    'network.host' => $::ipaddress,
 
     'cluster.name' => 'bm',
 
