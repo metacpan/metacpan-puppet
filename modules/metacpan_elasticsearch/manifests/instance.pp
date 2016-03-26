@@ -70,11 +70,13 @@ class metacpan_elasticsearch::instance(
     'bootstrap.mlockall' => '1',
   }
 
+  $network_host = "['${ipaddress}', 'localhost']";
+
   # As recommended by clinton, for ES 1.4 as a cluster
   # This should really be via hiera or something
   $config_hash_cluster = {
     'http.port' => '9200',
-    'network.host' => $::ipaddress,
+    'network.host' => $network_host,
 
     'cluster.name' => 'bm',
 
