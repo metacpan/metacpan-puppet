@@ -2,3 +2,9 @@
 metacpan::crons::general:
     github-meets-cpan:
       ensure : present
+
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: stage/lw-mc-03
+  metacpan-api:
+    git_revision: stage/lw-mc-03
