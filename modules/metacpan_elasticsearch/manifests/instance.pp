@@ -150,7 +150,7 @@ class metacpan_elasticsearch::instance(
         default : {
 
           # Production
-          $config_hash = $config_hash_production_cluster
+          $config_hash = $config_hash_cluster_production
 
           elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
             instances  => $instance_name,
