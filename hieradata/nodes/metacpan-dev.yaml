@@ -21,6 +21,14 @@ metacpan::users:
 
 metacpan::elasticsearch::version: 2.2.0
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
+
+# As we are dev, just run on localhost
+metacpan::elasticsearch::cluster_hosts:
+  - "127.0.0.1"
+
+metacpan::elasticsearch::ipaddress: "127.0.0.1"
+metacpan::elasticsearch::env: 'dev'
+
 #metacpan::elasticsearch::cluster_hosts:
 #  - 1.2.3.4
 #  - 1.2.3.5
