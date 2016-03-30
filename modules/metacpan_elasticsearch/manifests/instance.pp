@@ -113,17 +113,25 @@ class metacpan_elasticsearch::instance(
     default : {
       $config_hash = $config_hash_cluster
 
-      elasticsearch::plugin{ 'elasticsearch/marvel/latest':
-          instances  => $instance_name,
-          # PITA when upgrading, so disable and remove first
-          ensure => 'absent',
-#           ensure => 'present',
-      }
+#       elasticsearch::plugin{ 'license':
+#           instances  => $instance_name,
+#           # PITA when upgrading, so disable and remove first
+# #          ensure => 'absent',
+#            ensure => 'present',
+#       }
+
+#       elasticsearch::plugin{ 'marvel-agent':
+#           instances  => $instance_name,
+#           # PITA when upgrading, so disable and remove first
+# #          ensure => 'absent',
+#            ensure => 'present',
+#       }
+
 
       elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
         instances  => $instance_name,
-          ensure => 'absent',
-          # ensure => 'present',
+#          ensure => 'absent',
+           ensure => 'present',
       }
 
     }
