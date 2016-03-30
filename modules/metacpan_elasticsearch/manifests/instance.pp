@@ -5,6 +5,7 @@ class metacpan_elasticsearch::instance(
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
+  $env = hiera('metacpan::elasticsearch::env','production'),
 ) {
 
   $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
@@ -74,7 +75,7 @@ class metacpan_elasticsearch::instance(
 
   # As recommended by clinton, for ES 1.4 as a cluster
   # This should really be via hiera or something
-  $config_hash_cluster = {
+  $config_hash_cluster_production = {
     'http.port' => '9200',
     'network.host' => $network_host,
 
@@ -109,31 +110,61 @@ class metacpan_elasticsearch::instance(
 
   }
 
+  $config_hash_dev = {
+    'http.port' => '9200',
+    'network.host' => $network_host,
+
+    'cluster.name' => 'dev',
+
+    'index.search.slowlog.threshold.query.warn' => '10s',
+    'index.search.slowlog.threshold.query.info' => '2s',
+    'index.search.slowlog.threshold.fetch.warn' => '1s',
+
+    'gateway.recover_after_nodes' => '1',
+    'gateway.recover_after_time' => '2m',
+    'gateway.expected_nodes' => '3',
+
+    # only allow one node to start on each box
+    'node.max_local_storage_nodes' => '1',
+
+    # do not care about split brain on dev
+    'discovery.zen.minimum_master_nodes' => '1',
+
+    # Turn OFF multicast, and explisitly do only unicast to listed hosts
+    'discovery.zen.ping.multicast.enabled' => false,
+    'discovery.zen.ping.unicast.hosts' => $cluster_hosts_with_transport_port,
+
+    'marvel.agent.exporter.es.hosts' => $cluster_hosts_with_port,
+
+    # for now once a min, so we don't get too much data
+    'marvel.agent.interval' => '60s',
+
+    # Let marvel auto create indexes, but nothing else
+    'action.auto_create_index' => '.marvel-*,logstash-*',
+
+  }
+
   case $version {
     default : {
-      $config_hash = $config_hash_cluster
+      case $env {
+        default : {
 
-#       elasticsearch::plugin{ 'license':
-#           instances  => $instance_name,
-#           # PITA when upgrading, so disable and remove first
-# #          ensure => 'absent',
-#            ensure => 'present',
-#       }
+          # Production
+          $config_hash = $config_hash_production_cluster
 
-#       elasticsearch::plugin{ 'marvel-agent':
-#           instances  => $instance_name,
-#           # PITA when upgrading, so disable and remove first
-# #          ensure => 'absent',
-#            ensure => 'present',
-#       }
+          elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
+            instances  => $instance_name,
+               #ensure => 'absent',
+               ensure => 'present',
+          }
 
+        }
+        'dev' : {
 
-      elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
-        instances  => $instance_name,
-#          ensure => 'absent',
-           ensure => 'present',
+            $config_hash = $config_hash_dev
+
+        }
       }
-
     }
     '0.20.2' : { $config_hash = $config_hash_old }
   }
@@ -155,5 +186,20 @@ class metacpan_elasticsearch::instance(
   #     source  => 'puppet:///modules/metacpan_elasticsearch/etc/scripts',
   # }
 
-
 }
+
+
+#       elasticsearch::plugin{ 'license':
+#           instances  => $instance_name,
+#           # PITA when upgrading, so disable and remove first
+# #          ensure => 'absent',
+#            ensure => 'present',
+#       }
+
+#       elasticsearch::plugin{ 'marvel-agent':
+#           instances  => $instance_name,
+#           # PITA when upgrading, so disable and remove first
+# #          ensure => 'absent',
+#            ensure => 'present',
+#       }
+
