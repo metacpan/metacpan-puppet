@@ -2,3 +2,9 @@
 # Make this the master
 classes:
     - munin::master
+
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: stage/lw-mc-03
+  metacpan-api:
+    git_revision: stage/lw-mc-03
