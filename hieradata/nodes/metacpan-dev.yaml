@@ -19,7 +19,6 @@ metacpan::users:
         ssh_dir: false
         bin_dir: true
 
-metacpan::elasticsearch::version: 2.2.0
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
 
 # As we are dev, just run on localhost
