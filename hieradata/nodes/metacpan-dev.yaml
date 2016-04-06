@@ -1,4 +1,12 @@
 ---
+
+classes:
+    - minion_queue
+
+minion_queue::service::workers: 1
+minion_queue::service::ensure: running
+minion_queue::service::enable: true
+
 metacpan::user: 'vagrant'
 metacpan::group: 'vagrant'
 
