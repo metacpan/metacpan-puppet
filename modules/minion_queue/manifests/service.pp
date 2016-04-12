@@ -25,5 +25,16 @@ class minion_queue::service (
     service { $service_name:
         ensure  => $service_enable,
         enable  => $service_enable,
+        # Sit after starman, which will be after git update
+        # IF git was used to setup a notify
+        require => [ Starman::Service['metacpan-api'] ],
+    }
+
+    # Everytime we run puppet, restart the queue
+    # ideally we'd subscribe to the git update of metacpan-api
+    # but we don't use the git repo on the dev boxes
+    exec { 'restart_minion_queue':
+        command => "${init} restart",
+        require => [ Service[$service_name] ],
     }
 }
