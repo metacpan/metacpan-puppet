@@ -175,17 +175,6 @@ class metacpan_elasticsearch::instance(
     datadir => $data_dir,
   }
 
-  # # Deploy scripts, uncomment this when there is a
-  # # dir, with content  ..modules/metacpan_elasticsearch/files/etc/scripts
-  # file { "/etc/elasticsearch/${instance_name}/scripts":
-  #     ensure => directory,
-  #     recurse => true,
-  #     owner  => 'elasticsearch',
-  #     group  => 'elasticsearch',
-  #     mode   => '0700',
-  #     source  => 'puppet:///modules/metacpan_elasticsearch/etc/scripts',
-  # }
-
 }
 
 
