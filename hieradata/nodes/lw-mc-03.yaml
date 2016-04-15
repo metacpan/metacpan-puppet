@@ -3,12 +3,8 @@
 classes:
     - metacpan::system::postgress
 
-metacpan::users:
-    andreea:
-        ensure    : absent
-
 metacpan::web::starman:
   metacpan-web:
-    git_revision: stage/lw-mc-03
+    git_revision: mi/es2
   metacpan-api:
-    git_revision: stage/lw-mc-03
+    git_revision: mi/es2
