@@ -5,6 +5,6 @@ metacpan::crons::general:
 
 metacpan::web::starman:
   metacpan-web:
-    git_revision: stage/lw-mc-03
+    git_revision: mi/es2
   metacpan-api:
-    git_revision: stage/lw-mc-03
+    git_revision: mi/es2
