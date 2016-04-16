@@ -2,6 +2,11 @@
 # Using this box as a stage box
 classes:
     - metacpan::system::postgress
+    - minion_queue
+
+minion_queue::service::workers: 10
+minion_queue::service::ensure: running
+minion_queue::service::enable: true
 
 metacpan::web::starman:
   metacpan-web:
