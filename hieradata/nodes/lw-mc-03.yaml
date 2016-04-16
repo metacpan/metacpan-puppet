@@ -5,6 +5,6 @@ classes:
 
 metacpan::web::starman:
   metacpan-web:
-    git_revision: mi/es2
+    git_revision: 'mi/es2'
   metacpan-api:
-    git_revision: mi/es2
+    git_revision: 'mi/es2'
