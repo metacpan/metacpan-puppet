@@ -1,0 +1,6 @@
+# Access to minion queue
+<% @local_net.each do |remote_host| -%>
+<%= remote_host %>:5432:minion_queue:<%= @user %>:<%= @password %>
+<% end -%>
+
+

@@ -1,6 +1,6 @@
 ---
 classes:
-    - metacpan::system::postgress
+    - metacpan_postgres
 
 # Put ES in different place for now
 metacpan::elasticsearch::datadir: '/var/elasticsearch'

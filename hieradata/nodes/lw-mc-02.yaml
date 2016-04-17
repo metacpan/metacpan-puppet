@@ -1,4 +1,8 @@
 ---
+class
+  - metacpan_postgres::pgpass
+
+
 metacpan::crons::general:
     github-meets-cpan:
       ensure : present

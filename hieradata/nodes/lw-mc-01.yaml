@@ -2,6 +2,8 @@
 # Make this the master
 classes:
     - munin::master
+    - metacpan_postgres::pgpass
+
 
 metacpan::web::starman:
   metacpan-web:

@@ -1,7 +1,7 @@
 ---
 # Using this box as a stage box
 classes:
-    - metacpan::system::postgress
+    - metacpan_postgres
     - minion_queue
 
 minion_queue::service::workers: 10
