@@ -24,7 +24,7 @@ class metacpan_postgres::user(
 		type               => 'host',
 		database           => 'all',
 		user               => $user,
-		address            => '127.0.0.1/32',
+		address            => 'samenet',
 		auth_method        => 'ident',
   	}
 
