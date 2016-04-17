@@ -1,24 +1,21 @@
-class metacpan::system::postgress(
+class metacpan_postgres::user(
   $user = hiera('metacpan::user', 'metacpan'),
+  $group = hiera('metacpan::group', 'metacpan'),
+  $password = hiera('metacpan::postgres::password', 'easily-stomp-program'),
+  $port = hiera('metacpan::postgres::port', '5432'),
   ) {
 
 
-	# Delete this old version
-	file {
-		"/usr/lib/postgresql/9.1":
-			ensure => 'absent',
-			recurse => true,
-		    purge => true,
-		    force => true,
-	}
-
-    # Install postgress
-    class { 'postgresql::globals':
- 		 manage_package_repo => true,
- 		 version             => '9.5',
-	}->class { 'postgresql::server': }
+	# add in the password file automatically
+	include metacpan_postgres::pgpass
 
 	postgresql::server::role { $user:
+		password_hash => postgresql_password($user, $password),
+
+		require          => [
+			Class['postgresql::globals'],
+			Class['postgresql::server::service'],
+		],
 
 	}
 
@@ -44,6 +41,5 @@ class metacpan::system::postgress(
 		owner 			   => $user,
 		require => "Postgresql::Server::Role[$user]",
 	}
-
 
 }
