@@ -1,6 +1,11 @@
 
 classes:
   - metacpan_postgres::pgpass
+  - minion_queue
+
+minion_queue::service::workers: 17
+minion_queue::service::ensure: running
+minion_queue::service::enable: true
 
 
 metacpan::crons::general:
