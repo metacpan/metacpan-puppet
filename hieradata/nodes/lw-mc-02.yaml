@@ -1,5 +1,5 @@
----
-class
+
+classes:
   - metacpan_postgres::pgpass
 
 
