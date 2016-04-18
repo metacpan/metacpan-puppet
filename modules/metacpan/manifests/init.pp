@@ -18,9 +18,15 @@ class metacpan(
     create_resources('metacpan::user', $users)
 
     include starman
+    include carton
+
+    perl::module{ 'strictures':
+        version => '2.000002';
+    }
 
     perl::module{ 'Daemon::Control':
     }
+
 
     perl::module{ 'Code::TidyAll':
     }
