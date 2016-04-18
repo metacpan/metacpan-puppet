@@ -24,8 +24,8 @@ class metacpan_postgres::user(
 		type               => 'host',
 		database           => 'all',
 		user               => $user,
-		address            => 'samenet',
-		auth_method        => 'ident',
+		address            => '0.0.0.0/0',
+		auth_method        => 'md5',
   	}
 
 	postgresql::server::pg_hba_rule { 'give main user socket database access':
