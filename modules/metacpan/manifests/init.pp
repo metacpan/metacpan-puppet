@@ -27,6 +27,8 @@ class metacpan(
     perl::module{ 'Daemon::Control':
     }
 
+    perl::module{ 'Perl::Critic':
+    }
 
     perl::module{ 'Code::TidyAll':
     }
