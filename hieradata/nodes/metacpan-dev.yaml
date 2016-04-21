@@ -2,6 +2,8 @@
 
 classes:
     - minion_queue
+    # Get a test ES running additionally to the default one
+    - metacpan_elasticsearch::test_instance
 
 minion_queue::service::workers: 1
 minion_queue::service::ensure: running
