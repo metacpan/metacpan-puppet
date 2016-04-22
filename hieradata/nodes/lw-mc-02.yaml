@@ -1,5 +1,6 @@
 
 classes:
+  - metacpan_postgres
   - metacpan_postgres::pgpass
   - minion_queue
 
