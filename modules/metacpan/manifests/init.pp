@@ -39,6 +39,11 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
+    # Create ramdisks if required
+    $ramdisks = hiera_hash('metacpan::system::ramdisks', {})
+    create_resources('metacpan::system::ramdisk', $ramdisks)
+
+
     # Static sites
     $statics = hiera_hash('metacpan::web::static', {})
     create_resources('metacpan::web::static', $statics)

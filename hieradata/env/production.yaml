@@ -19,6 +19,10 @@ metacpan::watcher::enable: true
 # we can setup cpan.mc.org with a failover!
 metacpan::rrrclient::enable: true
 
+metacpan::system::ramdisks:
+    '/mnt/scratch_disk':
+        size: '1G'
+
 metacpan::crons::general:
     metacpan_clean_up_source:
       ensure : present
