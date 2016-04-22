@@ -127,8 +127,8 @@ metacpan::web::starman:
     starman_port: 5000
     starman_workers: 2
     vhost_extra_proxies:
-      proxy_v0:
-          location: '/v0'
+      proxy_v1:
+          location: '/v1'
     vhost_extra_configs:
       socket_io:
           template: 'socket_io'
