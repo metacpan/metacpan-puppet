@@ -24,8 +24,8 @@ metacpan::crons::api:
       ensure : present
     cpantesters:
       ensure : present
-    # latest:
-    #   ensure : present
+    latest:
+      ensure : present
     backup_favorite:
       ensure : present
     backup_author:
@@ -36,7 +36,7 @@ metacpan::crons::api:
       ensure : present
     session:
       ensure : present
-    # release:
-    #   ensure : present
+    release:
+      ensure : present
     tickets:
       ensure : present
