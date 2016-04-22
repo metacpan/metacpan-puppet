@@ -13,3 +13,30 @@ metacpan::web::starman:
     git_revision: 'mi/es2'
   metacpan-api:
     git_revision: 'mi/es2'
+
+
+metacpan::crons::api:
+    author:
+      ensure : present
+    ratings:
+      ensure : present
+    mirrors:
+      ensure : present
+    cpantesters:
+      ensure : present
+    # latest:
+    #   ensure : present
+    backup_favorite:
+      ensure : present
+    backup_author:
+      ensure : present
+    backup_user:
+      ensure : present
+    backup_purge:
+      ensure : present
+    session:
+      ensure : present
+    # release:
+    #   ensure : present
+    tickets:
+      ensure : present
