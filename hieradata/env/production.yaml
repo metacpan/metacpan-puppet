@@ -60,6 +60,10 @@ metacpan::users:
         admin    : true
         fullname : 'Randy Stauner <rwstauner@cpan.org>'
         shell    : /bin/zsh
+    sawyer:
+        admin    : true
+        fullname : 'Sawyer <xsawyerx@cpan.org>'
+        shell    : /bin/zsh
     trs:
         admin    : true
         fullname : "Thomas Sibley <tsibley@cpan.org>"
