@@ -30,6 +30,10 @@ metacpan::elasticsearch::cluster_hosts:
 metacpan::elasticsearch::ipaddress: "127.0.0.1"
 metacpan::elasticsearch::env: 'dev'
 
+# metacpan::system::ramdisks:
+#     '/mnt/scratch_disk':
+#         size: '1M'
+
 #metacpan::elasticsearch::cluster_hosts:
 #  - 1.2.3.4
 #  - 1.2.3.5
