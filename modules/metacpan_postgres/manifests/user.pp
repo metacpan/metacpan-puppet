@@ -36,6 +36,15 @@ class metacpan_postgres::user(
 		auth_method        => 'peer',
   	}
 
+	postgresql::server::pg_hba_rule { 'give replication user TCP database access':
+		description        => "Local TCP access for replication",
+		type               => 'host',
+		database           => 'all',
+		user               => 'replication',
+		address            => '0.0.0.0/0',
+		auth_method        => 'md5',
+  	}
+
   	# Add a database for the minion queue
 	postgresql::server::database { 'minion_queue':
 		owner 			   => $user,
