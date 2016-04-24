@@ -39,7 +39,7 @@ class metacpan_postgres::user(
 	postgresql::server::pg_hba_rule { 'give replication user TCP database access':
 		description        => "Local TCP access for replication",
 		type               => 'host',
-		database           => 'all',
+		database           => 'replication',
 		user               => 'replication',
 		address            => '0.0.0.0/0',
 		auth_method        => 'md5',
