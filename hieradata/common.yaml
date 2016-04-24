@@ -292,8 +292,8 @@ metacpan::crons::api:
         ensure : absent
     river:
         cmd : 'river'
-        minute : 1
-        hour : 30
+        minute : 30
+        hour : 1
         ensure : absent
 
 
