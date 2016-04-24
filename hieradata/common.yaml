@@ -290,6 +290,11 @@ metacpan::crons::api:
         minute : 12
         hour : 3
         ensure : absent
+    river:
+        cmd : 'river'
+        minute : 1
+        hour : 30
+        ensure : absent
 
 
 metacpan::fw_ports:

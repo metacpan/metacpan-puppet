@@ -40,3 +40,5 @@ metacpan::crons::api:
       ensure : present
     tickets:
       ensure : present
+    river:
+      ensure : present
