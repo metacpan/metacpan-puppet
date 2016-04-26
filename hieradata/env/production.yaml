@@ -56,6 +56,7 @@ metacpan::users:
     olaf:
         admin    : true
         fullname : "Olaf Alders <olaf.alders@gmail.com>"
+        no_passwd_sudo : true
     rafl:
         admin    : true
         fullname : "Florian Ragwitz <rafl@perldition.org>"
