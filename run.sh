@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$USER" != 'root' ]; then
+	echo "Must be root";
+	exit 1;
+fi
+
 find /etc/puppet -type d -exec chmod a+rx {} \;
 find /etc/puppet -type f -exec chmod a+r {} \;
 
