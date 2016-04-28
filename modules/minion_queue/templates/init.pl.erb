@@ -58,7 +58,8 @@ my $args = {
     pid_file     => "$dirs{pid}/${name}.pid",
     program      => $carton,
     program_args => \@program_args,
-    stderr_file  => "$dirs{log}/${name}.log",
+    stderr_file  => "$dirs{log}/${name}-error.log",
+    stdout_file  => "$dirs{log}/${name}-stdout.log",
     user         => $user,
 };
 
