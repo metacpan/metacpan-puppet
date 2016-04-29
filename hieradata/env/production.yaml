@@ -48,9 +48,11 @@ metacpan::users:
         fullname : "Leo Lapworth <leo@cuckoo.org>"
         no_passwd_sudo : true
     clinton:
+        ensure   : absent
         admin    : true
         fullname : "Clinton Gormley <clint@traveljury.com>"
     mo:
+        ensure   : absent
         admin    : true
         fullname : "Moritz Onken <onken@netcubed.de>"
     olaf:
@@ -58,6 +60,7 @@ metacpan::users:
         fullname : "Olaf Alders <olaf.alders@gmail.com>"
         no_passwd_sudo : true
     rafl:
+        ensure   : absent
         admin    : true
         fullname : "Florian Ragwitz <rafl@perldition.org>"
         shell    : /bin/zsh
@@ -66,6 +69,7 @@ metacpan::users:
         fullname : 'Randy Stauner <rwstauner@cpan.org>'
         shell    : /bin/zsh
     sawyer:
+        ensure   : absent
         admin    : true
         fullname : 'Sawyer <xsawyerx@cpan.org>'
         shell    : /bin/zsh
@@ -79,9 +83,11 @@ metacpan::users:
         admin    : true
         fullname : "Graham Knop <haarg@haarg.org>"
     mhorsfall:
+        ensure   : absent
         admin    : true
         fullname : "Matthew Horsfall (alh) <wolfsage@gmail.com>"
     ben:
+        ensure   : absent
         admin    : true
         fullname : "Ben Hundley <ben@qbox.io>"
     ether:
