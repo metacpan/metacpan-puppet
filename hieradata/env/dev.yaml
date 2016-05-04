@@ -5,4 +5,6 @@ classes:
     - metacpan::system::mongodb
     - metacpan_postgres
 
-metacpan::tmp_dir: '/tmp/metacpan'
+# Have to hard code `vagrant` or the dependency
+# tree doesn't work
+metacpan::tmp_dir: "/home/vagrant/tmp"
