@@ -52,10 +52,6 @@ class metacpan(
     $websites = hiera_hash('metacpan::web::starman', {})
     create_resources('metacpan::web::starman', $websites)
 
-    # Twiggy sites
-    $twiggies = hiera_hash('metacpan::web::twiggy', {})
-    create_resources('metacpan::web::twiggy', $twiggies)
-
     # Swat site
     $swat = hiera_hash('metacpan::system::swat', {})
     create_resources('metacpan::system::swat', $swat)
