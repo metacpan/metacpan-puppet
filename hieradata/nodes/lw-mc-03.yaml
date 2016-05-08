@@ -14,6 +14,15 @@ metacpan::web::starman:
   metacpan-api:
     git_revision: 'mi/es2'
 
+# Install swat on here
+metacpan::system::swat:
+  metacpan-monitoring:
+    enable: true
+
+# Run the swat cronjob
+metacpan::crons::general:
+    swat_monitoring:
+      ensure : present
 
 metacpan::crons::api:
     author:
