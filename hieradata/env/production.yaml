@@ -93,6 +93,9 @@ metacpan::users:
     ether:
         admin    : true
         fullname : "Karen Etheridge <ether@cpan.org"
+    mickey:
+        admin    : true
+        fullname : "Mickey Nasriachi <mickey@cpan.org>"
     # David Cantrell needs access for cpxxxan and cpan deps (rsync)
     davidc:
         fullname : "David Cantrell <david@cantrell.org.uk>"
