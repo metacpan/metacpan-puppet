@@ -66,10 +66,10 @@ define metacpan::user(
                 ];
         }
 
-        # Not sure this is needed any more, should all have cleaned out by now?
+        # Add to BASH, perl version hard coded :(
         line { "/home/$user/.bashrc":
-          ensure  => absent,
-          line    => 'source /home/metacpan/.metacpanrc',
+          ensure  => present,
+          line    => 'PATH=/opt/perl-5.18.2/bin:$PATH',
           require => User[$user],
         }
       }

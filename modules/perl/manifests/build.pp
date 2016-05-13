@@ -42,8 +42,20 @@ define perl::build (
             cwd         => '/tmp',
             path        => [$bin_dir, '/bin', '/usr/bin'],
             timeout     => 100,
-            require     => Exec["perl_${name}"]
+            require     => Exec["perl_${name}"],
           }
+
+          # Make sure it's upto date
+          exec { "upgrade_cpanm_${name}":
+            command     => "${bin_dir}/cpanm --self-upgrade",
+            cwd         => '/tmp',
+            path        => [$bin_dir, '/bin', '/usr/bin'],
+            timeout     => 100,
+            require     => Exec["perl_cpanm_${name}"],
+          }
+
+
+# test -f /opt/perl-5.18.2/bin/cpanm && /opt/perl-5.18.2/bin/cpanm --version | grep cpanminus | awk '{ print $4 }'
 
       }
       default: {

@@ -57,6 +57,9 @@ class metacpan::system::packages {
     # https://ask.puppetlabs.com/question/2147/could-not-find-a-suitable-provider-for-augeas/
     package{ libaugeas-ruby: ensure => present }
 
+    # For accessing postgress from psql
+    package{ 'postgresql-client-9.1': ensure => present }
+
     case $operatingsystem {
       Debian: {
       }

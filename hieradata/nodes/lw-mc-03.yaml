@@ -1,14 +1,53 @@
 ---
 # Using this box as a stage box
 classes:
-    - metacpan::system::postgress
+    - metacpan_postgres
+    - minion_queue
 
-metacpan::users:
-    andreea:
-        ensure    : absent
+minion_queue::service::workers: 14
+minion_queue::service::ensure: running
+minion_queue::service::enable: true
 
 metacpan::web::starman:
   metacpan-web:
-    git_revision: stage/lw-mc-03
+    git_revision: 'mi/es2'
   metacpan-api:
-    git_revision: stage/lw-mc-03
+    git_revision: 'mi/es2'
+
+# Install swat on here
+metacpan::system::swat:
+  metacpan-monitoring:
+    enable: true
+
+# Run the swat cronjob
+metacpan::crons::general:
+    swat_monitoring:
+      ensure : present
+
+metacpan::crons::api:
+    author:
+      ensure : present
+    ratings:
+      ensure : present
+    mirrors:
+      ensure : present
+    cpantesters:
+      ensure : present
+    latest:
+      ensure : present
+    backup_favorite:
+      ensure : present
+    backup_author:
+      ensure : present
+    backup_user:
+      ensure : present
+    backup_purge:
+      ensure : present
+    session:
+      ensure : present
+    release:
+      ensure : present
+    tickets:
+      ensure : present
+    river:
+      ensure : present

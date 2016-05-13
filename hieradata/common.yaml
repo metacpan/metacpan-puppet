@@ -74,9 +74,24 @@ metacpan::watcher::enable: false
 metacpan::rrrclient::enable: false
 
 # Elasticsearch basic options
-metacpan::elasticsearch::version: 1.5.0
+metacpan::elasticsearch::version: 2.3.0
 metacpan::elasticsearch::memory: '40m'
 metacpan::elasticsearch::datadir: '/mnt/lv-elasticsearch'
+
+metacpan::elasticsearch::scripts:
+
+  status_is_latest:
+    a_value: 1
+
+  score_version_numified:
+    a_value: 1
+
+  prefer_shorter_module_names_400:
+    a_value: 1
+
+  prefer_shorter_module_names_100:
+    a_value: 1
+
 
 # Install logstash but don't run by default
 metacpan::logstash::status: disabled
@@ -112,8 +127,8 @@ metacpan::web::starman:
     starman_port: 5000
     starman_workers: 2
     vhost_extra_proxies:
-      proxy_v0:
-          location: '/v0'
+      proxy_v1:
+          location: '/v1'
     vhost_extra_configs:
       socket_io:
           template: 'socket_io'
@@ -183,13 +198,6 @@ metacpan::web::static:
       rewrite:
           template: 'rewrite'
 
-metacpan::web::twiggy:
-
-  metacpan-web-socket:
-    git_enable: true
-    git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
-    twiggy_port: 5099
-
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
     backup_api:
@@ -215,6 +223,12 @@ metacpan::crons::general:
       minute : 20
       hour : 1
       ensure : absent
+
+    swat_monitoring:
+      cmd : "/bin/sh /home/%{hiera('metacpan::user')}/metacpan-monitoring/cron.sh"
+      minute : '*/10'
+      ensure : absent
+
 
 
 # NOTE: set to `absent` here - turn on in the node
@@ -274,6 +288,11 @@ metacpan::crons::api:
         cmd : tickets
         minute : 12
         hour : 3
+        ensure : absent
+    river:
+        cmd : 'river'
+        minute : 30
+        hour : 1
         ensure : absent
 
 

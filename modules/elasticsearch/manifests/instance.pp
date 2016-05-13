@@ -51,6 +51,9 @@
 # [*logging_config*]
 #   Hash representation of information you want in the logging.yml file
 #
+# [*logging_template*]
+#  Use a custom logging template - just supply the reative path ie ${module}/elasticsearch/logging.yml.erb
+#
 # [*logging_level*]
 #   Default logging level for Elasticsearch.
 #   Defaults to: INFO
@@ -58,28 +61,44 @@
 # [*init_defaults*]
 #   Defaults file content in hash representation
 #
+# [*init_defaults_file*]
+#   Defaults file as puppet resource
+#
+# [*service_flags*]
+#   Service flags used for the OpenBSD service configuration, defaults to undef.
+#
+# [*init_template*]
+#   Service file as a template
+#
+# [*logdir*]
+#   Log directory for this instance.
+#
 # === Authors
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
 define elasticsearch::instance(
-  $ensure         = $elasticsearch::ensure,
-  $status         = $elasticsearch::status,
-  $config         = undef,
-  $configdir      = undef,
-  $datadir        = undef,
-  $logging_file   = undef,
-  $logging_config = undef,
-  $logging_level  = $elasticsearch::default_logging_level,
-  $init_defaults  = undef
+  $ensure             = $elasticsearch::ensure,
+  $status             = $elasticsearch::status,
+  $config             = undef,
+  $configdir          = undef,
+  $datadir            = undef,
+  $logdir             = undef,
+  $logging_file       = undef,
+  $logging_config     = undef,
+  $logging_template   = undef,
+  $logging_level      = $elasticsearch::default_logging_level,
+  $service_flags      = undef,
+  $init_defaults      = undef,
+  $init_defaults_file = undef,
+  $init_template      = $elasticsearch::init_template
 ) {
 
-  require elasticsearch
   require elasticsearch::params
 
   File {
     owner => $elasticsearch::elasticsearch_user,
-    group => $elasticsearch::elasticsearch_group
+    group => $elasticsearch::elasticsearch_group,
   }
 
   Exec {
@@ -158,7 +177,13 @@ define elasticsearch::instance(
         $instance_logging_config = { }
       }
       $logging_hash = merge($elasticsearch::params::logging_defaults, $main_logging_config, $instance_logging_config)
-      $logging_content = template("${module_name}/etc/elasticsearch/logging.yml.erb")
+      if ($logging_template != undef ) {
+        $logging_content = template($logging_template)
+      } elsif ($elasticsearch::logging_template != undef) {
+        $logging_content = template($elasticsearch::logging_template)
+      } else {
+        $logging_content = template("${module_name}/etc/elasticsearch/logging.yml.erb")
+      }
       $logging_source = undef
     }
 
@@ -168,7 +193,17 @@ define elasticsearch::instance(
       $main_config = { }
     }
 
-    $instance_datadir_config = { 'path.data' => $instance_datadir }
+    if(has_key($instance_config, 'path.data')) {
+      $instance_datadir_config = { 'path.data' => $instance_datadir }
+    } elsif(has_key($instance_config, 'path')) {
+      if(has_key($instance_config['path'], 'data')) {
+        $instance_datadir_config = { 'path' => { 'data' => $instance_datadir } }
+      } else {
+        $instance_datadir_config = { 'path.data' => $instance_datadir }
+      }
+    } else {
+      $instance_datadir_config = { 'path.data' => $instance_datadir }
+    }
 
     if(is_array($instance_datadir)) {
       $dirs = join($instance_datadir, ' ')
@@ -176,27 +211,55 @@ define elasticsearch::instance(
       $dirs = $instance_datadir
     }
 
+    # Manage instance log directory
+    if ($logdir == undef) {
+      $instance_logdir = "${elasticsearch::logdir}/${name}"
+    } else {
+      $instance_logdir = $logdir
+    }
+
+    if(has_key($instance_config, 'path.logs')) {
+      $instance_logdir_config = { 'path.logs' => $instance_logdir }
+    } elsif(has_key($instance_config, 'path')) {
+      if(has_key($instance_config['path'], 'logs')) {
+        $instance_logdir_config = { 'path' => { 'logs' => $instance_logdir } }
+      } else {
+        $instance_logdir_config = { 'path.logs' => $instance_logdir }
+      }
+    } else {
+      $instance_logdir_config = { 'path.logs' => $instance_logdir }
+    }
+
+    file { $instance_logdir:
+      ensure  => 'directory',
+      owner   => $elasticsearch::elasticsearch_user,
+      group   => undef,
+      mode    => '0644',
+      require => Class['elasticsearch::package'],
+      before  => Elasticsearch::Service[$name],
+    }
+
     exec { "mkdir_datadir_elasticsearch_${name}":
       command => "mkdir -p ${dirs}",
       creates => $instance_datadir,
       require => Class['elasticsearch::package'],
-      before  => Elasticsearch::Service[$name]
+      before  => Elasticsearch::Service[$name],
     }
 
     file { $instance_datadir:
       ensure  => 'directory',
       owner   => $elasticsearch::elasticsearch_user,
-      group   => $elasticsearch::elasticsearch_group,
-      mode    => '0770',
+      group   => undef,
+      mode    => '0644',
       require => [ Exec["mkdir_datadir_elasticsearch_${name}"], Class['elasticsearch::package'] ],
-      before  => Elasticsearch::Service[$name]
+      before  => Elasticsearch::Service[$name],
     }
 
     exec { "mkdir_configdir_elasticsearch_${name}":
       command => "mkdir -p ${instance_configdir}",
       creates => $elasticsearch::configdir,
       require => Class['elasticsearch::package'],
-      before  => Elasticsearch::Service[$name]
+      before  => Elasticsearch::Service[$name],
     }
 
     file { $instance_configdir:
@@ -205,7 +268,7 @@ define elasticsearch::instance(
       purge   => $elasticsearch::purge_configdir,
       force   => $elasticsearch::purge_configdir,
       require => [ Exec["mkdir_configdir_elasticsearch_${name}"], Class['elasticsearch::package'] ],
-      before  => Elasticsearch::Service[$name]
+      before  => Elasticsearch::Service[$name],
     }
 
     file { "${instance_configdir}/logging.yml":
@@ -215,23 +278,30 @@ define elasticsearch::instance(
       mode    => '0644',
       notify  => $notify_service,
       require => Class['elasticsearch::package'],
-      before  => Elasticsearch::Service[$name]
+      before  => Elasticsearch::Service[$name],
     }
 
-    $require = Class['elasticsearch::package']
-    $before = undef
+    file { "${instance_configdir}/scripts":
+      ensure => 'link',
+      target => "${elasticsearch::params::homedir}/scripts",
+    }
 
     # build up new config
-    $instance_conf = merge($main_config, $instance_node_name, $instance_config, $instance_datadir_config)
+    $instance_conf = merge($main_config, $instance_node_name, $instance_config, $instance_datadir_config, $instance_logdir_config)
 
     # defaults file content
+    # ensure user did not provide both init_defaults and init_defaults_file
+    if (($init_defaults != undef) and ($init_defaults_file != undef)) {
+      fail ('Only one of $init_defaults and $init_defaults_file should be defined')
+    }
+
     if (is_hash($elasticsearch::init_defaults)) {
       $global_init_defaults = $elasticsearch::init_defaults
     } else {
       $global_init_defaults = { }
     }
 
-    $instance_init_defaults_main = { 'CONF_DIR' => $instance_configdir, 'CONF_FILE' => "${instance_configdir}/elasticsearch.yml", 'LOG_DIR' => "/var/log/elasticsearch/${name}", 'ES_HOME' => '/usr/share/elasticsearch' }
+    $instance_init_defaults_main = { 'CONF_DIR' => $instance_configdir, 'CONF_FILE' => "${instance_configdir}/elasticsearch.yml", 'LOG_DIR' => $instance_logdir, 'ES_HOME' => '/usr/share/elasticsearch' }
 
     if (is_hash($init_defaults)) {
       $instance_init_defaults = $init_defaults
@@ -243,13 +313,21 @@ define elasticsearch::instance(
     $user = $elasticsearch::elasticsearch_user
     $group = $elasticsearch::elasticsearch_group
 
-    file { "${instance_configdir}/elasticsearch.yml":
-      ensure  => file,
-      content => template("${module_name}/etc/elasticsearch/elasticsearch.yml.erb"),
-      mode    => '0644',
-      notify  => $notify_service,
-      require => Class['elasticsearch::package']
+    datacat_fragment { "main_config_${name}":
+      target => "${instance_configdir}/elasticsearch.yml",
+      data   => $instance_conf,
     }
+
+    datacat { "${instance_configdir}/elasticsearch.yml":
+      template => "${module_name}/etc/elasticsearch/elasticsearch.yml.erb",
+      notify   => $notify_service,
+      require  => Class['elasticsearch::package'],
+      owner    => $elasticsearch::elasticsearch_user,
+      group    => $elasticsearch::elasticsearch_group,
+    }
+
+    $require_service = Class['elasticsearch::package']
+    $before_service  = undef
 
   } else {
 
@@ -257,19 +335,23 @@ define elasticsearch::instance(
       ensure  => 'absent',
       recurse => true,
       force   => true,
-      before  => Elasticsearch::Service[$name]
     }
 
-    $require = undef
-    $before = Class['elasticsearch::config']
+    $require_service = undef
+    $before_service  = File[$instance_configdir]
 
+    $init_defaults_new = {}
   }
 
   elasticsearch::service { $name:
-    init_defaults => $init_defaults_new,
-    init_template => "${module_name}/etc/init.d/${elasticsearch::params::init_template}",
-    require       => $require,
-    before        => $before
+    ensure             => $ensure,
+    status             => $status,
+    service_flags      => $service_flags,
+    init_defaults      => $init_defaults_new,
+    init_defaults_file => $init_defaults_file,
+    init_template      => $init_template,
+    require            => $require_service,
+    before             => $before_service,
   }
 
 }
