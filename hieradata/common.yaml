@@ -226,7 +226,7 @@ metacpan::crons::general:
 
     swat_monitoring:
       cmd : "/bin/sh /home/%{hiera('metacpan::user')}/metacpan-monitoring/cron.sh"
-      minute : '*/10'
+      minute : '0'
       ensure : absent
 
 
