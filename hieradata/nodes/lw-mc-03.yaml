@@ -19,6 +19,13 @@ metacpan::system::swat:
   metacpan-monitoring:
     enable: true
 
+# Monitor the minion queue
+munin::node::plugins:
+    'minion':
+      target: '/home/metacpan/metacpan-api/bin/munin/monitor_minion_queue.pl'
+      ensure: 'link'
+      config: ['user metacpan']
+
 # Run the swat cronjob
 metacpan::crons::general:
     swat_monitoring:
