@@ -4,6 +4,9 @@ classes:
 
 metacpan::elasticsearch::version: 0.20.2
 
+# We want watcher enabled
+metacpan::watcher::enable: true
+
 metacpan::crons::general:
     backup_api:
       ensure : present

@@ -12,9 +12,6 @@ metacpan::carton_args: '--deployment'
 
 metacpan::elasticsearch::memory: '18g'
 
-# We want watcher enabled
-metacpan::watcher::enable: true
-
 # Let's have rrr on all machines for now
 # we can setup cpan.mc.org with a failover!
 metacpan::rrrclient::enable: true

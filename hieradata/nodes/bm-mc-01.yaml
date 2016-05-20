@@ -6,6 +6,9 @@ classes:
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
 metacpan::elasticsearch::version: 0.20.2
 
+# We want watcher enabled
+metacpan::watcher::enable: true
+
 # Run all the usual crons on here as well
 metacpan::crons::general:
     backup_api:

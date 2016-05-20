@@ -19,6 +19,9 @@ metacpan::system::swat:
   metacpan-monitoring:
     enable: true
 
+# We want watcher enabled
+metacpan::watcher::enable: true
+
 # Monitor the minion queue
 munin::node::plugins:
     'minion':
