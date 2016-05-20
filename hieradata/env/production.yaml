@@ -19,6 +19,7 @@ metacpan::rrrclient::enable: true
 metacpan::system::ramdisks:
     '/mnt/scratch_disk':
         size: '1G'
+        valid_mins: '45'
 
 metacpan::crons::general:
     metacpan_clean_up_source:
