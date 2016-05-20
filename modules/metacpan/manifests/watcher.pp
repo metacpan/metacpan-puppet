@@ -26,11 +26,11 @@ class metacpan::watcher(
 		require => [ File[$init] ],
 	}
 
-	if( $enable == true ) {
-	    # Everytime git code updates, restart to get new data
-	    exec { 'restart_watcher':
-	        command => "${init} restart",
-	        require => [ Service['metacpan-watcher'] ],
-	    }
-	}
+	# if( $enable == true ) {
+	#     # Everytime git code updates, restart to get new data
+	#     exec { 'restart_watcher':
+	#         command => "${init} restart",
+	#         require => [ Service['metacpan-watcher'] ],
+	#     }
+	# }
 }
