@@ -9,8 +9,8 @@ classes:
 munin::server: &munin_master 50.28.18.102
 
 munin::master::collect_nodes: disabled
-munin::master::html_strategy: cron
-munin::master::graph_strategy: cron
+munin::master::html_strategy: cgi
+munin::master::graph_strategy: cgi
 munin::master::htmldir: /var/www/munin
 munin::master::node_definitions:
     'lw-mc-01.metacpan.org':
@@ -158,6 +158,18 @@ metacpan::web::static:
     vhost_extra_configs:
       fastly_surrogate_headers:
           template: 'fastly'
+
+  munin:
+    vhost_html: "/var/www/munin"
+    vhost_ssl: false
+    vhost_autoindex: false
+    vhost_aliases:
+      - 'munin.metacpan.org'
+      - "munin.%{hostname}.metacpan.org"
+    vhost_extra_configs:
+      munin_cgi:
+          template: 'munin_cgi'
+
 
   metacpan-web-redirect:
     vhost_aliases:
