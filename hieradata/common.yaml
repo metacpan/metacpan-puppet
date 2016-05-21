@@ -9,8 +9,8 @@ classes:
 munin::server: &munin_master 50.28.18.102
 
 munin::master::collect_nodes: disabled
-munin::master::html_strategy: cgi
-munin::master::graph_strategy: cgi
+munin::master::html_strategy: cron
+munin::master::graph_strategy: cron
 munin::master::htmldir: /var/www/munin
 munin::master::node_definitions:
     'lw-mc-01.metacpan.org':
