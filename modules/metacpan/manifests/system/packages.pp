@@ -20,9 +20,6 @@ class metacpan::system::packages {
     # for backup mounts on bytemark servers
     package { "nfs-common": ensure => present }
 
-    # Used for munin monitor
-    package { spawn-fcgi: ensure => present }
-
     # Shells
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
