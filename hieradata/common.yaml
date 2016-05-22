@@ -219,7 +219,7 @@ metacpan::crons::general:
       ensure : absent
 
     metacpan_clean_up_source:
-      cmd : "find %{hiera('metacpan::tmp_dir')}/starman/metacpan_api/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf"
+      cmd : "test -e %{hiera('metacpan::tmp_dir')}/starman/metacpan-api/source/ && find %{hiera('metacpan::tmp_dir')}/starman/metacpan_api/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf"
       hour : 3
       minute : 22
       ensure : absent
