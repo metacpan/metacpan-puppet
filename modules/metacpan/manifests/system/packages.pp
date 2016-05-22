@@ -26,7 +26,9 @@ class metacpan::system::packages {
     # Shells
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
-    package { tmux:  ensure => present } # for rwstauner
+
+    # get version from https://packages.debian.org/wheezy-backports/tmux
+    package { tmux:  ensure => '1.9-6~bpo70+1' } # from backports
 
     package { ack-grep: ensure => present }
     package { less: ensure => present }
