@@ -11,16 +11,21 @@
 # expression matches a request, then nginx uses the most
 # specific prefix location found earlier.
 
+location = /robots.txt {
+  # robots gets requested a lot - let fastly cache
+  # for an hour, revalidate in the background (up to a day) and serve from cache if error revalidating
+  add_header Surrogate-Control 'max-age=3600, stale-while-revalidate=86400, stale-if-error=31104000';
+}
+location /authors/ {
+  # directories
+  autoindex on;
+}
 location ~ /authors/.*/CHECKSUMS$ {
   # checksum files can change with any upload
 }
 location ~* /authors/.*(readme|\.html|\.txt|\.[xy]ml|\.json|\.[pr]df|\.pod)(\.gz|\.bz2)?$ {
   # allowed to be overwritten by authors see:
   # http://pause.perl.org/pause/query?ACTION=pause_04about#upload
-}
-location ~ /authors/.*/$ {
-  # directories
-  autoindex on;
 }
 location ~ /authors/id/[^/]+$ {
   # files directly in /id/
@@ -30,13 +35,4 @@ location ~ /authors/.*/.*$ {
   # other regexes are above are the exceptions for this rule
   # See: https://www.fastly.com/blog/stale-while-revalidate/
   add_header Surrogate-Control 'max-age=31104000, stale-while-revalidate=31104000, stale-if-error=31104000';
-}
-location ~ /robots.txt$ {
-  # robots gets requested a lot - let fastly cache
-  # for an hour, revalidate in the background (up to a day) and serve from cache if error revalidating
-  add_header Surrogate-Control 'max-age=3600, stale-while-revalidate=86400, stale-if-error=31104000';
-}
-location ~ /authors/ {
-  # anything else
-  autoindex on;
 }
