@@ -51,7 +51,7 @@ exim::config_type: 'internet'
 
 
 # Defaults
-perl::version: '5.18.2'
+perl::version: '5.22.2'
 
 metacpan::user: 'metacpan'
 metacpan::group: 'metacpan'
