@@ -4,7 +4,7 @@
 # $perl::params::bin_dir
 #
 class perl::params(
-  $perl_version = hiera('perl::version', '5.18.2'),
+  $perl_version = hiera('perl::version', '5.22.2'),
 ) {
   $dir = "/opt/perl-${perl_version}"
   $bin_dir = "${dir}/bin"

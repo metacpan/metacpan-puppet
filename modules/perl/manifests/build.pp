@@ -8,7 +8,7 @@
 #
 # perl::build{$perl_version}
 # where $perl_version comes from
-# hiera('perl::version', '5.18.2')
+# hiera('perl::version', '5.22.2')
 #
 
 define perl::build (
@@ -55,7 +55,7 @@ define perl::build (
           }
 
 
-# test -f /opt/perl-5.18.2/bin/cpanm && /opt/perl-5.18.2/bin/cpanm --version | grep cpanminus | awk '{ print $4 }'
+# test -f /opt/perl-5.22.2/bin/cpanm && /opt/perl-5.22.2/bin/cpanm --version | grep cpanminus | awk '{ print $4 }'
 
       }
       default: {

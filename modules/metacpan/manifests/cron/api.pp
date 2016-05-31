@@ -9,7 +9,7 @@ define metacpan::cron::api(
   $weekday = "*",
   $ensure  = present,
   $metacpan = '/home/metacpan/bin/metacpan-api-carton-exec bin/metacpan',
-  $perl_version = hiera('perl::version','5.18.2'),
+  $perl_version = hiera('perl::version','5.22.2'),
 ) {
 
   $path_env = "PATH=/opt/perl-${perl_version}/bin:/usr/local/bin:/usr/bin:/bin"
