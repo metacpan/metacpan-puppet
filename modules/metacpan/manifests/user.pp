@@ -69,7 +69,7 @@ define metacpan::user(
         # Add to BASH, perl version hard coded :(
         line { "/home/$user/.bashrc":
           ensure  => present,
-          line    => 'PATH=/opt/perl-5.18.2/bin:$PATH',
+          line    => 'PATH=/opt/perl-5.22.2/bin:$PATH',
           require => User[$user],
         }
       }
