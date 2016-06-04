@@ -17,6 +17,10 @@ class metacpan::system::packages {
     package { rsync: ensure => present }
     package { screen: ensure => present }
 
+    # for monitoring
+    # https://debian-administration.org/article/327/Monitoring_your_hardware's_temperature
+    package { lm-sensors: ensure => present } # sensors cmd for cpu temp
+
     # for backup mounts on bytemark servers
     package { "nfs-common": ensure => present }
 
