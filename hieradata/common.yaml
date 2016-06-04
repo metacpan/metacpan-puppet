@@ -42,6 +42,18 @@ munin::node::plugins:
       ensure: 'absent'
     'nfsd':
       ensure: 'absent'
+    'sensors_fan':
+      target: '/usr/share/munin/plugins/sensors_'
+      ensure: 'link'
+      config: ['user metacpan']
+    'sensors_temp':
+      target: '/usr/share/munin/plugins/sensors_'
+      ensure: 'link'
+      config: ['user metacpan']
+    'sensors_volt':
+      target: '/usr/share/munin/plugins/sensors_'
+      ensure: 'link'
+      config: ['user metacpan']
 
 
 
