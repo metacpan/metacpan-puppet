@@ -276,7 +276,7 @@ metacpan::crons::api:
         minute : 42
         ensure : absent
     latest:
-        cmd : 'latest >/dev/null 2>&1'
+        cmd : 'latest --cpan /home/%{hiera('metacpan::user')}/CPAN'
         minute : 30
         ensure : absent
     backup_favorite:
