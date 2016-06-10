@@ -85,7 +85,7 @@ metacpan::web::starman:
 
   metacpan-web:
     git_source: 'https://github.com/CPAN-API/metacpan-web.git'
-    git_revision: 'master'
+    git_revision: 'legacy/v0'
     vhost_ssl_only: true
     vhost_bare: true
     vhost_aliases:
@@ -100,7 +100,7 @@ metacpan::web::starman:
 
   metacpan-api:
     git_source: 'https://github.com/CPAN-API/cpan-api.git'
-    git_revision: 'master'
+    git_revision: 'legacy/v0'
     vhost_ssl: true
     vhost_bare: true
     vhost_aliases:
@@ -120,7 +120,7 @@ metacpan::web::starman:
 
   github-meets-cpan:
     git_source: 'https://github.com/CPAN-API/github-meets-cpan.git'
-    git_revision: 'master'
+    git_revision: 'legacy/v0'
     vhost_bare: true
     vhost_aliases:
       - 'gh.metacpan.org'
@@ -163,7 +163,7 @@ metacpan::web::static:
 
   metacpan-explorer:
     git_source: 'https://github.com/CPAN-API/metacpan-explorer.git'
-    git_revision: 'master'
+    git_revision: 'legacy/v0'
     vhost_html: /home/%{hiera('metacpan::user')}/metacpan-explorer/build
     vhost_aliases:
       - 'explorer.metacpan.org'
