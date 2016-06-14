@@ -12,12 +12,14 @@ metacpan::carton_args: '--deployment'
 
 metacpan::elasticsearch::memory: '18g'
 
-# We want watcher enabled
-metacpan::watcher::enable: true
-
 # Let's have rrr on all machines for now
 # we can setup cpan.mc.org with a failover!
 metacpan::rrrclient::enable: true
+
+metacpan::system::ramdisks:
+    '/mnt/scratch_disk':
+        size: '1G'
+        valid_mins: '45'
 
 metacpan::crons::general:
     metacpan_clean_up_source:
@@ -44,21 +46,30 @@ metacpan::users:
         fullname : "Leo Lapworth <leo@cuckoo.org>"
         no_passwd_sudo : true
     clinton:
+        ensure   : absent
         admin    : true
         fullname : "Clinton Gormley <clint@traveljury.com>"
     mo:
+        ensure   : absent
         admin    : true
         fullname : "Moritz Onken <onken@netcubed.de>"
     olaf:
         admin    : true
         fullname : "Olaf Alders <olaf.alders@gmail.com>"
+        no_passwd_sudo : true
     rafl:
+        ensure   : absent
         admin    : true
         fullname : "Florian Ragwitz <rafl@perldition.org>"
         shell    : /bin/zsh
     rwstauner:
         admin    : true
         fullname : 'Randy Stauner <rwstauner@cpan.org>'
+        shell    : /bin/zsh
+    sawyer:
+        ensure   : absent
+        admin    : true
+        fullname : 'Sawyer <xsawyerx@cpan.org>'
         shell    : /bin/zsh
     trs:
         admin    : true
@@ -70,14 +81,19 @@ metacpan::users:
         admin    : true
         fullname : "Graham Knop <haarg@haarg.org>"
     mhorsfall:
+        ensure   : absent
         admin    : true
         fullname : "Matthew Horsfall (alh) <wolfsage@gmail.com>"
     ben:
+        ensure   : absent
         admin    : true
         fullname : "Ben Hundley <ben@qbox.io>"
     ether:
         admin    : true
         fullname : "Karen Etheridge <ether@cpan.org"
+    mickey:
+        admin    : true
+        fullname : "Mickey Nasriachi <mickey@cpan.org>"
     # David Cantrell needs access for cpxxxan and cpan deps (rsync)
     davidc:
         fullname : "David Cantrell <david@cantrell.org.uk>"

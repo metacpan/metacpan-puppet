@@ -1,0 +1,85 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          munin-fastcgi
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts munin-fastcgi
+# Description:       Spawn Munin FCGI sockets for Web access
+### END INIT INFO
+
+#
+# munin-fastcgi     Startup script for Munin CGI services
+#
+# chkconfig: - 84 15
+# description: Loading Munin CGI services using spawn-cgi
+#              HTML files and CGI.
+#
+# Author:  Ryan Norbauer
+# Modified:     Geoffrey Grosenbach http://topfunky.com
+# Modified:     David Krmpotic http://davidhq.com
+# Modified:     Kun Xi http://kunxi.org
+# Modified:     http://drumcoder.co.uk/
+# Modified:     http://uname.pingveno.net/
+# Modified:     the_architecht http://iwbyt.com/
+PATH=/usr/local/bin/:/usr/local/sbin:$PATH
+DAEMON=$(which spawn-fcgi)
+FCGI_GRAPH_SOCK=/var/run/munin/fastcgi-munin-graph.sock
+FCGI_HTML_SOCK=/var/run/munin/fastcgi-munin-html.sock
+WWW_USER=www-data
+FCGI_USER=www-data
+FCGI_GROUP=www-data
+FCGI_SPAWN_GRAPH=/usr/lib/munin/cgi/munin-cgi-graph
+FCGI_SPAWN_HTML=/usr/lib/munin/cgi/munin-cgi-html
+PIDFILE_GRAPH=/var/run/munin/fastcgi-munin-graph.pid
+PIDFILE_HTML=/var/run/munin/fastcgi-munin-html.pid
+DESC="Munin FCGI for Graph and HTML"
+
+# Gracefully exit if the package has been removed.
+test -x $DAEMON || exit 0
+test -x $FCGI_SPAWN_GRAPH || exit 0
+test -x $FCGI_SPAWN_HTML || exit 0
+
+start() {
+  $DAEMON -s $FCGI_GRAPH_SOCK -U $WWW_USER -u $FCGI_USER -g $FCGI_GROUP -P $PIDFILE_GRAPH $FCGI_SPAWN_GRAPH 2> /dev/null || echo "Graph Already running"
+  $DAEMON -s $FCGI_HTML_SOCK  -U $WWW_USER -u $FCGI_USER -g $FCGI_GROUP -P $PIDFILE_HTML $FCGI_SPAWN_HTML 2> /dev/null || echo "HTML Already running"
+}
+
+stop() {
+  kill -QUIT `cat $PIDFILE_GRAPH` || echo "Graph not running"
+  kill -QUIT `cat $PIDFILE_HTML` || echo "HTML Not running"
+}
+
+restart() {
+  kill -HUP `cat $PIDFILE_GRAPH` || echo "Can't reload Graph"
+  kill -HUP `cat $PIDFILE_HTML` || echo "Can't reload HTML"
+}
+
+case "$1" in
+  start)
+    echo "Starting $DESC: "
+    start
+  ;;
+  stop)
+    echo "Stopping $DESC: "
+    stop
+  ;;
+  restart|reload)
+    echo "Restarting $DESC: "
+    stop
+    # One second might not be time enough for a daemon to stop,
+    # if this happens, d_start will fail (and dpkg will break if
+    # the package is being upgraded). Change the timeout if needed
+    # be, or change d_stop to have start-stop-daemon use --retry.
+    # Notice that using --retry slows down the shutdown process somewhat.
+    sleep 1
+    start
+  ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|restart|reload}" >&2
+    exit 3
+  ;;
+esac
+
+exit $?

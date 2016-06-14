@@ -91,6 +91,11 @@
 #   For http,https and ftp downloads you can set howlong the exec resource may take.
 #   Defaults to: 600 seconds
 #
+# [*proxy_url*]
+#   For http and https downloads you can set a proxy server to use
+#   Format: proto://[user:pass@]server[:port]/
+#   Defaults to: undef (proxy disabled)
+#
 # [*elasticsearch_user*]
 #   The user Elasticsearch should run as. This also sets the file rights.
 #
@@ -131,11 +136,22 @@
 # [*repo_version*]
 #   Our repositories are versioned per major version (0.90, 1.0) select here which version you want
 #
+# [*repo_key_id*]
+#   String.  The apt GPG key id
+#   Default: D88E42B4
+#
+# [*repo_key_source*]
+#   String.  URL of the apt GPG key
+#   Default: http://packages.elastic.co/GPG-KEY-elasticsearch
+#
 # [*logging_config*]
 #   Hash representation of information you want in the logging.yml file
 #
 # [*logging_file*]
 #   Instead of a hash you can supply a puppet:// file source for the logging.yml file
+#
+# [*logging_template*]
+#  Use a custom logging template - just supply the reative path ie ${module}/elasticsearch/logging.yml.erb
 #
 # [*default_logging_level*]
 #   Default logging level for Elasticsearch.
@@ -143,6 +159,31 @@
 #
 # [*repo_stage*]
 #   Use stdlib stage setup for managing the repo, instead of anchoring
+#
+# [*instances*]
+#   Define instances via a hash. This is mainly used with Hiera's auto binding
+#   Defaults to: undef
+#
+# [*instances_hiera_merge*]
+#   Enable Hiera's merging function for the instances
+#   Defaults to: false
+#
+# [*plugins*]
+#   Define plugins via a hash. This is mainly used with Hiera's auto binding
+#   Defaults to: undef
+#
+# [*plugins_hiera_merge*]
+#   Enable Hiera's merging function for the plugins
+#   Defaults to: false
+#
+# [*package_pin*]
+#   Enables package version pinning.
+#   This pins the package version to the set version number and avoids
+#   package upgrades.
+#   Defaults to: true
+#
+# [*logdir*]
+#   Use different directory for logging
 #
 # The default values for the parameters are set in elasticsearch::params. Have
 # a look at the corresponding <tt>params.pp</tt> manifest file if you need more
@@ -178,8 +219,10 @@ class elasticsearch(
   $package_url           = undef,
   $package_dir           = $elasticsearch::params::package_dir,
   $package_name          = $elasticsearch::params::package,
+  $package_pin           = true,
   $purge_package_dir     = $elasticsearch::params::purge_package_dir,
   $package_dl_timeout    = $elasticsearch::params::package_dl_timeout,
+  $proxy_url             = undef,
   $elasticsearch_user    = $elasticsearch::params::elasticsearch_user,
   $elasticsearch_group   = $elasticsearch::params::elasticsearch_group,
   $configdir             = $elasticsearch::params::configdir,
@@ -187,26 +230,32 @@ class elasticsearch(
   $service_provider      = 'init',
   $init_defaults         = undef,
   $init_defaults_file    = undef,
-  $init_template         = undef,
+  $init_template         = "${module_name}/etc/init.d/${elasticsearch::params::init_template}",
   $config                = undef,
   $datadir               = $elasticsearch::params::datadir,
+  $logdir                = $elasticsearch::params::logdir,
   $plugindir             = $elasticsearch::params::plugindir,
   $plugintool            = $elasticsearch::params::plugintool,
   $java_install          = false,
   $java_package          = undef,
   $manage_repo           = false,
-  $repo_version          = false,
+  $repo_version          = undef,
+  $repo_key_id           = 'D88E42B4',
+  $repo_key_source       = 'http://packages.elastic.co/GPG-KEY-elasticsearch',
   $logging_file          = undef,
   $logging_config        = undef,
+  $logging_template      = undef,
   $default_logging_level = $elasticsearch::params::default_logging_level,
-  $repo_stage            = false
+  $repo_stage            = false,
+  $instances             = undef,
+  $instances_hiera_merge = false,
+  $plugins               = undef,
+  $plugins_hiera_merge   = false
 ) inherits elasticsearch::params {
 
   anchor {'elasticsearch::begin': }
-  anchor {'elasticsearch::end': }
 
 
-  Elasticsearch::Instance <| |> -> Elasticsearch::Template <| |>
   #### Validate parameters
 
   # ensure
@@ -256,7 +305,26 @@ class elasticsearch(
   validate_bool($manage_repo)
 
   if ($manage_repo == true) {
-    validate_string($repo_version)
+    if $repo_version == undef {
+      fail('Please fill in a repository version at $repo_version')
+    } else {
+      validate_string($repo_version)
+    }
+  }
+
+  if ($version != false) {
+    case $::osfamily {
+      'RedHat', 'Linux', 'Suse': {
+        if ($version =~ /.+-\d/) {
+          $pkg_version = $version
+        } else {
+          $pkg_version = "${version}-1"
+        }
+      }
+      default: {
+        $pkg_version = $version
+      }
+    }
   }
 
   #### Manage actions
@@ -267,13 +335,45 @@ class elasticsearch(
   # configuration
   class { 'elasticsearch::config': }
 
+  # Hiera support for instances
+  validate_bool($instances_hiera_merge)
+
+  if $instances_hiera_merge == true {
+    $x_instances = hiera_hash('elasticsearch::instances', $::elasticsearch::instances)
+  } else {
+    $x_instances = $instances
+  }
+
+  if $x_instances {
+    validate_hash($x_instances)
+    create_resources('elasticsearch::instance', $x_instances)
+  }
+
+  # Hiera support for plugins
+  validate_bool($plugins_hiera_merge)
+
+  if $plugins_hiera_merge == true {
+    $x_plugins = hiera_hash('elasticsearch::plugins', $::elasticsearch::plugins)
+  } else {
+    $x_plugins = $plugins
+  }
+
+  if $x_plugins {
+    validate_hash($x_plugins)
+    create_resources('elasticsearch::plugin', $x_plugins)
+  }
+
+
   if $java_install == true {
     # Install java
-    class { 'elasticsearch::java': }
+    class { '::java':
+      package      => $java_package,
+      distribution => 'jre',
+    }
 
-    # ensure we first java java and then manage the service
+    # ensure we first install java, the package and then the rest
     Anchor['elasticsearch::begin']
-    -> Class['elasticsearch::java']
+    -> Class['::java']
     -> Class['elasticsearch::package']
   }
 
@@ -299,7 +399,7 @@ class elasticsearch(
       }
 
       class { 'elasticsearch::repo':
-        stage => $repo_stage
+        stage => $repo_stage,
       }
     }
   }
@@ -312,11 +412,16 @@ class elasticsearch(
     Anchor['elasticsearch::begin']
     -> Class['elasticsearch::package']
     -> Class['elasticsearch::config']
+    -> Elasticsearch::Plugin <| |>
+    -> Elasticsearch::Instance <| |>
+    -> Elasticsearch::Template <| |>
 
   } else {
 
     # make sure all services are getting stopped before software removal
-    Class['elasticsearch::config']
+    Anchor['elasticsearch::begin']
+    -> Elasticsearch::Instance <| |>
+    -> Class['elasticsearch::config']
     -> Class['elasticsearch::package']
 
   }

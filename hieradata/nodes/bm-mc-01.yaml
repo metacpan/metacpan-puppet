@@ -1,15 +1,25 @@
 ---
 classes:
-    - metacpan::system::postgress
+    - metacpan_postgres
 
 # Put ES in different place for now
 metacpan::elasticsearch::datadir: '/var/elasticsearch'
 metacpan::elasticsearch::version: 0.20.2
 
+# We want watcher enabled
+metacpan::watcher::enable: true
+
 # Run all the usual crons on here as well
 metacpan::crons::general:
     backup_api:
       ensure : present
+
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: 'legacy/v0'
+  metacpan-api:
+    git_revision: 'legacy/v0'
+
 
 metacpan::crons::api:
     author:

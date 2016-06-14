@@ -18,8 +18,16 @@ class metacpan(
     create_resources('metacpan::user', $users)
 
     include starman
+    include carton
+
+    perl::module{ 'strictures':
+        version => '2.000002';
+    }
 
     perl::module{ 'Daemon::Control':
+    }
+
+    perl::module{ 'Perl::Critic':
     }
 
     perl::module{ 'Code::TidyAll':
@@ -31,6 +39,11 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
+    # Create ramdisks if required
+    $ramdisks = hiera_hash('metacpan::system::ramdisks', {})
+    create_resources('metacpan::system::ramdisk', $ramdisks)
+
+
     # Static sites
     $statics = hiera_hash('metacpan::web::static', {})
     create_resources('metacpan::web::static', $statics)
@@ -38,10 +51,6 @@ class metacpan(
     # Starman sites
     $websites = hiera_hash('metacpan::web::starman', {})
     create_resources('metacpan::web::starman', $websites)
-
-    # Twiggy sites
-    $twiggies = hiera_hash('metacpan::web::twiggy', {})
-    create_resources('metacpan::web::twiggy', $twiggies)
 
     # Swat site
     $swat = hiera_hash('metacpan::system::swat', {})

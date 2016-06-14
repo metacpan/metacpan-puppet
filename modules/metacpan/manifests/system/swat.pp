@@ -1,4 +1,4 @@
-# === Definition metacpan::web::twiggy
+# === Definition swat
 #
 # In Hiera:
 #

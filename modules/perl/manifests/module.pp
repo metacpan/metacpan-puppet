@@ -9,7 +9,7 @@ define perl::module (
     $ensure   = 'present',
     $module   = $name,
     $version  = '0',
-    $perl_version = hiera('perl::version', '5.18.2'),
+    $perl_version = hiera('perl::version', '5.22.2'),
 ) {
 
     require stdlib

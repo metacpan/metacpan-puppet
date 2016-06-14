@@ -1,12 +1,21 @@
 ---
 classes:
-    - metacpan::system::postgress
+    - metacpan_postgres
 
 metacpan::elasticsearch::version: 0.20.2
+
+# We want watcher enabled
+metacpan::watcher::enable: true
 
 metacpan::crons::general:
     backup_api:
       ensure : present
+
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: 'legacy/v0'
+  metacpan-api:
+    git_revision: 'legacy/v0'
 
 metacpan::crons::api:
     author:

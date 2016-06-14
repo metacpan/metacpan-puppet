@@ -1,8 +1,5 @@
 # == Class: minion_queue
 #
-# Probably requires metacpan::system::postgress
-# but that's not a specific dependency for now
-#
 # Add the following to hiera
 #
 # classes:

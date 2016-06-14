@@ -17,13 +17,19 @@ class metacpan::system::packages {
     package { rsync: ensure => present }
     package { screen: ensure => present }
 
+    # for monitoring
+    # https://debian-administration.org/article/327/Monitoring_your_hardware's_temperature
+    package { lm-sensors: ensure => present } # sensors cmd for cpu temp
+
     # for backup mounts on bytemark servers
     package { "nfs-common": ensure => present }
 
     # Shells
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
-    package { tmux:  ensure => present } # for rwstauner
+
+    # get version from https://packages.debian.org/wheezy-backports/tmux
+    package { tmux:  ensure => '1.9-6~bpo70+1' } # from backports
 
     package { ack-grep: ensure => present }
     package { less: ensure => present }
@@ -56,6 +62,9 @@ class metacpan::system::packages {
     # Helped get Elasticsearch running
     # https://ask.puppetlabs.com/question/2147/could-not-find-a-suitable-provider-for-augeas/
     package{ libaugeas-ruby: ensure => present }
+
+    # For accessing postgress from psql
+    package{ 'postgresql-client-9.1': ensure => present }
 
     case $operatingsystem {
       Debian: {

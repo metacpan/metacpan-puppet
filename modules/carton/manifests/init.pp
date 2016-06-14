@@ -2,6 +2,7 @@
 class carton() {
 
   perl::module{ 'Carton':
+  	version => 'v1.0.22'
   }
 
 }

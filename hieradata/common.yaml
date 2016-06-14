@@ -9,8 +9,8 @@ classes:
 munin::server: &munin_master 50.28.18.102
 
 munin::master::collect_nodes: disabled
-munin::master::html_strategy: cron
-munin::master::graph_strategy: cron
+munin::master::html_strategy: cgi
+munin::master::graph_strategy: cgi
 munin::master::htmldir: /var/www/munin
 munin::master::node_definitions:
     'lw-mc-01.metacpan.org':
@@ -42,6 +42,18 @@ munin::node::plugins:
       ensure: 'absent'
     'nfsd':
       ensure: 'absent'
+    'sensors_fan':
+      target: '/usr/share/munin/plugins/sensors_'
+      ensure: 'link'
+      config: ['user metacpan']
+    'sensors_temp':
+      target: '/usr/share/munin/plugins/sensors_'
+      ensure: 'link'
+      config: ['user metacpan']
+    'sensors_volt':
+      target: '/usr/share/munin/plugins/sensors_'
+      ensure: 'link'
+      config: ['user metacpan']
 
 
 
@@ -51,7 +63,7 @@ exim::config_type: 'internet'
 
 
 # Defaults
-perl::version: '5.18.2'
+perl::version: '5.22.2'
 
 metacpan::user: 'metacpan'
 metacpan::group: 'metacpan'
@@ -74,9 +86,24 @@ metacpan::watcher::enable: false
 metacpan::rrrclient::enable: false
 
 # Elasticsearch basic options
-metacpan::elasticsearch::version: 1.5.0
+metacpan::elasticsearch::version: 2.3.0
 metacpan::elasticsearch::memory: '40m'
 metacpan::elasticsearch::datadir: '/mnt/lv-elasticsearch'
+
+metacpan::elasticsearch::scripts:
+
+  status_is_latest:
+    a_value: 1
+
+  score_version_numified:
+    a_value: 1
+
+  prefer_shorter_module_names_400:
+    a_value: 1
+
+  prefer_shorter_module_names_100:
+    a_value: 1
+
 
 # Install logstash but don't run by default
 metacpan::logstash::status: disabled
@@ -112,8 +139,8 @@ metacpan::web::starman:
     starman_port: 5000
     starman_workers: 2
     vhost_extra_proxies:
-      proxy_v0:
-          location: '/v0'
+      proxy_v1:
+          location: '/v1'
     vhost_extra_configs:
       socket_io:
           template: 'socket_io'
@@ -143,6 +170,19 @@ metacpan::web::static:
     vhost_extra_configs:
       fastly_surrogate_headers:
           template: 'fastly'
+
+  munin:
+    vhost_html: "/var/www/munin"
+    vhost_ssl: false
+    vhost_bare: true
+    vhost_autoindex: false
+    vhost_aliases:
+      - 'munin.metacpan.org'
+      - "munin.%{hostname}.metacpan.org"
+    vhost_extra_configs:
+      munin_cgi:
+          template: 'munin_cgi'
+
 
   metacpan-web-redirect:
     vhost_aliases:
@@ -183,13 +223,6 @@ metacpan::web::static:
       rewrite:
           template: 'rewrite'
 
-metacpan::web::twiggy:
-
-  metacpan-web-socket:
-    git_enable: true
-    git_source: 'https://github.com/CPAN-API/p5-metacpan-websocket.git'
-    twiggy_port: 5099
-
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
     backup_api:
@@ -199,7 +232,7 @@ metacpan::crons::general:
       ensure : absent
 
     metacpan_clean_up_source:
-      cmd : "test -e %{hiera('metacpan::tmp_dir')}/metacpan_api/source && find %{hiera('metacpan::tmp_dir')}/metacpan_api/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf"
+      cmd : "test -e %{hiera('metacpan::tmp_dir')}/starman/metacpan-api/source/ && find %{hiera('metacpan::tmp_dir')}/starman/metacpan-api/source/ -mindepth 2 -maxdepth 2 -type d -mtime +120 | head -50000 | xargs rm -rf"
       hour : 3
       minute : 22
       ensure : absent
@@ -215,6 +248,12 @@ metacpan::crons::general:
       minute : 20
       hour : 1
       ensure : absent
+
+    swat_monitoring:
+      cmd : "/bin/sh /home/%{hiera('metacpan::user')}/metacpan-monitoring/cron.sh"
+      minute : '0'
+      ensure : absent
+
 
 
 # NOTE: set to `absent` here - turn on in the node
@@ -274,6 +313,11 @@ metacpan::crons::api:
         cmd : tickets
         minute : 12
         hour : 3
+        ensure : absent
+    river:
+        cmd : 'river'
+        minute : 30
+        hour : 1
         ensure : absent
 
 
