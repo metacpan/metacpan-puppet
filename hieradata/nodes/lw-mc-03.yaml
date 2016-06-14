@@ -8,12 +8,6 @@ minion_queue::service::workers: 14
 minion_queue::service::ensure: running
 minion_queue::service::enable: true
 
-metacpan::web::starman:
-  metacpan-web:
-    git_revision: 'mi/es2'
-  metacpan-api:
-    git_revision: 'mi/es2'
-
 # Install swat on here
 metacpan::system::swat:
   metacpan-monitoring:

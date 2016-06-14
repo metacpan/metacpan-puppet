@@ -11,6 +11,12 @@ metacpan::crons::general:
     backup_api:
       ensure : present
 
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: 'legacy/v0'
+  metacpan-api:
+    git_revision: 'legacy/v0'
+
 metacpan::crons::api:
     author:
       ensure : present

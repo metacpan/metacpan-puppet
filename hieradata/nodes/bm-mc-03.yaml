@@ -5,13 +5,8 @@ metacpan::crons::general:
     backup_api:
       ensure : present
 
-# Using this box as a stage box, give OPfW Interns access
-metacpan::users:
-    andreea:
-        ensure:  absent
-
-# metacpan::web::starman:
-#   metacpan-web:
-#     git_revision: stage/bm-mc-03
-#   metacpan-api:
-#     git_revision: stage/bm-mc-03
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: 'legacy/v0'
+  metacpan-api:
+    git_revision: 'legacy/v0'
