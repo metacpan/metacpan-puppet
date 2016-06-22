@@ -280,6 +280,7 @@ metacpan::crons::api:
     latest:
         cmd : 'latest --force >/dev/null 2>&1'
         minute : 30
+        hour: 21
         ensure : absent
     backup_favorite:
         cmd : 'backup --index cpan --type favorite'
