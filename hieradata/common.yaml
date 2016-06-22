@@ -277,10 +277,13 @@ metacpan::crons::api:
         minute : 42
         ensure : absent
     # Force the latest as otherwise doesn't always work correctly
+    # 21:08 < oalders> the initial problem was that we got tarballs _before_ 02packages was updated
+    # 21:08 < oalders> so we indexed right away, but we could check perms until much later
+    # 21:09 < oalders> 02packages gets updated more frequently now, but i'm not sure if
+    # it's in real time.  i thought it was every 5 minutes
     latest:
-        cmd : 'latest --force >/dev/null 2>&1'
+        cmd : 'latest --force --queue >/dev/null 2>&1'
         minute : 30
-        hour: 21
         ensure : absent
     backup_favorite:
         cmd : 'backup --index cpan --type favorite'
