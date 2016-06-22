@@ -116,6 +116,7 @@ metacpan::web::starman:
     vhost_ssl_only: true
     vhost_bare: true
     vhost_aliases:
+      - 'v1.metacpan.org'
       - 'metacpan.org'
       - "lo.metacpan.org"
       - "%{hostname}.metacpan.org"
