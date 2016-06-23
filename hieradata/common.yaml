@@ -282,7 +282,7 @@ metacpan::crons::api:
     # 21:09 < oalders> 02packages gets updated more frequently now, but i'm not sure if
     # it's in real time.  i thought it was every 5 minutes
     latest:
-        cmd : 'latest --force --queue >/dev/null 2>&1'
+        cmd : 'latest --force --queue >/var/log/starman/metacpan-api/latest.log 2>&1'
         minute : 30
         ensure : absent
     backup_favorite:
