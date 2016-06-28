@@ -6,7 +6,7 @@
 #     www:
 #       enable_git_repo: true
 #       path: /home/%{hiera('metacpan::user')}/metacpan.org
-#       source: 'https://github.com/CPAN-API/metacpan-web.git'
+#       source: 'https://github.com/metacpan/metacpan-web.git'
 #       revision: 'master' # optional
 #       owner: 'metacpan' # default
 #       group: 'metacpan' # default

@@ -44,7 +44,7 @@ class metacpan_elasticsearch::instance(
   }
 
 
-  # From: https://github.com/CPAN-API/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
+  # From: https://github.com/metacpan/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
   # For 0.20.x installs
   $config_hash_old = {
     'network.host' => '127.0.0.1',

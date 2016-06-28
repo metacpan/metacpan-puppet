@@ -22,7 +22,7 @@ define metacpan::system::swat (
     metacpan::gitrepo{ "gitrepo_${name}":
       enable_git_repo   => true,
       path              => $path,
-      source            => 'https://github.com/CPAN-API/metacpan-monitoring.git',
+      source            => 'https://github.com/metacpan/metacpan-monitoring.git',
       revision          => $git_revision,
       owner             => $owner,
       group             => $group,
