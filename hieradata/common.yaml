@@ -127,7 +127,7 @@ metacpan::web::starman:
           template: 'trailing_slash'
 
   metacpan-api:
-    git_source: 'https://github.com/metacpan/cpan-api.git'
+    git_source: 'https://github.com/metacpan/metacpan-api.git'
     git_revision: 'master'
     vhost_ssl: true
     vhost_bare: true
