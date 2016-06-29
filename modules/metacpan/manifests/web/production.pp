@@ -4,14 +4,13 @@ class metacpan::web::production(
     $group = hiera('metacpan::group', 'metacpan'),
 ) {
 
-  file { "/home/${user}/metacpan-explorer/app/scripts/github.js":
+  file { "/home/${user}/metacpan-explorer/build/github.js":
       ensure => file,
       owner => $user,
       group => $group,
       source => "puppet:///private/metacpan-explorer/github.js",
       require => Metacpan::Gitrepo['gitrepo_metacpan-explorer'], # after repo created
   }
-
 
   file { "/home/${user}/metacpan-web/metacpan_web_local.conf":
       ensure => file,
