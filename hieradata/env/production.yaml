@@ -24,6 +24,8 @@ metacpan::system::ramdisks:
 metacpan::crons::general:
     metacpan_clean_up_source:
       ensure : present
+    run_puppet:
+      ensure : present
 
 metacpan::web::starman:
   metacpan-web:

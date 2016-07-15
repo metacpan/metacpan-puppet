@@ -226,6 +226,12 @@ metacpan::web::static:
 
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
+    run_puppet:
+      cmd : "/etc/puppet/run.sh >/var/log/puppet/last_run.log 2>&1"
+      minute : 0
+      user: 'root'
+      ensure : absent
+
     backup_api:
       cmd : "rsync -a /home/%{hiera('metacpan::user')}/metacpan-api/var/backup /mnt/backup/api >/dev/null 2>&1"
       hour : 4
