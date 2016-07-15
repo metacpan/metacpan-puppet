@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$USER" != 'root' ]; then
+if [ "$LOGNAME" != 'root' ]; then
 	echo "Must be root";
 	exit 1;
 fi
