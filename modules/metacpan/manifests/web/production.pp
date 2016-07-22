@@ -22,14 +22,5 @@ class metacpan::web::production(
       notify => Starman::Service['metacpan-api'],
   }
 
-  file { "/home/${user}/github-meets-cpan/environment.json":
-      ensure => file,
-      owner => $user,
-      group => $group,
-      source => "puppet:///private/github-meets-cpan/environment.json",
-      require => Metacpan::Gitrepo['gitrepo_github-meets-cpan'], # after repo created
-      notify => Starman::Service['github-meets-cpan'],
-  }
-
 
 }
