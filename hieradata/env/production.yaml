@@ -30,9 +30,6 @@ metacpan::web::starman:
   metacpan-api:
     git_enable: true
     starman_workers: 14
-  github-meets-cpan:
-    git_enable: true
-    starman_workers: 1
 
 metacpan::web::static:
   metacpan-explorer:
