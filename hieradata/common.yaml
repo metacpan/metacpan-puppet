@@ -317,7 +317,7 @@ metacpan::crons::api:
         hour: 3
         ensure : absent
     release:
-        cmd : "release --skip --age 48 --detect_backpan --latest /home/%{hiera('metacpan::user')}/CPAN/authors/id/"
+        cmd : "release --queue --skip --age 48 --detect_backpan --latest /home/%{hiera('metacpan::user')}/CPAN/authors/id/"
         hour : 0
         minute : 5
         ensure : absent
