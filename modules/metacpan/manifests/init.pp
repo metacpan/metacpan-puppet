@@ -39,6 +39,9 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
+    perl::module{ 'App::ElasticSearch::Utilities':
+    }
+
     # Create ramdisks if required
     $ramdisks = hiera_hash('metacpan::system::ramdisks', {})
     create_resources('metacpan::system::ramdisk', $ramdisks)

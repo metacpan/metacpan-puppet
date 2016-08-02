@@ -41,6 +41,8 @@ class metacpan_elasticsearch::instance(
     'ES_GROUP' => 'elasticsearch',
     # Set min/max to the same value (recommended by es).
     'ES_HEAP_SIZE' => $memory,
+    'ES_MIN_MEM' => $memory,
+    'ES_MAX_MEM' => $memory,
   }
 
 

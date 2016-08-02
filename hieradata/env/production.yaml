@@ -10,7 +10,7 @@ exim::relayhost: '*.mailgun.org'
 
 metacpan::carton_args: '--deployment'
 
-metacpan::elasticsearch::memory: '18g'
+metacpan::elasticsearch::memory: '10g'
 
 # Let's have rrr on all machines for now
 # we can setup cpan.mc.org with a failover!
