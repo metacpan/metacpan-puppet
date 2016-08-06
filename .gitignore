@@ -3,4 +3,4 @@ puppet.conf
 ssl/*
 !ssl/vagrant.txt
 puppet.conf.dpkg-dist
-private
+private/*
