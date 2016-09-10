@@ -39,6 +39,10 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
+    # For App::Es::Utils
+    perl::module{ 'Term::ReadKey':
+    }
+
     perl::module{ 'App::ElasticSearch::Utilities':
     }
 
