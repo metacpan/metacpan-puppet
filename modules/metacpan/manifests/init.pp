@@ -39,8 +39,10 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
-    # For App::Es::Utils
+    # For App::Es::Utils, doesn't always install
+    # even via puppet a manual cpanm does work though?!?
     perl::module{ 'Term::ReadKey':
+        version => '2.33'
     }
 
     perl::module{ 'App::ElasticSearch::Utilities':
