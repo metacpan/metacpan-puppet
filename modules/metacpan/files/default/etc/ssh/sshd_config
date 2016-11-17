@@ -23,9 +23,9 @@ SyslogFacility AUTH
 LogLevel INFO
 
 # Authentication:
-LoginGraceTime 120
-MaxAuthTries 1                   # With key auth, we shouldn't need the password prompt.
-PermitRootLogin without-password # Allows root with public keys, but no root with passwords
+LoginGraceTime 30   # Default 120 - Using pubkeys, we don't need long prompts
+MaxAuthTries 1      # Default 6 - Using pubkeys, one is sufficient
+PermitRootLogin no  # Disallow root logins
 StrictModes yes
 
 RSAAuthentication yes
@@ -87,8 +87,6 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
 
-# Allow root to login
-AllowUsers root
 # Only members of the shell access are allowed to attempt authentication.
 AllowGroups shellaccess
-# The default policy when using AllowGroups and AllowUsers is a Deny
+# When AllowGroups is stated, a default DENY policy is applied.
