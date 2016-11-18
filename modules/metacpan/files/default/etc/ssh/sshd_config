@@ -24,7 +24,7 @@ LogLevel INFO
 
 # Authentication:
 LoginGraceTime 30   # Default 120 - Using pubkeys, we don't need long prompts
-MaxAuthTries 1      # Default 6 - Using pubkeys, one is sufficient
+MaxAuthTries 3      # Default 6 - Using pubkeys, one is sufficient
 PermitRootLogin no  # Disallow root logins
 StrictModes yes
 
