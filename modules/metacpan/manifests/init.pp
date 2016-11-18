@@ -77,6 +77,11 @@ class metacpan(
     $api_crons = hiera_hash('metacpan::crons::api', {})
     create_resources('metacpan::cron::api', $api_crons)
 
+    group {
+      'shellaccess':
+        ensure => present;
+    }
+
     file { $tmp_dir:
       ensure => directory,
       owner  => $user,

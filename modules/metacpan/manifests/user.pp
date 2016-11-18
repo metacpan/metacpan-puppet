@@ -21,6 +21,7 @@ define metacpan::user(
           comment    => "$fullname",
           shell      => "$shell",
           provider   => "useradd",
+          groups     => [ "shellaccess" ],
       }->
       file {
         "$path/$user":
