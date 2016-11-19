@@ -1,14 +1,11 @@
 ---
 metacpan::web::starman:
   metacpan-web:
-    enable: false
-    git_enable: true
+    git_enable: false
   metacpan-api:
-    enable: false
-    git_enable: true
+    git_enable: false
   github-meets-cpan:
-    enabled: false
-    git_enable: true
+    git_enable: false
 
 metacpan::elasticsearch::cluster_name: 'meta_log'
 metacpan::elasticsearch::master_nodes: 1
