@@ -1,15 +1,14 @@
 ---
-metacpan::elasticsearch::version: 0.20.2
-
-metacpan::crons::general:
-    backup_api:
-      ensure : present
-
 metacpan::web::starman:
   metacpan-web:
-    git_revision: 'legacy/v0'
+    enable: false
+    git_enable: true
   metacpan-api:
-    git_revision: 'legacy/v0'
+    enable: false
+    git_enable: true
+  github-meets-cpan:
+    enabled: false
+    git_enable: true
 
 metacpan::elasticsearch::cluster_name: 'meta_log'
 metacpan::elasticsearch::master_nodes: 1
