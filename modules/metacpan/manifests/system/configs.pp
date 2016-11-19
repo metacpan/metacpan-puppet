@@ -5,6 +5,14 @@ class metacpan::system::configs {
             source => "puppet:///modules/metacpan/default/etc/resolv.conf",
     }
 
+    # log4perl.conf
+    file { "/etc/log4perl.conf":
+            source => "puppet:///modules/metacpan/default/etc/log4perl.conf",
+            owner   => root,
+            group   => root,
+            mode    => '0644',
+    }
+
     # So many servers, so much noise! - turn it off
     package { apticron: ensure => absent }->
     file { "/etc/apticron/apticron.conf":
