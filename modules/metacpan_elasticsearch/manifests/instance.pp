@@ -46,33 +46,6 @@ class metacpan_elasticsearch::instance(
   }
 
 
-  # From: https://github.com/metacpan/metacpan-puppet/blob/36ea6fc4bacb457a03aa71343fee075a0f7feb97/modules/elasticsearch/templates/config/elasticsearch_yml.erb
-  # For 0.20.x installs
-  $config_hash_old = {
-    'network.host' => '127.0.0.1',
-    'http.port' => '9200',
-
-    'cluster.name' => 'bm',
-    'cluster.routing.allocation.concurrent_recoveries' =>  '2',
-
-    'index.translog.flush_threshold' => '20000',
-
-    'index.search.slowlog.threshold.query.warn' => '10s',
-    'index.search.slowlog.threshold.query.info' => '2s',
-    'index.search.slowlog.threshold.fetch.warn' => '1s',
-
-
-    'gateway.recover_after_nodes' => '1',
-    'gateway.recover_after_time' => '2m',
-    'gateway.expected_nodes' => '1',
-    'gateway.local.compress' => 'false',
-    'gateway.local.pretty' => 'true',
-
-    'action.auto_create_index' => '0',
-
-    'bootstrap.mlockall' => '1',
-  }
-
   $network_host = "['${ipaddress}', 'localhost']";
 
   # As recommended by clinton, for ES 1.4 as a cluster
@@ -168,7 +141,6 @@ class metacpan_elasticsearch::instance(
         }
       }
     }
-    '0.20.2' : { $config_hash = $config_hash_old }
   }
 
   elasticsearch::instance { $instance_name:
