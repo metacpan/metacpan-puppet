@@ -39,7 +39,7 @@ class metacpan_elasticsearch::test_instance(
 
     'gateway.recover_after_nodes' => '1',
     'gateway.recover_after_time' => '2m',
-    'gateway.expected_nodes' => '3',
+    'gateway.expected_nodes' => '1',
 
     # only allow one node to start on each box
     'node.max_local_storage_nodes' => '1',
