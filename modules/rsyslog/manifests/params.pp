@@ -60,7 +60,7 @@ class rsyslog::params {
       $service_name           = 'rsyslog'
       $client_conf            = 'client'
       $server_conf            = 'server'
-      $ssl                    = false
+      $ssl                    = true
       $modules                = [
         '$ModLoad imuxsock # provides support for local system logging',
         '$ModLoad imklog   # provides kernel logging support (previously done by rklogd)',
