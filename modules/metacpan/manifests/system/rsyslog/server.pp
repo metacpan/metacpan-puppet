@@ -1,4 +1,4 @@
-class metacpan::system::rsyslog::myserver(
+class metacpan::system::rsyslog::server(
 
 ) {
 
