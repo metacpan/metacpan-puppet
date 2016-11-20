@@ -1,4 +1,8 @@
 ---
+classes:
+    - metacpan::system::rsyslog::server
+
+
 metacpan::elasticsearch::cluster_name: 'meta_log'
 metacpan::elasticsearch::master_nodes: 1
 metacpan::elasticsearch::expected_nodes: 1

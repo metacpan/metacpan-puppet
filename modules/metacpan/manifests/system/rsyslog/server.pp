@@ -1,8 +1,8 @@
-class metacpan::system::rsyslog::server(
+class metacpan::system::rsyslog::myserver(
 
 ) {
 
-  class { 'rsyslog::server':
+  class { '::rsyslog::server':
     enable_tcp                => true,
     enable_udp                => false,
     enable_relp               => false,

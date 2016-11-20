@@ -1,4 +1,4 @@
-class metacpan::system::rsyslog() {
+class metacpan::system::rsyslog::certs() {
 
 	#
 	file {

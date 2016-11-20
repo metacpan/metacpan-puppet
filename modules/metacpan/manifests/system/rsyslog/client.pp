@@ -1,10 +1,10 @@
 class metacpan::system::rsyslog::client(
-	$log_remote = hiera('metacpan::rsyslog::client::log_remote', false),
-	$server = hiera('metacpan::rsyslog::client::server', 'bm-mc-03.metacpan.org'),
+  $log_remote = hiera('metacpan::rsyslog::client::log_remote', false),
+  $server = hiera('metacpan::rsyslog::client::server', 'bm-mc-03.metacpan.org'),
 ) {
 
-  class { 'rsyslog::client':
-    log_remote                => $log_remote,
+  class { '::rsyslog::client':
+    log_remote                => true,
     spool_size                => '1g',
     spool_timeoutenqueue      => false,
     remote_type               => 'tcp',

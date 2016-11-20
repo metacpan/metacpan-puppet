@@ -1,4 +1,5 @@
-class metacpan::system {
+class metacpan::system(
+) {
 
   include apt
 
@@ -20,7 +21,9 @@ class metacpan::system {
   include metacpan::system::ssh
   include munin::node
   include exim
-  include metacpan::system::rsyslog
+
+
+  include metacpan::system::rsyslog::certs
   include metacpan::system::rsyslog::client
 
 }

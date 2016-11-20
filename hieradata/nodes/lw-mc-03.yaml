@@ -3,7 +3,6 @@
 classes:
     - metacpan_postgres
     - minion_queue
-    - metacpan::system::rsyslog::server
 
 minion_queue::service::workers: 14
 minion_queue::service::ensure: running
