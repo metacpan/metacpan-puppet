@@ -336,6 +336,10 @@ metacpan::crons::api:
 
 
 metacpan::fw_ports:
+  http:
+    order: 210
+    port: 80
+    source: '0.0.0.0/0'
   https:
     order: 210
     port: 443
