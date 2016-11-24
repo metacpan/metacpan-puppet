@@ -12,4 +12,5 @@ metacpan::tmp_dir: "/home/vagrant/tmp"
 metacpan::elasticsearch::cluster_name: 'dev'
 metacpan::elasticsearch::master_nodes: 1
 metacpan::elasticsearch::expected_nodes: 1
+metacpan::elasticsearch::recover_after_nodes: 1
 metacpan::elasticsearch::replicas: 0

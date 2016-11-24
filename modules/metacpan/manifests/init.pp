@@ -39,6 +39,11 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
+    perl::module{ 'Getopt::Long::Descriptive':
+    }
+
+
+
     # For App::Es::Utils, doesn't always install
     # even via puppet a manual cpanm does work though?!?
     perl::module{ 'Term::ReadKey':
