@@ -228,6 +228,14 @@ metacpan::web::static:
 
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
+
+    user_data_index_backups:
+      cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/backups.sh"
+      minute : 0
+      hour: 3
+      user: 'root'
+      ensure : absent
+
     run_puppet:
       cmd : "/etc/puppet/run.sh >/var/log/puppet/last_run.log 2>&1"
       minute : 0
