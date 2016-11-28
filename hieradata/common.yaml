@@ -236,7 +236,7 @@ metacpan::crons::general:
       ensure : absent
 
     user_data_index_backups:
-      cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/backups.sh"
+      cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/cron/backups.sh"
       minute : 0
       hour: 3
       user: 'root'
