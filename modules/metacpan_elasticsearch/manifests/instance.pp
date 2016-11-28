@@ -101,11 +101,11 @@ class metacpan_elasticsearch::instance(
        ensure => 'present',
   }
 
-  # elasticsearch::plugin{'cloud-aws':
-  #   instances  => $instance_name,
-  #      #ensure => 'absent',
-  #      ensure => 'present',
-  # }
+  elasticsearch::plugin{'cloud-aws':
+    instances  => $instance_name,
+       #ensure => 'absent',
+       ensure => 'present',
+  }
 
   elasticsearch::instance { $instance_name:
     config => $config_hash,
