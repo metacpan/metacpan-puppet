@@ -29,10 +29,10 @@ metacpan::crons::general:
       ensure : present
     user_data_index_backups:
       ensure : present
+    import_authors:
+      ensure : present
 
 metacpan::crons::api:
-    author:
-      ensure : present
     ratings:
       ensure : present
     mirrors:

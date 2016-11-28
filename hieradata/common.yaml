@@ -229,6 +229,12 @@ metacpan::web::static:
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
 
+    import_authors:
+      cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/cron/author.sh"
+      minute : 0
+      user: "%{hiera('metacpan::user')}"
+      ensure : absent
+
     user_data_index_backups:
       cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/backups.sh"
       minute : 0
@@ -275,6 +281,7 @@ metacpan::crons::general:
 
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::api:
+    # Remvoe author - now in wrapper script in general
     author:
         cmd : author
         minute : 0
