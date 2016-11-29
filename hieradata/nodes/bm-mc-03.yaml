@@ -16,3 +16,7 @@ metacpan::fw_ports:
     order: 120
     port: 514
     source: '0.0.0.0/0'
+
+metacpan::web::starman:
+  metacpan-web:
+    git_revision: 'stage'
