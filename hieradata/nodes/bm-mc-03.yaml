@@ -20,3 +20,6 @@ metacpan::fw_ports:
 metacpan::web::starman:
   metacpan-web:
     git_revision: 'stage'
+
+rsyslog::extra_modules:
+    - "omprog"
