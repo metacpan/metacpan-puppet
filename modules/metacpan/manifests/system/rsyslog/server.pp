@@ -22,5 +22,21 @@ class metacpan::system::rsyslog::server(
     rotate                    => undef
   }
 
+  # Grab the Perl version in use
+  $perl_version = hiera('perl::version', '5.22.2')
+
+  # Perl Modules for the eris logging system
+  perl::module {
+    [
+      'eris', 'POE::Component::Client::eris', 'POE::Component::Server::eris'
+    ]:
+  }
+
+  # Enable the dispatcher
+  rsyslog::snippet {
+    'eris-dispatcher':
+      content => "\$ActionOMProgBinary /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n*.* :omprog:\n",
+      require => Perl::Module["POE::Component::Server::eris"];
+  }
 }
 
