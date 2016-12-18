@@ -86,7 +86,7 @@ metacpan::watcher::enable: false
 metacpan::rrrclient::enable: false
 
 # Elasticsearch basic options
-metacpan::elasticsearch::version: 2.4.0
+metacpan::elasticsearch::version: 2.4.3
 metacpan::elasticsearch::memory: '40m'
 metacpan::elasticsearch::datadir: '/mnt/lv-elasticsearch'
 
