@@ -97,7 +97,12 @@ class metacpan_elasticsearch::instance(
 
   elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
     instances  => $instance_name,
-       #ensure => 'absent',
+       #ensure => 'absent'
+       ensure => 'present',
+  }
+
+  elasticsearch::plugin{'royrusso/elasticsearch-HQ':
+    instances  => $instance_name,
        ensure => 'present',
   }
 
