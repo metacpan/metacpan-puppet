@@ -8,6 +8,8 @@ metacpan::elasticsearch::master_nodes: 1
 metacpan::elasticsearch::expected_nodes: 1
 metacpan::elasticsearch::replicas: 0
 metacpan::elasticsearch::recover_after_nodes: 1
+metacpan::elasticsearch::cluster_hosts:
+  - 46.43.35.68 # bm-mc-03
 
 metacpan::rsyslog::client::log_remote: true
 
