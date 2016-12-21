@@ -33,6 +33,10 @@ metacpan::crons::general:
       ensure : present
 
 metacpan::crons::api:
+    snapshot_cpan_index:
+      ensure : present
+    snapshot_user_index:
+      ensure : present
     ratings:
       ensure : present
     mirrors:
