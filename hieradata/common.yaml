@@ -309,12 +309,12 @@ metacpan::crons::api:
         minute : 30
         ensure : absent
     snapshot_cpan_index:
-        cmd : snapshot --snap --indices 'cpan' --snap-stub cpan --date-format '%Y-%m-%d'
+        cmd : snapshot --snap --indices 'cpan' --snap-stub cpan --date-format '\%Y-\%m-\%d'
         hour : 2
         minute : 30
         ensure : absent
     snapshot_user_index:
-        cmd : ./bin/run bin/metacpan snapshot --snap --indices 'user' --snap-stub user --date-format '%Y-%m-%d-%H'
+        cmd : snapshot --snap --indices 'user' --snap-stub user --date-format '\%Y-\%m-\%d-\%H'
         minute : 5
         ensure : absent
     backup_favorite:
