@@ -4,7 +4,8 @@ define nginx::vhost(
         $ssl = $ssl_only,
         $bare = false,
         $autoindex = false,
-	      $aliases,
+	    $aliases,
+        $allowed = hiera('nginx::allowed', []),
 ) {
         include nginx
 

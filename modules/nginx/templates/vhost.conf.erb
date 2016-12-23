@@ -29,6 +29,15 @@ server {
   }
   <% end %>
 
+  <%- if @allowed.size > 0 -%>
+  # Allowed access
+
+  <%- @allowed.each do |cidr| -%>
+   allow <%= cidr %>;
+   <%- end -%>
+   deny all;
+  <%- end -%>
+
   include conf.d/<%= @name %>.d/*.conf;
 }
 <% end %>
@@ -71,6 +80,15 @@ server {
     <% if @autoindex %>autoindex on;<% end %>
   }
   <% end %>
+
+  <%- if @allowed.size > 0 -%>
+  # Allowed access
+
+  <%- @allowed.each do |cidr| -%>
+   allow <%= cidr %>;
+   <%- end -%>
+   deny all;
+  <%- end -%>
 
   include conf.d/<%= @name %>.d/*.conf;
 
