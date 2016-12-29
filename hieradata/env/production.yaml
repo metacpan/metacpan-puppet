@@ -102,4 +102,7 @@ metacpan::users:
     brad:
         admin    : true
         fullname : "Brad Lhotsky <brad.lhotsky@gmail.com>"
+    jberger:
+        admin    : true
+        fullname : "Joel Berger <joel.a.berger@gmail.com>"
 
