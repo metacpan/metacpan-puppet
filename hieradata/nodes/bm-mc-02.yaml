@@ -1,44 +1,14 @@
 ---
-classes:
-    - metacpan_postgres
 
-metacpan::elasticsearch::version: 0.20.2
-
-# We want watcher enabled
-metacpan::watcher::enable: true
-
-metacpan::crons::general:
-    backup_api:
-      ensure : present
+metacpan::elasticsearch::cluster_name: 'stage'
+metacpan::elasticsearch::master_nodes: 1
+metacpan::elasticsearch::expected_nodes: 1
+metacpan::elasticsearch::replicas: 0
+metacpan::elasticsearch::recover_after_nodes: 1
+metacpan::elasticsearch::cluster_hosts:
+  - 5.153.225.20 # bm-mc-02
 
 metacpan::web::starman:
   metacpan-web:
-    git_revision: 'legacy/v0'
-  metacpan-api:
-    git_revision: 'legacy/v0'
+    git_revision: 'stage'
 
-metacpan::crons::api:
-    author:
-      ensure : present
-    ratings:
-      ensure : present
-    mirrors:
-      ensure : present
-    cpantesters:
-      ensure : present
-    latest:
-      ensure : present
-    backup_favorite:
-      ensure : present
-    backup_author:
-      ensure : present
-    backup_user:
-      ensure : present
-    backup_purge:
-      ensure : present
-    session:
-      ensure : present
-    release:
-      ensure : present
-    tickets:
-      ensure : present
