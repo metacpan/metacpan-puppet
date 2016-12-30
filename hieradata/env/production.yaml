@@ -28,6 +28,9 @@ metacpan::crons::general:
       ensure : present
 
 metacpan::web::starman:
+  api-v0-shim:
+    git_enable: true
+    starman_workers: 2
   metacpan-web:
     git_enable: true
     starman_workers: 10
