@@ -11,4 +11,5 @@ metacpan::elasticsearch::cluster_hosts:
 metacpan::web::starman:
   metacpan-web:
     git_revision: 'stage'
-
+  metacpan-api:
+    git_revision: 'master'
