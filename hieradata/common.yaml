@@ -323,7 +323,8 @@ metacpan::crons::api:
         minute : 30
         ensure : absent
     snapshot_user_index:
-        cmd : snapshot --snap --indices 'user' --snap-stub user --date-format '\%Y-\%m-\%d-\%H'
+        cmd : snapshot --snap --indices 'user' --snap-stub user --date-format '\%Y-\%m-\%d'
+        hour : 2
         minute : 5
         ensure : absent
     backup_favorite:
