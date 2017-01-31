@@ -51,4 +51,11 @@ class metacpan_postgres::user(
 		require => "Postgresql::Server::Role[$user]",
 	}
 
+	# Create one for playing with, same name as user
+	postgresql::server::database { $user:
+		owner 			   => $user,
+		require => "Postgresql::Server::Role[$user]",
+	}
+
+
 }
