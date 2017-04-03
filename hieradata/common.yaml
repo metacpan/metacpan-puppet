@@ -357,6 +357,11 @@ metacpan::crons::api:
         hour : 0
         minute : 5
         ensure : absent
+    # PAUSE updates this file every 5 minutes. For now we'll refresh it every 10.
+    permission:
+        cmd : permission
+        minute : '*/10'
+        ensure : absent
     tickets:
         cmd : tickets
         minute : 12
