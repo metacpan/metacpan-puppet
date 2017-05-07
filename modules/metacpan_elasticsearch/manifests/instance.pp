@@ -101,10 +101,10 @@ class metacpan_elasticsearch::instance(
        ensure => 'present',
   }
 
-  elasticsearch::plugin{'royrusso/elasticsearch-HQ':
-    instances  => $instance_name,
-       ensure => 'present',
-  }
+  # elasticsearch::plugin{'royrusso/elasticsearch-HQ':
+  #   instances  => $instance_name,
+  #      ensure => 'present',
+  # }
 
   elasticsearch::plugin{'cloud-aws':
     instances  => $instance_name,
