@@ -358,8 +358,8 @@ metacpan::crons::api:
         minute : 5
         ensure : absent
     # PAUSE updates these files every 5 minutes. For now we'll refresh it every 10.
-    packages:
-        cmd : packages
+    package:
+        cmd : package
         minute : '*/10'
         ensure : absent
     permission:

@@ -51,7 +51,7 @@ metacpan::crons::api:
       ensure : present
     release:
       ensure : present
-    packages:
+    package:
       ensure : present
     permission:
       ensure : present
