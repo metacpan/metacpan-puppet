@@ -13,3 +13,9 @@ metacpan::web::starman:
     git_revision: 'stage'
   metacpan-api:
     git_revision: 'master'
+
+metacpan::users:
+    toddr:
+        fullname : "Todd <toddr@cpan.org>"
+    atoomic:
+        fullname : "Atoomic <atoomic@cpan.org>"
