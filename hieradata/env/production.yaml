@@ -29,6 +29,12 @@ metacpan::crons::general:
 
 metacpan::web::starman:
   api-v0-shim:
+    git_source: 'https://github.com/metacpan/metacpan-api-v0-shim.git'
+    git_revision: 'master'
+    vhost_bare: true
+    vhost_aliases:
+      - 'api-v0-shim.metacpan.org'
+    starman_port: 5003
     git_enable: true
     starman_workers: 2
   metacpan-web:
