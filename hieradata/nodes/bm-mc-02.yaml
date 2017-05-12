@@ -12,7 +12,7 @@ metacpan::web::starman:
   metacpan-web:
     git_revision: 'stage'
   metacpan-api:
-    git_revision: 'master'
+    git_revision: 'stage'
 
 metacpan::users:
     toddr:
