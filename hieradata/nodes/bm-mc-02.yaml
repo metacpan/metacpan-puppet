@@ -31,4 +31,4 @@ metacpan::web::starman:
     vhost_aliases:
       - 'grep.metacpan.org'
     starman_port: 5006
-    starman_workers: 10
+    starman_workers: 20
