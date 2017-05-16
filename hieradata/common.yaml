@@ -352,8 +352,9 @@ metacpan::crons::api:
     package:
         cmd : package
         minute : '*/10'
-        hour: ['1-23']
+        hour: '1-23'
         ensure : absent
+    # Run the full package cleanup - can take half an hour
     package_cleanup:
         cmd : 'package --clean_up'
         minute : 0
@@ -362,8 +363,9 @@ metacpan::crons::api:
     permission:
         cmd : permission
         minute : '*/10'
-        hour: ['1-23']
+        hour: '1-23'
         ensure : absent
+    # Run the full permissions cleanup - can take half an hour
     permission_cleanup:
         cmd : 'permission --clean_up'
         minute : 0
