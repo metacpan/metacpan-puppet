@@ -53,7 +53,11 @@ metacpan::crons::api:
       ensure : present
     package:
       ensure : present
+    package_cleanup:
+      ensure : present
     permission:
+      ensure : present
+    permission_cleanup:
       ensure : present
     tickets:
       ensure : present

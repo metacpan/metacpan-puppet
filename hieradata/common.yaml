@@ -352,10 +352,22 @@ metacpan::crons::api:
     package:
         cmd : package
         minute : '*/10'
+        hour: ['1-23']
+        ensure : absent
+    package_cleanup:
+        cmd : 'package --clean_up'
+        minute : 0
+        hour: 0
         ensure : absent
     permission:
         cmd : permission
         minute : '*/10'
+        hour: ['1-23']
+        ensure : absent
+    permission_cleanup:
+        cmd : 'permission --clean_up'
+        minute : 0
+        hour: 0
         ensure : absent
     tickets:
         cmd : tickets
