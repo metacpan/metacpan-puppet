@@ -32,3 +32,13 @@ metacpan::web::starman:
       - 'grep.metacpan.org'
     starman_port: 5006
     starman_workers: 20
+
+metacpan::git::repo:
+
+  metacpan-cpan-extracted:
+    enable_git_repo: true
+    source: 'https://github.com/metacpan/metacpan-cpan-extracted.git'
+    revision: 'master'
+    path: '/mnt/lv-ssdscratch/metacpan-cpan-extracted'
+    owner: 'toddr'
+    group: 'toddr'

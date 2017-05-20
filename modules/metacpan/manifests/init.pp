@@ -82,6 +82,10 @@ class metacpan(
     $api_crons = hiera_hash('metacpan::crons::api', {})
     create_resources('metacpan::cron::api', $api_crons)
 
+    # Git checkouts
+    $git_repos = hiera_hash('metacpan::git::repo', {})
+    create_resources('metacpan::gitrepo', $git_repos)
+
     group {
       'shellaccess':
         ensure => present;

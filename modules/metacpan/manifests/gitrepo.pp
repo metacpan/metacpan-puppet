@@ -11,6 +11,16 @@
 #       owner: 'metacpan' # default
 #       group: 'metacpan' # default
 #
+# Or for just a git repo
+#
+# metacpan::git::repo:
+#    metacpan-cpan-extracted:
+#      enable_git_repo: true
+#      source: 'https://github.com/metacpan/metacpan-cpan-extracted.git'
+#      revision: 'master'
+#      path: '/mnt/lv-ssdscratch/metacpan-cpan-extracted'
+#      owner: 'toddr'
+#      group: 'toddr'
 #
 define metacpan::gitrepo (
     $ensure = present, # set to latest to force
