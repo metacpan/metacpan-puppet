@@ -381,6 +381,16 @@ metacpan::crons::api:
         minute : 30
         hour : 1
         ensure : absent
+    external_debian:
+        cmd : 'external --external_source debian'
+        minute : 30
+        hour : 2
+        ensure : absent
+    external_cygwin:
+        cmd : 'external --external_source cygwin'
+        minute : 0
+        hour : 3
+        ensure : absent
 
 
 metacpan::fw_ports:
