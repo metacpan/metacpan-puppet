@@ -382,12 +382,12 @@ metacpan::crons::api:
         hour : 1
         ensure : absent
     external_debian:
-        cmd : 'external --external_source debian'
+        cmd : 'external --external_source debian --email_to book@cpan.org'
         minute : 30
         hour : 2
         ensure : absent
     external_cygwin:
-        cmd : 'external --external_source cygwin'
+        cmd : 'external --external_source cygwin --email_to book@cpan.org'
         minute : 0
         hour : 3
         ensure : absent
