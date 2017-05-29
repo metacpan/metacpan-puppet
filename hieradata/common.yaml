@@ -381,14 +381,19 @@ metacpan::crons::api:
         minute : 30
         hour : 1
         ensure : absent
-    external_debian:
-        cmd : 'external --external_source debian --email_to book@cpan.org'
+    external_cygwin:
+        cmd : 'external --external_source cygwin --email_to book@cpan.org'
         minute : 30
         hour : 2
         ensure : absent
-    external_cygwin:
-        cmd : 'external --external_source cygwin --email_to book@cpan.org'
+    external_debian:
+        cmd : 'external --external_source debian --email_to book@cpan.org'
         minute : 0
+        hour : 3
+        ensure : absent
+    external_fedora:
+        cmd : 'external --external_source fedora --email_to book@cpan.org'
+        minute : 30
         hour : 3
         ensure : absent
 
