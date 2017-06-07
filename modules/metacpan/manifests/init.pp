@@ -39,6 +39,9 @@ class metacpan(
     perl::module{ 'Code::TidyAll::Plugin::PerlTidy':
     }
 
+    perl::module{ 'Code::TidyAll::Plugin::Test::Vars':
+    }
+
     perl::module{ 'Getopt::Long::Descriptive':
     }
 
