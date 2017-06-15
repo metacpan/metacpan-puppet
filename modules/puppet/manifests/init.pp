@@ -7,7 +7,7 @@ class puppet::client {
 		"/etc/puppet/puppet.conf":
 			owner   => "root",
 			group   => "root",
-			mode    => 644,
+			mode    => '0644',
 			content => template("puppet/puppet.conf"),
 	}
 

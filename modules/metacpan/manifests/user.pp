@@ -81,13 +81,13 @@ define metacpan::user(
           file{ "$path/$user/.ssh":
               owner  => $user,
               group  => $user,
-              mode   => 0700,
+              mode   => '0700',
               ensure => directory,
           }->
           file { "$path/$user/.ssh/authorized_keys":
               owner => $user,
               group => $user,
-              mode  => 0600,
+              mode  => '0600',
               source => [
                       "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
                       "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
@@ -105,7 +105,7 @@ define metacpan::user(
               "/etc/sudoers.d/$user":
                 owner => "root",
                 group => "root",
-                mode => "440",
+                mode => '0440',
                 content => "$user  ALL = NOPASSWD: ALL";
             }
 
@@ -117,7 +117,7 @@ define metacpan::user(
                 "/etc/sudoers.d/$user":
                   owner => "root",
                   group => "root",
-                  mode => "440",
+                  mode => '0440',
                   content => "$user   ALL = (ALL) ALL";
               }
 

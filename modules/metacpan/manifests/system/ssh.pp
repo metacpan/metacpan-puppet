@@ -5,7 +5,7 @@ class metacpan::system::ssh {
   file {
     "/etc/ssh/sshd_config":
       source => "puppet:///modules/metacpan/default/etc/ssh/sshd_config",
-      mode   => 0444,
+      mode   => '0444',
       owner  => root,
       group  => root,
       notify => Service['ssh'];

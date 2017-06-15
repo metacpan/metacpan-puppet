@@ -14,7 +14,7 @@ class metacpan::watcher(
 
 	file { $init:
 		content => template("metacpan/init_watcher.erb"),
-		mode    => 0755,
+		mode    => '0755',
 	}
 
 	service { "metacpan-watcher":

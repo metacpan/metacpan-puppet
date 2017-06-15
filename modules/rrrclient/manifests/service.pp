@@ -15,7 +15,7 @@ define rrrclient::service(
 
     file { "/etc/init.d/$filename":
         ensure => file,
-        mode   => 0755,
+        mode   => '0755',
         content => template("rrrclient/init.erb"),
         require => File[$cpan_mirror],
     }
