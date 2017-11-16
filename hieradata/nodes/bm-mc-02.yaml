@@ -8,6 +8,8 @@ metacpan::elasticsearch::recover_after_nodes: 1
 metacpan::elasticsearch::cluster_hosts:
   - 5.153.225.20 # bm-mc-02
 
+metacpan::rsyslog::client::log_remote: true
+
 metacpan::web::starman:
   metacpan-web:
     git_revision: 'stage'
