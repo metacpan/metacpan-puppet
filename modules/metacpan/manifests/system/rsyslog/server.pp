@@ -7,7 +7,7 @@ class metacpan::system::rsyslog::server(
     enable_udp                => false,
     enable_relp               => false,
     enable_onefile            => false,
-    server_dir                => '/tmp/rsyslog_server/',
+    server_dir                => '/mnt/lv-metacpan--tmp/rsyslog_server/',
     custom_config             => undef,
     port                      => '514',
 #    relp_port                 => '20514',
