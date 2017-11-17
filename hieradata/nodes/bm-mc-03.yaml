@@ -12,8 +12,6 @@ metacpan::elasticsearch::recover_after_nodes: 1
 metacpan::elasticsearch::cluster_hosts:
   - 46.43.35.68 # bm-mc-03
 
-metacpan::rsyslog::client::log_remote: true
-
 metacpan::fw_ports:
   rsyslog:
     order: 120

@@ -14,3 +14,5 @@ metacpan::postgres::access_hosts:
 metacpan::elasticsearch::ipaddress: "%{::ipaddress}"
 
 metacpan::logstash::status: 'enabled'
+
+metacpan::rsyslog::client::log_remote: true
