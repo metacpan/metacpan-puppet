@@ -8,7 +8,7 @@ class metacpan::system::rsyslog::server(
     enable_relp               => false,
     enable_onefile            => false,
     server_dir                => '/mnt/lv-metacpan--tmp/rsyslog_server/',
-    custom_config             => undef,
+    custom_config             => 'metacpan/rsyslog/server-metacpan.conf.erb',
     port                      => '514',
 #    relp_port                 => '20514',
     address                   => '*',
@@ -32,11 +32,12 @@ class metacpan::system::rsyslog::server(
     ]:
   }
 
-  # Enable the dispatcher
-  rsyslog::snippet {
-    'eris-dispatcher':
-      content => "\$ActionOMProgBinary /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n*.* :omprog:\n",
-      require => Perl::Module["POE::Component::Server::eris"];
+  # Install the wrapper to get the write Perl's
+  file {
+    "/usr/local/sbin/rsyslog-eris-bridge":
+      content => "#!/bin/sh\n/opt/perl-$perl_version/bin/perl /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n"
+      mode    => "0555",
+      notify  =>  Service['rsyslog'];
   }
 }
 
