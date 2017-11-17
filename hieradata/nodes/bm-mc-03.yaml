@@ -1,6 +1,7 @@
 ---
 classes:
     - metacpan::system::rsyslog::server
+    - metacpan_kibana
 
 
 metacpan::elasticsearch::cluster_name: 'meta_log'
