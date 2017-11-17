@@ -78,3 +78,6 @@ metacpan::users:
     # David Cantrell needs access for cpxxxan and cpan deps (rsync)
     davidc:
         fullname : "David Cantrell <david@cantrell.org.uk>"
+    brad:
+        fullname : "Brad Lhotsky <brad.lhotsky@gmail.com>"
+        admin    : true
