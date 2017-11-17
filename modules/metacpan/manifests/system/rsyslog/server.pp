@@ -35,8 +35,8 @@ class metacpan::system::rsyslog::server(
   # Install the wrapper to get the write Perl's
   file {
     "/usr/local/sbin/rsyslog-eris-bridge":
-      content => "#!/bin/sh\n/opt/perl-$perl_version/bin/perl /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n"
-      mode    => "0555",
+      content => "#!/bin/sh\n/opt/perl-$perl_version/bin/perl /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n",
+      mode    => '0555',
       notify  =>  Service['rsyslog'];
   }
 }
