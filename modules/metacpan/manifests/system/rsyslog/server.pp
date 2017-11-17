@@ -28,8 +28,12 @@ class metacpan::system::rsyslog::server(
   # Perl Modules for the eris logging system
   perl::module {
     [
-      'eris', 'POE::Component::Client::eris', 'POE::Component::Server::eris'
+      'POE::Component::Client::eris', 'POE::Component::Server::eris'
     ]:
+  }
+  perl::module {
+    'eris':
+      version =>  '0.004';
   }
 
   # Install the wrapper to get the write Perl's
