@@ -1,1 +1,2 @@
 ---
+metacpan::rsyslog::client::log_remote: true
