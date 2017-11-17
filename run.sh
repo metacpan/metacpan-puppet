@@ -35,4 +35,4 @@ else
     exit
 fi
 
-puppet apply --verbose --show_diff --certname=$CERTNAME manifests/site.pp
+puppet apply --show_diff --certname=$CERTNAME manifests/site.pp
