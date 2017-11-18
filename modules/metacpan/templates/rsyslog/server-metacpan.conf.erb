@@ -39,7 +39,8 @@ $Template dynAllMessages,"<%= scope.lookupvar('rsyslog::server::server_dir') -%>
 
 # Send to the eris system
 $ActionOMProgBinary /usr/local/sbin/rsyslog-eris-bridge
-*.*  :omprog:;RSYSLOG_ForwardFormat
+$template RFC3164fmt,"<%= '<%PRI%' + '>%TIMESTAMP% %HOSTNAME% %syslogtag%%msg%' %>\n"
+*.*  :omprog:;RFC3164fmt
 
 <% # Common footer across all templates -%>
 <%= scope.function_template(['rsyslog/server/_default-footer.conf.erb']) %>
