@@ -37,6 +37,8 @@ metacpan::crons::api:
       ensure : present
     snapshot_user_index:
       ensure : present
+    snapshot_purge_old:
+      ensure : present
     ratings:
       ensure : present
     mirrors:

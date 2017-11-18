@@ -318,6 +318,11 @@ metacpan::crons::api:
         hour : 2
         minute : 5
         ensure : absent
+    snapshot_purge_old:
+        cmd : snapshot --snap --purge-old'
+        hour : 3
+        minute : 10
+        ensure : absent
     backup_favorite:
         cmd : 'backup --index cpan --type favorite'
         hour : 2
