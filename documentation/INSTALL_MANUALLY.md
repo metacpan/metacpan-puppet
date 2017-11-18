@@ -5,7 +5,7 @@ We strongly recommend using our [Virtual machine](https://github.com/metacpan/me
 # Install Debian stable (7.6)
     Base iso from http://www.debian.org/distrib/
 
-# Setup puppet
+# Set up puppet
 
 To do the pre-Puppet install in one step, run this command from somewhere other
 than /etc/puppet and then skip to the "To Run" section below:

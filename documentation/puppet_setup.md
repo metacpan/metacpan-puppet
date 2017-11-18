@@ -1,6 +1,6 @@
 # puppet configuration
 
-How is this puppet repository setup?..
+How is this puppet repository set up?..
 
 ## Where do I start with looking in puppet?
 
