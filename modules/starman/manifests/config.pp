@@ -25,11 +25,4 @@ class starman::config (
         require => File[ $starman_tmp_dir ],
     }
 
-    file { "/etc/logrotate.d/${basename}":
-        ensure  => file,
-        content => template("${module_name}/logrotate.conf.erb"),
-        # logrotate requires these to be owned by root.
-        owner   => 'root',
-        group   => 'root',
-    }
 }
