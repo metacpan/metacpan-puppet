@@ -15,6 +15,8 @@ define starman::service (
     $perlbin   = $perl::params::bin_dir
     $plack_env = $starman::config::plack_env
 
+    $init     = "/etc/init.d/${service_name}"
+
     if $starman::config::link_dirs {
         $link_root = "${root}/var"
         $log_dir   = "${starman::config::log_dir}/${name}"
@@ -64,9 +66,19 @@ define starman::service (
             before => Service[$service_name],
         }
 
+        logrotate::rule { $service_name:
+          path         => "${log_dir}/*.log",
+          copytruncate => true,
+          missingok    => true,
+          rotate_every => 'day',
+          rotate       => '7',
+          compress     => true,
+          ifempty      => true,
+          postrotate => "${init} reload"
+        }
+
     }
 
-    $init     = "/etc/init.d/${service_name}"
 
     file { $init:
         ensure  => file,
@@ -89,4 +101,5 @@ define starman::service (
           Carton::Run[$name]
         ],
     }
+
 }
