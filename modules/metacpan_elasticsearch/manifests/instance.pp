@@ -12,7 +12,8 @@ class metacpan_elasticsearch::instance(
   $minimum_master_nodes = hiera('metacpan::elasticsearch::master_nodes',2),
   $recover_after_nodes  = hiera('metacpan::elasticsearch::recover_after_nodes',3),
   $recover_after_time   = hiera('metacpan::elasticsearch::recover_after_time','3m'),
-  $expected_nodes   = hiera('metacpan::elasticsearch::expected_nodes','3'),
+  $expected_nodes       = hiera('metacpan::elasticsearch::expected_nodes','3'),
+  $auto_create_indexes  = hiera('metacpan::elasticsearch::auto_create_indexes','.marvel-*,logstash-*'),
 ) {
 
   $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
@@ -91,7 +92,7 @@ class metacpan_elasticsearch::instance(
     'marvel.agent.interval' => '60s',
 
     # Let marvel auto create indexes, but nothing else
-    'action.auto_create_index' => '.marvel-*,logstash-*',
+    'action.auto_create_index' => $auto_create_indexes,
 
   }
 
