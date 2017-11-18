@@ -34,7 +34,7 @@ firewall { "002 accept all to lo interface":
 ->
 firewall { "010 allow ssh access":
   ensure  => present,
-  port    => [ 22 ],
+  dport   => [ 22 ],
   proto   => tcp,
   action  => 'accept',
   source  => '0.0.0.0/0', # anywhere
