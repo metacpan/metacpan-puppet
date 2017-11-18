@@ -39,7 +39,7 @@ $Template dynAllMessages,"<%= scope.lookupvar('rsyslog::server::server_dir') -%>
 
 # Send to the eris system
 $ActionOMProgBinary /usr/local/sbin/rsyslog-eris-bridge
-*.*  :omprog:
+*.*  :omprog:;RSYSLOG_ForwardFormat
 
 <% # Common footer across all templates -%>
 <%= scope.function_template(['rsyslog/server/_default-footer.conf.erb']) %>

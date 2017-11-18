@@ -11,6 +11,7 @@ metacpan::elasticsearch::replicas: 0
 metacpan::elasticsearch::recover_after_nodes: 1
 metacpan::elasticsearch::cluster_hosts:
   - 46.43.35.68 # bm-mc-03
+metacpan::elasticsearch::auto_create_indexes: 'syslog-*,app-*,access-*'
 
 metacpan::fw_ports:
   rsyslog:
