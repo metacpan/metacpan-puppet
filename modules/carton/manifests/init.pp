@@ -5,4 +5,7 @@ class carton() {
   	version => 'v1.0.22'
   }
 
+  perl::module{ 'App::cpm':
+  }
+
 }
