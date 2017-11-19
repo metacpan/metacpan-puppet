@@ -295,7 +295,7 @@ metacpan::crons::api:
         minute : 0
         ensure : absent
     cpantesters:
-        cmd : cpantesters
+        cmd : cpantestersapi
         hour : '*/6'
         minute : 42
         ensure : absent
