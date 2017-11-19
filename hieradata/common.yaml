@@ -231,27 +231,27 @@ metacpan::crons::general:
 
     import_authors:
       cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/cron/author.sh"
-      minute : 0
+      minute : 40
       user: "%{hiera('metacpan::user')}"
       ensure : absent
 
     user_data_index_backups:
       cmd : "/home/%{hiera('metacpan::user')}/metacpan-api/bin/cron/backups.sh"
-      minute : 0
+      minute : 35
       hour: 3
       user: 'root'
       ensure : absent
 
     run_puppet:
       cmd : "/etc/puppet/run.sh >/var/log/puppet/last_run.log 2>&1"
-      minute : 0
+      minute : 55
       user: 'root'
       ensure : absent
 
     backup_api:
       cmd : "rsync -a /home/%{hiera('metacpan::user')}/metacpan-api/var/backup /mnt/backup/api >/dev/null 2>&1"
       hour : 4
-      minute : 0
+      minute : 50
       ensure : absent
 
     metacpan_clean_up_source:
@@ -274,7 +274,7 @@ metacpan::crons::general:
 
     swat_monitoring:
       cmd : "/bin/sh /home/%{hiera('metacpan::user')}/metacpan-monitoring/cron.sh"
-      minute : '0'
+      minute : 37
       ensure : absent
 
 
@@ -284,7 +284,7 @@ metacpan::crons::api:
     # Remvoe author - now in wrapper script in general
     author:
         cmd : author
-        minute : 0
+        minute : 51
         ensure : absent
     ratings:
         cmd : ratings
@@ -292,10 +292,10 @@ metacpan::crons::api:
         ensure : absent
     mirrors:
         cmd : mirrors
-        minute : 0
+        minute : 7
         ensure : absent
     cpantesters:
-        cmd : cpantesters
+        cmd : cpantestersapi
         hour : '*/6'
         minute : 42
         ensure : absent
@@ -388,17 +388,17 @@ metacpan::crons::api:
         ensure : absent
     external_cygwin:
         cmd : 'external --external_source cygwin --email_to book@cpan.org'
-        minute : 30
+        minute : 31
         hour : 2
         ensure : absent
     external_debian:
         cmd : 'external --external_source debian --email_to book@cpan.org'
-        minute : 0
+        minute : 33
         hour : 3
         ensure : absent
     external_fedora:
         cmd : 'external --external_source fedora --email_to book@cpan.org'
-        minute : 30
+        minute : 35
         hour : 3
         ensure : absent
 
