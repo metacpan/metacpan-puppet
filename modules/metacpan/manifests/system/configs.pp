@@ -29,7 +29,7 @@ class metacpan::system::configs {
 
     # make logrotate use dateext for all logs
     # speeds up backups because file names don't change
-    include logrotate::base
+    #include logrotate::base
     file { "/etc/logrotate.d/dateext":
             content => "dateext",
             require => Package["logrotate"],

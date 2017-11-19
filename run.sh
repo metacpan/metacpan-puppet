@@ -25,6 +25,7 @@ if [ ! -e "puppet.conf" ]
   then
     echo "[main]" >> puppet.conf
     echo "parser=future" >> puppet.conf
+    echo "basemodulepath=/etc/puppet/modules/contrib:/etc/puppet/modules/metacpan" >> puppet.conf
 fi
 
 if grep -Fq "parser=future" puppet.conf
