@@ -2,7 +2,7 @@
 
 # Brute force Puppet module upgrades
 
-PUPPET="puppet module install --force --modulepath /etc/puppet/modules"
+PUPPET="puppet module install --force --modulepath /etc/puppet/contrib-modules"
 
 declare -a arr=("apt" "concat" "firewall" "java" "nginx" "nodejs" "postgresql" "stdlib" "vcsrepo")
 
@@ -21,5 +21,5 @@ $PUPPET elastic-logstash
 $PUPPET ssm-munin
 $PUPPET saz-rsyslog
 $PUPPET bashtoni-timezone
-$PUPPET ceritsc-yum
 $PUPPET puppet-logrotate
+$PUPPET puppet-yum
