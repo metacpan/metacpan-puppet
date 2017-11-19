@@ -1,242 +1,322 @@
-# puppet-logstash
+# elastic/logstash
 
 A Puppet module for managing and configuring [Logstash](http://logstash.net/).
 
-[![Build Status](https://travis-ci.org/elasticsearch/puppet-logstash.png?branch=master)](https://travis-ci.org/elasticsearch/puppet-logstash)
+[![Build Status](https://travis-ci.org/elastic/puppet-logstash.png?branch=master)](https://travis-ci.org/elastic/puppet-logstash)
 
-## Versions
+## Logstash Versions
 
-This overview shows you which Puppet module and Logstash version work together.
-
-    ------------------------------------
-    | Puppet module | Logstash         |
-    ------------------------------------
-    | 0.0.1 - 0.1.0 | 1.1.9            |
-    ------------------------------------
-    | 0.2.0         | 1.1.10           |
-    ------------------------------------
-    | 0.3.0 - 0.3.4 | 1.1.12 - 1.1.13  |
-    ------------------------------------
-    | 0.4.0 - 0.4.2 | 1.2.x - 1.3.x    |
-    ------------------------------------
-    | 0.5.0 - 1.5.1 | 1.4.1            |
-    ------------------------------------
-
-## Important notes
-
-### 0.4.0
-
-Please note that this a **backwards compatability breaking release**: in particular, the *[plugin](#Plugins)* syntax system has been removed entirely in favour of config files.
-
-If you need any help please see the [support](#Support) section.
-
+This module, "elastic/logstash" supports only Logstash 5.x and 6.x. For earlier
+Logstash versions, support is provided by the legacy module
+"elasticsearch/logstash".
 
 ## Requirements
 
-* Puppet 2.7.x or better.
-* The [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) Puppet library.
-* The [file_concat](https://forge.puppetlabs.com/ispavailability/file_concat) Puppet library.
+* Puppet 4.6.1 or better.
+* The [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) module.
+* Logstash itself requires Java 8. The "puppetlabs/java" module is recommended
+  for installing Java. This module will not install Java.
 
 Optional:
-* The [apt](http://forge.puppetlabs.com/puppetlabs/apt) Puppet library when using repo management on Debian/Ubuntu.
+* The [elastic_stack](https://forge.puppetlabs.com/elastic/elastic_stack) module
+  when using automatic repository management.
+* The [apt](https://forge.puppetlabs.com/puppetlabs/apt) (>= 2.0.0) module when
+  using repo management on Debian/Ubuntu.
+* The [zypprepo](https://forge.puppetlabs.com/darin/zypprepo) module when using
+  repo management on SLES/SuSE.
 
-## Usage Examples
+## Quick Start
 
-The minimum viable configuration ensures that the service is running and that it will be started at boot time:
-**N.B.** you will still need to supply a configuration.
+This minimum viable configuration ensures that Logstash is installed, enabled, and running:
 
-     class { 'logstash': }
+``` puppet
+include logstash
 
-Specify a particular package (version) to be installed:
+# You must provide a valid pipeline configuration for the service to start.
+logstash::configfile { 'my_ls_config':
+  content => template('path/to/config.file'),
+}
+```
 
-     class { 'logstash':
-       version => '1.3.3-1_centos'
-     }
+## Package and service options
+### Choosing a Logstash minor version
+``` puppet
+class { 'logstash':
+  version => '6.0.0',
+}
+```
 
-In the absense of an appropriate package for your environment it is possible to install from other sources as well.
+### Choosing a Logstash major version
 
-http/https/ftp source:
+This module uses the related "elastic/elastic_stack" module to manage package
+repositories. Since there is a separate repository for each major version of
+the Elastic stack, if you don't want the default version (6), it's necessary
+to select which version to configure, like this:
+``` puppet
+class { 'elastic_stack::repo':
+  version => 5,
+}
 
-     class { 'logstash':
-       package_url => 'http://download.elasticsearch.org/logstash/logstash/packages/centos/logstash-1.3.3-1_centos.noarch.rpm'
-     }
+class { 'logstash':
+  version => '5.6.4',
+}
+```
 
-`puppet://` source:
+### Manual repository management
+You may want to manage repositories manually. You can disable
+automatic repository management like this:
 
-     class { 'logstash':
-       package_url => 'puppet:///path/to/logstash-1.3.3-1_centos.noarch.rpm'
-     }
+``` puppet
+class { 'logstash':
+  manage_repo => false,
+}
+```
 
-Local file source:
+### Using an explicit package source
+Rather than use your distribution's repository system, you can specify an
+explicit package to fetch and install.
 
-     class { 'logstash':
-       package_url => 'file:/path/to/logstash-1.3.3-1_centos.noarch.rpm'
-     }
+#### From an HTTP/HTTPS/FTP URL
+``` puppet
+class { 'logstash':
+  package_url => 'https://artifacts.elastic.co/downloads/logstash/logstash-5.1.1.rpm',
+}
+```
 
-Attempt to upgrade Logstash if a newer package is detected (`false` by default):
+#### From a 'puppet://' URL
+``` puppet
+class { 'logstash':
+  package_url => 'puppet:///modules/my_module/logstash-5.1.1.rpm',
+}
+```
 
-     class { 'logstash':
-       autoupgrade => true
-     }
+#### From a local file on the agent
+``` puppet
+class { 'logstash':
+  package_url => 'file:///tmp/logstash-5.1.1.rpm',
+}
+```
 
-Install everything but *disable* the service (useful for pre-configuring systems):
+### Allow automatic point-release upgrades
+``` puppet
+class { 'logstash':
+  auto_upgrade => true,
+}
+```
 
-     class { 'logstash':
-       status => 'disabled'
-     }
+### Do not run as a service
+``` puppet
+class { 'logstash':
+  status => 'disabled',
+}
+```
 
-Under normal circumstances a modification to the Logstash configuration will trigger a restart of the service. This behaviour can be disabled:
+### Disable automatic restarts
+Under normal circumstances, changing a configuration will trigger a restart of
+the service. This behaviour can be disabled:
+``` puppet
+class { 'logstash':
+  restart_on_change => false,
+}
+```
 
-     class { 'logstash':
-       restart_on_change => false
-     }
+### Disable and remove Logstash
+``` puppet
+class { 'logstash':
+  ensure => 'absent',
+}
+```
 
-Disable and remove Logstash entirely:
+## Logstash config files
 
-     class { 'logstash':
-       ensure => 'absent'
-     }
+### Settings
 
-## Contrib package installation
+Logstash uses several files to define settings for the service and associated
+Java runtime. The settings files can be configured with class parameters.
 
-As of Logstash 1.4.0 plugins have been split into 2 packages.
-To install the contrib package:
+#### `logstash.yml` with flat keys
+``` puppet
+class { 'logstash':
+  settings => {
+    'pipeline.batch.size'  => 25,
+    'pipeline.batch.delay' => 5,
+  }
+}
+```
 
-via the repository:
+#### `logstash.yml` with nested keys
+``` puppet
+class { 'logstash':
+  settings => {
+    'pipeline' => {
+      'batch' => {
+        'size'  => 25,
+        'delay' => 5,
+      }
+    }
+  }
+}
+```
 
-     class { 'logstash':
-       install_contrib => true
-     }
+#### `jvm.options`
+``` puppet
+class { 'logstash':
+  jvm_options => [
+    '-Xms1g',
+    '-Xmx1g',
+  ]
+}
+```
 
-via contrib_package_url:
+#### `startup.options`
 
-     class { 'logstash':
-       install_contrib => true,
-       contrib_package_install => 'package_url => 'http://download.elasticsearch.org/logstash/logstash/packages/centos/logstash-contrib-1.4.0-1_centos.noarch.rpm'
-     }
+``` puppet
+class { 'logstash':
+  startup_options => {
+    'LS_NICE' => '10',
+  }
+}
+```
 
-## Configuration Overview
+#### `pipelines.yml`
 
-The Logstash configuration can be supplied as a single static file or dynamically built from multiple smaller files.
+``` puppet
+class { 'logstash':
+  pipelines => [
+    {
+      "pipeline.id" => "pipeline_one",
+      "path.config" =>  "/usr/local/etc/logstash/pipeline-1/one.conf",
+    },
+    {
+      "pipeline.id" => "pipeline_two",
+      "path.config" =>  "/usr/local/etc/logstash/pipeline-2/two.conf",
+    }
+  ]
+}
+```
 
-The basic usage is identical in either case: simply declare a `file` attribute as you would the [`content`](http://docs.puppetlabs.com/references/latest/type.html#file-attribute-content) attribute of the `file` type, meaning either direct content, template or a file resource:
+Note that specifying `pipelines` will automatically remove the default
+`path.config` setting from `logstash.yml`, since this is incompatible with
+`pipelines.yml`.
 
-     logstash::configfile { 'configname':
-       content => template('path/to/config.file')
-     }
+### Pipeline Configuration
+Pipeline configuration files can be declared with the `logstash::configfile`
+type.
 
-     or
+``` puppet
+logstash::configfile { 'inputs':
+  content => template('path/to/input.conf.erb'),
+}
+```
+or
+``` puppet
+logstash::configfile { 'filters':
+  source => 'puppet:///path/to/filter.conf',
+}
+```
 
-     logstash::configfile { 'configname':
-       source => 'puppet:///path/to/config.file'
-     }
+For simple cases, it's possible to provide your Logstash config as an
+inline string:
 
-To dynamically build a configuration, simply declare the `order` in which each section should appear - the lower the number the earlier it will appear in the resulting file (this should be a [familiar idiom](https://en.wikipedia.org/wiki/BASIC) for most).
+``` puppet
+logstash::configfile { 'basic_ls_config':
+  content => 'input { heartbeat {} } output { null {} }',
+}
+```
 
-     logstash::configfile { 'input_redis':
-       content => template('logstash/input_redis.erb'),
-       order   => 10
-     }
+You can also specify the exact path for the config file, which is
+particularly useful with multiple pipelines:
 
-     logstash::configfile { 'filter_apache':
-       source => 'puppet:///path/to/filter_apache',
-       order  => 20
-     }
+``` puppet
+logstash::configfile { 'config_for_pipeline_two':
+  content => 'input { heartbeat {} } output { null {} }',
+  path    => '/usr/local/etc/logstash/pipeline-2/two.conf',
+}
+```
 
-     logstash::configfile { 'output_es':
-       content => template('logstash/output_es_cluster.erb')
-       order   => 30
-     }
+If you want to use Hiera to specify your configs, include the following
+create_resources call in your manifest:
 
-## Patterns
+``` puppet
+create_resources('logstash::configfile', hiera('my_logstash_configs'))
+```
+...and then create a data structure like this in Hiera:
+``` yaml
+---
+my_logstash_configs:
+  nginx:
+    template: site_logstash/nginx.conf.erb
+  syslog:
+    template: site_logstash/syslog.conf.erb
+```
 
-Many plugins (notably [Grok](http://logstash.net/docs/latest/filters/grok)) use *patterns*. While many are [included](https://github.com/logstash/logstash/tree/master/patterns) in Logstash already, additional site-specific patterns can be managed as well; where possible, you are encouraged to contribute new patterns back to the community.
+In this example, templates for the config files are stored in the custom,
+site-specific module "`site_logstash`".
 
-**N.B.** As of Logstash 1.2 the path to the additional patterns needs to be configured explicitly in the Grok configuration.
+### Patterns
+Many plugins (notably [Grok](http://logstash.net/docs/latest/filters/grok)) use *patterns*. While many are included in Logstash already, additional site-specific patterns can be managed as well.
 
-     logstash::patternfile { 'extra_patterns':
-       source => 'puppet:///path/to/extra_pattern'
-     }
+``` puppet
+logstash::patternfile { 'extra_patterns':
+  source => 'puppet:///path/to/extra_pattern',
+}
+```
 
 By default the resulting filename of the pattern will match that of the source. This can be over-ridden:
+``` puppet
+logstash::patternfile { 'extra_patterns_firewall':
+  source   => 'puppet:///path/to/extra_patterns_firewall_v1',
+  filename => 'extra_patterns_firewall',
+}
+```
 
-     logstash::patternfile { 'extra_patterns_firewall':
-       source   => 'puppet:///path/to/extra_patterns_firewall_v1',
-       filename => 'extra_patterns_firewall'
-     }
+**IMPORTANT NOTE**: Using logstash::patternfile places new patterns in the correct directory, however, it does NOT cause the path to be included automatically for filters (example: grok filter). You will still need to include this path (by default, /etc/logstash/patterns/) explicitly in your configurations.
 
-## Plugins
+Example: If using 'grok' in one of your configurations, you must include the pattern path in each filter like this:
 
-Like the patterns above, Logstash comes with a large number of [plugins](http://logstash.net/docs/latest/); likewise, additional site-specific plugins can be managed as well.  Again, where possible, you are encouraged to contribute new plugins back to the community.
+```
+# Note: this example is Logstash configuration, not a Puppet resource.
+# Logstash and Puppet look very similar!
+grok {
+  patterns_dir => "/etc/logstash/patterns/"
+  ...
+}
+```
 
-     logstash::plugin { 'myplugin':
-       ensure => 'present',
-       type   => 'input',
-       source => 'puppet:///path/to/my/custom/plugin.rb'
-     }
+## Plugin management
 
-By default the resulting filename of the plugin will match that of the source. This can be over-ridden:
+### Installing by name (from RubyGems.org)
+``` puppet
+logstash::plugin { 'logstash-input-beats': }
+```
 
-     logstash::plugin { 'myplugin':
-       ensure   => 'present',
-       type     => 'output',
-       source   => 'puppet:///path/to/my/custom/plugin_v1.rb',
-       filename => 'plugin.rb'
-     }
+### Installing from a local Gem
+``` puppet
+logstash::plugin { 'logstash-input-custom':
+  source => '/tmp/logstash-input-custom-0.1.0.gem',
+}
+```
 
-## Java Install
+### Installing from a 'puppet://' URL
+``` puppet
+logstash::plugin { 'logstash-filter-custom':
+  source => 'puppet:///modules/my_ls_module/logstash-filter-custom-0.1.0.gem',
+}
+```
 
-Most sites will manage Java seperately; however, this module can attempt to install Java as well.
+### Installing from an 'http(s)://' URL
+``` puppet
+logstash::plugin { 'x-pack':
+  source => 'https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-5.3.0.zip',
+}
+```
 
-     class { 'logstash':
-       java_install => true
-     }
-
-Specify a particular Java package (version) to be installed:
-
-     class { 'logstash':
-       java_install => true,
-       java_package => 'packagename'
-     }
-
-## Repository management
-
-Most sites will manage repositories seperately; however, this module can manage the repository for you.
-
-     class { 'logstash':
-       manage_repo  => true,
-       repo_version => '1.3'
-     }
-
-Note: When using this on Debian/Ubuntu you will need to add the [Puppetlabs/apt](http://forge.puppetlabs.com/puppetlabs/apt) module to your modules.
-
-## Service Management
-
-Currently only the basic SysV-style [init](https://en.wikipedia.org/wiki/Init) service provider is supported but other systems could be implemented as necessary (pull requests welcome).
-
-### init
-
-#### Defaults File
-
-The *defaults* file (`/etc/defaults/logstash` or `/etc/sysconfig/logstash`) for the Logstash service can be populated as necessary. This can either be a static file resource or a simple key value-style  [hash](http://docs.puppetlabs.com/puppet/latest/reference/lang_datatypes.html#hashes) object, the latter being particularly well-suited to pulling out of a data source such as Hiera.
-
-##### file source
-
-     class { 'logstash':
-       init_defaults_file => 'puppet:///path/to/defaults'
-     }
-
-##### hash representation
-
-     $config_hash = {
-       'LS_USER' => 'logstash',
-       'LS_GROUP' => 'logstash',
-     }
-
-     class { 'logstash':
-       init_defaults => $config_hash
-     }
+### Controling the environment for the `logstash-plugin` command
+``` puppet
+logstash::plugin { 'logstash-input-websocket':
+  environment => 'LS_JVM_OPTS="-Xms1g -Xmx1g"',
+}
+```
 
 ## Support
-
-Need help? Join us in [#logstash](https://webchat.freenode.net?channels=%23logstash) on Freenode IRC or subscribe to the [logstash-users@googlegroups.com](https://groups.google.com/forum/#!forum/logstash-users) mailing list.
+Need help? Join us in [#logstash](https://webchat.freenode.net?channels=%23logstash) on Freenode IRC or on the https://discuss.elastic.co/c/logstash discussion forum.

@@ -30,6 +30,6 @@ define munin::master::node_definition (
                     regsubst($name, '[^[:alnum:]\.]', '_', 'IG'))
 
   file { $filename:
-    content => template('munin/master/node.definition.conf.erb')
+    content => template('munin/master/node.definition.conf.erb'),
   }
 }

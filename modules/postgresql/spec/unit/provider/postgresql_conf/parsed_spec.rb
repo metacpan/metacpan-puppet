@@ -9,7 +9,7 @@ describe provider_class do
     conf_class = Puppet::Type.type(:postgresql_conf)
     provider = conf_class.provider(:parsed)
     conffile = tmpfilename('postgresql.conf')
-    provider.any_instance.stub(:target).and_return conffile
+    allow_any_instance_of(provider).to receive(:target).and_return conffile
     provider
   }
 
@@ -137,6 +137,11 @@ describe provider_class do
       )
     end
 
+    it "quotes addresses" do
+      expect(provider.to_line( {:name=>"listen_addresses", :value=>"0.0.0.0", :comment=>nil, :record_type=>:parsed })).to eq(
+        "listen_addresses = '0.0.0.0'"
+      )
+    end
   end
 end
 

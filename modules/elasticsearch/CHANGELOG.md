@@ -1,3 +1,398 @@
+## 6.0.0 (Month Day, Year)
+
+Major version upgrade with several important deprecations:
+
+* Puppet version 3 is no longer supported.
+* Package pinning is no longer supported.
+* Java installation is no longer supported.
+* The python and ruby defined types have been removed.
+* Repo management through `manage_repo` is now set to `true` by default.
+* All `*_hiera_merge` parameters have been removed.
+
+Minor:
+
+* elasticsearch::plugin only accepts `present` or `absent`
+* Some REST-resource based providers (such as templates and pipelines) now validate parameters (such as numeric port numbers) more rigorously.
+
+The following migration guide is intended to help aid in upgrading this module.
+
+### Migration Guide
+
+#### Puppet 3.x No Longer Supported
+
+Puppet 4.5.0 is the new minimum required version of Puppet, which offers better safety, module metadata, and Ruby features.
+Migrating from Puppet 3 to Puppet 4 is beyond the scope of this guide, but the [official upgrade documentation](https://docs.puppet.com/upgrade/upgrade_steps.html) can help.
+As with any version or module upgrade, remember to restart any agents and master servers as needed.
+
+#### Package Pinning No Longer Supported
+
+Package pinning caused lots of unexpected behavior and usually caused more problems than solutions.
+If you still require package pinning, consider using the [`apt::pin` resource](https://forge.puppet.com/puppetlabs/apt#pin-a-specific-release) on Debian-based systems or a [`yum::versionlock` resource from the yum module](https://forge.puppet.com/puppet/yum#lock-a-package-with-the-versionlock-plugin) for Red Hat-based systems.
+
+#### Java Installation No Longer Supported
+
+Java installation was a very simple operation in this module which simply declared an instance of the `java` class but created conflicts for users who managed Java separately.
+If you still wish to configure Java alongside this module, consider using the [puppetlabs/java](https://forge.puppet.com/puppetlabs/java) module and installing Java with the following configuration:
+
+```puppet
+class { "java" : distribution => "jre" }
+```
+
+This will install a version of Java suitable for Elasticsearch in most situations.
+Note that in some older distributions, you may need to take extra steps to install a more recent version of Java that supports Elasticsearch.
+
+#### Removal of Python and Ruby Resources
+
+These resource types were simple wrappers around `package` resources with their providers set to `pip` and `gem`, respectively.
+Simply defining your own resources similarly to:
+
+```puppet
+package { 'elasticsearch' : provider => 'pip' }
+```
+
+Is sufficient.
+
+#### Automatic Package Repository Management
+
+This parameter is now set to `true` by default to automatically manage the Elastic repository.
+If you do not wish to configure the repository to automatically retrieve package updates, set this parameter to `false`:
+
+```puppet
+class { 'elasticsearch': manage_repo => false }
+```
+
+#### Removal of `hiera_merge` Parameters
+
+Updates to Hiera in later versions of Puppet mean that you can set merging behavior in end-user configuration.
+Read [the upstream Hiera documentation regarding `lookup_options`](https://puppet.com/docs/puppet/4.10/hiera_merging.html#configuring-merge-behavior-in-hiera-data) to learn how to configure Hiera appropriately for your needs.
+
+## 5.5.0 (November 13, 2017)
+
+#### Features
+* Updated puppetlabs/java dependency to `< 5.0.0`
+
+#### Fixes
+* Properly support plugin installation on 6.x series with explicit `ES_PATH_CONF`
+* set file ownership of systemd service file to root user/group
+* Fix propagating the pid_dir into OpenBSD rcscript
+
+## 5.4.3 (September 1, 2017)
+
+#### Features
+* Bumped puppet/java dependency to < 3.0.0
+
+#### Fixes
+* Append `--quiet` flag to >= 5.x versions of Elasticsearch systemd service units
+* Disable es_facts collection on SearchGuard nodes with TLS enabled
+
+## 5.4.2 (August 18, 2017)
+
+#### Features
+* Bumped puppet/yum dependency to < 3.0.0
+
+#### Fixes
+* Custom facts no longer attempt to connect to SSL/TLS secured ports.
+
+## 5.4.1 (August 7, 2017)
+
+Fixed an issue where `logging_yml_ensure` and `log4j2_ensure` would not propagate to `elasticsearch::instance` resources.
+
+## 5.4.0 (August 3, 2017)
+
+#### Features
+* The `api_timeout` parameter is now passed to the `es_instance_conn_validator` resource for index, pipeline, and template defined types.
+* Updated puppetlabs/apt dependency to < 5.0.0.
+* Both the `logging.yml` and `log4j2.properties` files can be selectively enabled/disabled with the `logging_yml_ensure` and `log4j2_ensure` parameters on the `elasticsearch` class and `elasticsearch::instance` defined type.
+* `jvm_options` are now controllable on a per-instance basis.
+
+#### Fixes
+* Fixed an edge case with `es_instance_validator` in which ruby connection errors were not caught.
+* Plugins with colon-delimited names (such as maven plugins) are properly handled now.
+* Fixed a bug that would cause dependency cycles when using parameters to create defined types.
+
+## 5.3.1 (June 14, 2017)
+
+### Summary
+Minor release to fix bugs related to the `elasticsearch_keystore` type and generated docs.
+
+#### Features
+* Moved documentation to Yard for doc auto-generation for all classes/types/etc.
+
+#### Fixes
+* Fixed dependency order bug with the `elasticsearch_keystore` type and augeas defaults resource.
+
+## 5.3.0 (June 5, 2017)
+
+### Summary
+Minor bugfix release with added support for managing Elasticsearch keystores, custom repository URLs, and more.
+
+#### Features
+* Failures are no longer raised when no instances are defined for a plugin and service restarts are not requested.
+* The `datadir` for instances can now be shared among multiple instances by using the `datadir_instance_directories` parameter.
+* `repo_baseurl` is now exposed as a top-level parameter for users who wish to control custom repositories.
+* `elasticsearch-keystore` values can now be managed via native Puppet resources.
+
+#### Fixes
+* log4j template now properly respects deprecation logging settings.
+
+## 5.2.0 (May 5, 2017)
+
+### Summary
+Release supporting several new features and bugfixes for 5.4.0 users and users who need the ability to update plugins.
+
+#### Features
+* Support for Shield/X-Pack logging configuration file added.
+* The `elasticsearch::script` type now supports recursively managing directories of scripts.
+* All module defined types can now be managed as top-level hash parameters to the `elasticsearch` class (primarily for hiera and PE)
+
+#### Fixes
+* Fixed a bug that prevented plugins from being updated properly.
+* Fixed deprecated `default.path` options introduced in Elasticsearch 5.4.0.
+
+## 5.1.1 (April 13, 2017)
+
+### Summary
+
+#### Features
+* Instance configs now have highest precedence when constructing the final yaml
+    config file.
+
+#### Fixes
+This is a hotfix release to support users affected by [an upstream Elasticsearch issue](https://github.com/elastic/elasticsearch/issues/6887).
+See the [associated issue](https://github.com/elastic/puppet-elasticsearch/issues/802#issuecomment-293295930) for details regarding the workaround.
+The change implemented in this release is to place the `elasticsearch::instance` `config` parameter at the highest precedence when merging the final config yaml which permits users manually override `path.data` values.
+
+## 5.1.0 (February 28, 2017)
+
+### Summary
+Ingest pipeline and index settings support.
+Minor bugfixes.
+
+#### Features
+* Ingestion pipelines supported via custom resources.
+* Index settings support.
+
+#### Fixes
+* Custom facts no longer fail when trying to read unreadable elasticsearch config files.
+* `Accept` and `Content-Type` headers properly set for providers (to support ES 6.x)
+
+## 5.0.0 (February 9, 2017)
+
+Going forward, This module will follow Elasticsearch's upstream major version to indicate compatability.
+That is, version 5.x of this module supports version 5 of Elasticsearch, and version 6.x of this module will be released once Elasticsearch 6 support is added.
+
+### Summary
+Note that this is a **major version release**!
+Please read the release notes carefully before upgrading to avoid downtime/unexpected behavior.
+Remember to restart any puppetmaster servers to clear provider caches and pull in updated code.
+
+### Backwards-Incompatible Changes
+* The `elasticsearch::shield::user` and `elasticsearch::shield::role` resources have been renamed to `elasticsearch::user` and `elasticsearch::role` since the resource now handles both Shield and X-Pack.
+* Both Shield and X-Pack configuration files are kept in `/etc/elasticsearch/shield` and `/etc/elasticsearch/x-pack`, respectively. If you previously managed Shield resources with version 0.x of this module, you may need to migrate files from `/usr/share/elasticsearch/shield`.
+* The default data directory has been changed to `/var/lib/elasticsearch`. If you used the previous default (the Elasticsearch home directory, `/usr/share/elasticsearch/data`), you may need to migrate your data.
+* The first changes that may be Elasticsearch 1.x-incompatible have been introduced (see the [elasticsearch support lifecycle](https://www.elastic.co/support/eol)). This only impacts version 1.x running on systemd-based distributions.
+* sysctl management has been removed (and the module removed as a dependency for this module), and puppet/yum is used in lieu of ceritsc/yum.
+
+#### Features
+* Support management of the global jvm.options configuration file.
+* X-Pack support added.
+* Restricted permissions to the elasticsearch.yml file.
+* Deprecation log configuration support added.
+* Synced systemd service file with upstream.
+
+#### Bugfixes
+* Fixed case in which index template could prepend an additional 'index.' to index settings.
+* Fixed a case in which dependency cycles could arise when pinning packages on CentOS.
+* No longer recursively change the Elasticsearch home directory's lib/ to the elasticsearch user.
+* Unused defaults values now purged from instance init defaults files.
+
+#### Changes
+* Changed default data directory to /var/lib
+* sysctl settings are no longer managed by the thias/sysctl module.
+* Calls to `elasticsearch -version` in elasticsearch::plugin code replaced with native Puppet code to resolve Elasticsearch package version. Should improve resiliency when managing plugins.
+* Shield and X-Pack configuration files are stored in /etc/elasticsearch instead of /usr/share/elasticsearch.
+* Removed deprecated ceritsc/yum module in favor of puppet/yum.
+
+#### Testing changes
+
+## 0.15.1 (December 1, 2016)
+
+### Summary
+Primarily a bugfix release for Elasticsearch 5.x support-related issues.
+Note updated minimum required puppet versions as well.
+
+#### Features
+
+#### Bugfixes
+* Removed ES_HEAP_SIZE check in init scripts for Elasticsearch 5.x
+* Changed sysctl value to a string to avoid type errors for some versions
+* Fixed a $LOAD_PATH error that appeared in some cases for puppet_x/elastic/es_versioning
+
+#### Changes
+* Updated minimium required version for Puppet and PE to reflect tested versions and versions supported by Puppet Labs
+
+#### Testing changes
+
+## 0.15.0 (November 17, 2016)
+
+### Summary
+* Support for Ubuntu Xenial (16.04) formally declared.
+* Initial support for running Elasticsearch 5.x series.
+
+#### Features
+* Support management of 5.x-style Elastic yum/apt package repositories.
+* Support service scripts for 5.x series of Elasticsearch
+
+#### Bugfixes
+* Update the apt::source call to not cause deprecation warnings
+* Updated module metadata to correctly require puppet-stdlib with validate_integer()
+
+#### Changes
+
+#### Testing changes
+* Ubuntu Xenial (16.04) added to the test matrix.
+
+## 0.14.0 (October 12, 2016)
+
+### Summary
+Primarily a bugfix release for issues related to plugin proxy functionality, various system service fixes, and directory permissions.
+This release also adds the ability to define logging rolling file settings and a CA file/path for template API access.
+
+#### Features
+* Added 'file_rolling_type' parameter to allow selecting file logging rotation type between "dailyRollingFile" or "rollingFile". Also added 'daily_rolling_date_pattern', 'rolling_file_max_backup_index' and 'rolling_file_max_file_size' for file rolling customization.
+
+#### Bugfixes
+* Permissions on the Elasticsearch plugin directory have been fixed to permit world read rights.
+* The service systemd unit now `Wants=` a network target to fix bootup parallelization problems.
+* Recursively create the logdir for elasticsearch when creating multiple instances
+* Files and directories with root ownership now specify UID/GID 0 instead to improve compatability with *BSDs.
+* Elasticsearch Debian init file changed to avoid throwing errors when DATA_DIR, WORK_DIR and/or LOG_DIR were an empty variable.
+* Fixed a broken File dependency when a plugin was set to absent and ::elasticsearch set to present.
+* Fixed issue when using the `proxy` parameter on plugins in Elasticsearch 2.x.
+
+#### Changes
+* The `api_ca_file` and `api_ca_path` parameters have been added to support custom CA bundles for API access.
+* Numerics in elasticsearch.yml will always be properly unquoted.
+* puppetlabs/java is now listed as a dependency in metadata.json to avoid unexpected installation problems.
+
+#### Testing changes
+
+## 0.13.2 (August 29, 2016)
+
+### Summary
+Primarily a bugfix release to resolve HTTPS use in elasticsearch::template resources, 5.x plugin operations, and plugin file permission enforcement.
+
+#### Features
+* Plugin installation for the 5.x series of Elasticsearch is now properly supported.
+
+#### Bugfixes
+* Recursively enforce correct plugin directory mode to avoid Elasticsearch startup permissions errors.
+* Fixed an edge case where dependency cycles could arise when managing absent resources.
+* Elasticsearch templates now properly use HTTPS when instructed to do so.
+
+#### Changes
+* Updated the elasticsearch_template type to return more helpful error output.
+* Updated the es_instance_conn_validator type to silence deprecation warnings in Puppet >= 4.
+
+#### Testing changes
+
+## 0.13.1 (August 8, 2016)
+
+### Summary
+Lingering bugfixes from elasticsearch::template changes.
+More robust systemd mask handling.
+Updated some upstream module parameters for deprecation warnings.
+Support for the Shield `system_key` file.
+
+#### Features
+* Added `system_key` parameter to the `elasticsearch` class and `elasticsearch::instance` type for placing Shield system keys.
+
+#### Bugfixes
+* Fixed systemd elasticsearch.service unit masking to use systemctl rather than raw symlinking to avoid puppet file backup errors.
+* Fixed a couple of cases that broke compatability with older versions of puppet (elasticsearch_template types on puppet versions prior to 3.6 and yumrepo parameters on puppet versions prior to 3.5.1)
+* Fixed issues that caused templates to be incorrectly detected as out-of-sync and thus always changed on each puppet run.
+* Resources are now explicitly ordered to ensure behavior such as plugins being installed before instance start, users managed before templates changed, etc.
+
+#### Changes
+* Updated repository gpg fingerprint key to long form to silence module warnings.
+
+#### Testing changes
+
+## 0.13.0 (August 1, 2016)
+
+### Summary
+Rewritten elasticsearch::template using native type and provider.
+Fixed and added additional proxy parameters to elasticsearch::plugin instances.
+Exposed repo priority parameters for apt and yum repos.
+
+#### Features
+* In addition to better consistency, the `elasticsearch::template` type now also accepts various `api_*` parameters to control how access to the Elasticsearch API is configured (there are top-level parameters that are inherited and can be overwritten in `elasticsearch::api_*`).
+* The `elasticsearch::config` parameter now supports deep hiera merging.
+* Added the `elasticsearch::repo_priority` parameter to support apt and yum repository priority configuration.
+* Added `proxy_username` and `proxy_password` parameters to `elasticsearch::plugin`.
+
+#### Bugfixes
+* Content of templates should now properly trigger new API PUT requests when the index template stored in Elasticsearch differs from the template defined in puppet.
+* Installing plugins with proxy parameters now works correctly due to changed Java property flags.
+* The `elasticsearch::plugin::module_dir` parameter has been re-implemented to aid in working around plugins with non-standard plugin directories.
+
+#### Changes
+* The `file` parameter on the `elasticsearch::template` defined type has been deprecated to be consistent with usage of the `source` parameter for other types.
+
+#### Testing changes
+
+## 0.12.0 (July 20, 2016)
+
+IMPORTANT! A bug was fixed that mistakenly added /var/lib to the list of DATA_DIR paths on Debian-based systems.  This release removes that environment variable, which could potentially change path.data directories for instances of Elasticsearch.  Take proper precautions when upgrading to avoid unexpected downtime or data loss (test module upgrades, et cetera).
+
+### Summary
+Rewritten yaml generator, code cleanup, and various bugfixes. Configuration file yaml no longer nested. Service no longer restarts by default, and exposes more granular restart options.
+
+#### Features
+* The additional parameters restart_config_change, restart_package_change, and restart_plugin_change have been added for more granular control over service restarts.
+
+#### Bugfixes
+* Special yaml cases such as arrays of hashes and strings like "::" are properly supported.
+* Previous Debian SysV init scripts mistakenly set the `DATA_DIR` environment variable to a non-default value.
+* Some plugins failed installation due to capitalization munging, the elasticsearch_plugin provider no longer forces downcasing.
+
+#### Changes
+* The `install_options` parameter on the `elasticsearch::plugin` type has been removed. This was an undocumented parameter that often caused problems for users.
+* The `elasticsearch.service` systemd unit is no longer removed but masked by default, effectively hiding it from systemd but retaining the upstream vendor unit on disk for package management consistency.
+* `restart_on_change` now defaults to false to reduce unexpected cluster downtime (can be set to true if desired).
+* Package pinning is now contained within a separate class, so users can opt to manage package repositories manually and still use this module's pinning feature.
+* All configuration hashes are now flattened into dot-notated yaml in the elasticsearch configuration file. This should be fairly transparent in terms of behavior, though the config file formatting will change.
+
+#### Testing changes
+* The acceptance test suite has been dramatically slimmed to cut down on testing time and reduce false positives.
+
+## 0.11.0 ( May 23, 2016 )
+
+### Summary
+Shield support, SLES support, and overhauled testing setup.
+
+#### Features
+* Support for shield
+  * TLS Certificate management
+  * Users (role and password management for file-based realms)
+  * Roles (file-based with mapping support)
+* Support (repository proxies)[https://github.com/elastic/puppet-elasticsearch/pull/615]
+* Support for (SSL auth on API calls)[https://github.com/elastic/puppet-elasticsearch/pull/577]
+
+#### Bugfixes
+* (Fix Facter calls)[https://github.com/elastic/puppet-elasticsearch/pull/590] in custom providers
+
+#### Changes
+
+#### Testing changes
+* Overhaul testing methodology, see CONTRIBUTING for updates
+* Add SLES 12, Oracle 6, and PE 2016.1.1 to testing matrix
+* Enforce strict variable checking
+
+#### Known bugs
+* This is the first release with Shield support, some untested edge cases may exist
+
+
 ##0.10.3 ( Feb 08, 2016 )
 
 ###Summary

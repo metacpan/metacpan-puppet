@@ -91,7 +91,7 @@ class munin::master (
 
   if $host_name {
     validate_string($host_name)
-    if ! is_domain_name("${host_name}") {
+    if ! is_domain_name($host_name) {
       fail('host_name should be a valid domain name')
     }
   }
@@ -121,22 +121,10 @@ class munin::master (
     force   => true,
   }
 
-  case $collect_nodes {
-    'enabled': {
-      Munin::Master::Node_definition <<| |>>
-    }
-    'mine': {
-      # Collect nodes explicitly tagged with this master
-      Munin::Master::Node_definition <<| tag == "munin::master::${host_name}" |>>
-    }
-    'unclaimed': {
-      # Collect all exported node definitions, except the ones tagged
-      # for a specific master
-      Munin::Master::Node_definition <<| tag == 'munin::master::' |>>
-    }
-    'disabled',
-    default: {
-      # do nothing
+  if $collect_nodes != 'disabled' {
+    class { '::munin::master::collect':
+      collect_nodes => $collect_nodes,
+      host_name     => $host_name,
     }
   }
 

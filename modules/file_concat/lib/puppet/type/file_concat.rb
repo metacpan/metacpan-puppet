@@ -1,4 +1,3 @@
-require 'puppet/type/file'
 require 'puppet/type/file/owner'
 require 'puppet/type/file/group'
 require 'puppet/type/file/mode'
@@ -20,16 +19,16 @@ Puppet::Type.newtype(:file_concat) do
         mode  => '0644'  # Optional. Default to 0644
       }
   "
+  ensurable do
+    defaultvalues
 
-  ensurable
+    defaultto { :present }
+  end
 
   # the file/posix provider will check for the :links property
   # which does not exist
   def [](value)
-    if value == :links
-      return false
-    end
-
+    return false if value == :links
     super
   end
 
@@ -76,16 +75,12 @@ Puppet::Type.newtype(:file_concat) do
     end
 
     validate do |val|
-      fail "read-only attribute" if !@content_default
+      fail "read-only attribute" unless @content_default
     end
 
     def insync?(is)
       result = super
-
-      if ! result
-        string_file_diff(@resource[:path], @resource.should_content)
-      end
-
+      string_file_diff(@resource[:path], @resource.should_content) if result
       result
     end
 
@@ -107,25 +102,17 @@ Puppet::Type.newtype(:file_concat) do
     @generated_content = ""
     content_fragments = []
 
-    catalog.resources.select do |r|
+    resources = catalog.resources.select do |r|
       r.is_a?(Puppet::Type.type(:file_fragment)) && r[:tag] == self[:tag]
-    end.each do |r|
+    end
 
-     if r[:content].nil? == false
-       fragment_content = r[:content]
-     elsif r[:source].nil? ==false
-       tmp = Puppet::FileServing::Content.indirection.find(r[:source], :environment => catalog.environment)
-       fragment_content = tmp.content
-     end
-
-      content_fragments << [
-        "#{r[:order]}___#{r[:name]}", fragment_content
-      ]
+    resources.each do |r|
+      content_fragments << ["#{r[:order]}___#{r[:name]}", fragment_content(r)]
     end
 
     sorted = content_fragments.sort do |a, b|
       def decompound(d)
-        d.split('___').map { |d| d =~ /^\d+$/ ? d.to_i : d }
+        d.split('___').map { |v| v =~ /^\d+$/ ? v.to_i : v }
       end
 
       decompound(a[0]) <=> decompound(b[0])
@@ -136,13 +123,23 @@ Puppet::Type.newtype(:file_concat) do
     @generated_content
   end
 
-  def stat(dummy_arg = nil)
-    return @stat if @stat and not @stat == :needs_stat
+  def fragment_content(r)
+    if r[:content].nil? == false
+      fragment_content = r[:content]
+    elsif r[:source].nil? == false
+      tmp = Puppet::FileServing::Content.indirection.find(r[:source], :environment => catalog.environment)
+      fragment_content = tmp.content unless tmp.nil?
+    end
+    fragment_content
+  end
+
+  def stat(*)
+    return @stat if @stat && !@stat == :needs_stat
     @stat = begin
       ::File.stat(self[:path])
-    rescue Errno::ENOENT => error
+    rescue Errno::ENOENT
       nil
-    rescue Errno::EACCES => error
+    rescue Errno::EACCES
       warning "Could not stat; permission denied"
       nil
     end

@@ -1,8 +1,9 @@
 require 'spec_helper_acceptance'
 
-describe 'firewall isfragment property', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'firewall isfragment property' do
   before :all do
     iptables_flush_all_tables
+    ip6tables_flush_all_tables
   end
 
   shared_examples "is idempotent" do |value, line_match|
@@ -17,7 +18,7 @@ describe 'firewall isfragment property', :unless => UNSUPPORTED_PLATFORMS.includ
       EOS
 
       apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, :catch_changes => do_catch_changes)
 
       shell('iptables-save') do |r|
         expect(r.stdout).to match(/#{line_match}/)
@@ -35,7 +36,7 @@ describe 'firewall isfragment property', :unless => UNSUPPORTED_PLATFORMS.includ
           }
       EOS
 
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, :catch_changes => do_catch_changes)
 
       shell('iptables-save') do |r|
         expect(r.stdout).to match(/#{line_match}/)

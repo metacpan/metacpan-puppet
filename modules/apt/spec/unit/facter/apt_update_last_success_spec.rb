@@ -2,27 +2,24 @@ require 'spec_helper'
 
 describe 'apt_update_last_success fact' do
   subject { Facter.fact(:apt_update_last_success).value }
+
+  before(:each) { Facter.clear }
   after(:each) { Facter.clear }
 
   describe 'on Debian based distro which has not yet created the update-success-stamp file' do
-    before {
+    it 'has a value of -1' do
       Facter.fact(:osfamily).stubs(:value).returns 'Debian'
-      File.stubs(:exists?).returns false
-    }
-    it 'should have a value of -1' do
-      should == -1
+      File.expects(:exist?).with('/var/lib/apt/periodic/update-success-stamp').returns false
+      is_expected.to eq(-1)
     end
   end
 
   describe 'on Debian based distro which has created the update-success-stamp' do
-    before {
+    it 'has the value of the mtime of the file' do
       Facter.fact(:osfamily).stubs(:value).returns 'Debian'
-      File.stubs(:exists?).returns true
-      File.stubs(:mtime).returns 1407660561
-    }
-    it 'should have the value of the mtime of the file' do
-      should == 1407660561
+      File.stubs(:exist?).returns true
+      File.stubs(:mtime).returns 1_407_660_561
+      is_expected.to eq(1_407_660_561)
     end
   end
-
 end

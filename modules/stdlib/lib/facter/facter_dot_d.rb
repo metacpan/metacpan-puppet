@@ -8,14 +8,14 @@
 # contains a cache TTL.  For foo.sh store the ttl as just
 # a number in foo.sh.ttl
 #
-# The cache is stored in /tmp/facts_cache.yaml as a mode
+# The cache is stored in $libdir/facts_dot_d.cache as a mode
 # 600 file and will have the end result of not calling your
 # fact scripts more often than is needed
 
 class Facter::Util::DotD
   require 'yaml'
 
-  def initialize(dir="/etc/facts.d", cache_file="/tmp/facts_cache.yml")
+  def initialize(dir="/etc/facts.d", cache_file=File.join(Puppet[:libdir], "facts_dot_d.cache"))
     @dir = dir
     @cache_file = cache_file
     @cache = nil
@@ -23,7 +23,7 @@ class Facter::Util::DotD
   end
 
   def entries
-    Dir.entries(@dir).reject{|f| f =~ /^\.|\.ttl$/}.sort.map {|f| File.join(@dir, f) }
+    Dir.entries(@dir).reject { |f| f =~ /^\.|\.ttl$/ }.sort.map { |f| File.join(@dir, f) }
   rescue
     []
   end
@@ -48,7 +48,7 @@ class Facter::Util::DotD
         end
       end
     end
-  rescue Exception => e
+  rescue StandardError => e
     Facter.warn("Failed to handle #{file} as text facts: #{e.class}: #{e}")
   end
 
@@ -65,7 +65,7 @@ class Facter::Util::DotD
         setcode { v }
       end
     end
-  rescue Exception => e
+  rescue StandardError => e
     Facter.warn("Failed to handle #{file} as json facts: #{e.class}: #{e}")
   end
 
@@ -77,7 +77,7 @@ class Facter::Util::DotD
         setcode { v }
       end
     end
-  rescue Exception => e
+  rescue StandardError => e
     Facter.warn("Failed to handle #{file} as yaml facts: #{e.class}: #{e}")
   end
 
@@ -106,14 +106,14 @@ class Facter::Util::DotD
         end
       end
     end
-  rescue Exception => e
+  rescue StandardError => e
     Facter.warn("Failed to handle #{file} as script facts: #{e.class}: #{e}")
     Facter.debug(e.backtrace.join("\n\t"))
   end
 
   def cache_save!
     cache = load_cache
-    File.open(@cache_file, "w", 0600) {|f| f.write(YAML.dump(cache)) }
+    File.open(@cache_file, "w", 0600) { |f| f.write(YAML.dump(cache)) }
   rescue
   end
 

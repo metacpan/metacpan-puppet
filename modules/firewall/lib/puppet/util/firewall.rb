@@ -28,12 +28,15 @@ module Puppet::Util::Firewall
     elsif protocol == 'inet6'
       case value_icmp
         when "destination-unreachable" then "1"
+        when "too-big" then "2"
         when "time-exceeded" then "3"
         when "parameter-problem" then "4"
         when "echo-request" then "128"
         when "echo-reply" then "129"
         when "router-solicitation" then "133"
         when "router-advertisement" then "134"
+        when "neighbour-solicitation" then "135"
+        when "neighbour-advertisement" then "136"
         when "redirect" then "137"
         else nil
       end
@@ -77,18 +80,17 @@ module Puppet::Util::Firewall
       proto = 'tcp'
     end
 
-    if value.kind_of?(String)
-      if value.match(/^\d+(-\d+)?$/)
-        return value
-      else
-        return Socket.getservbyname(value, proto).to_s
-      end
+    m = value.to_s.match(/^(!\s+)?(\S+)/)
+    if m[2].match(/^\d+(-\d+)?$/)
+      return "#{m[1]}#{m[2]}"
     else
-      Socket.getservbyname(value.to_s, proto).to_s
+      return "#{m[1]}#{Socket.getservbyname(m[2], proto).to_s}"
     end
   end
 
-  # Takes an address and returns it in CIDR notation.
+  # Takes an address and protocol and returns the address in CIDR notation.
+  #
+  # The protocol is only used when the address is a hostname.
   #
   # If the address is:
   #
@@ -105,27 +107,49 @@ module Puppet::Util::Firewall
   #   - Any address with a resulting prefix length of zero:
   #     It will return nil which is equivilent to not specifying an address
   #
-  def host_to_ip(value)
+  def host_to_ip(value, proto = nil)
     begin
       value = Puppet::Util::IPCidr.new(value)
     rescue
-      value = Puppet::Util::IPCidr.new(Resolv.getaddress(value))
+      family = case proto
+               when :IPv4
+                 Socket::AF_INET
+               when :IPv6
+                 Socket::AF_INET6
+               when nil
+                 raise ArgumentError, "Proto must be specified for a hostname"
+               else
+                 raise ArgumentError, "Unsupported address family: #{proto}"
+               end
+
+      new_value = nil
+      Resolv.each_address(value) do |addr|
+        begin
+          new_value = Puppet::Util::IPCidr.new(addr, family)
+          break
+        rescue
+        end
+      end
+
+      raise "Failed to resolve hostname #{value}" unless new_value != nil
+      value = new_value
     end
 
     return nil if value.prefixlen == 0
     value.cidr
   end
 
-  # Takes an address mask and converts the host portion to CIDR notation.
+  # Takes an address mask and protocol and converts the host portion to CIDR
+  # notation.
   #
   # This takes into account you can negate a mask but follows all rules
   # defined in host_to_ip for the host/address part.
   #
-  def host_to_mask(value)
+  def host_to_mask(value, proto)
     match = value.match /(!)\s?(.*)$/
-    return host_to_ip(value) unless match
+    return host_to_ip(value, proto) unless match
 
-    cidr = host_to_ip(match[2])
+    cidr = host_to_ip(match[2], proto)
     return nil if cidr == nil
     "#{match[1]} #{cidr}"
   end
@@ -150,7 +174,7 @@ module Puppet::Util::Firewall
     # Basic normalisation for older Facter
     os_key = Facter.value(:osfamily)
     os_key ||= case Facter.value(:operatingsystem)
-    when 'RedHat', 'CentOS', 'Fedora', 'Scientific', 'SL', 'SLC', 'Ascendos', 'CloudLinux', 'PSBM', 'OracleLinux', 'OVS', 'OEL', 'Amazon', 'XenServer'
+    when 'RedHat', 'CentOS', 'Fedora', 'Scientific', 'SL', 'SLC', 'Ascendos', 'CloudLinux', 'PSBM', 'OracleLinux', 'OVS', 'OEL', 'Amazon', 'XenServer', 'VirtuozzoLinux'
       'RedHat'
     when 'Debian', 'Ubuntu'
       'Debian'
@@ -160,6 +184,9 @@ module Puppet::Util::Firewall
 
     # Older iptables-persistent doesn't provide save action.
     if os_key == 'Debian'
+      # We need to call flush to clear Facter cache as it's possible the cached value will be nil due to the fact
+      # that the iptables-persistent package was potentially installed after the initial Fact gathering.
+      Facter.fact(:iptables_persistent_version).flush
       persist_ver = Facter.value(:iptables_persistent_version)
       if (persist_ver and Puppet::Util::Package.versioncmp(persist_ver, '0.5.0') < 0)
         os_key = 'Debian_manual'
@@ -172,7 +199,7 @@ module Puppet::Util::Firewall
     end
 
     # RHEL 7 and newer also use systemd to persist iptable rules
-    if os_key == 'RedHat' && Facter.value(:operatingsystem) == 'RedHat' && Facter.value(:operatingsystemrelease).to_i >= 7
+    if os_key == 'RedHat' && ['RedHat','CentOS','Scientific','SL','SLC','Ascendos','CloudLinux','PSBM','OracleLinux','OVS','OEL','XenServer','VirtuozzoLinux'].include?(Facter.value(:operatingsystem)) && Facter.value(:operatingsystemrelease).to_i >= 7
       os_key = 'Fedora'
     end
 
@@ -194,7 +221,11 @@ module Puppet::Util::Firewall
     when :Debian
       case proto.to_sym
       when :IPv4, :IPv6
-        %w{/usr/sbin/service iptables-persistent save}
+        if (persist_ver and Puppet::Util::Package.versioncmp(persist_ver, '1.0') > 0)
+          %w{/usr/sbin/service netfilter-persistent save}
+        else
+          %w{/usr/sbin/service iptables-persistent save}
+        end
       end
     when :Debian_manual
       case proto.to_sym

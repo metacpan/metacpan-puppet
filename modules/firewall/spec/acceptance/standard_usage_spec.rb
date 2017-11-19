@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 # Some tests for the standard recommended usage
-describe 'standard usage tests:', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'standard usage tests' do
   it 'applies twice' do
     pp = <<-EOS
       class my_fw::pre {
@@ -19,7 +19,12 @@ describe 'standard usage tests:', :unless => UNSUPPORTED_PLATFORMS.include?(fact
           iniface => 'lo',
           action  => 'accept',
         }->
-        firewall { '002 accept related established rules':
+        firewall { "0002 reject local traffic not on loopback interface":
+          iniface     => '! lo',
+          destination => '127.0.0.1/8',
+          action      => 'reject',
+        }->
+        firewall { '003 accept related established rules':
           proto   => 'all',
           ctstate => ['RELATED', 'ESTABLISHED'],
           action  => 'accept',
@@ -50,6 +55,6 @@ describe 'standard usage tests:', :unless => UNSUPPORTED_PLATFORMS.include?(fact
 
     # Run it twice and test for idempotency
     apply_manifest(pp, :catch_failures => true)
-    expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+    apply_manifest(pp, :catch_changes => do_catch_changes)
   end
 end

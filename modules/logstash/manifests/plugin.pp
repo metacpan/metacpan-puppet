@@ -1,96 +1,126 @@
-# == Define: logstash::plugin
+# Manage the installation of a Logstash plugin.
 #
-# This define allows you to transport custom plugins to the Logstash instance
+# By default, plugins are downloaded from RubyGems, but it is also possible
+# to install from a local Gem, or one stored in Puppet.
 #
-# All default values are defined in the logstashc::params class.
+# @example Install a plugin.
+#   logstash::plugin { 'logstash-input-stdin': }
 #
+# @example Remove a plugin.
+#   logstash::plugin { 'logstash-input-stout':
+#     ensure => absent,
+#   }
 #
-# === Parameters
+# @example Install a plugin from a local file.
+#   logstash::plugin { 'logstash-input-custom':
+#     source => 'file:///tmp/logstash-input-custom.gem',
+#   }
 #
-# [*ensure*]
-#   String. Controls if the managed resources shall be <tt>present</tt> or
-#   <tt>absent</tt>. If set to <tt>absent</tt>:
-#   * The managed software packages are being uninstalled.
-#   * Any traces of the packages will be purged as good as possible. This may
-#     include existing configuration files. The exact behavior is provider
-#     dependent. Q.v.:
-#     * Puppet type reference: {package, "purgeable"}[http://j.mp/xbxmNP]
-#     * {Puppet's package provider source code}[http://j.mp/wtVCaL]
-#   * System modifications (if any) will be reverted as good as possible
-#     (e.g. removal of created users, services, changed log settings, ...).
-#   * This is thus destructive and should be used with care.
-#   Defaults to <tt>present</tt>.
+# @example Install a plugin from a Puppet module.
+#   logstash::plugin { 'logstash-input-custom':
+#     source => 'puppet:///modules/logstash-site-plugins/logstash-input-custom.gem',
+#   }
 #
-# [*source*]
-#   Puppet file resource of the plugin file ( puppet:// )
-#   Value type is string
-#   Default value: None
-#   This variable is required
+# @example Install X-Pack.
+#   logstash::plugin { 'x-pack':
+#     source => 'https://artifacts.elastic.co/downloads/packs/x-pack/x-pack-5.3.0.zip',
+#   }
 #
-# [*type*]
-#   plugin type, can be 'input', 'output,' filter' or 'codec'.
-#   Value type is string
-#   Default value: None
-#   This variable is required
+# @example Install a plugin, overriding JVM options via the environment.
+#   logstash::plugin { 'logstash-input-jmx':
+#     environment => ['LS_JVM_OPTIONS="-Xms1g -Xmx1g"']
+#   }
 #
-# [*filename*]
-#   if you would like the actual file name to be different then the source file name
-#   Value type is string
-#   This variable is optional
+# @param ensure [String] Install or remove with `present` or `absent`.
 #
+# @param source [String] Install from this file, not from RubyGems.
 #
-# === Examples
-#
-#     logstash::plugin { 'myplugin':
-#       ensure => 'present',
-#       type   => 'input',
-#       source => 'puppet:///path/to/my/custom/plugin.rb'
-#     }
-#
-#     or wil an other actual file name
-#
-#     logstash::plugin { 'myplugin':
-#       ensure   => 'present',
-#       type     => 'output',
-#       source   => 'puppet:///path/to/my/custom/plugin_v1.rb',
-#       filename => 'plugin.rb'
-#     }
-#
-#
-# === Authors
-#
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
+# @param environment [String] Environment used when running 'logstash-plugin'
 #
 define logstash::plugin (
-  $source,
-  $type,
-  $ensure = 'present',
-  $filename = '',
-){
+  $source = undef,
+  $ensure = present,
+  $environment = [],
+)
+{
+  require logstash::package
+  $exe = "${logstash::home_dir}/bin/logstash-plugin"
 
-  validate_re($source, '^puppet://', 'Source must be from a puppet fileserver (begin with puppet://)' )
+  case $source { # Where should we get the plugin from?
+    undef: {
+      # No explict source, so search Rubygems for the plugin, by name.
+      # ie. "logstash-plugin install logstash-output-elasticsearch"
+      $plugin = $name
+    }
 
-  if ! ($ensure in [ 'present', 'absent' ]) {
-    fail("\"${ensure}\" is not a valid ensure parameter value")
+    /^(\/|file:)/: {
+      # A gem file that is already available on the local filesystem.
+      # Install from the local path.
+      # ie. "logstash-plugin install /tmp/logtash-filter-custom.gem" or
+      # "logstash-plugin install file:///tmp/logtash-filter-custom.gem" or
+      $plugin = $source
+    }
+
+    /^puppet:/: {
+      # A 'puppet:///' URL. Download the gem from Puppet, then install
+      # the plugin from the downloaded file.
+      $downloaded_file = sprintf('/tmp/%s', basename($source))
+      file { $downloaded_file:
+        source => $source,
+        before => Exec["install-${name}"],
+      }
+
+      case $source {
+        /\.zip$/: {
+          $plugin = "file://${downloaded_file}"
+        }
+        default: {
+          $plugin = $downloaded_file
+        }
+      }
+    }
+
+    /^https?:/: {
+      # An 'http(s):///' URL.
+      $plugin = $source
+    }
+
+    default: {
+      fail('"source" should be a local path, a "puppet:///" url, or undef.')
+    }
   }
 
-  if ! ($type in [ 'input', 'output', 'filter', 'codec' ]) {
-    fail("\"${ensure}\" is not a valid ensure parameter value")
+  case $ensure {
+    'present': {
+      exec { "install-${name}":
+        command => "${exe} install ${plugin}",
+        unless  => "${exe} list ^${name}$",
+      }
+    }
+
+    /^\d+\.\d+\.\d+/: {
+      exec { "install-${name}":
+        command => "${exe} install --version ${ensure} ${plugin}",
+        unless  => "${exe} list --verbose ^${name}$ | grep --fixed-strings --quiet '(${ensure})'",
+      }
+    }
+
+    'absent': {
+      exec { "remove-${name}":
+        command => "${exe} remove ${name}",
+        onlyif  => "${exe} list | grep -q ^${name}$",
+      }
+    }
+
+    default: {
+      fail "'ensure' should be 'present', 'absent', or a version like '1.3.4'."
+    }
   }
 
-  $plugins_dir = "${logstash::configdir}/plugins"
-
-  $filename_real = $filename ? {
-    ''      => inline_template('<%= @source.split("/").last %>'),
-    default => $filename
+  Exec {
+    path        => '/bin:/usr/bin',
+    user        => $logstash::logstash_user,
+    timeout     => 1800,
+    environment => $environment,
   }
-
-  file { "${plugins_dir}/logstash/${type}s/${filename_real}":
-    ensure  => $ensure,
-    owner   => $logstash::logstash_user,
-    group   => $logstash::logstash_group,
-    mode    => '0440',
-    source  => $source,
-  }
-
 }

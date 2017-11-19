@@ -9,13 +9,12 @@ Returns true if the string passed to this function is a valid mac address.
   ) do |arguments|
 
     if (arguments.size != 1) then
-      raise(Puppet::ParseError, "is_mac_address(): Wrong number of arguments "+
-        "given #{arguments.size} for 1")
+      raise(Puppet::ParseError, "is_mac_address(): Wrong number of arguments given #{arguments.size} for 1")
     end
 
     mac = arguments[0]
 
-    if /^[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}:[a-fA-F0-9]{1,2}$/.match(mac) then
+    if /^[a-f0-9]{1,2}(:[a-f0-9]{1,2}){5}$/i.match(mac) then
       return true
     else
       return false

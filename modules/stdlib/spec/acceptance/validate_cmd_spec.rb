@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby -S rspec
 require 'spec_helper_acceptance'
 
-describe 'validate_cmd function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('operatingsystem')) do
+describe 'validate_cmd function' do
   describe 'success' do
     it 'validates a true command' do
       pp = <<-EOS
@@ -37,10 +37,12 @@ describe 'validate_cmd function', :unless => UNSUPPORTED_PLATFORMS.include?(fact
       } else {
         $two = '/bin/aoeu'
       }
-      validate_cmd($one,$two,"aoeu is dvorak)
+      validate_cmd($one,$two,"aoeu is dvorak")
       EOS
 
-      expect(apply_manifest(pp, :expect_failures => true).stderr).to match(/aoeu is dvorak/)
+      apply_manifest(pp, :expect_failures => true) do |output|
+        expect(output.stderr).to match(/aoeu is dvorak/)
+      end
     end
   end
   describe 'failure' do

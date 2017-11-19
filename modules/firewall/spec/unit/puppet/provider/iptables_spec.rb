@@ -1,14 +1,14 @@
 #!/usr/bin/env rspec
 
 require 'spec_helper'
-if Puppet.version < '3.4.0'
+if Puppet::Util::Package.versioncmp(Puppet.version, '3.4.0') < 0
   require 'puppet/provider/confine/exists'
 else
   require 'puppet/confine/exists'
 end
 
 describe 'iptables provider detection' do
-  if Puppet.version < '3.4.0'
+  if Puppet::Util::Package.versioncmp(Puppet.version, '3.4.0') < 0
     let(:exists) {
       Puppet::Provider::Confine::Exists
     }
@@ -27,14 +27,14 @@ describe 'iptables provider detection' do
     allow(Facter.fact(:operatingsystem)).to receive(:value).and_return('Debian')
   end
 
-  it "should default to iptables provider if /sbin/iptables[-save] exists" do
+  it "is expected to default to iptables provider if /sbin/iptables[-save] exists" do
     # Stub lookup for /sbin/iptables & /sbin/iptables-save
     allow(exists).to receive(:which).with("iptables").
       and_return "/sbin/iptables"
     allow(exists).to receive(:which).with("iptables-save").
       and_return "/sbin/iptables-save"
 
-    # Every other command should return false so we don't pick up any
+    # Every other command is expected to return false so we don't pick up any
     # other providers
     allow(exists).to receive(:which) { |value|
       ! ["iptables","iptables-save"].include?(value)
@@ -69,14 +69,14 @@ describe 'iptables provider' do
       and_return "/sbin/iptables-save"
   end
 
-  it 'should be able to get a list of existing rules' do
+  it 'is expected to be able to get a list of existing rules' do
     provider.instances.each do |rule|
       expect(rule).to be_instance_of(provider)
       expect(rule.properties[:provider].to_s).to eq(provider.name.to_s)
     end
   end
 
-  it 'should ignore lines with fatal errors' do
+  it 'is expected to ignore lines with fatal errors' do
     allow(Puppet::Util::Execution).to receive(:execute).with(['/sbin/iptables-save']).
       and_return("FATAL: Could not load /lib/modules/2.6.18-028stab095.1/modules.dep: No such file or directory")
 
@@ -215,6 +215,12 @@ describe 'iptables provider' do
     ARGS_TO_HASH.each do |test_name,data|
       describe "for test data '#{test_name}'" do
         let(:resource) { provider.rule_to_hash(data[:line], data[:table], 0) }
+        # If this option is enabled, make sure the error was raised
+        if data[:raise_error] then
+          it "the input rules should raise an error by rules_to_hash" do
+            expect{ resource }.to raise_error
+          end
+        end
 
         # If this option is enabled, make sure the parameters exactly match
         if data[:compare_all] then
@@ -315,6 +321,27 @@ describe 'iptables provider' do
     end
   end
 
+  describe 'when inverting rules' do
+    let(:resource) {
+      Puppet::Type.type(:firewall).new({
+        :name  => '040 partial invert',
+        :table       => 'filter',
+        :action      => 'accept',
+        :chain       => 'nova-compute-FORWARD',
+        :source      => '0.0.0.0/32',
+        :destination => '255.255.255.255/32',
+        :sport       => ['! 78','79','http'],
+        :dport       => ['77','! 76'],
+        :proto       => 'udp',
+      })
+    }
+    let(:instance) { provider.new(resource) }
+
+    it 'fails when not all array items are inverted' do
+      expect { instance.insert }.to raise_error Puppet::Error, /but '79', '80' are not prefixed/
+    end
+  end
+
   describe 'when deleting resources' do
     let(:sample_rule) {
       '-A INPUT -s 1.1.1.1 -d 1.1.1.1 -p tcp -m multiport --dports 7061,7062 -m multiport --sports 7061,7062 -j ACCEPT'
@@ -359,17 +386,17 @@ describe 'ip6tables provider' do
       and_return "/sbin/ip6tables-save"
   end
 
-  it 'should be able to get a list of existing rules' do
+  it 'is expected to be able to get a list of existing rules' do
     provider6.instances.each do |rule|
-      rule.should be_instance_of(provider6)
-      rule.properties[:provider6].to_s.should == provider6.name.to_s
+      expect(rule).to be_instance_of(provider6)
+      expect(rule.properties[:provider6].to_s).to eql provider6.name.to_s
     end
   end
 
-  it 'should ignore lines with fatal errors' do
+  it 'is expected to ignore lines with fatal errors' do
     allow(Puppet::Util::Execution).to receive(:execute).with(['/sbin/ip6tables-save']).
       and_return("FATAL: Could not load /lib/modules/2.6.18-028stab095.1/modules.dep: No such file or directory")
-    provider6.instances.length.should == 0
+    expect(provider6.instances.length).to eq 0
   end
 
   # Load in ruby hash for test fixtures.
@@ -383,14 +410,14 @@ describe 'ip6tables provider' do
         # If this option is enabled, make sure the parameters exactly match
         if data[:compare_all] then
           it "the parameter hash keys should be the same as returned by rules_to_hash" do
-            resource.keys.should =~ data[:params].keys
+            expect(resource.keys).to match data[:params].keys
           end
         end
 
         # Iterate across each parameter, creating an example for comparison
         data[:params].each do |param_name, param_value|
           it "the parameter '#{param_name.to_s}' should match #{param_value.inspect}" do
-            resource[param_name].should == data[:params][param_name]
+            expect(resource[param_name]).to eql data[:params][param_name]
           end
         end
       end
@@ -405,10 +432,10 @@ describe 'ip6tables provider' do
         let(:instance) { provider6.new(resource) }
 
         it 'general_args should be valid' do
-          instance.general_args.flatten.should == data[:args]
+          data[:args].unshift("--wait") if instance.general_args.flatten.include? '--wait'
+          expect(instance.general_args.flatten).to eql data[:args]
         end
       end
     end
   end
 end
-

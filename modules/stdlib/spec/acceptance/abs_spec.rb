@@ -1,13 +1,13 @@
 #! /usr/bin/env ruby -S rspec
 require 'spec_helper_acceptance'
 
-describe 'abs function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('operatingsystem')) do
+describe 'abs function' do
   describe 'success' do
     it 'should accept a string' do
       pp = <<-EOS
       $input  = '-34.56'
       $output = abs($input)
-      notify { $output: }
+      notify { "$output": }
       EOS
 
       apply_manifest(pp, :catch_failures => true) do |r|
@@ -19,7 +19,7 @@ describe 'abs function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('operati
       pp = <<-EOS
       $input  = -34.56
       $output = abs($input)
-      notify { $output: }
+      notify { "$output": }
       EOS
 
       apply_manifest(pp, :catch_failures => true) do |r|

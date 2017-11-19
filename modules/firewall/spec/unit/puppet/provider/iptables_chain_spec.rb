@@ -1,14 +1,14 @@
 #!/usr/bin/env rspec
 
 require 'spec_helper'
-if Puppet.version < '3.4.0'
+if Puppet::Util::Package.versioncmp(Puppet.version, '3.4.0') < 0
   require 'puppet/provider/confine/exists'
 else
   require 'puppet/confine/exists'
 end
 
 describe 'iptables chain provider detection' do
-  if Puppet.version < '3.4.0'
+  if Puppet::Util::Package.versioncmp(Puppet.version, '3.4.0') < 0
     let(:exists) {
       Puppet::Provider::Confine::Exists
     }
@@ -138,6 +138,9 @@ describe 'iptables chain resource parsing' do
      'NAT:mangle:IPv4',
      'NAT:mangle:IPv4',
      'NAT:mangle:IPv4',
+     'security:INPUT:IPv4',
+     'security:FORWARD:IPv4',
+     'security:OUTPUT:IPv4',
      ':$5()*&%\'"^$): :IPv4',
     ]
     allow(provider).to receive(:execute).with(['/sbin/iptables-save']).and_return('
@@ -184,6 +187,9 @@ COMMIT
       'mangle:OUTPUT:IPv6',
       'mangle:POSTROUTING:IPv6',
       'mangle:ff:IPv6',
+      'security:INPUT:IPv6',
+      'security:FORWARD:IPv6',
+      'security:OUTPUT:IPv6',
       ':INPUT:IPv6',
       ':FORWARD:IPv6',
       ':OUTPUT:IPv6',

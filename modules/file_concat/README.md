@@ -1,10 +1,19 @@
 # puppet-lib-file_concat
 
+#### Table of Contents
+
+1. [Overview](#overview)
+2. [Usage - Configuration options and additional functionality](#usage)
+3. [Limitations - OS compatibility, etc.](#limitations)
+4. [Development - Guide for contributing to the module](#development)
+
+## Overview
+
 Library for concatenating multiple files into 1.
 
 ## Usage
 
-### file_fragment
+### Creating a file fragment
 
 Creates a file fragment to be collected by file_concat based on the tag.
 
@@ -18,7 +27,7 @@ Example with exported resource:
       source  => 'puppet:///path/to/file'
     }
 
-### file_concat
+### Concatenating file fragments into one file
 
 Gets all the file fragments and puts these into the target file.
 This will mostly be used with exported resources.
@@ -34,3 +43,8 @@ example:
       group => 'root',       # Optional. Default to root
       mode  => '0644'        # Optional. Default to 0644
     }
+
+## Limitations
+
+## Development
+

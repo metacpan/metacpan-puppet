@@ -65,14 +65,7 @@ class metacpan::system::packages {
 
     # For accessing postgress from psql
     package{ 'postgresql-client-9.1': ensure => present }
-
-    case $operatingsystem {
-      Debian: {
-      }
-      default: {
-        Package{ provider => apt }
-      }
-    }
+    Package{ provider => apt }
 
     # Install a few utilities through node/npm.
     npm::install {

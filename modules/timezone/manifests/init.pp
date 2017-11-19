@@ -67,6 +67,18 @@ class timezone (
     }
     'Linux': {
       case $::operatingsystem {
+        'Amazon': {
+          package { 'tzdata':
+              ensure => present,
+              before => File['/etc/localtime'],
+          }
+          file { '/etc/sysconfig/clock':
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0644',
+              content => template('timezone/el.erb'),
+          }
+        }
         'Gentoo': {
           package { 'sys-libs/timezone-data':
             ensure => present,

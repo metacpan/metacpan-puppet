@@ -1,92 +1,124 @@
-# == Class: logstash::package
+# This class manages the Logstash package.
 #
-# This class exists to coordinate all software package management related
-# actions, functionality and logical units in a central place.
+# It is usually used only by the top-level `logstash` class. It's unlikely
+# that you will need to declare this class yourself.
 #
+# @param [String] package_name
+#   The name of the Logstash package in the package manager.
 #
-# === Parameters
+# @param [String] version
+#   Install precisely this version from the package manager.
 #
-# This class does not provide any parameters.
+# @param [String] package_url
+#   Get the package from this URL, not from the package manager.
 #
+# @example Include this class to ensure its resources are available.
+#   include logstash::package
 #
-# === Examples
+# @author https://github.com/elastic/puppet-logstash/graphs/contributors
 #
-# This class may be imported by other classes to use its functionality:
-#   class { 'logstash::package': }
-#
-# It is not intended to be used directly by external resources like node
-# definitions or other modules.
-#
-#
-# === Authors
-#
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
-#
-class logstash::package {
-
+class logstash::package(
+  $package_url = $logstash::package_url,
+  $version = $logstash::version,
+  $package_name = $logstash::package_name,
+)
+{
   Exec {
     path      => [ '/bin', '/usr/bin', '/usr/local/bin' ],
     cwd       => '/',
     tries     => 3,
-    try_sleep => 10
+    try_sleep => 10,
   }
 
-  #### Package management
+  File {
+    ensure => file,
+    backup => false,
+  }
 
-  # set params: in operation
   if $logstash::ensure == 'present' {
+    # Check if we want to install a specific version.
+    if $version {
+      if $::osfamily == 'redhat' {
+        $package_ensure = regsubst($version, '-', '~')
+      }
+      else {
+        $package_ensure = $version
+      }
+    }
+    else {
+      $package_ensure = $logstash::auto_upgrade ? {
+        true  => 'latest',
+        false => 'present',
+      }
+    }
 
-    # action
-    if ($logstash::package_url != undef) {
+    if ($package_url) {
+      $filename = basename($package_url)
+      $extension = regsubst($filename, '.*\.', '')
+      $protocol = regsubst($package_url, ':.*', '')
+      $package_local_file = "/tmp/${filename}"
 
-      $package_dir = $logstash::package_dir
-
-      # Create directory to place the package file
-      exec { 'create_package_dir_logstash':
-        cwd     => '/',
-        path    => ['/usr/bin', '/bin'],
-        command => "mkdir -p ${logstash::package_dir}",
-        creates => $logstash::package_dir;
+      case $protocol {
+        'puppet': {
+          file { $package_local_file:
+            source => $package_url,
+          }
+        }
+        'ftp', 'https', 'http': {
+          exec { "download_package_logstash_${name}":
+            command => "wget -O ${package_local_file} ${package_url} 2> /dev/null",
+            path    => ['/usr/bin', '/bin'],
+            creates => $package_local_file,
+            timeout => $logstash::download_timeout,
+          }
+        }
+        'file': {
+          file { $package_local_file:
+            source => $package_url,
+          }
+        }
+        default: {
+          fail("Protocol must be puppet, file, http, https, or ftp. Not '${protocol}'")
+        }
       }
 
-      file { $package_dir:
-        ensure  => 'directory',
-        purge   => $logstash::purge_package_dir,
-        force   => $logstash::purge_package_dir,
-        backup  => false,
-        require => Exec['create_package_dir_logstash'],
+      case $extension {
+        'deb':   { $package_provider = 'dpkg'  }
+        'rpm':   { $package_provider = 'rpm'   }
+        default: { fail("Unknown file extension '${extension}'.") }
       }
 
+      $package_require = undef
     }
-
-  } else { # Package removal
-    $package_dir = $logstash::package_dir
-
-    file { $package_dir:
-      ensure => 'absent',
-      purge  => true,
-      force  => true,
-      backup => false
+    else {
+      # Use the OS packaging system to locate the package.
+      $package_local_file = undef
+      $package_provider = undef
+      if $::osfamily == 'Debian' {
+        $package_require = Class['apt::update']
+      } else {
+        $package_require = undef
+      }
     }
-
+  }
+  else { # Package removal
+    $package_local_file = undef
+    $package_require = undef
+    if ($::osfamily == 'Suse') {
+      $package_provider = 'rpm'
+      $package_ensure = 'absent' # "purged" not supported by provider
+    }
+    else {
+      $package_provider = undef # ie. automatic
+      $package_ensure = 'purged'
+    }
   }
 
-  #class { 'logstash::package::core': }
-  logstash::package::install { 'logstash':
-    package_url => $logstash::package_url
+  package { 'logstash':
+    ensure   => $package_ensure,
+    name     => $package_name,
+    source   => $package_local_file, # undef if using package manager.
+    provider => $package_provider, # undef if using package manager.
+    require  => $package_require,
   }
-
-  if ($logstash::install_contrib == true) {
-
-    #class { 'logstash::package::contrib': }
-    logstash::package::install { 'logstash-contrib':
-      package_url => $logstash::contrib_package_url
-    }
-
-    # Ensure we install Core package before contrib
-    #Class['logstash::package::core'] -> Class['logstash::package::contrib']
-    Logstash::Package::Install['logstash'] -> Logstash::Package::Install['logstash-contrib']
-
-  }
-
 }

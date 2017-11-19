@@ -29,6 +29,8 @@
 #                   (optional).
 # dateformat      - The format String to be used for `dateext` (optional).
 #                   Valid specifiers are '%Y', '%m', '%d' and '%s'.
+# dateyesterday   - A Boolean specifying whether to use yesterday's date instead
+#                   of today's date to create the `dateext` extension (optional).
 # delaycompress   - A Boolean specifying whether compression of the rotated
 #                   log file should be delayed until the next logrotate run
 #                   (optional).
@@ -50,21 +52,27 @@
 #                   but not before the scheduled rotation time (optional).
 #                   The default units are bytes, append k, M or G for kilobytes,
 #                   megabytes and gigabytes respectively.
+# maxsize         - The String maximum size a log file may be to be rotated;
+#                   When maxsize is used, both the size and timestamp of a log
+#                   file are considered for rotation.
+#                   The default units are bytes, append k, M or G for kilobytes,
+#                   megabytes and gigabytes respectively.
 # missingok       - A Boolean specifying whether logrotate should ignore missing
 #                   log files or issue an error (optional).
 # olddir          - A String path to a directory that rotated logs should be
 #                   moved to (optional).
-# postrotate      - A command String that should be executed by /bin/sh after
-#                   the log file is rotated (optional).
-# prerotate       - A command String that should be executed by /bin/sh before
-#                   the log file is rotated and only if it will be rotated
-#                   (optional).
-# firstaction     - A command String that should be executed by /bin/sh once
-#                   before all log files that match the wildcard pattern are
-#                   rotated (optional).
-# lastaction      - A command String that should be execute by /bin/sh once
-#                   after all the log files that match the wildcard pattern are
-#                   rotated (optional).
+# postrotate      - A command String or an Array of Strings that should be
+#                   executed by /bin/sh after the log file is rotated
+#                   optional).
+# prerotate       - A command String or an Array of Strings that should be
+#                   executed by /bin/sh before the log file is rotated and
+#                   only if it will be rotated (optional).
+# firstaction     - A command String or an Array of Strings that should be
+#                   executed by /bin/sh once before all log files that match
+#                   the wildcard pattern are rotated (optional).
+# lastaction      - A command String or an Array of Strings that should be
+#                   executed by /bin/sh once after all the log files that match
+#                   the wildcard pattern are rotated (optional).
 # rotate          - The Integer number of rotated log files to keep on disk
 #                   (optional).
 # rotate_every    - How often the log files should be rotated as a String.
@@ -82,6 +90,15 @@
 #                   before unlinking them (optional).
 # start           - The Integer number to be used as the base for the extensions
 #                   appended to the rotated log files (optional).
+# su              - A Boolean specifying whether logrotate should rotate under
+#                   the specific su_owner and su_group instead of the default.
+#                   First available in logrotate 3.8.0. (optional)
+# su_owner        - A username String that logrotate should use to rotate a
+#                   log file set instead of using the default if
+#                   su => true (optional).
+# su_group        - A String group name that logrotate should use to rotate a
+#                   log file set instead of using the default if
+#                   su => true (optional).
 # uncompresscmd   - The String command to be used to uncompress log files
 #                   (optional).
 #
@@ -107,276 +124,132 @@
 #     postrotate   => '/etc/init.d/nginx restart',
 #   }
 define logrotate::rule(
-                        $path            = 'undef',
-                        $ensure          = 'present',
-                        $compress        = 'undef',
-                        $compresscmd     = 'undef',
-                        $compressext     = 'undef',
-                        $compressoptions = 'undef',
-                        $copy            = 'undef',
-                        $copytruncate    = 'undef',
-                        $create          = 'undef',
-                        $create_mode     = 'undef',
-                        $create_owner    = 'undef',
-                        $create_group    = 'undef',
-                        $dateext         = 'undef',
-                        $dateformat      = 'undef',
-                        $delaycompress   = 'undef',
-                        $extension       = 'undef',
-                        $ifempty         = 'undef',
-                        $mail            = 'undef',
-                        $mailfirst       = 'undef',
-                        $maillast        = 'undef',
-                        $maxage          = 'undef',
-                        $minsize         = 'undef',
-                        $missingok       = 'undef',
-                        $olddir          = 'undef',
-                        $postrotate      = 'undef',
-                        $prerotate       = 'undef',
-                        $firstaction     = 'undef',
-                        $lastaction      = 'undef',
-                        $rotate          = 'undef',
-                        $rotate_every    = 'undef',
-                        $size            = 'undef',
-                        $sharedscripts   = 'undef',
-                        $shred           = 'undef',
-                        $shredcycles     = 'undef',
-                        $start           = 'undef',
-                        $uncompresscmd   = 'undef'
-                        ) {
-
-  #############################################################################
-  # SANITY CHECK VALUES
-
-  if $name !~ /^[a-zA-Z0-9_-]+$/ {
-    fail("Logrotate::Rule[${name}]: namevar must be alphanumeric")
-  }
-
+  Pattern[/^[a-zA-Z0-9\._-]+$/] $rulename           = $title,
+  Enum['present','absent'] $ensure                  = 'present',
+  Optional[Logrotate::Path] $path                   = undef,
+  Optional[Boolean] $compress                       = undef,
+  Optional[String] $compresscmd                     = undef,
+  Optional[String] $compressext                     = undef,
+  Optional[String] $compressoptions                 = undef,
+  Optional[Boolean] $copy                           = undef,
+  Optional[Boolean] $copytruncate                   = undef,
+  Optional[Boolean] $create                         = undef,
+  Optional[String] $create_mode                     = undef,
+  Optional[String] $create_owner                    = undef,
+  Optional[String] $create_group                    = undef,
+  Optional[Boolean] $dateext                        = undef,
+  Optional[String] $dateformat                      = undef,
+  Optional[Boolean] $dateyesterday                  = undef,
+  Optional[Boolean] $delaycompress                  = undef,
+  Optional[String] $extension                       = undef,
+  Optional[Boolean] $ifempty                        = undef,
+  Optional[Variant[String,Boolean]] $mail           = undef,
+  Optional[Enum['mailfirst','maillast']] $mail_when = undef,
+  Optional[Integer] $maxage                         = undef,
+  Optional[Logrotate::Size] $minsize                = undef,
+  Optional[Logrotate::Size] $maxsize                = undef,
+  Optional[Boolean] $missingok                      = undef,
+  Optional[Variant[Boolean,String]] $olddir         = undef,
+  Optional[Logrotate::Commands] $postrotate         = undef,
+  Optional[Logrotate::Commands] $prerotate          = undef,
+  Optional[Logrotate::Commands] $firstaction        = undef,
+  Optional[Logrotate::Commands] $lastaction         = undef,
+  Optional[Integer] $rotate                         = undef,
+  Optional[Logrotate::Every] $rotate_every          = undef,
+  Optional[Logrotate::Size] $size                   = undef,
+  Optional[Boolean] $sharedscripts                  = undef,
+  Optional[Boolean] $shred                          = undef,
+  Optional[Integer] $shredcycles                    = undef,
+  Optional[Integer] $start                          = undef,
+  Optional[Logrotate::UserOrGroup] $su_owner        = undef,
+  Optional[Logrotate::UserOrGroup] $su_group        = undef,
+  Optional[String] $uncompresscmd                   = undef
+) {
   case $ensure {
     'present': {
-      if $path == 'undef' {
-        fail("Logrotate::Rule[${name}]: path not specified")
+      if $path == undef {
+        fail("Logrotate::Rule[${rulename}]: path not specified")
       }
     }
-    'absent': {}
+    'absent': { }
     default: {
-      fail("Logrotate::Rule[${name}]: invalid ensure value")
-    }
-  }
-
-  case $compress {
-    'undef': {}
-    true: { $_compress = 'compress' }
-    false: { $_compress = 'nocompress' }
-    default: {
-      fail("Logrotate::Rule[${name}]: compress must be a boolean")
-    }
-  }
-
-  case $copy {
-    'undef': {}
-    true: { $_copy = 'copy' }
-    false: { $_copy = 'nocopy' }
-    default: {
-      fail("Logrotate::Rule[${name}]: copy must be a boolean")
-    }
-  }
-
-  case $copytruncate {
-    'undef': {}
-    true: { $_copytruncate = 'copytruncate' }
-    false: { $_copytruncate = 'nocopytruncate' }
-    default: {
-      fail("Logrotate::Rule[${name}]: copytruncate must be a boolean")
-    }
-  }
-
-  case $create {
-    'undef': {}
-    true: { $_create = 'create' }
-    false: { $_create = 'nocreate' }
-    default: {
-      fail("Logrotate::Rule[${name}]: create must be a boolean")
-    }
-  }
-
-  case $delaycompress {
-    'undef': {}
-    true: { $_delaycompress = 'delaycompress' }
-    false: { $_delaycompress = 'nodelaycompress' }
-    default: {
-      fail("Logrotate::Rule[${name}]: delaycompress must be a boolean")
-    }
-  }
-
-  case $dateext {
-    'undef': {}
-    true: { $_dateext = 'dateext' }
-    false: { $_dateext = 'nodateext' }
-    default: {
-      fail("Logrotate::Rule[${name}]: dateext must be a boolean")
+      fail("Logrotate::Rule[${rulename}]: invalid ensure value")
     }
   }
 
   case $mail {
-    'undef': {}
+    /\w+/: { $_mail = "mail ${mail}" }
     false: { $_mail = 'nomail' }
-    default: {
-      $_mail = "mail ${mail}"
-    }
-  }
-
-  case $missingok {
-    'undef': {}
-    true: { $_missingok = 'missingok' }
-    false: { $_missingok = 'nomissingok' }
-    default: {
-      fail("Logrotate::Rule[${name}]: missingok must be a boolean")
-    }
+    default: { }
   }
 
   case $olddir {
-    'undef': {}
+    undef: { }
     false: { $_olddir = 'noolddir' }
     default: {
       $_olddir = "olddir ${olddir}"
     }
   }
-
-  case $sharedscripts {
-    'undef': {}
-    true: { $_sharedscripts = 'sharedscripts' }
-    false: { $_sharedscripts = 'nosharedscripts' }
-    default: {
-      fail("Logrotate::Rule[${name}]: sharedscripts must be a boolean")
+  if $rotate_every {
+    $_rotate_every = $rotate_every ? {
+      /ly$/   => $rotate_every,
+      'day'   => 'daily',
+      default => "${rotate_every}ly"
     }
   }
 
-  case $shred {
-    'undef': {}
-    true: { $_shred = 'shred' }
-    false: { $_shred = 'noshred' }
-    default: {
-      fail("Logrotate::Rule[${name}]: shred must be a boolean")
-    }
+  if ($create_group != undef) and ($create_owner == undef) {
+    fail("Logrotate::Rule[${rulename}]: create_group requires create_owner")
   }
 
-  case $ifempty {
-    'undef': {}
-    true: { $_ifempty = 'ifempty' }
-    false: { $_ifempty = 'notifempty' }
-    default: {
-      fail("Logrotate::Rule[${name}]: ifempty must be a boolean")
-    }
+  if ($create_owner != undef) and ($create_mode == undef) {
+    fail("Logrotate::Rule[${rulename}]: create_owner requires create_mode")
   }
 
-  case $rotate_every {
-    'undef': {}
-    'day': { $_rotate_every = 'daily' }
-    'week': { $_rotate_every = 'weekly' }
-    'month': { $_rotate_every = 'monthly' }
-    'year': { $_rotate_every = 'yearly' }
-    'daily', 'weekly','monthly','yearly': { $_rotate_every = $rotate_every }
-    default: {
-      fail("Logrotate::Rule[${name}]: invalid rotate_every value")
-    }
+  if ($create_mode != undef) and ($create != true) {
+    fail("Logrotate::Rule[${rulename}]: create_mode requires create")
   }
 
-  case $maxage {
-    'undef': {}
-    /^\d+$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: maxage must be an integer")
-    }
-  }
-
-  case $minsize {
-    'undef': {}
-    /^\d+[kMG]?$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: minsize must match /\\d+[kMG]?/")
-    }
-  }
-
-  case $rotate {
-    'undef': {}
-    /^\d+$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: rotate must be an integer")
-    }
-  }
-
-  case $size {
-    'undef': {}
-    /^\d+[kMG]?$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: size must match /\\d+[kMG]?/")
-    }
-  }
-
-  case $shredcycles {
-    'undef': {}
-    /^\d+$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: shredcycles must be an integer")
-    }
-  }
-
-  case $start {
-    'undef': {}
-    /^\d+$/: {}
-    default: {
-      fail("Logrotate::Rule[${name}]: start must be an integer")
-    }
-  }
-
-  case $mailfirst {
-    'undef',false: {}
-    true: {
-      if $maillast == true {
-        fail("Logrotate::Rule[${name}]: Can't set both mailfirst and maillast")
-      }
-
-      $_mailfirst = 'mailfirst'
-    }
-    default: {
-      fail("Logrotate::Rule[${name}]: mailfirst must be a boolean")
-    }
-  }
-
-  case $maillast {
-    'undef',false: {}
-    true: {
-      $_maillast = 'maillast'
-    }
-    default: {
-      fail("Logrotate::Rule[${name}]: maillast must be a boolean")
-    }
-  }
-
-  if ($create_group != 'undef') and ($create_owner == 'undef') {
-    fail("Logrotate::Rule[${name}]: create_group requires create_owner")
-  }
-
-  if ($create_owner != 'undef') and ($create_mode == 'undef') {
-    fail("Logrotate::Rule[${name}]: create_owner requires create_mode")
-  }
-
-  if ($create_mode != 'undef') and ($create != true) {
-    fail("Logrotate::Rule[${name}]: create_mode requires create")
+  if $su_owner and !defined('$su_group') {
+    $_su_owner = $su_owner
+    $_su_group = 'root'
+  } elsif !defined('$su_owner') and $su_group {
+    $_su_owner = 'root'
+    $_su_group = $su_group
+  } else {
+    $_su_owner = $su_owner
+    $_su_group = $su_group
   }
 
   #############################################################################
   #
 
-  include logrotate::base
+  include ::logrotate
 
-  file { "/etc/logrotate.d/${name}":
+  case $rotate_every {
+    'hour', 'hourly': {
+      include ::logrotate::hourly
+      $rule_path = "${logrotate::rules_configdir}/hourly/${rulename}"
+
+      file { "${logrotate::rules_configdir}/${rulename}":
+        ensure => absent,
+      }
+    }
+    default: {
+      $rule_path = "${logrotate::rules_configdir}/${rulename}"
+
+      file { "${logrotate::rules_configdir}/hourly/${rulename}":
+        ensure => absent,
+      }
+    }
+  }
+
+  file { $rule_path:
     ensure  => $ensure,
-    owner   => 'root',
-    group   => 'root',
+    owner   => $logrotate::root_user,
+    group   => $logrotate::root_group,
     mode    => '0444',
     content => template('logrotate/etc/logrotate.d/rule.erb'),
-    require => Class['logrotate::base'],
+    require => Class['::logrotate::config'],
   }
 }

@@ -1,19 +1,29 @@
+# Parameters for the munin::node class. Add support for new OS
+# families here.
 class munin::params::node {
 
   $message = "Unsupported osfamily: ${::osfamily}"
 
   $address        = $::fqdn
   $host_name      = $::fqdn
+  $bind_address   = '*'
+  $bind_port      = 4949
   $allow          = []
   $masterconfig   = []
-  $mastergroup    = ''
-  $mastername     = ''
+  $mastergroup    = undef
+  $mastername     = undef
   $nodeconfig     = []
   $plugins        = {}
-  $service_ensure = ''
+  $service_ensure = undef
   $export_node    = 'enabled'
+  $log_file       = 'munin-node.log'
+  $log_destination = 'file'
+  $syslog_facility = undef
+  $purge_configs   = false
+  $timeout         = undef
 
   case $::osfamily {
+    'Archlinux',
     'RedHat': {
       $config_root  = '/etc/munin'
       $log_dir      = '/var/log/munin-node'

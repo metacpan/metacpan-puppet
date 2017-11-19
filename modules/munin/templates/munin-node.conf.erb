@@ -8,13 +8,19 @@
   addresses = []
   unrecognized = []
 
+  rescuable_exceptions = [ ArgumentError ]
+
+  if defined?(IPAddr::InvalidAddressError)
+    rescuable_exceptions << IPAddr::InvalidAddressError
+  end
+
   Array(@allow).flatten.each do |line|
     begin
       a = IPAddr.new(line)
       if a.ipv4? or a.ipv6?
         addresses << line
       end
-    rescue ArgumentError, IPAddr::InvalidAddressError
+    rescue *rescuable_exceptions
       # Treat invalid addresses as "allow" arguments, as they can be
       # regular expressions.
       unrecognized << line
@@ -24,13 +30,20 @@
 
 host_name  <%= @host_name %>
 log_level  4
-log_file   <%= @log_dir %>/munin-node.log
-port       4949
+log_file   <%= @_log_file %>
+<% if @log_destination == 'syslog' -%>
+<%     if @syslog_facility -%>
+syslog_facility <%= @syslog_facility %>
+<%     end -%>
+<% end -%>
 pid_file   /var/run/munin/munin-node.pid
 background 1
 setsid     1
 
-# Which port to bind to;
+# Which port and address to bind to;
+host       <%= @bind_address %>
+port       <%= @bind_port %>
+
 
 user  root
 group <%= @file_group %>
@@ -54,6 +67,9 @@ allow ^<%= Regexp.quote(line) %>$
 <% end -%>
 <% unrecognized.each do |line| -%>
 allow <%= line %>
+<% end -%>
+<% if @timeout -%>
+timeout <%= @timeout %>
 <% end -%>
 
 <% Array(@nodeconfig).each do |line| -%>

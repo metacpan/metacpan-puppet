@@ -1,26 +1,14 @@
-# == Class: elasticsearch::package
-#
 # This class exists to coordinate all software package management related
 # actions, functionality and logical units in a central place.
-#
-#
-# === Parameters
-#
-# This class does not provide any parameters.
-#
-#
-# === Examples
-#
-# This class may be imported by other classes to use its functionality:
-#   class { 'elasticsearch::package': }
 #
 # It is not intended to be used directly by external resources like node
 # definitions or other modules.
 #
+# @example importing this class by other classes to use its functionality:
+#   class { 'elasticsearch::package': }
 #
-# === Authors
-#
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Tyler Langlois <tyler.langlois@elastic.co>
 #
 class elasticsearch::package {
 
@@ -31,13 +19,11 @@ class elasticsearch::package {
     try_sleep => 10,
   }
 
-  #### Package management
-
-
-  # set params: in operation
   if $elasticsearch::ensure == 'present' {
 
-    Package[$elasticsearch::package_name] ~> Elasticsearch::Service <| |>
+    if $elasticsearch::restart_package_change {
+      Package[$elasticsearch::package_name] ~> Elasticsearch::Service <| |>
+    }
     Package[$elasticsearch::package_name] ~> Exec['remove_plugin_dir']
 
     # Create directory to place the package file
@@ -81,14 +67,14 @@ class elasticsearch::package {
       }
 
 
-      $filenameArray = split($elasticsearch::package_url, '/')
-      $basefilename = $filenameArray[-1]
+      $filename_array = split($elasticsearch::package_url, '/')
+      $basefilename = $filename_array[-1]
 
-      $sourceArray = split($elasticsearch::package_url, ':')
-      $protocol_type = $sourceArray[0]
+      $source_array = split($elasticsearch::package_url, ':')
+      $protocol_type = $source_array[0]
 
-      $extArray = split($basefilename, '\.')
-      $ext = $extArray[-1]
+      $ext_array = split($basefilename, '\.')
+      $ext = $ext_array[-1]
 
       $pkg_source = "${package_dir}/${basefilename}"
 
@@ -113,21 +99,30 @@ class elasticsearch::package {
               "http_proxy=${elasticsearch::proxy_url}",
               "https_proxy=${elasticsearch::proxy_url}",
             ]
+          } else {
+            $exec_environment = []
           }
 
-          exec { 'download_package_elasticsearch':
-            command     => "${elasticsearch::params::download_tool} ${pkg_source} ${elasticsearch::package_url} 2> /dev/null",
-            creates     => $pkg_source,
-            environment => $exec_environment,
-            timeout     => $elasticsearch::package_dl_timeout,
-            require     => File[$package_dir],
-            before      => $before,
+          case $elasticsearch::download_tool {
+            String: {
+              exec { 'download_package_elasticsearch':
+                command     => "${elasticsearch::download_tool} ${pkg_source} ${elasticsearch::package_url} 2> /dev/null",
+                creates     => $pkg_source,
+                environment => $exec_environment,
+                timeout     => $elasticsearch::package_dl_timeout,
+                require     => File[$package_dir],
+                before      => $before,
+              }
+            }
+            default: {
+              fail("no \$elasticsearch::download_tool defined for ${facts['os']['family']}")
+            }
           }
 
         }
         'file': {
 
-          $source_path = $sourceArray[1]
+          $source_path = $source_array[1]
           file { $pkg_source:
             ensure  => file,
             source  => $source_path,
@@ -157,12 +152,14 @@ class elasticsearch::package {
   # Package removal
   } else {
 
-    if ($::operatingsystem == 'OpenSuSE') {
+    if ($facts['os']['family'] == 'Suse') {
       Package {
         provider  => 'rpm',
       }
+      $package_ensure = 'absent'
+    } else {
+      $package_ensure = 'purged'
     }
-    $package_ensure = 'purged'
 
   }
 

@@ -18,8 +18,8 @@ Puppet::Type.newtype(:firewallchain) do
     allow it.
 
     **Autorequires:**
-    If Puppet is managing the iptables or iptables-persistent packages, and
-    the provider is iptables_chain, the firewall resource will autorequire
+    If Puppet is managing the iptables, iptables-persistent, or iptables-services packages,
+    and the provider is iptables_chain, the firewall resource will autorequire
     those packages to ensure that any required binaries are installed.
   EOS
 
@@ -41,7 +41,7 @@ Puppet::Type.newtype(:firewallchain) do
 
     validate do |value|
       if value !~ Nameformat then
-        raise ArgumentError, "Inbuilt chains must be in the form {chain}:{table}:{protocol} where {table} is one of FILTER, NAT, MANGLE, RAW, RAWPOST, BROUTE or empty (alias for filter), chain can be anything without colons or one of PREROUTING, POSTROUTING, BROUTING, INPUT, FORWARD, OUTPUT for the inbuilt chains, and {protocol} being IPv4, IPv6, ethernet (ethernet bridging) got '#{value}' table:'#{$1}' chain:'#{$2}' protocol:'#{$3}'"
+        raise ArgumentError, "Inbuilt chains must be in the form {chain}:{table}:{protocol} where {table} is one of FILTER, NAT, MANGLE, RAW, RAWPOST, BROUTE, SECURITY or empty (alias for filter), chain can be anything without colons or one of PREROUTING, POSTROUTING, BROUTING, INPUT, FORWARD, OUTPUT for the inbuilt chains, and {protocol} being IPv4, IPv6, ethernet (ethernet bridging) got '#{value}' table:'#{$1}' chain:'#{$2}' protocol:'#{$3}'"
       else
         chain = $1
         table = $2
@@ -59,7 +59,7 @@ Puppet::Type.newtype(:firewallchain) do
           if chain =~ /^(BROUTING|FORWARD)$/
             raise ArgumentError, "PREROUTING, POSTROUTING, INPUT, and OUTPUT are the only inbuilt chains that can be used in table 'nat'"
           end
-          if protocol =~/^(IP(v6)?)?$/
+          if Gem::Version.new(Facter['kernelmajversion'].value.dup) < Gem::Version.new('3.7') and protocol =~/^(IP(v6)?)?$/
             raise ArgumentError, "table nat isn't valid in IPv6. You must specify ':IPv4' as the name suffix"
           end
         when 'raw'
@@ -72,6 +72,10 @@ Puppet::Type.newtype(:firewallchain) do
           end
           if chain =~ /^PREROUTING|POSTROUTING|INPUT|FORWARD|OUTPUT$/
             raise ArgumentError,'BROUTING is the only inbuilt chain allowed on on table \'broute\''
+          end
+        when 'security'
+          if chain =~ /^(PREROUTING|POSTROUTING|BROUTING)$/
+            raise ArgumentError, "INPUT, OUTPUT and FORWARD are the only inbuilt chains that can be used in table 'security'"
           end
         end
         if chain == 'BROUTING' && ( protocol != 'ethernet' || table!='broute')
@@ -151,7 +155,16 @@ Puppet::Type.newtype(:firewallchain) do
   autorequire(:package) do
     case value(:provider)
     when :iptables_chain
-      %w{iptables iptables-persistent}
+      %w{iptables iptables-persistent iptables-services}
+    else
+      []
+    end
+  end
+
+  autorequire(:service) do
+    case value(:provider)
+    when :iptables, :ip6tables
+      %w{firewalld iptables ip6tables iptables-persistent netfilter-persistent}
     else
       []
     end

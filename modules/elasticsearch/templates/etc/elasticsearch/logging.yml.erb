@@ -14,6 +14,10 @@ rootLogger: <%= @logging_level %>, console, file
 logger.<%= key %>: <%= value %>
 <% end %>
 
+<% if @deprecation_logging -%>
+logger.deprecation: <%= @deprecation_logging_level %>, deprecation_log_file
+<% end -%>
+
 # -------------------------------------------------------------------------------
 
 additivity:
@@ -28,9 +32,14 @@ appender:
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
 
   file:
-    type: dailyRollingFile
+    type: <%= @file_rolling_type %>
     file: ${path.logs}/${cluster.name}.log
-    datePattern: "'.'yyyy-MM-dd"
+    <%- if @file_rolling_type == 'dailyRollingFile' -%>
+    datePattern: <%= @daily_rolling_date_pattern %>
+    <%- elsif @file_rolling_type == 'rollingFile' -%>
+    maxBackupIndex: <%= @rolling_file_max_backup_index %>
+    maxFileSize: <%= @rolling_file_max_file_size %>
+    <%- end -%>
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
@@ -50,3 +59,13 @@ appender:
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+<% if @deprecation_logging -%>
+  deprecation_log_file:
+    type: dailyRollingFile
+    file: ${path.logs}/${cluster.name}_deprecation.log
+    datePattern: "'.'yyyy-MM-dd"
+    layout:
+      type: pattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+<% end %>

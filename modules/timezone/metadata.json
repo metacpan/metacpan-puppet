@@ -1,12 +1,15 @@
 {
   "name": "bashtoni-timezone",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "author": "Bashton Ltd",
   "summary": "Configure /etc/localtime and associated system files",
   "license": "BSD-2-Clause",
   "source": "https://github.com/BashtonLtd/puppet-timezone",
   "project_page": "https://github.com/BashtonLtd/puppet-timezone",
   "issues_url": "https://github.com/BashtonLtd/puppet-timezone/issues",
+  "dependencies": [
+  
+  ],
   "description": "Configure the timezone on various Linux distributions",
   "tags": [
     "linux",
@@ -45,6 +48,13 @@
       ]
     },
     {
+      "operatingsystem": "Amazon",
+      "operatingsystemrelease": [
+        "3",
+        "4"
+      ]
+    },
+    {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
         "6",
@@ -77,8 +87,5 @@
       "name": "puppet",
       "version_requirement": ">= 3.1.0"
     }
-  ],
-  "dependencies": [
-  
   ]
 }

@@ -1,48 +1,86 @@
-# == define: logstash::configfile
+# This type represents a Logstash pipeline configuration file.
 #
-# This define is to manage the config files for Logstah
+# Parameters are mutually exclusive. Only one should be specified.
 #
-# === Parameters
+# @param [String] content
+#  Literal content to be placed in the file.
 #
-# [*content*]
-#  Supply content to be used for the config file. This can also be a template.
+# @param [String] template
+#  A template from which to render the file.
 #
-# [*source*]
-#  Supply a puppet file resource to be used for the config file.
+# @param [String] source
+#  A file resource to be used for the file.
 #
-# [*order*]
-#  The order number controls in which sequence the config file fragments are concatenated.
+# @param [String] path
+#  An optional full path at which to create the file.
 #
-# === Examples
+# @example Create a config file content with literal content.
 #
-#     logstash::configfile { 'apache':
-#       content => template("${module_name}/path/to/apache.conf.erb"),
-#       order   => 10
-#     }
+#   logstash::configfile { 'heartbeat':
+#     content => 'input { heartbeat {} }',
+#   }
 #
-#     or with a puppet file source:
+# @example Render a config file from a template.
 #
-#     logstash::configfile { 'apache':
-#       source => 'puppet://path/to/apache.conf',
-#       order  => 10
-#     }
+#   logstash::configfile { 'from-template':
+#     template => 'site-logstash-module/pipeline-config.erb',
+#   }
 #
-# === Authors
+# @example Copy the config from a file source.
 #
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
+#   logstash::configfile { 'apache':
+#     source => 'puppet://path/to/apache.conf',
+#   }
+#
+# @example Create a config at specific location. Good for multiple pipelines.
+#
+#   logstash::configfile { 'heartbeat-2':
+#     content => 'input { heartbeat {} }',
+#     path    => '/usr/local/etc/logstash/pipeline-2/heartbeat.conf'
+#   }
+#
+# @author https://github.com/elastic/puppet-logstash/graphs/contributors
 #
 define logstash::configfile(
   $content = undef,
   $source = undef,
-  $order = 10
-) {
+  $template = undef,
+  $path = undef,
+)
+{
+  include logstash
 
-  file_fragment { $name:
-    tag     => "LS_CONFIG_${::fqdn}",
-    content => $content,
-    source  => $source,
-    order   => $order,
-    before  => [ File_concat['ls-config'] ]
+  $owner = 'root'
+  $group = $logstash::logstash_group
+  $mode  = '0640'
+  $require = Package['logstash'] # So that we have '/etc/logstash/conf.d'.
+  $tag = [ 'logstash_config' ] # So that we notify the service.
+
+  if($template)   { $config = template($template) }
+  elsif($content) { $config = $content }
+  else            { $config = undef }
+
+  if($path) { $config_file = $path }
+  else      { $config_file = "${logstash::config_dir}/conf.d/${name}" }
+
+  if($config) {
+    file { $config_file:
+      content => $config,
+      owner   => $owner,
+      group   => $group,
+      mode    => $mode,
+      require => $require,
+      tag     => $tag,
+    }
   }
-
+  elsif($source) {
+    file { $config_file:
+      source  => $source,
+      owner   => $owner,
+      group   => $group,
+      mode    => $mode,
+      require => $require,
+      tag     => $tag,
+    }
+  }
 }

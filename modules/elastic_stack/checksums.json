@@ -1,0 +1,14 @@
+{
+  "CHANGELOG.md": "9f659b56c3855cf83c8756aa6b2ca808",
+  "Gemfile": "183549d55a41bd882aef8dfa8218356c",
+  "README.md": "e721c8dab0499213e866541caad1e5b0",
+  "Rakefile": "1229bb6a344b98c0e53d34e9e01b5776",
+  "Vagrantfile": "0eaf5259fc3e04a986b61973fdbef222",
+  "Vagrantfile.d/provision.sh": "c3c6788b9e84cb8de79ae61caae60b11",
+  "appveyor.yml": "890733598bc8d3cc58268aad08ca0a40",
+  "manifests/repo.pp": "4d2e25a8aa32c099b72766527c93721a",
+  "metadata.json": "cca15b136878497d767f669a3c20a310",
+  "spec/classes/repo_spec.rb": "30c92e2105c33d4678e33da711662e8a",
+  "spec/default_facts.yml": "4de3cb611af6981a6d22bc77d7dd6f6f",
+  "spec/spec_helper.rb": "898577ed31fbf848330924de64091e60"
+}

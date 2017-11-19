@@ -1,87 +1,49 @@
-# == Class: logstash::config
+# This class manages configuration directories for Logstash.
 #
-# This class exists to coordinate all configuration related actions,
-# functionality and logical units in a central place.
+# @example Include this class to ensure its resources are available.
+#   include logstash::config
 #
-#
-# === Parameters
-#
-# This class does not provide any parameters.
-#
-#
-# === Examples
-#
-# This class may be imported by other classes to use its functionality:
-#   class { 'logstash::config': }
-#
-# It is not intended to be used directly by external resources like node
-# definitions or other modules.
-#
-#
-# === Authors
-#
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
+# @author https://github.com/elastic/puppet-logstash/graphs/contributors
 #
 class logstash::config {
-
-  #### Configuration
+  require logstash::package
 
   File {
-    owner => $logstash::logstash_user,
-    group => $logstash::logstash_group
+    owner => 'root',
+    group => 'root',
   }
 
-  $notify_service = $logstash::restart_on_change ? {
-    true  => Class['logstash::service'],
-    false => undef,
+  # Configuration "fragment" directories for pipeline config and pattern files.
+  # We'll keep these seperate since we may want to "purge" them. It's easy to
+  # end up with orphan files when managing config fragments with Puppet.
+  # Purging the directories resolves the problem.
+
+  if($logstash::ensure == 'present') {
+    file { $logstash::config_dir:
+      ensure => directory,
+      mode   => '0755',
+    }
+
+    file { "${logstash::config_dir}/conf.d":
+      ensure  => directory,
+      purge   => $logstash::purge_config,
+      recurse => $logstash::purge_config,
+      mode    => '0775',
+    }
+
+    file {     "${logstash::config_dir}/patterns":
+      ensure  => directory,
+      purge   => $logstash::purge_config,
+      recurse => $logstash::purge_config,
+      mode    => '0755',
+    }
   }
-
-  if ( $logstash::ensure == 'present' ) {
-
-    $patterns_dir = "${logstash::configdir}/patterns"
-    $plugins_dir = "${logstash::configdir}/plugins"
-
-    file { $logstash::configdir:
-      ensure  => directory,
-      purge   => $logstash::purge_configdir,
-      recurse => $logstash::purge_configdir
-    }
-
-    file { "${logstash::configdir}/conf.d":
-      ensure  => directory,
-      require => File[$logstash::configdir]
-    }
-
-    file_concat { 'ls-config':
-      ensure  => 'present',
-      tag     => "LS_CONFIG_${::fqdn}",
-      path    => "${logstash::configdir}/conf.d/logstash.conf",
-      owner   => $logstash::logstash_user,
-      group   => $logstash::logstash_group,
-      mode    => '0644',
-      notify  => $notify_service,
-      require => File[ "${logstash::configdir}/conf.d" ]
-    }
-
-    file { $patterns_dir:
-      ensure  => directory,
-      require => File[$logstash::configdir]
-    }
-
-    file { [$plugins_dir, "${plugins_dir}/logstash", "${plugins_dir}/logstash/inputs", "${plugins_dir}/logstash/outputs", "${plugins_dir}/logstash/filters", "${plugins_dir}/logstash/codecs" ]:
-      ensure  => directory,
-      require => File[$logstash::configdir]
-    }
-
-
-  } elsif ( $logstash::ensure == 'absent' ) {
-
-    file { $logstash::configdir:
+  elsif($logstash::ensure == 'absent') {
+    # Completely remove the config directory. ie. 'rm -rf /etc/logstash'
+    file { $logstash::config_dir:
       ensure  => 'absent',
       recurse => true,
-      force   => true
+      force   => true,
     }
-
   }
-
 }

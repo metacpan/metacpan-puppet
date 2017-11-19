@@ -1,63 +1,40 @@
-# == Define: logstash::patternfile
+# This type represents a Grok pattern file for Logstash.
 #
-# This define allows you to transport custom pattern files to the Logstash instance
+# @param [String] source
+#   File source for the pattern file. eg. `puppet://[...]` or `file://[...]`
 #
-# All default values are defined in the logstashc::params class.
+# @param [String] filename
+#   Optionally set the destination filename.
 #
+# @example Define a pattern file.
+#   logstash::patternfile { 'mypattern':
+#     source => 'puppet:///path/to/my/custom/pattern'
+#   }
 #
-# === Parameters
+# @example Define a pattern file with an explicit destination filename.
+#   logstash::patternfile { 'mypattern':
+#     source   => 'puppet:///path/to/my/custom/pattern',
+#     filename => 'custom-pattern-name'
+#   }
 #
-# [*source*]
-#   Puppet file resource of the pattern file ( puppet:// )
-#   Value type is string
-#   Default value: None
-#   This variable is required
+# @author https://github.com/elastic/puppet-logstash/graphs/contributors
 #
-# [*filename*]
-#   if you would like the actual file name to be different then the source file name
-#   Value type is string
-#   This variable is optional
-#
-#
-# === Examples
-#
-#     logstash::patternfile { 'mypattern':
-#       source => 'puppet:///path/to/my/custom/pattern'
-#     }
-#
-#     or wil an other actual file name
-#
-#     logstash::patternfile { 'mypattern':
-#       source   => 'puppet:///path/to/my/custom/pattern_v1',
-#       filename => 'custom_pattern'
-#     }
-#
-#
-# === Authors
-#
-# * Justin Lambert
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
-#
-define logstash::patternfile (
-  $source,
-  $filename = '',
-){
+define logstash::patternfile ($source = undef, $filename = undef) {
+  require logstash::config
 
-  validate_re($source, '^puppet://', 'Source must be from a puppet fileserver (begin with puppet://)' )
+  validate_re($source, '^(puppet|file)://',
+    'Source must begin with "puppet://" or "file://")'
+  )
 
-  $patterns_dir = "${logstash::configdir}/patterns"
+  if($filename) { $destination = $filename }
+  else          { $destination = basename($source) }
 
-  $filename_real = $filename ? {
-    ''      => inline_template('<%= @source.split("/").last %>'),
-    default => $filename
+  file { "${logstash::config_dir}/patterns/${destination}":
+    ensure => file,
+    source => $source,
+    owner  => 'root',
+    group  => $logstash::logstash_group,
+    mode   => '0640',
+    tag    => ['logstash_config'],
   }
-
-  file { "${patterns_dir}/${filename_real}":
-    ensure  => 'file',
-    owner   => $logstash::logstash_user,
-    group   => $logstash::logstash_group,
-    mode    => '0644',
-    source  => $source,
-  }
-
 }

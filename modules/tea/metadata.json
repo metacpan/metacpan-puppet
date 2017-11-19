@@ -1,0 +1,23 @@
+{
+  "name": "puppet-tea",
+  "version": "1.0.0",
+  "author": "Vox Pupuli",
+  "summary": "A collection of useful composite datatypes to use as validators",
+  "license": "Apache-2.0",
+  "source": "https://github.com/voxpupuli/puppet-tea",
+  "project_page": "https://github.com/voxpupuli/puppet-tea",
+  "issues_url": "https://github.com/voxpupuli/puppet-tea/issues",
+  "dependencies": [
+  
+  ],
+  "data_provider": null,
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.1 < 6.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+  
+  ]
+}

@@ -1,319 +1,389 @@
-# == Class: elasticsearch
+# Top-level Elasticsearch class which may manage installation of the
+# Elasticsearch package, package repository, and other
+# global options and parameters.
 #
-# This class is able to install or remove elasticsearch on a node.
-# It manages the status of the related service.
+# @summary Manages the installation of Elasticsearch and related options.
 #
-# === Parameters
+# @example install Elasticsearch
+#   class { 'elasticsearch': }
 #
-# [*ensure*]
-#   String. Controls if the managed resources shall be <tt>present</tt> or
-#   <tt>absent</tt>. If set to <tt>absent</tt>:
-#   * The managed software packages are being uninstalled.
-#   * Any traces of the packages will be purged as good as possible. This may
-#     include existing configuration files. The exact behavior is provider
-#     dependent. Q.v.:
-#     * Puppet type reference: {package, "purgeable"}[http://j.mp/xbxmNP]
-#     * {Puppet's package provider source code}[http://j.mp/wtVCaL]
-#   * System modifications (if any) will be reverted as good as possible
-#     (e.g. removal of created users, services, changed log settings, ...).
-#   * This is thus destructive and should be used with care.
-#   Defaults to <tt>present</tt>.
+# @example removal and decommissioning
+#   class { 'elasticsearch':
+#     ensure => 'absent',
+#   }
 #
-# [*autoupgrade*]
-#   Boolean. If set to <tt>true</tt>, any managed package gets upgraded
-#   on each Puppet run when the package provider is able to find a newer
-#   version than the present one. The exact behavior is provider dependent.
-#   Q.v.:
-#   * Puppet type reference: {package, "upgradeable"}[http://j.mp/xbxmNP]
-#   * {Puppet's package provider source code}[http://j.mp/wtVCaL]
-#   Defaults to <tt>false</tt>.
+# @example install everything but disable service(s) afterwards
+#   class { 'elasticsearch':
+#     status => 'disabled',
+#   }
 #
-# [*status*]
-#   String to define the status of the service. Possible values:
-#   * <tt>enabled</tt>: Service is running and will be started at boot time.
-#   * <tt>disabled</tt>: Service is stopped and will not be started at boot
-#     time.
-#   * <tt>running</tt>: Service is running but will not be started at boot time.
-#     You can use this to start a service on the first Puppet run instead of
-#     the system startup.
-#   * <tt>unmanaged</tt>: Service will not be started at boot time and Puppet
-#     does not care whether the service is running or not. For example, this may
-#     be useful if a cluster management software is used to decide when to start
-#     the service plus assuring it is running on the desired node.
-#   Defaults to <tt>enabled</tt>. The singular form ("service") is used for the
-#   sake of convenience. Of course, the defined status affects all services if
-#   more than one is managed (see <tt>service.pp</tt> to check if this is the
-#   case).
+# @param ensure
+#   Controls if the managed resources shall be `present` or `absent`.
+#   If set to `absent`, the managed software packages will be uninstalled, and
+#   any traces of the packages will be purged as well as possible, possibly
+#   including existing configuration files.
+#   System modifications (if any) will be reverted as well as possible (e.g.
+#   removal of created users, services, changed log settings, and so on).
+#   This is a destructive parameter and should be used with care.
 #
-# [*version*]
-#   String to set the specific version you want to install.
-#   Defaults to <tt>false</tt>.
+# @param api_basic_auth_password
+#   Defines the default REST basic auth password for API authentication.
 #
-# [*restart_on_change*]
-#   Boolean that determines if the application should be automatically restarted
-#   whenever the configuration changes. Disabling automatic restarts on config
-#   changes may be desired in an environment where you need to ensure restarts
-#   occur in a controlled/rolling manner rather than during a Puppet run.
+# @param api_basic_auth_username
+#   Defines the default REST basic auth username for API authentication.
 #
-#   Defaults to <tt>true</tt>, which will restart the application on any config
-#   change. Setting to <tt>false</tt> disables the automatic restart.
+# @param api_ca_file
+#   Path to a CA file which will be used to validate server certs when
+#   communicating with the Elasticsearch API over HTTPS.
 #
-# [*configdir*]
-#   Path to directory containing the elasticsearch configuration.
-#   Use this setting if your packages deviate from the norm (/etc/elasticsearch)
+# @param api_ca_path
+#   Path to a directory with CA files which will be used to validate server
+#   certs when communicating with the Elasticsearch API over HTTPS.
 #
-# [*plugindir*]
-#   Path to directory containing the elasticsearch plugins
+# @param api_host
+#   Default host to use when accessing Elasticsearch APIs.
+#
+# @param api_port
+#   Default port to use when accessing Elasticsearch APIs.
+#
+# @param api_protocol
+#   Default protocol to use when accessing Elasticsearch APIs.
+#
+# @param api_timeout
+#   Default timeout (in seconds) to use when accessing Elasticsearch APIs.
+#
+# @param autoupgrade
+#   If set to `true`, any managed package will be upgraded on each Puppet run
+#   when the package provider is able to find a newer version than the present
+#   one. The exact behavior is provider dependent (see
+#   {package, "upgradeable"}[http://j.mp/xbxmNP] in the Puppet documentation).
+#
+# @param config
+#   Elasticsearch configuration hash.
+#
+# @param configdir
+#   Directory containing the elasticsearch configuration.
+#   Use this setting if your packages deviate from the norm (`/etc/elasticsearch`)
+#
+# @param daily_rolling_date_pattern
+#   File pattern for the file appender log when file_rolling_type is 'dailyRollingFile'.
+#
+# @param datadir
+#   Allows you to set the data directory of Elasticsearch.
+#
+# @param datadir_instance_directories
+#   Control whether individual directories for instances will be created within
+#   each instance's data directory.
+#
+# @param default_logging_level
+#   Default logging level for Elasticsearch.
+#
+# @param defaults_location
+#   Absolute path to directory containing init defaults file.
+#
+# @param download_tool
+#   Command-line invocation with which to retrieve an optional package_url.
+#
+# @param elasticsearch_group
+#   The group Elasticsearch should run as. This also sets file group
+#   permissions.
+#
+# @param elasticsearch_user
+#   The user Elasticsearch should run as. This also sets file ownership.
+#
+# @param file_rolling_type
+#   Configuration for the file appender rotation. It can be 'dailyRollingFile'
+#   or 'rollingFile'. The first rotates by name, and the second one by size.
+#
+# @param homedir
+#   Directory where the elasticsearch installation's files are kept (plugins, etc.)
+#
+# @param indices
+#   Define indices via a hash. This is mainly used with Hiera's auto binding.
+#
+# @param init_defaults
+#   Defaults file content in hash representation.
+#
+# @param init_defaults_file
+#   Defaults file as puppet resource.
+#
+# @param init_template
+#   Service file as a template.
+#
+# @param instances
+#   Define instances via a hash. This is mainly used with Hiera's auto binding.
+#
+# @param jvm_options
+#   Array of options to set in jvm_options.
+#
+# @param logdir
+#   Directory that will be used for Elasticsearch logging.
+#
+# @param logging_config
+#   Representation of information to be included in the logging.yml file.
+#
+# @param logging_file
+#   Instead of a hash, you may supply a `puppet://` file source for the
+#   logging.yml file.
+#
+# @param logging_template
+#   Use a custom logging template - just supply the relative path, i.e.
+#   `$module/elasticsearch/logging.yml.erb`
+#
+# @param manage_repo
+#   Enable repo management by enabling official Elastic repositories.
+#
+# @param package_dir
+#   Directory where packages are downloaded to.
+#
+# @param package_dl_timeout
+#   For http, https, and ftp downloads, you may set how long the exec resource
+#   may take.
+#
+# @param package_name
+#   Name Of the package to install.
+#
+# @param package_provider
+#   Method to install the packages, currently only `package` is supported.
+#
+# @param package_url
+#   URL of the package to download.
+#   This can be an http, https, or ftp resource for remote packages, or a
+#   `puppet://` resource or `file:/` for local packages
+#
+# @param pid_dir
+#   Directory where the elasticsearch process should write out its PID.
+#
+# @param pipelines
+#   Define pipelines via a hash. This is mainly used with Hiera's auto binding.
+#
+# @param plugindir
+#   Directory containing elasticsearch plugins.
 #   Use this setting if your packages deviate from the norm (/usr/share/elasticsearch/plugins)
 #
-# [*plugintool*]
-#   Path to directory containing the elasticsearch plugin installation script
-#   Use this setting if your packages deviate from the norm (/usr/share/elasticsearch/bin/plugin)
+# @param plugins
+#   Define plugins via a hash. This is mainly used with Hiera's auto binding.
 #
-# [*package_url*]
-#   Url to the package to download.
-#   This can be a http,https or ftp resource for remote packages
-#   puppet:// resource or file:/ for local packages
+# @param proxy_url
+#   For http and https downloads, you may set a proxy server to use. By default,
+#   no proxy is used.
+#   Format: `proto://[user:pass@]server[:port]/`
 #
-# [*package_provider*]
-#   Way to install the packages, currently only packages are supported.
+# @param purge_configdir
+#   Purge the config directory of any unmanaged files.
 #
-# [*package_dir*]
-#   Directory where the packages are downloaded to
-#
-# [*package_name*]
-#   Name of the package to install
-#
-# [*purge_package_dir*]
+# @param purge_package_dir
 #   Purge package directory on removal
 #
-# [*package_dl_timeout*]
-#   For http,https and ftp downloads you can set howlong the exec resource may take.
-#   Defaults to: 600 seconds
+# @param purge_secrets
+#   Whether or not keys present in the keystore will be removed if they are not
+#   present in the specified secrets hash.
 #
-# [*proxy_url*]
-#   For http and https downloads you can set a proxy server to use
-#   Format: proto://[user:pass@]server[:port]/
-#   Defaults to: undef (proxy disabled)
+# @param repo_baseurl
+#   If a custom repository URL is needed (such as for installations behind
+#   restrictive firewalls), this parameter overrides the upstream repository
+#   URL. Note that any additional changes to the repository metdata (such as
+#   signing keys and so on) will need to be handled appropriately.
 #
-# [*elasticsearch_user*]
-#   The user Elasticsearch should run as. This also sets the file rights.
+# @param repo_key_id
+#   The apt GPG key id.
 #
-# [*elasticsearch_group*]
-#   The group Elasticsearch should run as. This also sets the file rights
+# @param repo_key_source
+#   URL of the repository GPG key.
 #
-# [*purge_configdir*]
-#   Purge the config directory for any unmanaged files
+# @param repo_priority
+#   Repository priority. yum and apt supported.
 #
-# [*service_provider*]
-#   Service provider to use. By Default when a single service provider is possibe that one is selected.
+# @param repo_proxy
+#   URL for repository proxy.
 #
-# [*init_defaults*]
-#   Defaults file content in hash representation
+# @param repo_stage
+#   Use stdlib stage setup for managing the repo instead of relationship
+#   ordering.
 #
-# [*init_defaults_file*]
-#   Defaults file as puppet resource
+# @param repo_version
+#   Elastic repositories are versioned per major version (5.x, 6.x). This
+#   parameter controls which version to use.
 #
-# [*init_template*]
-#   Service file as a template
+# @param restart_on_change
+#   Determines if the application should be automatically restarted
+#   whenever the configuration, package, or plugins change. Enabling this
+#   setting will cause Elasticsearch to restart whenever there is cause to
+#   re-read configuration files, load new plugins, or start the service using an
+#   updated/changed executable. This may be undesireable in highly available
+#   environments. If all other restart_* parameters are left unset, the value of
+#   `restart_on_change` is used for all other restart_*_change defaults.
 #
-# [*config*]
-#   Elasticsearch configuration hash
+# @param restart_config_change
+#   Determines if the application should be automatically restarted
+#   whenever the configuration changes. This includes the Elasticsearch
+#   configuration file, any service files, and defaults files.
+#   Disabling automatic restarts on config changes may be desired in an
+#   environment where you need to ensure restarts occur in a controlled/rolling
+#   manner rather than during a Puppet run.
 #
-# [*datadir*]
-#   Allows you to set the data directory of Elasticsearch
+# @param restart_package_change
+#   Determines if the application should be automatically restarted
+#   whenever the package (or package version) for Elasticsearch changes.
+#   Disabling automatic restarts on package changes may be desired in an
+#   environment where you need to ensure restarts occur in a controlled/rolling
+#   manner rather than during a Puppet run.
 #
-# [*java_install*]
-#  Install java which is required for Elasticsearch.
-#  Defaults to: false
+# @param restart_plugin_change
+#   Determines if the application should be automatically restarted whenever
+#   plugins are installed or removed.
+#   Disabling automatic restarts on plugin changes may be desired in an
+#   environment where you need to ensure restarts occur in a controlled/rolling
+#   manner rather than during a Puppet run.
 #
-# [*java_package*]
-#   If you like to install a custom java package, put the name here.
+# @param roles
+#   Define roles via a hash. This is mainly used with Hiera's auto binding.
 #
-# [*manage_repo*]
-#   Enable repo management by enabling our official repositories
+# @param rolling_file_max_backup_index
+#   Max number of logs to store whern file_rolling_type is 'rollingFile'
 #
-# [*repo_version*]
-#   Our repositories are versioned per major version (0.90, 1.0) select here which version you want
+# @param rolling_file_max_file_size
+#   Max log file size when file_rolling_type is 'rollingFile'
 #
-# [*repo_key_id*]
-#   String.  The apt GPG key id
-#   Default: D88E42B4
+# @param scripts
+#   Define scripts via a hash. This is mainly used with Hiera's auto binding.
 #
-# [*repo_key_source*]
-#   String.  URL of the apt GPG key
-#   Default: http://packages.elastic.co/GPG-KEY-elasticsearch
+# @param secrets
+#   Optional default configuration hash of key/value pairs to store in the
+#   Elasticsearch keystore file. If unset, the keystore is left unmanaged.
 #
-# [*logging_config*]
-#   Hash representation of information you want in the logging.yml file
+# @param security_logging_content
+#   File content for shield/x-pack logging configuration file (will be placed
+#   into logging.yml or log4j2.properties file as appropriate).
 #
-# [*logging_file*]
-#   Instead of a hash you can supply a puppet:// file source for the logging.yml file
+# @param security_logging_source
+#   File source for shield/x-pack logging configuration file (will be placed
+#   into logging.yml or log4j2.properties file as appropriate).
 #
-# [*logging_template*]
-#  Use a custom logging template - just supply the reative path ie ${module}/elasticsearch/logging.yml.erb
+# @param security_plugin
+#   Which security plugin will be used to manage users, roles, and
+#   certificates.
 #
-# [*default_logging_level*]
-#   Default logging level for Elasticsearch.
-#   Defaults to: INFO
+# @param service_provider
+#   The service resource type provider to use when managing elasticsearch instances.
 #
-# [*repo_stage*]
-#   Use stdlib stage setup for managing the repo, instead of anchoring
+# @param status
+#   To define the status of the service. If set to `enabled`, the service will
+#   be run and will be started at boot time. If set to `disabled`, the service
+#   is stopped and will not be started at boot time. If set to `running`, the
+#   service will be run but will not be started at boot time. You may use this
+#   to start a service on the first Puppet run instead of the system startup.
+#   If set to `unmanaged`, the service will not be started at boot time and Puppet
+#   does not care whether the service is running or not. For example, this may
+#   be useful if a cluster management software is used to decide when to start
+#   the service plus assuring it is running on the desired node.
 #
-# [*instances*]
-#   Define instances via a hash. This is mainly used with Hiera's auto binding
-#   Defaults to: undef
+# @param system_key
+#   Source for the Shield/x-pack system key. Valid values are any that are
+#   supported for the file resource `source` parameter.
 #
-# [*instances_hiera_merge*]
-#   Enable Hiera's merging function for the instances
-#   Defaults to: false
+# @param systemd_service_path
+#   Path to the directory in which to install systemd service units.
 #
-# [*plugins*]
-#   Define plugins via a hash. This is mainly used with Hiera's auto binding
-#   Defaults to: undef
+# @param templates
+#   Define templates via a hash. This is mainly used with Hiera's auto binding.
 #
-# [*plugins_hiera_merge*]
-#   Enable Hiera's merging function for the plugins
-#   Defaults to: false
+# @param users
+#   Define templates via a hash. This is mainly used with Hiera's auto binding.
 #
-# [*package_pin*]
-#   Enables package version pinning.
-#   This pins the package version to the set version number and avoids
-#   package upgrades.
-#   Defaults to: true
+# @param validate_tls
+#   Enable TLS/SSL validation on API calls.
 #
-# [*logdir*]
-#   Use different directory for logging
+# @param version
+#   To set the specific version you want to install.
 #
-# The default values for the parameters are set in elasticsearch::params. Have
-# a look at the corresponding <tt>params.pp</tt> manifest file if you need more
-# technical information about them.
+# @author Richard Pijnenburg <richard.pijnenburg@elasticsearch.com>
+# @author Tyler Langlois <tyler.langlois@elastic.co>
 #
-# === Examples
-#
-# * Installation, make sure service is running and will be started at boot time:
-#     class { 'elasticsearch': }
-#
-# * Removal/decommissioning:
-#     class { 'elasticsearch':
-#       ensure => 'absent',
-#     }
-#
-# * Install everything but disable service(s) afterwards
-#     class { 'elasticsearch':
-#       status => 'disabled',
-#     }
-#
-#
-# === Authors
-#
-# * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
-#
-class elasticsearch(
-  $ensure                = $elasticsearch::params::ensure,
-  $status                = $elasticsearch::params::status,
-  $restart_on_change     = $elasticsearch::params::restart_on_change,
-  $autoupgrade           = $elasticsearch::params::autoupgrade,
-  $version               = false,
-  $package_provider      = 'package',
-  $package_url           = undef,
-  $package_dir           = $elasticsearch::params::package_dir,
-  $package_name          = $elasticsearch::params::package,
-  $package_pin           = true,
-  $purge_package_dir     = $elasticsearch::params::purge_package_dir,
-  $package_dl_timeout    = $elasticsearch::params::package_dl_timeout,
-  $proxy_url             = undef,
-  $elasticsearch_user    = $elasticsearch::params::elasticsearch_user,
-  $elasticsearch_group   = $elasticsearch::params::elasticsearch_group,
-  $configdir             = $elasticsearch::params::configdir,
-  $purge_configdir       = $elasticsearch::params::purge_configdir,
-  $service_provider      = 'init',
-  $init_defaults         = undef,
-  $init_defaults_file    = undef,
-  $init_template         = "${module_name}/etc/init.d/${elasticsearch::params::init_template}",
-  $config                = undef,
-  $datadir               = $elasticsearch::params::datadir,
-  $logdir                = $elasticsearch::params::logdir,
-  $plugindir             = $elasticsearch::params::plugindir,
-  $plugintool            = $elasticsearch::params::plugintool,
-  $java_install          = false,
-  $java_package          = undef,
-  $manage_repo           = false,
-  $repo_version          = undef,
-  $repo_key_id           = 'D88E42B4',
-  $repo_key_source       = 'http://packages.elastic.co/GPG-KEY-elasticsearch',
-  $logging_file          = undef,
-  $logging_config        = undef,
-  $logging_template      = undef,
-  $default_logging_level = $elasticsearch::params::default_logging_level,
-  $repo_stage            = false,
-  $instances             = undef,
-  $instances_hiera_merge = false,
-  $plugins               = undef,
-  $plugins_hiera_merge   = false
-) inherits elasticsearch::params {
-
-  anchor {'elasticsearch::begin': }
-
+class elasticsearch (
+  Enum['absent', 'present']                    $ensure,
+  Optional[String]                             $api_basic_auth_password,
+  Optional[String]                             $api_basic_auth_username,
+  Optional[String]                             $api_ca_file,
+  Optional[String]                             $api_ca_path,
+  String                                       $api_host,
+  Tea::Port                                    $api_port,
+  Enum['http', 'https']                        $api_protocol,
+  Integer                                      $api_timeout,
+  Boolean                                      $autoupgrade,
+  Hash                                         $config,
+  Tea::Absolutepath                            $configdir,
+  String                                       $daily_rolling_date_pattern,
+  Elasticsearch::Multipath                     $datadir,
+  Boolean                                      $datadir_instance_directories,
+  String                                       $default_logging_level,
+  Tea::Absolutepath                            $defaults_location,
+  Optional[String]                             $download_tool,
+  String                                       $elasticsearch_group,
+  String                                       $elasticsearch_user,
+  Enum['dailyRollingFile', 'rollingFile']      $file_rolling_type,
+  Tea::Absolutepath                            $homedir,
+  Hash                                         $indices,
+  Hash                                         $init_defaults,
+  Optional[String]                             $init_defaults_file,
+  String                                       $init_template,
+  Hash                                         $instances,
+  Array[String]                                $jvm_options,
+  Tea::Absolutepath                            $logdir,
+  Hash                                         $logging_config,
+  Optional[String]                             $logging_file,
+  Optional[String]                             $logging_template,
+  Boolean                                      $manage_repo,
+  Tea::Absolutepath                            $package_dir,
+  Integer                                      $package_dl_timeout,
+  String                                       $package_name,
+  Enum['package']                              $package_provider,
+  Optional[String]                             $package_url,
+  Optional[Tea::Absolutepath]                  $pid_dir,
+  Hash                                         $pipelines,
+  Tea::Absolutepath                            $plugindir,
+  Hash                                         $plugins,
+  Optional[Tea::HTTPUrl]                       $proxy_url,
+  Boolean                                      $purge_configdir,
+  Boolean                                      $purge_package_dir,
+  Boolean                                      $purge_secrets,
+  Optional[String]                             $repo_baseurl,
+  String                                       $repo_key_id,
+  Tea::HTTPUrl                                 $repo_key_source,
+  Optional[Integer]                            $repo_priority,
+  Optional[String]                             $repo_proxy,
+  Variant[Boolean, String]                     $repo_stage,
+  String                                       $repo_version,
+  Boolean                                      $restart_on_change,
+  Hash                                         $roles,
+  Integer                                      $rolling_file_max_backup_index,
+  String                                       $rolling_file_max_file_size,
+  Hash                                         $scripts,
+  Optional[Hash]                               $secrets,
+  Optional[String]                             $security_logging_content,
+  Optional[String]                             $security_logging_source,
+  Optional[Enum['shield', 'x-pack']]           $security_plugin,
+  Enum['init', 'openbsd', 'openrc', 'systemd'] $service_provider,
+  Elasticsearch::Status                        $status,
+  Optional[String]                             $system_key,
+  Tea::Absolutepath                            $systemd_service_path,
+  Hash                                         $templates,
+  Hash                                         $users,
+  Boolean                                      $validate_tls,
+  Variant[String, Boolean]                     $version,
+  Boolean $restart_config_change  = $restart_on_change,
+  Boolean $restart_package_change = $restart_on_change,
+  Boolean $restart_plugin_change  = $restart_on_change,
+) {
 
   #### Validate parameters
-
-  # ensure
-  if ! ($ensure in [ 'present', 'absent' ]) {
-    fail("\"${ensure}\" is not a valid ensure parameter value")
-  }
-
-  # autoupgrade
-  validate_bool($autoupgrade)
-
-  # service status
-  if ! ($status in [ 'enabled', 'disabled', 'running', 'unmanaged' ]) {
-    fail("\"${status}\" is not a valid status parameter value")
-  }
-
-  # restart on change
-  validate_bool($restart_on_change)
-
-  # purge conf dir
-  validate_bool($purge_configdir)
-
-  if is_array($elasticsearch::params::service_providers) {
-    # Verify the service provider given is in the array
-    if ! ($service_provider in $elasticsearch::params::service_providers) {
-      fail("\"${service_provider}\" is not a valid provider for \"${::operatingsystem}\"")
-    }
-    $real_service_provider = $service_provider
-  } else {
-    # There is only one option so simply set it
-    $real_service_provider = $elasticsearch::params::service_providers
-  }
 
   if ($package_url != undef and $version != false) {
     fail('Unable to set the version number when using package_url option.')
   }
 
-  if $ensure == 'present' {
-    # validate config hash
-    if ($config != undef) {
-      validate_hash($config)
-    }
-  }
-
-  # java install validation
-  validate_bool($java_install)
-
-  validate_bool($manage_repo)
-
-  if ($manage_repo == true) {
-    if $repo_version == undef {
-      fail('Please fill in a repository version at $repo_version')
-    } else {
-      validate_string($repo_version)
-    }
-  }
-
   if ($version != false) {
-    case $::osfamily {
+    case $facts['os']['family'] {
       'RedHat', 'Linux', 'Suse': {
         if ($version =~ /.+-\d/) {
           $pkg_version = $version
@@ -327,73 +397,38 @@ class elasticsearch(
     }
   }
 
+  # This value serves as an unchanging default for platforms as a default for
+  # init scripts to fallback on.
+  $_datadir_default = $facts['kernel'] ? {
+    'Linux'   => '/var/lib/elasticsearch',
+    'OpenBSD' => '/var/elasticsearch/data',
+    default   => undef,
+  }
+
   #### Manage actions
 
-  # package(s)
-  class { 'elasticsearch::package': }
+  contain elasticsearch::package
+  contain elasticsearch::config
 
-  # configuration
-  class { 'elasticsearch::config': }
-
-  # Hiera support for instances
-  validate_bool($instances_hiera_merge)
-
-  if $instances_hiera_merge == true {
-    $x_instances = hiera_hash('elasticsearch::instances', $::elasticsearch::instances)
-  } else {
-    $x_instances = $instances
-  }
-
-  if $x_instances {
-    validate_hash($x_instances)
-    create_resources('elasticsearch::instance', $x_instances)
-  }
-
-  # Hiera support for plugins
-  validate_bool($plugins_hiera_merge)
-
-  if $plugins_hiera_merge == true {
-    $x_plugins = hiera_hash('elasticsearch::plugins', $::elasticsearch::plugins)
-  } else {
-    $x_plugins = $plugins
-  }
-
-  if $x_plugins {
-    validate_hash($x_plugins)
-    create_resources('elasticsearch::plugin', $x_plugins)
-  }
-
-
-  if $java_install == true {
-    # Install java
-    class { '::java':
-      package      => $java_package,
-      distribution => 'jre',
-    }
-
-    # ensure we first install java, the package and then the rest
-    Anchor['elasticsearch::begin']
-    -> Class['::java']
-    -> Class['elasticsearch::package']
-  }
+  create_resources('elasticsearch::index', $::elasticsearch::indices)
+  create_resources('elasticsearch::instance', $::elasticsearch::instances)
+  create_resources('elasticsearch::pipeline', $::elasticsearch::pipelines)
+  create_resources('elasticsearch::plugin', $::elasticsearch::plugins)
+  create_resources('elasticsearch::role', $::elasticsearch::roles)
+  create_resources('elasticsearch::script', $::elasticsearch::scripts)
+  create_resources('elasticsearch::template', $::elasticsearch::templates)
+  create_resources('elasticsearch::user', $::elasticsearch::users)
 
   if ($manage_repo == true) {
-
     if ($repo_stage == false) {
-      # use anchor for ordering
+      # Use normal relationship ordering
+      contain elasticsearch::repo
 
-      # Set up repositories
-      class { 'elasticsearch::repo': }
-
-      # Ensure that we set up the repositories before trying to install
-      # the packages
-      Anchor['elasticsearch::begin']
-      -> Class['elasticsearch::repo']
+      Class['elasticsearch::repo']
       -> Class['elasticsearch::package']
 
     } else {
-      # use staging for ordering
-
+      # Use staging for ordering
       if !(defined(Stage[$repo_stage])) {
         stage { $repo_stage:  before => Stage['main'] }
       }
@@ -405,25 +440,117 @@ class elasticsearch(
   }
 
   #### Manage relationships
+  #
+  # Note that many of these overly verbose declarations work around
+  # https://tickets.puppetlabs.com/browse/PUP-1410
+  # which means clean arrow order chaining won't work if someone, say,
+  # doesn't declare any plugins.
+  #
+  # forgive me for what you're about to see
+
+  if defined(Class['java']) { Class['java'] -> Class['elasticsearch::config'] }
 
   if $ensure == 'present' {
 
-    # we need the software before configuring it
-    Anchor['elasticsearch::begin']
-    -> Class['elasticsearch::package']
+    # Installation and configuration
+    Class['elasticsearch::package']
     -> Class['elasticsearch::config']
-    -> Elasticsearch::Plugin <| |>
+
+    # Top-level ordering bindings for resources.
+    Class['elasticsearch::config']
+    -> Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
+    Elasticsearch::Plugin <| ensure == 'absent' |>
+    -> Class['elasticsearch::config']
+    Class['elasticsearch::config']
     -> Elasticsearch::Instance <| |>
+    Class['elasticsearch::config']
+    -> Elasticsearch::User <| |>
+    Class['elasticsearch::config']
+    -> Elasticsearch::Role <| |>
+    Class['elasticsearch::config']
     -> Elasticsearch::Template <| |>
+    Class['elasticsearch::config']
+    -> Elasticsearch::Pipeline <| |>
+    Class['elasticsearch::config']
+    -> Elasticsearch::Index <| |>
 
   } else {
 
-    # make sure all services are getting stopped before software removal
-    Anchor['elasticsearch::begin']
-    -> Elasticsearch::Instance <| |>
-    -> Class['elasticsearch::config']
+    # Absent; remove configuration before the package.
+    Class['elasticsearch::config']
     -> Class['elasticsearch::package']
+
+    # Top-level ordering bindings for resources.
+    Elasticsearch::Plugin <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::Instance <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::User <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::Role <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::Template <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::Pipeline <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::Index <| |>
+    -> Class['elasticsearch::config']
 
   }
 
+  # Install plugins before managing instances or users/roles
+  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> Elasticsearch::Instance <| |>
+  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> Elasticsearch::User <| |>
+  Elasticsearch::Plugin <| ensure == 'present' or ensure == 'installed' |>
+  -> Elasticsearch::Role <| |>
+
+  # Remove plugins after managing users/roles
+  Elasticsearch::User <| |>
+  -> Elasticsearch::Plugin <| ensure == 'absent' |>
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::Plugin <| ensure == 'absent' |>
+
+  # Ensure roles are defined before managing users that reference roles
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::User <| ensure == 'present' |>
+  # Ensure users are removed before referenced roles are managed
+  Elasticsearch::User <| ensure == 'absent' |>
+  -> Elasticsearch::Role <| |>
+
+  # Ensure users and roles are managed before calling out to REST resources
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::Template <| |>
+  Elasticsearch::User <| |>
+  -> Elasticsearch::Template <| |>
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::Pipeline <| |>
+  Elasticsearch::User <| |>
+  -> Elasticsearch::Pipeline <| |>
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::Index <| |>
+  Elasticsearch::User <| |>
+  -> Elasticsearch::Index <| |>
+
+  # Manage users/roles before instances (req'd to keep dir in sync)
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::Instance <| |>
+  Elasticsearch::User <| |>
+  -> Elasticsearch::Instance <| |>
+
+  # Ensure instances are started before managing REST resources
+  Elasticsearch::Instance <| ensure == 'present' |>
+  -> Elasticsearch::Template <| |>
+  Elasticsearch::Instance <| ensure == 'present' |>
+  -> Elasticsearch::Pipeline <| |>
+  Elasticsearch::Instance <| ensure == 'present' |>
+  -> Elasticsearch::Index <| |>
+  # Ensure instances are stopped after managing REST resources
+  Elasticsearch::Template <| |>
+  -> Elasticsearch::Instance <| ensure == 'absent' |>
+  Elasticsearch::Pipeline <| |>
+  -> Elasticsearch::Instance <| ensure == 'absent' |>
+  Elasticsearch::Index <| |>
+  -> Elasticsearch::Instance <| ensure == 'absent' |>
 }

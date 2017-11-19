@@ -1,6 +1,6 @@
 {
   "name": "saz-rsyslog",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "author": "saz",
   "summary": "Manage rsyslog client and server",
   "license": "Apache-2.0",
@@ -53,7 +53,7 @@
     },
     {
       "name": "puppet",
-      "version_requirement": "3.x"
+      "version_requirement": ">= 3.0.0 < 5.0.0"
     }
   ],
   "description": "Manage rsyslog client and server via Puppet"

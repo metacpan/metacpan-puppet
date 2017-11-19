@@ -1,4 +1,6 @@
 require 'beaker-rspec'
+require 'beaker/puppet_install_helper'
+require 'beaker/module_install_helper'
 
 def iptables_flush_all_tables
   ['filter', 'nat', 'mangle', 'raw'].each do |t|
@@ -7,38 +9,31 @@ def iptables_flush_all_tables
 end
 
 def ip6tables_flush_all_tables
-  ['filter'].each do |t|
+  ['filter', 'mangle'].each do |t|
     expect(shell("ip6tables -t #{t} -F").stderr).to eq("")
   end
 end
 
-unless ENV['RS_PROVISION'] == 'no' or ENV['BEAKER_provision'] == 'no'
-  if hosts.first.is_pe?
-    install_pe
+def do_catch_changes
+  if default['platform'] =~ /el-5/
+    return false
   else
-    install_puppet
-  end
-  hosts.each do |host|
-    on host, "mkdir -p #{host['distmoduledir']}"
+    return true
   end
 end
 
-UNSUPPORTED_PLATFORMS = ['windows','Solaris','Darwin']
+run_puppet_install_helper
+install_module_on(hosts)
+install_module_dependencies_on(hosts)
 
 RSpec.configure do |c|
-  # Project root
-  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-
-  # Readable test descriptions
-  c.formatter = :documentation
-
   # Configure all nodes in nodeset
   c.before :suite do
     # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'firewall')
     hosts.each do |host|
-      shell('/bin/touch /etc/puppet/hiera.yaml')
-      shell('puppet module install puppetlabs-stdlib --version 3.2.0', { :acceptable_exit_codes => [0,1] })
+      on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0] }
+      # the ubuntu-14.04 docker image doesn't carry the iptables command
+      apply_manifest_on host, 'package { "iptables": ensure => installed }' if fact('osfamily') == 'Debian'
     end
   end
 end

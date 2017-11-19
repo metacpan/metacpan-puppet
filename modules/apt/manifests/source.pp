@@ -1,93 +1,109 @@
 # source.pp
 # add an apt source
-
 define apt::source(
-  $comment           = $name,
-  $ensure            = present,
-  $location          = '',
-  $release           = 'UNDEF',
-  $repos             = 'main',
-  $include_src       = true,
-  $include_deb       = true,
-  $required_packages = false,
-  $key               = undef,
-  $key_server        = 'keyserver.ubuntu.com',
-  $key_content       = undef,
-  $key_source        = undef,
-  $pin               = false,
-  $architecture      = undef,
-  $trusted_source    = false,
+  Optional[String] $location                    = undef,
+  String $comment                               = $name,
+  String $ensure                                = present,
+  Optional[String] $release                     = undef,
+  String $repos                                 = 'main',
+  Optional[Variant[Hash]] $include              = {},
+  Optional[Variant[String, Hash]] $key          = undef,
+  Optional[Variant[Hash, Numeric, String]] $pin = undef,
+  Optional[String] $architecture                = undef,
+  Boolean $allow_unsigned                       = false,
+  Boolean $notify_update                        = true,
 ) {
 
-  include apt::params
-  include apt::update
+  # This is needed for compat with 1.8.x
+  include ::apt
 
-  validate_string($architecture)
-  validate_bool($trusted_source)
+  $_before = Apt::Setting["list-${title}"]
 
-  $sources_list_d = $apt::params::sources_list_d
-  $provider       = $apt::params::provider
-
-  if $release == 'UNDEF' {
-    if $::lsbdistcodename == undef {
-      fail('lsbdistcodename fact not available: release parameter required')
+  if !$release {
+    if $facts['lsbdistcodename'] {
+      $_release = $facts['lsbdistcodename']
     } else {
-      $release_real = $::lsbdistcodename
+      fail('lsbdistcodename fact not available: release parameter required')
     }
   } else {
-    $release_real = $release
+    $_release = $release
   }
 
-  file { "${name}.list":
-    ensure  => $ensure,
-    path    => "${sources_list_d}/${name}.list",
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('apt/_header.erb', 'apt/source.list.erb'),
-    notify  => Exec['apt_update'],
-  }
+  # Some releases do not support https transport with default installation
+  $_transport_https_releases = [ 'wheezy', 'jessie', 'stretch', 'trusty', 'xenial' ]
 
-
-  if ($pin != false) {
-    # Get the host portion out of the url so we can pin to origin
-    $url_split = split($location, '/')
-    $host      = $url_split[2]
-
-    apt::pin { $name:
-      ensure   => $ensure,
-      priority => $pin,
-      before   => File["${name}.list"],
-      origin   => $host,
+  if $ensure == 'present' {
+    if ! $location {
+      fail('cannot create a source entry without specifying a location')
+    } elsif $_release in $_transport_https_releases {
+      $method = split($location, '[:\/]+')[0]
+      if $method == 'https' {
+        ensure_packages('apt-transport-https')
+      }
     }
   }
 
-  if ($required_packages != false) and ($ensure == 'present') {
-    exec { "Required packages: '${required_packages}' for ${name}":
-      command     => "${provider} -y install ${required_packages}",
-      logoutput   => 'on_failure',
-      refreshonly => true,
-      tries       => 3,
-      try_sleep   => 1,
-      subscribe   => File["${name}.list"],
-      before      => Exec['apt_update'],
+  $includes = merge($::apt::include_defaults, $include)
+
+  if $key {
+    if $key =~ Hash {
+      unless $key['id'] {
+        fail('key hash must contain at least an id entry')
+      }
+      $_key = merge($::apt::source_key_defaults, $key)
+    } else {
+      $_key = { 'id' => assert_type(String[1], $key) }
     }
+  }
+
+  $header = epp('apt/_header.epp')
+
+  $sourcelist = epp('apt/source.list.epp', {
+    'comment'          => $comment,
+    'includes'         => $includes,
+    'opt_architecture' => $architecture,
+    'allow_unsigned'   => $allow_unsigned,
+    'location'         => $location,
+    'release'          => $_release,
+    'repos'            => $repos,
+  })
+
+  apt::setting { "list-${name}":
+    ensure        => $ensure,
+    content       => "${header}${sourcelist}",
+    notify_update => $notify_update,
+  }
+
+  if $pin {
+    if $pin =~ Hash {
+      $_pin = merge($pin, { 'ensure' => $ensure, 'before' => $_before })
+    } elsif ($pin =~ Numeric or $pin =~ String) {
+      $url_split = split($location, '[:\/]+')
+      $host      = $url_split[1]
+      $_pin = {
+        'ensure'   => $ensure,
+        'priority' => $pin,
+        'before'   => $_before,
+        'origin'   => $host,
+      }
+    } else {
+      fail('Received invalid value for pin parameter')
+    }
+    create_resources('apt::pin', { "${name}" => $_pin })
   }
 
   # We do not want to remove keys when the source is absent.
   if $key and ($ensure == 'present') {
-    apt::key { "Add key: ${key} from Apt::Source ${title}":
-      ensure      => present,
-      key         => $key,
-      key_server  => $key_server,
-      key_content => $key_content,
-      key_source  => $key_source,
-      before      => File["${name}.list"],
+    if $_key =~ Hash {
+      apt::key { "Add key: ${$_key['id']} from Apt::Source ${title}":
+        ensure  => present,
+        id      => $_key['id'],
+        server  => $_key['server'],
+        content => $_key['content'],
+        source  => $_key['source'],
+        options => $_key['options'],
+        before  => $_before,
+      }
     }
-  }
-
-  # Need anchor to provide containment for dependencies.
-  anchor { "apt::source::${name}":
-    require => Class['apt::update'],
   }
 }

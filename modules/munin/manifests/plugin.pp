@@ -2,22 +2,25 @@
 #
 # Parameters:
 #
-# - ensure: link, present, absent
+# - ensure: "link", "present", "absent" or "". Default is "". The
+#   ensure parameter is mandatory for installing a plugin.
 # - source: when ensure => present, source file
-# - target: when ensure => link, link target
+# - target: when ensure => link, link target.  If target is an
+#   absolute path (starts with "/") it is used directly.  If target is
+#   a relative path, $munin::node::plugin_share_dir is prepended.
 # - config: array of lines for munin plugin config
 # - config_label: label for munin plugin config
 
 define munin::plugin (
-    $ensure=undef,
+    $ensure='',
     $source=undef,
-    $target=undef,
+    $target='',
     $config=undef,
     $config_label=undef,
 )
 {
 
-    include munin::node
+    include ::munin::node
 
     $plugin_share_dir=$munin::node::plugin_share_dir
     validate_absolute_path($plugin_share_dir)
@@ -27,18 +30,19 @@ define munin::plugin (
         notify  => Service[$munin::node::service_name],
     }
 
+    validate_re($ensure, '^(|link|present|absent)$')
     case $ensure {
-        present: {
+        'present': {
             $handle_plugin = true
-            $plugin_ensure = present
+            $plugin_ensure = 'present'
         }
-        absent: {
+        'absent': {
             $handle_plugin = true
-            $plugin_ensure = absent
+            $plugin_ensure = 'absent'
         }
-        link: {
+        'link': {
             $handle_plugin = true
-            $plugin_ensure = link
+            $plugin_ensure = 'link'
             case $target {
                 '': {
                     $plugin_target = "${munin::node::plugin_share_dir}/${title}"
@@ -50,6 +54,7 @@ define munin::plugin (
                     $plugin_target = "${munin::node::plugin_share_dir}/${target}"
                 }
             }
+            validate_absolute_path($plugin_target)
         }
         default: {
             $handle_plugin = false
@@ -58,7 +63,7 @@ define munin::plugin (
 
     if $config {
         $config_ensure = $ensure ? {
-            absent  => absent,
+            'absent'=> absent,
             default => present,
         }
     }
@@ -70,10 +75,10 @@ define munin::plugin (
     if $handle_plugin {
         # Install the plugin
         file {"${munin::node::config_root}/plugins/${name}":
-            ensure  => $plugin_ensure,
-            source  => $source,
-            target  => $plugin_target,
-            mode    => '0755',
+            ensure => $plugin_ensure,
+            source => $source,
+            target => $plugin_target,
+            mode   => '0755',
         }
     }
 

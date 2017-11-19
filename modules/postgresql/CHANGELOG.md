@@ -1,3 +1,126 @@
+# Change log
+
+All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org).
+
+## Supported Release 5.2.1
+### Summary
+Bug fix for issue introduced in 5.2.0 
+
+#### Fixed
+- issue where the module was attempting to install extensions before a database was available. ([SERVER-2003](https://tickets.puppetlabs.com/browse/SERVER-2003))
+
+## Supported Release 5.2.0
+### Summary
+Adds several new features including some work around OS support. Also includes a couple of fixes to tests and the removal of unsupported Ubuntu versions.
+
+#### Added
+- Added default postgresql version of Ubuntu 17.4 version to the globals.pp file.
+- Fedora 26 provides postgresql-server version 9.6 by default - Added support to manifests/globals.pp to avoid puppet failures on Fedora 26 nodes.
+- Use postgresql 9.6 for the newest SLES and openSUSE releases.
+- Enhanced --data-checksums on initdb.
+- Added support for Debian version 9.
+- Added a `version` parameter.
+
+#### Changed
+- Replaced validate_re calls with puppet datatype `Pattern` and is_array calls with puppet datatype `Array`.
+- Installation method for apt in the spec_helper_acceptance, this is a temporary workaround due to issues with module installation.
+
+#### Fixed
+- Updated spec tests to remove deprecation warnings.
+- Docs formatting.
+- Pass default_connect_settings to validate service ([MODULES-4682](https://tickets.puppetlabs.com/browse/MODULES-4682))
+- Rocket Alignment for Lint.
+- Fixed changes in error messages in tests ([MODULES-5378](https://tickets.puppetlabs.com/browse/MODULES-5378))
+
+#### Removed
+- Removed unsupported Ubuntu versions 10.04 and 12.04 ([MODULES-5501](https://tickets.puppetlabs.com/browse/MODULES-5501))
+- Removed unsupported Debian version 6.
+- Removed numeric order override.
+
+## Supported Release 5.1.0
+### Summary
+This release includes Japanese translations for internationalization, Puppet 5 support, implementation of defined type postgresql::server::reassign_owned_by.
+
+#### Features
+- Updating translations for readmes/README_ja_JP.md
+- add defined type postgresql::server::reassign_owned_by
+- Allow order parameter to be string value
+- prep for puppet 5 ([MODULES-5144](https://tickets.puppetlabs.com/browse/MODULES-5144))
+- add data_checksums option to initdb
+- parameter ensure of custom resource postgresql_replication_slot is not documented ([MODULES-2989](https://tickets.puppetlabs.com/browse/MODULES-2989))
+
+#### Bug Fixes
+- Adding a space for header formatting
+- use https for apt.postgresql.org repo
+- msync puppet 5 and ruby 2.4 ([MODULES-5197](https://tickets.puppetlabs.com/browse/MODULES-5187))
+- Only run test on postgresql >= 9.0 ([FM-6240](https://tickets.puppetlabs.com/browse/FM-6240))
+- Fix Ruby 2.4 deprecation in postgresql_acls_to_resources_hash
+
+## Supported Release 5.0.0
+### Summary
+This **major** release dropped support for Puppet 3 and PostgreSQL 8.x, added Puppet 4 data types, and deprecated the validate_db_connection type.
+
+#### Added
+- `locales/` directory, .pot file, and i18n `config.yaml`. ([FM-6116](https://tickets.puppet.com/browse/FM-6116))
+- `update_password` parameter to toggle password management per role.
+- **Puppet 4** type validation.
+- new `postgresql_conn_validator` custom type and deprecated `validate_db_connection`. ([MODULES-1394](https://tickets.puppet.com/browse/MODULES-1394))
+
+#### Changed
+- default postgis versions in postgresql::globals to use newer versions.
+- puppetlabs-concat and puppetlabs-apt dependencies to use latest versions. ([MODULES-4906](https://tickets.puppet.com/browse/MODULES-4906), [MODULES-4947](https://tickets.puppet.com/browse/MODULES-4947))
+- default value for `log_line_prefix` to `undef`.
+- `listen_addresses` default value to 'localhost'. Allows for it to be set independently of a class declaration.
+- use of stdlib validate_* functions. They have been removed in favor of Puppet 4 type validation.
+- lower Puppet dependency in metadata to 4.7.0. ([MODULES-4826](https://tickets.puppet.com/browse/MODULES-4826))
+
+#### Fixed
+- deprecated apt::source parameters(`key`,`key_source`, & `include_src`).
+- default SUSE parameters. ([MODULES-4598](https://tickets.puppet.com/browse/MODULES-4598))
+- use of force parameter on concat resources.
+
+## Supported Release 4.9.0
+### Summary
+This release adds several types and, among other bugs, fixes an issue with the yum URL.
+
+#### Features
+- Modifying ownership of databases and schemas now available (MODULES-3247)
+- Use `module_workdir` to specify a custom directory in which to execute psql commands
+- `grant_role` and `grant` types added!
+- Support for parallel unit testing (parallel_tests)
+- Override download/installation repo URL with `repo_baseurl`
+- Set your timezone with `timezone`
+- Grant privileges on LANGUAGEs
+- Added support for Debian Stretch and Ubuntu Yakkety Yak
+
+#### Bugfixes
+- Usernames and passwords are now converted to strings before password hash is created
+- Specify default database name if it is not the username
+- Update to yum repo
+- Schema name conflicts fix
+
+## Supported Release 4.8.0
+### Summary
+This release primarily fixes an issue with `postgresql_conf` values of ipaddresses being considered floats and not getting quoted.
+
+#### Features
+- Add `default_connect_settings` parameter to `postgresql::server`
+- Running under strict variables is now supported
+- Add timestamps into logs by default
+
+#### Bugfixes
+- Obscure password in postgresql\_psql type
+- Fix ip address quoting in postgresql\_conf type
+- Fix handling of systemd service on Ubuntu
+- Mark log_min_duration_statement setting as requiring a service restart
+- Add fixes for Fedora 23, Fedora 24, FreeBSD, OpenBSD
+- Fix environment handling to avoid "Overriding environment setting" message
+- Work around PUP-6385, using empty arrays instead of undef when specifying resource relationships
+- README editorial pass
+- Reduce whitespace in templates
+- Update build/test infrastructure
+
 ## Supported Release 4.7.1
 ### Summary
 This release contains some bugfixes and documentation updates.
@@ -40,7 +163,6 @@ A release with a considerable amount of new features, including remote db suppor
 - Removal of extra blanks and backslashes in README.
 - Double quotes now used around database name to prevent syntax error.
 - Removes ruby 1.8.7 and puppet 2.7 from travis-ci jobs.
-- Removed inherits postgresql::params.
 - Fixed paths to work on Amazon Linux.
 - Fixed quotes around locale options.
 - Huge README update.
@@ -245,14 +367,6 @@ kind of thing rather than trying to weave it into the main module logic itself.
 - Link pg_config binary into /usr/bin.
 - Fix fedora support by using systemd.
 - Initdb should create xlogdir if set.
-
-##2014-08-27 - Supported Release 3.4.3
-###Summary
-
-This release fixes Ubuntu 10.04 with Facter 2.2.
-
-####Features
-####Bugfixes
 - Use a regular expression to match the major OS version on Ubuntu.
 
 ##2014-07-31 - Supported Release 3.4.2
@@ -560,7 +674,7 @@ the stage for the large scale refactoring work of 3.0.0.
 ####Features
 
 
-####Bugfixes 
+####Bugfixes
 - Use boolean for refreshonly.
 - Fix postgresql::plperl documentation.
 - Add two missing parameters to config::beforeservice

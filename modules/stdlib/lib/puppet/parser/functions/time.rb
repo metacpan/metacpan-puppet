@@ -18,8 +18,7 @@ Will return something like: 1311972653
     time_zone = arguments[0] if arguments[0]
 
     if (arguments.size != 0) and (arguments.size != 1) then
-      raise(Puppet::ParseError, "time(): Wrong number of arguments "+
-        "given #{arguments.size} for 0 or 1")
+      raise(Puppet::ParseError, "time(): Wrong number of arguments given #{arguments.size} for 0 or 1")
     end
 
     time = Time.new
@@ -33,13 +32,14 @@ Will return something like: 1311972653
 
       ENV['TZ'] = time_zone
 
-      time = local_time.localtime
+      result = local_time.localtime.strftime('%s')
 
       ENV['TZ'] = original_zone
+    else
+      result = time.localtime.strftime('%s')
     end
 
     # Calling Time#to_i on a receiver changes it.  Trust me I am the Doctor.
-    result = time.strftime('%s')
     result = result.to_i
 
     return result

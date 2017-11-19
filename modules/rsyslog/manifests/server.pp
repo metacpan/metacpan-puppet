@@ -8,8 +8,10 @@
 # [*enable_udp*]
 # [*enable_relp*]
 # [*enable_onefile*]
+# [*relay_server*]
 # [*server_dir*]
 # [*custom_config*]
+# [*content*]
 # [*port*]
 # [*relp_port*]
 # [*address*]
@@ -41,6 +43,7 @@ class rsyslog::server (
   $enable_udp                = true,
   $enable_relp               = true,
   $enable_onefile            = false,
+  $relay_server              = false,
   $server_dir                = '/srv/log/',
   $custom_config             = undef,
   $content                   = undef,
@@ -55,7 +58,8 @@ class rsyslog::server (
   $log_filters               = false,
   $actionfiletemplate        = false,
   $rotate                    = undef
-) inherits rsyslog {
+) inherits rsyslog::params {
+  include ::rsyslog
 
   ### Logrotate policy
   $logpath = $rotate ? {
@@ -70,7 +74,7 @@ class rsyslog::server (
 
   if $content {
     if $custom_config {
-      fail 'Cannot set both $content and $custom_config'
+      fail '$content and $custom_config are mutually exclusive'
     }
     $real_content = $content
   } elsif $custom_config {
@@ -79,7 +83,7 @@ class rsyslog::server (
     $real_content = template("${module_name}/server-default.conf.erb")
   }
 
-  rsyslog::snippet { $rsyslog::server_conf:
+  rsyslog::snippet { '00_server':
     ensure  => present,
     content => $real_content,
   }

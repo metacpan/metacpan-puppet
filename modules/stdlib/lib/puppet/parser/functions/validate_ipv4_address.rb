@@ -8,7 +8,7 @@ module Puppet::Parser::Functions
 
     $my_ip = "1.2.3.4"
     validate_ipv4_address($my_ip)
-    validate_bool("8.8.8.8", "172.16.0.1", $my_ip)
+    validate_ipv4_address("8.8.8.8", "172.16.0.1", $my_ip)
 
     The following values will fail, causing compilation to abort:
 
@@ -17,6 +17,8 @@ module Puppet::Parser::Functions
 
     ENDHEREDOC
   ) do |args|
+
+    function_deprecation([:validate_ipv4_address, 'This method is deprecated, please use the stdlib validate_legacy function, with Stdlib::Compat::Ipv4. There is further documentation for validate_legacy function in the README.'])
 
     require "ipaddr"
     rescuable_exceptions = [ ArgumentError ]

@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby -S rspec
 require 'spec_helper_acceptance'
 
-describe 'empty function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('operatingsystem')) do
+describe 'empty function' do
   describe 'success' do
     it 'recognizes empty strings' do
       pp = <<-EOS
@@ -20,6 +20,20 @@ describe 'empty function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('opera
     it 'recognizes non-empty strings' do
       pp = <<-EOS
       $a = 'aoeu'
+      $b = false
+      $o = empty($a)
+      if $o == $b {
+        notify { 'output correct': }
+      }
+      EOS
+
+      apply_manifest(pp, :catch_failures => true) do |r|
+        expect(r.stdout).to match(/Notice: output correct/)
+      end
+    end
+    it 'handles numerical values' do
+      pp = <<-EOS
+      $a = 7
       $b = false
       $o = empty($a)
       if $o == $b {

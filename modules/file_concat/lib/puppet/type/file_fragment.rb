@@ -1,5 +1,4 @@
 Puppet::Type.newtype(:file_fragment) do
-
   @doc = "Create a file fragment to be used by file_concat.
     the `file_fragment` type creates a file fragment to be collected by file_concat based on the tag.
     The example is based on exported resources.
@@ -39,12 +38,10 @@ Puppet::Type.newtype(:file_fragment) do
   end
 
   validate do
+    # Check if either source or content is set. raise error if none is set
+    fail Puppet::ParseError, "Set either 'source' or 'content'" if self[:source].nil? && self[:content].nil?
 
-   # Check if either source or content is set. raise error if none is set
-   self.fail Puppet::ParseError, "Set either 'source' or 'content'" if self[:source].nil? && self[:content].nil?
-
-   # Check if both are set, if so rais error
-   self.fail Puppet::ParseError, "Can't use 'source' and 'content' at the same time" if !self[:source].nil? && !self[:content].nil?
+    # Check if both are set, if so rais error
+    fail Puppet::ParseError, "Can't use 'source' and 'content' at the same time" if !self[:source].nil? && !self[:content].nil?
   end
-
 end

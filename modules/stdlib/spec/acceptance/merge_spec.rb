@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby -S rspec
 require 'spec_helper_acceptance'
 
-describe 'merge function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('operatingsystem')) do
+describe 'merge function' do
   describe 'success' do
     it 'should merge two hashes' do
       pp = <<-EOS
@@ -14,9 +14,9 @@ describe 'merge function', :unless => UNSUPPORTED_PLATFORMS.include?(fact('opera
       EOS
 
       apply_manifest(pp, :catch_failures => true) do |r|
-        expect(r.stdout).to match(/merge\[one\]   is "1"/)
+        expect(r.stdout).to match(/merge\[one\]   is ("1"|1)/)
         expect(r.stdout).to match(/merge\[two\]   is "dos"/)
-        expect(r.stdout).to match(/merge\[three\] is {"five"=>"5"}/)
+        expect(r.stdout).to match(/merge\[three\] is {"five"=>("5"|5)}/)
       end
     end
   end

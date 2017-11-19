@@ -24,15 +24,16 @@ This returns:
     EOS
   ) do |arguments|
 
-    raise(Puppet::ParseError, "unique(): Wrong number of arguments " +
-      "given (#{arguments.size} for 1)") if arguments.size < 1
+    if Puppet::Util::Package.versioncmp(Puppet.version, '5.0.0') >= 0
+      function_deprecation([:unique, 'This method is deprecated, please use the core puppet unique function. There is further documentation for the function in the release notes of Puppet 5.0.'])
+    end
+
+    raise(Puppet::ParseError, "unique(): Wrong number of arguments given (#{arguments.size} for 1)") if arguments.size < 1
 
     value = arguments[0]
-    klass = value.class
 
-    unless [Array, String].include?(klass)
-      raise(Puppet::ParseError, 'unique(): Requires either ' +
-        'array or string to work with')
+    unless value.is_a?(Array) || value.is_a?(String)
+      raise(Puppet::ParseError, 'unique(): Requires either array or string to work with')
     end
 
     result = value.clone

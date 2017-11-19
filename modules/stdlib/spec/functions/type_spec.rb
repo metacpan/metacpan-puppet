@@ -1,14 +1,13 @@
-#! /usr/bin/env ruby -S rspec
 require 'spec_helper'
 
-describe "the type function" do
-  let(:scope) { PuppetlabsSpec::PuppetInternals.scope }
+describe 'type' do
   it "should exist" do
     expect(Puppet::Parser::Functions.function("type")).to eq("function_type")
   end
 
-  it "should raise a ParseError if there is less than 1 arguments" do
-    expect { scope.function_type([]) }.to( raise_error(Puppet::ParseError))
+  it "should give a deprecation warning when called" do
+    scope.expects(:warning).with("type() DEPRECATED: This function will cease to function on Puppet 4; please use type3x() before upgrading to puppet 4 for backwards-compatibility, or migrate to the new parser's typing system.")
+    scope.function_type(["aoeu"])
   end
 
   it "should return string when given a string" do

@@ -3,7 +3,7 @@ module Puppet::Parser::Functions
   newfunction(:validate_slength, :doc => <<-'ENDHEREDOC') do |args|
     Validate that the first argument is a string (or an array of strings), and
     less/equal to than the length of the second argument. An optional third
-    parameter can be given a the minimum length. It fails if the first
+    parameter can be given the minimum length. It fails if the first
     argument is not a string or array of strings, and if arg 2 and arg 3 are
     not convertable to a number.
 
@@ -20,6 +20,8 @@ module Puppet::Parser::Functions
       validate_slength(["discombobulate","moo"],17,10)
 
     ENDHEREDOC
+
+    function_deprecation([:validate_slength, 'This method is deprecated, please use the stdlib validate_legacy function, with String[]. There is further documentation for validate_legacy function in the README.'])
 
     raise Puppet::ParseError, "validate_slength(): Wrong number of arguments (#{args.length}; must be 2 or 3)" unless args.length == 2 or args.length == 3
 
@@ -43,9 +45,7 @@ module Puppet::Parser::Functions
       min_length = 0
     end
 
-    if min_length > max_length
-      raise Puppet::ParseError, "validate_slength(): Expected second argument to be larger than third argument"
-    end
+    raise Puppet::ParseError, "validate_slength(): Expected second argument to be equal to or larger than third argument" unless max_length >= min_length
 
     validator = lambda do |str|
       unless str.length <= max_length and str.length >= min_length

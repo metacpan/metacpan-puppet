@@ -1,5 +1,66 @@
 # Changelog
 
+## 0.1.0 - 2015-12-12
+
+* Added support for Archlinux
+  ([#40](https://github.com/ssm/ssm-munin/issues/40))
+* Added acceptance tests
+* Added CONTRIBUTING.md for how to contribute to the module
+  ([#41](https://github.com/ssm/ssm-munin/issues/41))
+* Document all parameters in README.md
+
+### munin::node
+
+* Two new parameters: **bind\_address** and **bind\_port**
+  ([#37](https://github.com/ssm/ssm-munin/pull/37))
+* Bugfix: Rescue InvalidAddressError only if ruby is capable
+  ([#38](https://github.com/ssm/ssm-munin/pull/38))
+
+### contributors
+
+Contributors to this release: David Hayes, Julien Pivotto, Stig
+Sandbeck Mathisen, Victor Engmark
+
+## 0.0.10 - 2015-08-01
+
+* Bugfix: Add missing dependency for the "munin-node" package when
+  $munin::node::purge_configs is true.
+  ([#34](https://github.com/ssm/ssm-munin/pull/34))
+
+Contributors to this release: Martin Meinhold
+
+## 0.0.9 - 2015-07-29
+
+* Bugfix: The mastergroup, if used in the node's FQN (Fully Qualified
+  Name), should no longer be empty on Puppet 4.0.
+  ([#27](https://github.com/ssm/ssm-munin/pull/27))
+
+* Bugfix: Using munin::master and munin::node with export and collect
+  disabled should no longer trigger warnings about missing
+  storeconfigs.  ([#30](https://github.com/ssm/ssm-munin/issues/30),
+  [#33](https://github.com/ssm/ssm-munin/pull/33))
+
+### munin::master
+
+* Add FreeBSD support.
+
+### munin::node
+
+* New feature: Log to syslog with the "log\_destination" and
+  "syslog\_facility" parameters.
+  ([#23](https://github.com/ssm/ssm-munin/issues/23),
+  [#24](https://github.com/ssm/ssm-munin/pull/24),
+  [#25](https://github.com/ssm/ssm-munin/pull/25))
+
+* New feature: Set the plugin runtime timeout with the "timeout"
+  parameter.  ([#29](https://github.com/ssm/ssm-munin/issues/29),
+  [#32](https://github.com/ssm/ssm-munin/pull/32))
+
+* New feature: Purge unmanaged plugins and plugin configuration with
+  the "purge_configs" parameter.
+  ([#28](https://github.com/ssm/ssm-munin/issues/28),
+  [#31](https://github.com/ssm/ssm-munin/pull/31))
+
 ## 0.0.8 - 2015-02-06
 
 Support the future parser.

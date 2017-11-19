@@ -13,15 +13,18 @@
 # }
 #
 define postgresql::server::schema(
-  $db = $postgresql::server::default_database,
-  $owner  = undef,
-  $schema = $title,
+  $db               = $postgresql::server::default_database,
+  $owner            = undef,
+  $schema           = $title,
   $connect_settings = $postgresql::server::default_connect_settings,
 ) {
-  $user      = $postgresql::server::user
-  $group     = $postgresql::server::group
-  $psql_path = $postgresql::server::psql_path
-  $version   = $postgresql::server::_version
+  $user           = $postgresql::server::user
+  $group          = $postgresql::server::group
+  $psql_path      = $postgresql::server::psql_path
+  $version        = $postgresql::server::_version
+  $module_workdir = $postgresql::server::module_workdir
+
+  Postgresql::Server::Db <| dbname == $db |> -> Postgresql::Server::Schema[$name]
 
   # If the connection settings do not contain a port, then use the local server port
   if $connect_settings != undef and has_key( $connect_settings, 'PGPORT') {
@@ -36,25 +39,25 @@ define postgresql::server::schema(
     psql_group => $group,
     psql_path  => $psql_path,
     port       => $port,
+    cwd        => $module_workdir,
     connect_settings => $connect_settings,
   }
 
-  $schema_title   = "Create Schema '${title}'"
-  $authorization = $owner? {
-    undef   => '',
-    default => "AUTHORIZATION \"${owner}\"",
-  }
-
-  $schema_command = "CREATE SCHEMA \"${schema}\" ${authorization}"
-  $unless         = "SELECT nspname FROM pg_namespace WHERE nspname='${schema}'"
-
-  postgresql_psql { $schema_title:
-    command => $schema_command,
-    unless  => $unless,
+  postgresql_psql { "${db}: CREATE SCHEMA \"${schema}\"":
+    command => "CREATE SCHEMA \"${schema}\"",
+    unless  => "SELECT 1 FROM pg_namespace WHERE nspname = '${schema}'",
     require => Class['postgresql::server'],
   }
 
-  if($owner != undef and defined(Postgresql::Server::Role[$owner])) {
-    Postgresql::Server::Role[$owner]->Postgresql_psql[$schema_title]
+  if $owner {
+    postgresql_psql { "${db}: ALTER SCHEMA \"${schema}\" OWNER TO \"${owner}\"":
+      command => "ALTER SCHEMA \"${schema}\" OWNER TO ${owner}",
+      unless  => "SELECT 1 FROM pg_namespace JOIN pg_roles rol ON nspowner = rol.oid WHERE nspname = '${schema}' AND rolname = '${owner}'",
+      require => Postgresql_psql["${db}: CREATE SCHEMA \"${schema}\""],
+    }
+
+    if defined(Postgresql::Server::Role[$owner]) {
+      Postgresql::Server::Role[$owner]->Postgresql_psql["${db}: ALTER SCHEMA \"${schema}\" OWNER TO \"${owner}\""]
+    }
   }
 }
