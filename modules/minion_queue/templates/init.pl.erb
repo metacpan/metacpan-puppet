@@ -43,7 +43,7 @@ $ENV{PATH} = '<%= @perlbin %>:' . $ENV{PATH};
 
 #  carton exec bin/queue.pl
 my @program_args = (
-    'exec', "nice ${home}/bin/queue.pl",
+    'exec', "${home}/bin/queue.pl",
     'minion', 'worker',
     '-j', $workers
 );
