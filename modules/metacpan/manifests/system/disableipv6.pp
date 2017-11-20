@@ -5,6 +5,7 @@ class metacpan::system::disableipv6 {
       command => '/sbin/sysctl -p',
       user => 'root',
       group => 'root',
+      refreshonly => true, # only if something notifies
   }
 
   line {
