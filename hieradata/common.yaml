@@ -401,6 +401,16 @@ metacpan::crons::api:
         minute : 35
         hour : 3
         ensure : absent
+    favorite_hourly:
+        cmd : 'favorite --check_missing --age 240 --queue'
+        minute: '*/30'
+        ensure : absent
+    favorite_weekly:
+        cmd : 'favorite --queue'
+        hour: 12
+        minute: 0
+        weekday: 0
+        ensure : absent
 
 
 metacpan::fw_ports:
