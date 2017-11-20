@@ -319,7 +319,7 @@ metacpan::crons::api:
         minute : 5
         ensure : absent
     snapshot_purge_old:
-        cmd : snapshot --snap --purge-old'
+        cmd : snapshot --snap --purge-old
         hour : 3
         minute : 10
         ensure : absent
