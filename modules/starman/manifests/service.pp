@@ -74,7 +74,6 @@ define starman::service (
           rotate       => '7',
           compress     => true,
           ifempty      => true,
-          postrotate => "${init} reload >/dev/null"
         }
 
     }
