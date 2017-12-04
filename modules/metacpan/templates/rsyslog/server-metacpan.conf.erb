@@ -38,7 +38,7 @@ $Template dynAllMessages,"<%= scope.lookupvar('rsyslog::server::server_dir') -%>
 <% end -%>
 
 # Send to the eris system
-$ActionOMProgBinary /usr/local/sbin/rsyslog-eris-bridge
+$ActionOMProgBinary  /opt/perl-<%= scope.lookupvar('rsyslog::server::perl_version') %>/bin/eris-dispatcher-stdin.pl
 $template RFC3164fmt,"<%= '<%PRI%' + '>%TIMESTAMP% %HOSTNAME% %syslogtag%%msg%' %>\n"
 *.*  :omprog:;RFC3164fmt
 

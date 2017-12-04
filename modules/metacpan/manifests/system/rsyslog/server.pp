@@ -28,11 +28,11 @@ class metacpan::system::rsyslog::server(
   # Perl Modules for the eris logging system
   perl::module {
     'eris':
-      version =>  '0.004';
+      version =>  '0.006';
     'Parse::Syslog::Line':
-      version =>  '4.0';
+      version =>  '4.2';
     'POE::Component::Server::eris':
-      version =>  '2.3';
+      version =>  '2.5';
     # Modules where version isn't important
      [
        'POE::Component::Client::eris'
@@ -42,9 +42,7 @@ class metacpan::system::rsyslog::server(
   # Install the wrapper to get the write Perl's
   file {
     "/usr/local/sbin/rsyslog-eris-bridge":
-      content => "#!/bin/sh\n/opt/perl-$perl_version/bin/perl /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n",
-      mode    => '0555',
-      notify  =>  Service['rsyslog'];
+      ensure  =>  'absent';
   }
 }
 
