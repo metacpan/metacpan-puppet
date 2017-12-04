@@ -33,6 +33,7 @@ class metacpan::system::rsyslog::server(
       version =>  '4.2';
     'POE::Component::Server::eris':
       version =>  '2.5';
+
     # Modules where version isn't important
      [
        'POE::Component::Client::eris'
