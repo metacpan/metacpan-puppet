@@ -411,7 +411,17 @@ metacpan::crons::api:
         minute: 0
         weekday: 0
         ensure : absent
-
+    contributor_daily:
+        cmd : 'contributor --age 2'
+        hour: 5
+        minute: 30
+        ensure : absent
+    contributor_weekly:
+        cmd : 'contributor --age 14'
+        hour: 12
+        minute: 0
+        weekday: 0
+        ensure : absent
 
 metacpan::fw_ports:
   http:
