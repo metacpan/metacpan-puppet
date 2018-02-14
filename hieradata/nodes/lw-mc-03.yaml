@@ -75,3 +75,7 @@ metacpan::crons::api:
       ensure : present
     contributor_weekly:
       ensure : present
+    favorite_hourly:
+      ensure : present
+    favorite_weekly:
+      ensure : present
