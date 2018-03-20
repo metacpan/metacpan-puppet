@@ -36,4 +36,4 @@ else
     exit
 fi
 
-puppet apply --show_diff --certname=$CERTNAME manifests/site.pp
+puppet apply --modulepath /etc/puppet/contrib-modules --show_diff --certname=$CERTNAME manifests/site.pp
