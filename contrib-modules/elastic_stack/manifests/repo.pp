@@ -11,7 +11,7 @@
 # @param prerelease Whether to use a repo for prerelease versions, like "6.0.0-rc2"
 class elastic_stack::repo(
   Integer $version=6,
-  Integer $priority=10,
+  Optional[Integer] $priority=undef,
   String $proxy='absent',
   Boolean $prerelease=false,
 )
@@ -31,7 +31,6 @@ class elastic_stack::repo(
   case $::osfamily {
     'Debian': {
       include apt
-      Class['apt::update'] -> Package <| |>
 
       apt::source { 'elastic':
         ensure   => 'present',
@@ -60,8 +59,8 @@ class elastic_stack::repo(
         proxy    => $proxy,
         priority => $priority,
       }
-      ~> exec { 'elasticsearch_yumrepo_yum_clean':
-        command     => 'yum clean metadata expire-cache --disablerepo="*" --enablerepo="elasticsearch"',
+      ~> exec { 'elastic_yumrepo_yum_clean':
+        command     => 'yum clean metadata expire-cache --disablerepo="*" --enablerepo="elastic"',
         refreshonly => true,
         returns     => [0, 1],
         path        => [ '/bin', '/usr/bin', '/usr/local/bin' ],
@@ -71,16 +70,16 @@ class elastic_stack::repo(
     'Suse': {
       # Older versions of SLES do not ship with rpmkeys
       if $::operatingsystem == 'SLES' and versioncmp($::operatingsystemmajrelease, '11') <= 0 {
-        $_import_cmd = "rpm --import ${::elasticsearch::repo_key_source}"
+        $_import_cmd = "rpm --import ${key_source}"
       }
       else {
-        $_import_cmd = "rpmkeys --import ${::elasticsearch::repo_key_source}"
+        $_import_cmd = "rpmkeys --import ${key_source}"
       }
 
-      exec { 'elasticsearch_suse_import_gpg':
+      exec { 'elastic_suse_import_gpg':
         command => $_import_cmd,
         unless  => "test $(rpm -qa gpg-pubkey | grep -i 'D88E42B4' | wc -l) -eq 1",
-        notify  => Zypprepo['elasticsearch'],
+        notify  => Zypprepo['elastic'],
         path    => [ '/bin', '/usr/bin', '/usr/local/bin' ],
         cwd     => '/',
       }
@@ -93,8 +92,9 @@ class elastic_stack::repo(
         gpgcheck    => 1,
         gpgkey      => $key_source,
         type        => 'yum',
+        priority    => $priority,
       }
-      ~> exec { 'elasticsearch_zypper_refresh_elastic':
+      ~> exec { 'elastic_zypper_refresh_elastic':
         command     => 'zypper refresh elastic',
         refreshonly => true,
         path        => [ '/bin', '/usr/bin', '/usr/local/bin' ],

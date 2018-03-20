@@ -10,7 +10,7 @@ describe 'puppet resource firewall command' do
     shell("sed -i -e \'s/^templatedir.*$//\' #{config}")
   end
 
-  context 'make sure it returns no errors when executed on a clean machine' do
+  context 'when make sure it returns no errors when executed on a clean machine' do
     it do
       shell('puppet resource firewall') do |r|
         r.exit_code.should be_zero
@@ -20,7 +20,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'flush iptables and make sure it returns nothing afterwards' do
+  context 'when flush iptables and make sure it returns nothing afterwards' do
     before(:all) do
       iptables_flush_all_tables
     end
@@ -34,7 +34,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules without comments' do
+  context 'when accepts rules without comments' do
     before(:all) do
       iptables_flush_all_tables
       shell('iptables -A INPUT -j ACCEPT -p tcp --dport 80')
@@ -49,7 +49,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules with invalid comments' do
+  context 'when accepts rules with invalid comments' do
     before(:all) do
       iptables_flush_all_tables
       shell('iptables -A INPUT -j ACCEPT -p tcp --dport 80 -m comment --comment "http"')
@@ -64,7 +64,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules with negation' do
+  context 'when accepts rules with negation' do
     before :all do
       iptables_flush_all_tables
       shell('iptables -t nat -A POSTROUTING -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p tcp -j MASQUERADE --to-ports 1024-65535')
@@ -81,7 +81,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules with match extension tcp flag' do
+  context 'when accepts rules with match extension tcp flag' do
     before :all do
       iptables_flush_all_tables
       shell('iptables -t mangle -A PREROUTING -d 1.2.3.4 -p tcp -m tcp -m multiport --dports 80,443,8140 -j MARK --set-mark 42')
@@ -96,12 +96,12 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  if default['platform'] !~ /sles-10/
-    context 'accepts rules utilizing the statistic module' do
+  if default['platform'] !~ %r{sles-10}
+    context 'when accepts rules utilizing the statistic module' do
       before :all do
         iptables_flush_all_tables
         # This command doesn't work with all versions/oses, so let it fail
-        shell('iptables -t nat -A POSTROUTING -d 1.2.3.4/32 -o eth0 -m statistic --mode nth --every 2 -j SNAT --to-source 2.3.4.5', :acceptable_exit_codes => [0,1,2] )
+        shell('iptables -t nat -A POSTROUTING -d 1.2.3.4/32 -o eth0 -m statistic --mode nth --every 2 -j SNAT --to-source 2.3.4.5', acceptable_exit_codes: [0, 1, 2])
         shell('iptables -t nat -A POSTROUTING -d 1.2.3.4/32 -o eth0 -m statistic --mode nth --every 1 --packet 0 -j SNAT --to-source 2.3.4.6')
         shell('iptables -t nat -A POSTROUTING -d 1.2.3.4/32 -o eth0 -m statistic --mode random --probability 0.99 -j SNAT --to-source 2.3.4.7')
       end
@@ -116,7 +116,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules with negation' do
+  context 'when accepts rules with negation' do
     before :all do
       iptables_flush_all_tables
       shell('iptables -t nat -A POSTROUTING -s 192.168.122.0/24 -m policy --dir out --pol ipsec -j ACCEPT')
@@ -135,7 +135,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules with -m (tcp|udp) without dport/sport' do
+  context 'when accepts rules with -m (tcp|udp) without dport/sport' do
     before :all do
       iptables_flush_all_tables
       shell('iptables -A INPUT -s 10.0.0.0/8 -p udp -m udp -j ACCEPT')
@@ -150,7 +150,7 @@ describe 'puppet resource firewall command' do
     end
   end
 
-  context 'accepts rules with -m ttl' do
+  context 'when accepts rules with -m ttl' do
     before :all do
       iptables_flush_all_tables
       shell('iptables -t nat -A OUTPUT -s 10.0.0.0/8 -p tcp -m ttl ! --ttl-eq 42 -j REDIRECT --to-ports 12299')
@@ -167,8 +167,9 @@ describe 'puppet resource firewall command' do
 
   # version of iptables that ships with el5 doesn't work with the
   # ip6tables provider
-  if default['platform'] !~ /el-5/ and default['platform'] !~ /sles-10/
-    context 'dport/sport with ip6tables' do
+  # TODO: Test below fails if this file is run seperately. i.e. bundle exec rspec spec/acceptance/resource_cmd_spec.rb
+  if default['platform'] !~ %r{el-5} && default['platform'] !~ %r{sles-10}
+    context 'when dport/sport with ip6tables' do
       before :all do
         if fact('osfamily') == 'Debian'
           shell('echo "iptables-persistent iptables-persistent/autosave_v4 boolean false" | debconf-set-selections')

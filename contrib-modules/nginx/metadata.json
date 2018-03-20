@@ -1,0 +1,52 @@
+{
+  "name": "puppetlabs-nginx",
+  "version": "99.99.99",
+  "source": "http://github.com/puppetlabs/puppetlabs-nginx",
+  "author": "puppetlabs",
+  "license": "Apache License Version 2.0",
+  "summary": "Puppet NGINX management module",
+  "description": "This module can be used for basic NGINX Management",
+  "project_page": "http://github.com/puppetlabs/puppetlabs-nginx",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 0.1.6"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "ChangeLog": "92cb1e2fac43c0e6f733ee8a8384bd2f",
+    "LICENSE": "86a0725dcd00b87b9929258039db566c",
+    "Modulefile": "a53ce3a1ce43efb4715d0cf3fefc8099",
+    "README": "d41d8cd98f00b204e9800998ecf8427e",
+    "README.markdown": "ace6eae1ba085fcd36819fcfc340782f",
+    "manifests/config.pp": "4adcfa0dcf159f289773e056d47e5ba2",
+    "manifests/init.pp": "933e0d0a68e702c3625af26d4c40d5d0",
+    "manifests/package/debian.pp": "e64807f6b6f28545bebec75d73e9714d",
+    "manifests/package/redhat.pp": "70a70aec1b652b90a5f3cc64adbb809e",
+    "manifests/package/suse.pp": "79082f365f817b3e708ef058af360e32",
+    "manifests/package.pp": "93262701c8815d0f6c1df007f2171a39",
+    "manifests/params.pp": "d49d3d548acd4d7ecaaacaa6ff9d966a",
+    "manifests/resource/location.pp": "c4298ab56d455f6a8f7ef73ce4d0728c",
+    "manifests/resource/upstream.pp": "21f63a855573e79b6384b637ab753b3c",
+    "manifests/resource/vhost.pp": "6f535b2e46b353dd124c9010b05148fc",
+    "manifests/service.pp": "0b9dc6851195b454382a6d0c5a90603e",
+    "templates/conf.d/nginx.conf.erb": "15c2344995a56945a437b79abc161ad2",
+    "templates/conf.d/proxy.conf.erb": "15287f6cabdecf173cff6cd72e535d81",
+    "templates/conf.d/upstream.erb": "65e541f63df1d566c2f3628282c7f29e",
+    "templates/vhost/vhost_footer.erb": "dad515035220165ad0f460ce7ec2e29a",
+    "templates/vhost/vhost_header.erb": "028c74276f634c5c23e1b933b1132bcb",
+    "templates/vhost/vhost_location_alias.erb": "86749cb78ba503522e90d6db88a0b8c5",
+    "templates/vhost/vhost_location_directory.erb": "2cd577a9b5edf05f469d0bc7ca2b8807",
+    "templates/vhost/vhost_location_proxy.erb": "988729b42f82b452bedff0fd66a0066c",
+    "templates/vhost/vhost_location_stub_status.erb": "98f38c02a314179217be883319fbed41",
+    "templates/vhost/vhost_ssl_header.erb": "19fc7ca77406e36301d044f19ab1b3ce",
+    "tests/init.pp": "65966654dd24c431365d66239b8bc8c8",
+    "tests/location_alias.pp": "c0b6f6b2f8a655cbc90faf735b05bde0",
+    "tests/upstream.pp": "c64fcbcb7b449d412b49cfb10a1297b6",
+    "tests/vhost.pp": "5a8a115f85f50a462f08882a4e028405",
+    "tests/vhost_ssl.erb": "06d4999eec451008c0a956f41088e642"
+  }
+}

@@ -7,12 +7,12 @@ module_root = '/etc/puppetlabs/code/environments/production/modules/elastic_stac
 Vagrant.configure(2) do |config|
   config.vm.box = 'bento/ubuntu-16.04'
   config.vm.provider 'virtualbox' do |v|
-    v.memory = 4*1024
+    v.memory = 4 * 1024
     v.cpus = 4
   end
 
   # Make the module available.
-  %w(manifests templates).each do |dir|
+  %w[manifests templates].each do |dir|
     config.vm.synced_folder(dir, "#{module_root}/#{dir}")
   end
 

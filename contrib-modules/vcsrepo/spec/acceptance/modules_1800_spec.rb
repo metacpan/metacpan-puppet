@@ -12,26 +12,26 @@ describe 'clones a remote repo' do
     shell("rm -rf #{tmpdir}/vcsrepo")
   end
 
-  context 'ensure latest with no revision' do
-    pp = <<-EOS
+  context 'with ensure latest with no revision' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
           ensure   => present,
           provider => git,
           source   => "https://github.com/puppetlabs/puppetlabs-vcsrepo.git",
       }
-    EOS
+    MANIFEST
     it 'clones from default remote' do
       apply_manifest(pp, catch_failures: true)
       shell("cd #{tmpdir}/vcsrepo; /usr/bin/git reset --hard HEAD~2")
     end
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
           ensure   => latest,
           provider => git,
           source   => "https://github.com/puppetlabs/puppetlabs-vcsrepo.git",
       }
-    EOS
+    MANIFEST
     it 'updates' do
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

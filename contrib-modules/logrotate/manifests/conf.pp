@@ -30,6 +30,7 @@ define logrotate::conf (
   Optional[Enum['mailfirst', 'maillast']] $mail_when = undef,
   Optional[Integer] $maxage                          = undef,
   Optional[Logrotate::Size] $minsize                 = undef,
+  Optional[Logrotate::Size] $maxsize                 = undef,
   Optional[Boolean] $missingok                       = undef,
   Optional[Variant[Boolean,String]] $olddir          = undef,
   Optional[String] $postrotate                       = undef,
@@ -43,8 +44,8 @@ define logrotate::conf (
   Optional[Boolean] $shred                           = undef,
   Optional[Integer] $shredcycles                     = undef,
   Optional[Integer] $start                           = undef,
-  Optional[Logrotate::UserOrGroup] $su_user          = undef,
-  Optional[Logrotate::UserOrGroup] $su_group         = undef,
+  Optional[String] $su_user                          = undef,
+  Optional[String] $su_group                         = undef,
   Optional[String] $uncompresscmd                    = undef
 ) {
 
@@ -105,6 +106,9 @@ define logrotate::conf (
     group   => $logrotate::root_group,
     mode    => '0444',
     content => template('logrotate/etc/logrotate.conf.erb'),
-    require => Package['logrotate'],
+  }
+
+  if $logrotate::manage_package {
+    Package[$logrotate::package] -> File[$path]
   }
 }

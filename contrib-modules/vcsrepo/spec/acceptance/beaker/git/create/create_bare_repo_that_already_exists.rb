@@ -20,12 +20,12 @@ hosts.each do |host|
   end
 
   step 'create bare repo that already exists using puppet' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => bare,
       provider => git,
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)

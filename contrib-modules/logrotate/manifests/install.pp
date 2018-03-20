@@ -3,8 +3,10 @@ class logrotate::install{
 
   assert_private()
 
-  package { $::logrotate::package:
-    ensure => $::logrotate::ensure,
+  if $logrotate::manage_package {
+    package { $logrotate::package:
+      ensure => $logrotate::ensure,
+    }
   }
 
 }

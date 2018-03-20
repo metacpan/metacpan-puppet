@@ -7,7 +7,7 @@ Facter.add(:vcsrepo_svn_ver) do
       else
         ''
       end
-    rescue
+    rescue StandardError
       ''
     end
   end

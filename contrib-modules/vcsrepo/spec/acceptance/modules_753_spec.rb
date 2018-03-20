@@ -12,14 +12,14 @@ describe 'clones a remote repo' do
     shell("rm -rf #{tmpdir}/vcsrepo")
   end
 
-  context 'clone with single remote' do
-    pp = <<-EOS
+  context 'with clone with single remote' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
           ensure   => present,
           provider => git,
           source   => "https://github.com/puppetlabs/puppetlabs-vcsrepo.git",
       }
-    EOS
+    MANIFEST
     it 'clones from default remote' do
       apply_manifest(pp, catch_failures: true)
     end
@@ -35,14 +35,14 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'clone with multiple remotes' do
-    pp = <<-EOS
+  context 'with clone with multiple remotes' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
           ensure   => present,
           provider => git,
           source   => {"origin" => "https://github.com/puppetlabs/puppetlabs-vcsrepo.git", "test1" => "https://github.com/puppetlabs/puppetlabs-vcsrepo.git"},
       }
-    EOS
+    MANIFEST
     it 'clones from default remote and adds 2 remotes to config file' do
       apply_manifest(pp, catch_failures: true)
     end

@@ -20,6 +20,7 @@
     * [Defined Types](#defined-types)
     * [Types](#types)
     * [Functions](#functions)
+    * [Tasks](#tasks)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
     * [Contributors - List of module contributors](#contributors)
@@ -365,6 +366,10 @@ The postgresql module comes with many options for configuring the server. While 
 * [postgresql_password](#function-postgresql_password)
 * [postgresql_acls_to_resources_hash](#function-postgresql_acls_to_resources_hashacl_array-id-order_offset)
 
+**Tasks:**
+
+* [`sql`](#tasks)
+
 ### Classes
 
 #### postgresql::client
@@ -663,7 +668,7 @@ Installs the packages containing the development libraries for PostgreSQL and sy
 
 ##### `link_pg_config`
 
-If the bin directory used by the PostgreSQL page is not  `/usr/bin` or `/usr/local/bin`, symlinks `pg_config` from the package's bin dir into `usr/bin` (not applicable to Debian systems). Set to `false` to disable this behavior. 
+If the bin directory used by the PostgreSQL page is not  `/usr/bin` or `/usr/local/bin`, symlinks `pg_config` from the package's bin dir into `usr/bin` (not applicable to Debian systems). Set to `false` to disable this behavior.
 
 Valid values: `true`, `false`.
 
@@ -909,7 +914,7 @@ Default value: OS dependent.
 
 ##### `port`
 
-Specifies the port for the PostgreSQL server to listen on. **Note:** The same port number is used for all IP addresses the server listens on. Also, for Red Hat systems and early Debian systems, changing the port causes the server to come to a full stop before being able to make the change. 
+Specifies the port for the PostgreSQL server to listen on. **Note:** The same port number is used for all IP addresses the server listens on. Also, for Red Hat systems and early Debian systems, changing the port causes the server to come to a full stop before being able to make the change.
 
 Default value: 5432. Meaning the Postgres server listens on TCP port 5432.
 
@@ -921,55 +926,55 @@ Default value: `undef`.
 
 ##### `postgresql_conf_path`
 
-Specifies the path to your `postgresql.conf` file. 
+Specifies the path to your `postgresql.conf` file.
 
 Default value: '${confdir}/postgresql.conf'.
 
 ##### `psql_path`
 
-Specifies the path to the `psql` command. 
+Specifies the path to the `psql` command.
 
 Default value: OS dependent.
 
 ##### `service_manage`
 
-Defines whether or not Puppet should manage the service. 
+Defines whether or not Puppet should manage the service.
 
 Default value: `true`.
 
 ##### `service_name`
 
-Overrides the default PostgreSQL service name. 
+Overrides the default PostgreSQL service name.
 
 Default value: OS dependent.
 
 ##### `service_provider`
 
-Overrides the default PostgreSQL service provider. 
+Overrides the default PostgreSQL service provider.
 
 Default value: `undef`.
 
 ##### `service_reload`
 
-Overrides the default reload command for your PostgreSQL service. 
+Overrides the default reload command for your PostgreSQL service.
 
 Default value: OS dependent.
 
 ##### `service_restart_on_change`
 
-Overrides the default behavior to restart your PostgreSQL service when a config entry has been changed that requires a service restart to become active. 
+Overrides the default behavior to restart your PostgreSQL service when a config entry has been changed that requires a service restart to become active.
 
 Default value: `true`.
 
 ##### `service_status`
 
-Overrides the default status check command for your PostgreSQL service. 
+Overrides the default status check command for your PostgreSQL service.
 
 Default value: OS dependent.
 
 ##### `user`
 
-Overrides the default PostgreSQL super user and owner of PostgreSQL related files in the file system. 
+Overrides the default PostgreSQL super user and owner of PostgreSQL related files in the file system.
 
 Default value: 'postgres'.
 
@@ -1017,7 +1022,7 @@ postgresql::server::config_entry { 'check_function_bodies':
 
 ##### `ensure`
 
-Removes an entry if set to 'absent'. 
+Removes an entry if set to 'absent'.
 
 Valid values: 'present', 'absent'.
 
@@ -1037,43 +1042,43 @@ Defines a comment to be stored about the database using the PostgreSQL COMMENT c
 
 ##### `connect_settings`
 
-Specifies a hash of environment variables used when connecting to a remote server. 
+Specifies a hash of environment variables used when connecting to a remote server.
 
 Default value: Connects to the local Postgres instance.
 
 ##### `dbname`
 
-Sets the name of the database to be created. 
+Sets the name of the database to be created.
 
 Default value: the namevar.
 
 ##### `encoding`
 
-Overrides the character set during creation of the database. 
+Overrides the character set during creation of the database.
 
 Default value: The default defined during installation.
 
 ##### `grant`
 
-Specifies the permissions to grant during creation. 
+Specifies the permissions to grant during creation.
 
 Default value: 'ALL'.
 
 ##### `istemplate`
 
-Specifies that the database is a template, if set to `true`. 
+Specifies that the database is a template, if set to `true`.
 
 Default value: `false`.
 
 ##### `locale`
 
-Overrides the locale during creation of the database. 
+Overrides the locale during creation of the database.
 
 Default value: The default defined during installation.
 
 ##### `owner`
 
-Sets a user as the owner of the database. 
+Sets a user as the owner of the database.
 
 Default value: '$user' variable set in `postgresql::server` or `postgresql::globals`.
 
@@ -1083,13 +1088,13 @@ Default value: '$user' variable set in `postgresql::server` or `postgresql::glob
 
 ##### `tablespace`
 
-Defines the name of the tablespace to allocate the created database to. 
+Defines the name of the tablespace to allocate the created database to.
 
 Default value: PostgreSQL default.
 
 ##### `template`
 
-Specifies the name of the template database from which to build this database. 
+Specifies the name of the template database from which to build this database.
 
 Defaults value: `template0`.
 
@@ -1103,13 +1108,13 @@ Creates a database with no users and no permissions.
 
 ##### `dbname`
 
-Sets the name of the database. 
+Sets the name of the database.
 
 Defaults value: The namevar.
 
 ##### `encoding`
 
-Overrides the character set during creation of the database. 
+Overrides the character set during creation of the database.
 
 Default value: The default defined during installation.
 
@@ -1133,13 +1138,13 @@ Default value: The '$user' variable set in `postgresql::server` or `postgresql::
 
 ##### `tablespace`
 
-Sets tablespace for where to create this database. 
+Sets tablespace for where to create this database.
 
 Default value: The default defined during installation.
 
 ##### `template`
 
-Specifies the name of the template database from which to build this database. 
+Specifies the name of the template database from which to build this database.
 
 Default value: 'template0'.
 
@@ -1149,7 +1154,7 @@ Manages grant-based access privileges for users, wrapping the `postgresql::serve
 
 #### `connect_settings`
 
-Specifies a hash of environment variables used when connecting to a remote server. 
+Specifies a hash of environment variables used when connecting to a remote server.
 
 Default value: Connects to the local Postgres instance.
 
@@ -1159,13 +1164,13 @@ Specifies the database to which you are granting access.
 
 ##### `privilege`
 
-Specifies comma-separated list of privileges to grant. 
+Specifies comma-separated list of privileges to grant.
 
 Valid options: 'ALL', 'CREATE', 'CONNECT', 'TEMPORARY', 'TEMP'.
 
 ##### `psql_db`
 
-Defines the database to execute the grant against. 
+Defines the database to execute the grant against.
 
 **This should not ordinarily be changed from the default**
 
@@ -1173,7 +1178,7 @@ Default value: 'postgres'.
 
 ##### `psql_user`
 
-Specifies the OS user for running `psql`. 
+Specifies the OS user for running `psql`.
 
 Default value: The default user for the module, usually 'postgres'.
 
@@ -1188,6 +1193,10 @@ Manages a PostgreSQL extension.
 ##### `database`
 
 Specifies the database on which to activate the extension.
+
+##### `schema`
+
+Specifies the schema on which to activate the extension.
 
 ##### `ensure`
 
@@ -1480,11 +1489,21 @@ The parameters are grouped into these three sections:
 
 ##### `target`
 Provides the target for the rule, and is generally an internal only property.
- 
+
 **Use with caution.**
 
 #### postgresql::server::role
-Creates a role or user in PostgreSQL.
+
+Creates or drops a role or user in PostgreSQL.
+
+##### `ensure`
+
+Specify whether to create or drop the role.
+
+Specifying 'present' creates the role.
+Specifying 'absent' drops the role.
+
+Default value: 'present'.
 
 ##### `connection_limit`
 Specifies how many concurrent connections the role can make.
@@ -1742,7 +1761,7 @@ This is the namevar.
 
 Required.
 
-Specifies the action to create or destroy named slot. 
+Specifies the action to create or destroy named slot.
 
 Valid values: 'present', 'absent'.
 
@@ -1796,7 +1815,7 @@ Default value: '', which generally uses the designated local Unix socket.
 
 Defines the port to use when connecting.
 
-Default value: '' 
+Default value: ''
 
 ##### `run_as`
 
@@ -1828,6 +1847,10 @@ This internal function converts a list of `pg_hba.conf` based ACLs (passed in as
 
 **This function should only be used internally by the module**.
 
+### Tasks
+
+The postgresql module `sql` example task executes arbitary SQL against a database. Please refer to to the [PE documentation](https://puppet.com/docs/pe/2017.3/orchestrator/running_tasks.html) or [Bolt documentation](https://puppet.com/docs/bolt/latest/bolt.html) on how to execute a task.
+
 ## Limitations
 
 Works with versions of PostgreSQL from 8.1 through 9.5.
@@ -1842,7 +1865,7 @@ Other systems might be compatible, but are not being actively tested.
 
 ### Apt module support
 
-While this module supports both 1.x and 2.x versions of the 'puppetlabs-apt' module, it does not support 'puppetlabs-apt' 2.0.0 or 2.0.1.
+While this module supports both 1.x and 2.x versions of the `puppetlabs-apt` module, it does not support `puppetlabs-apt` 2.0.0 or 2.0.1.
 
 ### PostGIS support
 

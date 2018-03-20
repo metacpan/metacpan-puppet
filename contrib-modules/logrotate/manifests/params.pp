@@ -31,11 +31,16 @@ class logrotate::params {
       }
     }
     'Debian': {
-      $default_su_group = versioncmp($::operatingsystemmajrelease, '14.00') ? {
+      $default_su_user = versioncmp($facts['operatingsystemmajrelease'], '14.00') ? {
+        1        => 'root',
+        default  => undef,
+      }
+      $default_su_group = versioncmp($facts['operatingsystemmajrelease'], '14.00') ? {
         1         => 'syslog',
         default   => undef
       }
       $conf_params = {
+        su_user  => $default_su_user,
         su_group => $default_su_group,
       }
       $configdir     = '/etc'
@@ -180,6 +185,7 @@ class logrotate::params {
   $cron_hourly_file   = '/etc/cron.hourly/logrotate'
   $config_file        = "${configdir}/logrotate.conf"
   $logrotate_conf     = "${configdir}/logrotate.conf"
+  $manage_package     = true
   $root_user          = 'root'
   $rules_configdir    = "${configdir}/logrotate.d"
 }

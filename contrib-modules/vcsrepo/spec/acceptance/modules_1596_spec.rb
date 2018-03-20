@@ -12,15 +12,15 @@ describe 'clones a remote repo' do
     shell("rm -rf #{tmpdir}/vcsrepo")
   end
 
-  context 'force with a remote' do
-    pp = <<-EOS
+  context 'with force with a remote' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
         ensure   => present,
         provider => git,
         source   => 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
         force    => true,
       }
-    EOS
+    MANIFEST
     it 'clones from remote' do
       # Run it twice to test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -37,24 +37,24 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'force over an existing repo' do
-    pp = <<-EOS
+  context 'with force over an existing repo' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
         ensure   => present,
         provider => git,
         source   => 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
         force    => true,
       }
-    EOS
+    MANIFEST
 
-    pp2 = <<-EOS
+    pp2 = <<-MANIFEST
       vcsrepo { "#{tmpdir}/vcsrepo":
         ensure   => present,
         provider => git,
         source   => 'https://github.com/puppetlabs/puppetlabs-stdlib',
         force    => true,
       }
-    EOS
+    MANIFEST
     it 'clones from remote' do
       apply_manifest(pp, catch_failures: true)
       # create a file to make sure we're destroying the repo

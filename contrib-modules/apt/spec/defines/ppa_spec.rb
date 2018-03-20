@@ -53,12 +53,6 @@ describe 'apt::ppa' do
     }
   end
 
-  describe 'ppa depending on ppa, MODULES-1156' do
-    let :pre_condition do
-      'class { "apt": }'
-    end
-  end
-
   describe 'package_name => software-properties-common' do
     let :pre_condition do
       'class { "apt": }'
@@ -343,7 +337,7 @@ describe 'apt::ppa' do
     }
   end
 
-  context 'validation' do
+  context 'with validation' do
     describe 'no release' do
       let :facts do
         {
@@ -359,9 +353,7 @@ describe 'apt::ppa' do
       let(:title) { 'ppa:user/foo' }
 
       it do
-        expect {
-          subject.call
-        }.to raise_error(Puppet::Error, %r{lsbdistcodename fact not available: release parameter required})
+        is_expected.to raise_error(Puppet::Error, %r{lsbdistcodename fact not available: release parameter required})
       end
     end
 
@@ -380,9 +372,7 @@ describe 'apt::ppa' do
       let(:title) { 'ppa:user/foo' }
 
       it do
-        expect {
-          subject.call
-        }.to raise_error(Puppet::Error, %r{not currently supported on Debian})
+        is_expected.to raise_error(Puppet::Error, %r{not currently supported on Debian})
       end
     end
   end

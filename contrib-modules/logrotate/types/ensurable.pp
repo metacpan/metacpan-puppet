@@ -1,1 +1,0 @@
-type Logrotate::Ensurable = Enum['present', 'absent', 'latest']

@@ -61,6 +61,48 @@ describe 'yum' do
             it { is_expected.to contain_yumrepo('contrib') }
             it { is_expected.not_to contain_yumrepo('cr') }
           end
+        when 'Amazon'
+          it { is_expected.to have_yumrepo_resource_count(16) }
+          it_behaves_like 'a catalog containing repos', [
+            'amzn-main',
+            'amzn-main-debuginfo',
+            'amzn-main-source',
+            'amzn-nosrc',
+            'amzn-preview',
+            'amzn-preview-debuginfo',
+            'amzn-preview-source',
+            'amzn-updates',
+            'amzn-updates-debuginfo',
+            'amzn-updates-source',
+            'epel',
+            'epel-debuginfo',
+            'epel-source',
+            'epel-testing',
+            'epel-testing-debuginfo',
+            'epel-testing-source'
+          ]
+        when 'RedHat'
+          it { is_expected.to have_yumrepo_resource_count(18) }
+          it_behaves_like 'a catalog containing repos', [
+            'rhui-REGION-rhel-server-releases',
+            'rhui-REGION-rhel-server-releases-debug',
+            'rhui-REGION-rhel-server-releases-source',
+            'rhui-REGION-rhel-server-rhscl',
+            'rhui-REGION-rhel-server-debug-rhscl',
+            'rhui-REGION-rhel-server-source-rhscl',
+            'rhui-REGION-rhel-server-extras',
+            'rhui-REGION-rhel-server-debug-extras',
+            'rhui-REGION-rhel-server-source-extras',
+            'rhui-REGION-rhel-server-optional',
+            'rhui-REGION-rhel-server-debug-optional',
+            'rhui-REGION-rhel-server-source-optional',
+            'rhui-REGION-rhel-server-rh-common',
+            'rhui-REGION-rhel-server-debug-rh-common',
+            'rhui-REGION-rhel-server-source-rh-common',
+            'rhui-REGION-rhel-server-supplementary',
+            'rhui-REGION-rhel-server-debug-supplementary',
+            'rhui-REGION-rhel-server-source-supplementary'
+          ]
         else
           it { is_expected.to have_yumrepo_resource_count(0) }
         end
@@ -80,6 +122,48 @@ describe 'yum' do
               'base-debuginfo',
               'centosplus',
               'centos-media'
+            ]
+          when 'Amazon'
+            it { is_expected.to have_yumrepo_resource_count(16) }
+            it_behaves_like 'a catalog containing repos', [
+              'amzn-main',
+              'amzn-main-debuginfo',
+              'amzn-main-source',
+              'amzn-nosrc',
+              'amzn-preview',
+              'amzn-preview-debuginfo',
+              'amzn-preview-source',
+              'amzn-updates',
+              'amzn-updates-debuginfo',
+              'amzn-updates-source',
+              'epel',
+              'epel-debuginfo',
+              'epel-source',
+              'epel-testing',
+              'epel-testing-debuginfo',
+              'epel-testing-source'
+            ]
+          when 'RedHat'
+            it { is_expected.to have_yumrepo_resource_count(18) }
+            it_behaves_like 'a catalog containing repos', [
+              'rhui-REGION-rhel-server-releases',
+              'rhui-REGION-rhel-server-releases-debug',
+              'rhui-REGION-rhel-server-releases-source',
+              'rhui-REGION-rhel-server-rhscl',
+              'rhui-REGION-rhel-server-debug-rhscl',
+              'rhui-REGION-rhel-server-source-rhscl',
+              'rhui-REGION-rhel-server-extras',
+              'rhui-REGION-rhel-server-debug-extras',
+              'rhui-REGION-rhel-server-source-extras',
+              'rhui-REGION-rhel-server-optional',
+              'rhui-REGION-rhel-server-debug-optional',
+              'rhui-REGION-rhel-server-source-optional',
+              'rhui-REGION-rhel-server-rh-common',
+              'rhui-REGION-rhel-server-debug-rh-common',
+              'rhui-REGION-rhel-server-source-rh-common',
+              'rhui-REGION-rhel-server-supplementary',
+              'rhui-REGION-rhel-server-debug-supplementary',
+              'rhui-REGION-rhel-server-source-supplementary'
             ]
           else
             it { is_expected.to have_yumrepo_resource_count(0) }

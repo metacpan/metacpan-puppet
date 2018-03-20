@@ -1,4 +1,39 @@
-## 6.0.0 (Month Day, Year)
+## 6.2.2 (March 13, 2018)
+
+#### Fixes
+* Fixed language compatibility errors that could arise when using JRuby 1.7 on Puppet Servers.
+
+## 6.2.1 (February 14, 2018)
+
+This is primarily a bugfix release to address an issue when installing Elasticsearch 6.2.x plugins such as X-Pack that use the new meta-plugin architecture.
+While the change has been tested with several plugins and versions of Elasticsearch, if any unexpected behavior arises, help is available on the [Elastic forums](https://discuss.elastic.co/) or via [an issue in the puppet-elasticsearch Github repository](https://github.com/elastic/puppet-elasticsearch/issues).
+
+#### Fixes
+* Rewrote the `exists?` logic for the `elasticsearch_plugin` provider. This fundamentally changes how the module detects the presence of plugins but should be backwards compatible.
+
+## 6.2.0 (February 9, 2018)
+
+#### Features
+* Add support for Amazon Linux 2
+* Add support for managing Elasticsearch Snapshot Repository resources
+
+#### Fixes
+* Fixed an issue when setting `file_rolling_type => file` in Elasticsearch 6.
+* Removed ExecStartPre=- from systemd template
+
+## 6.1.0 (December 18, 2017)
+
+#### Features
+* Removed `tea` module dependency for pre-existing types in `stdlib` module.
+* Support `file` as a `file_rolling_type`.
+* Added `java_opts` parameter to `elasticsearch::plugin` resource.
+* Brought some options in `jvm.options` up-to-date with upstream.
+* Plugins can now have their `JAVA_HOME` set through the `java_home` parameter.
+
+#### Fixes
+* Fixed issue with `ES_PATH_CONF` being unset in SysV init files.
+
+## 6.0.0 (November 14, 2017)
 
 Major version upgrade with several important deprecations:
 

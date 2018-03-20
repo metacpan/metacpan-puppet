@@ -23,7 +23,7 @@ hosts.each do |host|
   end
 
   step 'setup - start http server' do
-    script = <<-EOF
+    script = <<-MANIFEST
     require 'sinatra'
 
     set :bind, '0.0.0.0'
@@ -34,7 +34,7 @@ hosts.each do |host|
     use Rack::Auth::Basic do |username, password|
         username == '#{user}' && password == '#{password}'
     end
-    EOF
+    MANIFEST
     create_remote_file(host, "#{tmpdir}/#{http_server_script}", script)
     on(host, "#{gem} install sinatra")
     on(host, "#{ruby} #{tmpdir}/#{http_server_script} &")
@@ -46,7 +46,7 @@ hosts.each do |host|
   end
 
   step 'checkout with puppet using basic auth' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "http://#{host}:4567/testrepo.git",
@@ -54,7 +54,7 @@ hosts.each do |host|
       basic_auth_username => '#{user}',
       basic_auth_password => '#{password}',
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)

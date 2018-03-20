@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe Puppet::Type.type(:vcsrepo).provider(:git) do
   def branch_a_list(include_branch = nil?)
-    <<branches
+    <<BRANCHES
   end
   #{'*  master' unless include_branch.nil?}
   #{'*  ' + include_branch if include_branch}
    remote/origin/master
    remote/origin/foo
 
-branches
+BRANCHES
   end
   let(:resource) do
     Puppet::Type.type(:vcsrepo).new(name: 'test',
@@ -29,8 +29,8 @@ branches
 
   # rubocop:disable RSpec/ExampleLength : Multiple examples that I am unable to shrink to the required level exist within
 
-  context 'with an ensure of present' do
-    context 'with an ensure of present - with a revision that is a remote branch' do
+  context 'when with an ensure of present' do
+    context 'when with an ensure of present - with a revision that is a remote branch' do
       it "executes 'git clone' and 'git checkout -b'" do
         resource[:revision] = 'only/remote'
         Dir.expects(:chdir).with('/').at_least_once.yields
@@ -58,7 +58,7 @@ branches
       end
     end
 
-    context 'with an ensure of present - with shallow clone enable' do
+    context 'when with an ensure of present - with shallow clone enable' do
       it "executes 'git clone --depth 1'" do
         resource[:revision] = 'only/remote'
         resource[:depth] = 1
@@ -73,7 +73,7 @@ branches
       end
     end
 
-    context 'with an ensure of present - with a revision that is not a remote branch' do
+    context 'when with an ensure of present - with a revision that is not a remote branch' do
       it "executes 'git clone' and 'git reset --hard'" do
         resource[:revision] = 'a-commit-or-tag'
         Dir.expects(:chdir).with('/').at_least_once.yields
@@ -95,7 +95,7 @@ branches
       end
     end
 
-    context 'with an ensure of present - when a source is not given - when the path does not exist' do
+    context 'when with an ensure of present - when a source is not given - when the path does not exist' do
       it "executes 'git init'" do
         resource[:ensure] = :present
         resource.delete(:source)
@@ -107,7 +107,7 @@ branches
       end
     end
 
-    context 'with an ensure of present - when a source is not given - when the path is not empty and not a repository' do
+    context 'when with an ensure of present - when a source is not given - when the path is not empty and not a repository' do
       it 'raises an exception' do
         provider.expects(:path_exists?).returns(true)
         provider.expects(:path_empty?).returns(false)
@@ -115,13 +115,13 @@ branches
       end
     end
 
-    context 'with an ensure of bare - with revision' do
+    context 'when with an ensure of bare - with revision' do
       it 'raises an error' do
         resource[:ensure] = :bare
         expect { provider.create }.to raise_error(RuntimeError, %r{cannot set a revision.+bare}i)
       end
     end
-    context 'with an ensure of bare - without revision' do
+    context 'when with an ensure of bare - without revision' do
       it "justs execute 'git clone --bare'" do
         resource[:ensure] = :bare
         resource.delete(:revision)
@@ -130,7 +130,7 @@ branches
         provider.create
       end
     end
-    context 'with an ensure of bare - without a source' do
+    context 'when with an ensure of bare - without a source' do
       it "executes 'git init --bare'" do
         resource[:ensure] = :bare
         resource.delete(:source)
@@ -144,13 +144,13 @@ branches
       end
     end
 
-    context 'with an ensure of mirror - with revision' do
+    context 'when with an ensure of mirror - with revision' do
       it 'raises an error' do
         resource[:ensure] = :mirror
         expect { provider.create }.to raise_error(RuntimeError, %r{cannot set a revision.+bare}i)
       end
     end
-    context 'with an ensure of mirror - without revision' do
+    context 'when with an ensure of mirror - without revision' do
       it "justs execute 'git clone --mirror'" do
         resource[:ensure] = :mirror
         resource.delete(:revision)
@@ -161,7 +161,7 @@ branches
       end
     end
 
-    context 'with an ensure of mirror - without a source' do
+    context 'when with an ensure of mirror - without a source' do
       it 'raises an exeption' do
         resource[:ensure] = :mirror
         resource.delete(:source)
@@ -170,7 +170,7 @@ branches
       end
     end
 
-    context 'with an ensure of mirror - with multiple remotes' do
+    context 'when with an ensure of mirror - with multiple remotes' do
       it "executes 'git clone --mirror' and set all remotes to mirror" do
         resource[:ensure] = :mirror
         resource[:source] = { 'origin' => 'git://git@foo.com/bar.git', 'other' => 'git://git@foo.com/baz.git' }
@@ -186,7 +186,7 @@ branches
     end
   end
 
-  context 'with an ensure of mirror - when the path is a working copy repository' do
+  context 'when with an ensure of mirror - when the path is a working copy repository' do
     it 'clones overtop it using force' do
       resource[:force] = true
       Dir.expects(:chdir).with('/').at_least_once.yields
@@ -203,7 +203,7 @@ branches
     end
   end
 
-  context 'with an ensure of mirror - when the path is not empty and not a repository' do
+  context 'when with an ensure of mirror - when the path is not empty and not a repository' do
     it 'raises an exception' do
       provider.expects(:path_exists?).returns(true)
       provider.expects(:path_empty?).returns(false)
@@ -211,8 +211,8 @@ branches
     end
   end
 
-  context 'converting repo type' do
-    context 'from working copy to bare' do
+  context 'when when converting repo type' do
+    context 'when with working copy to bare' do
       it 'converts the repo' do
         resource[:ensure] = :bare
         provider.expects(:working_copy_exists?).returns(true)
@@ -226,7 +226,7 @@ branches
       end
     end
 
-    context 'from working copy to mirror' do
+    context 'when with working copy to mirror' do
       it 'converts the repo' do
         resource[:ensure] = :mirror
         provider.expects(:working_copy_exists?).returns(true)
@@ -241,7 +241,7 @@ branches
       end
     end
 
-    context 'from bare copy to working copy' do
+    context 'when with bare copy to working copy' do
       it 'converts the repo' do
         FileUtils.expects(:mv).returns(true)
         FileUtils.expects(:mkdir).returns(true)
@@ -259,7 +259,7 @@ branches
       end
     end
 
-    context 'from mirror to working copy' do
+    context 'when with mirror to working copy' do
       it 'converts the repo' do
         FileUtils.expects(:mv).returns(true)
         FileUtils.expects(:mkdir).returns(true)
@@ -278,14 +278,14 @@ branches
     end
   end
 
-  context 'destroying' do
+  context 'when when destroying' do
     it 'removes the directory' do
       expects_rm_rf
       provider.destroy
     end
   end
 
-  context 'checking the revision property' do
+  context 'when when checking the revision property' do
     before(:each) do
       expects_chdir('/tmp/test')
       resource[:revision] = 'currentsha'
@@ -298,7 +298,7 @@ branches
       provider.stubs(:git).with('tag', '-l').returns('Hello')
     end
 
-    context 'when its SHA is not different than the current SHA' do
+    context 'when when its SHA is not different than the current SHA' do
       it 'returns the ref' do
         provider.expects(:git).with('rev-parse', resource.value(:revision)).returns('currentsha')
         provider.expects(:update_references)
@@ -306,7 +306,7 @@ branches
       end
     end
 
-    context 'when its SHA is different than the current SHA' do
+    context 'when when its SHA is different than the current SHA' do
       it 'returns the current SHA' do
         provider.expects(:git).with('rev-parse', resource.value(:revision)).returns('othersha')
         provider.expects(:update_references)
@@ -314,7 +314,7 @@ branches
       end
     end
 
-    context 'when its a ref to a remote head' do
+    context 'when when its a ref to a remote head' do
       it 'returns the revision' do
         provider.stubs(:git).with('branch', '-a').returns("  remotes/origin/#{resource.value(:revision)}")
         provider.expects(:git).with('rev-parse', "origin/#{resource.value(:revision)}").returns('newsha')
@@ -323,7 +323,7 @@ branches
       end
     end
 
-    context 'when its a ref to non existant remote head' do
+    context 'when when its a ref to non existant remote head' do
       it 'fails' do
         provider.expects(:git).with('branch', '-a').returns(branch_a_list)
         provider.expects(:git).with('rev-parse', '--revs-only', resource.value(:revision)).returns('')
@@ -342,7 +342,7 @@ branches
     end
   end
 
-  context 'setting the revision property' do
+  context 'when setting the revision property' do
     before(:each) do
       expects_chdir
     end
@@ -379,7 +379,7 @@ branches
     end
   end
 
-  context 'checking the source property' do
+  context 'when checking the source property' do
     before(:each) do
       expects_chdir('/tmp/test')
       provider.stubs(:git).with('config', 'remote.origin.url').returns('')
@@ -410,8 +410,8 @@ branches
     end
   end
 
-  context 'updating remotes' do
-    context 'from string to string' do
+  context 'when updating remotes' do
+    context 'when with string to string' do
       it 'fails' do
         resource[:source] = 'git://git@foo.com/bar.git'
         resource[:force] = false
@@ -423,7 +423,7 @@ branches
       end
     end
 
-    context 'from hash to hash' do
+    context 'when with hash to hash' do
       it 'adds any new remotes, update any existing remotes, remove deleted remotes' do
         expects_chdir
         resource[:source] = { 'origin' => 'git://git@foo.com/bar.git', 'new_remote' => 'git://git@foo.com/baz.git' }
@@ -440,7 +440,7 @@ branches
       end
     end
 
-    context 'from string to hash' do
+    context 'when with string to hash' do
       it 'adds any new remotes, update origin remote' do
         expects_chdir
         resource[:source] = { 'origin' => 'git://git@foo.com/bar.git', 'new_remote' => 'git://git@foo.com/baz.git' }
@@ -453,7 +453,7 @@ branches
       end
     end
 
-    context 'from hash to string' do
+    context 'when with hash to string' do
       it 'updates origin remote, remove deleted remotes' do
         expects_chdir
         resource[:source] = 'git://git@foo.com/baz.git'
@@ -472,7 +472,7 @@ branches
 
   # rubocop:enable RSpec/ExampleLength
 
-  context 'updating references' do
+  context 'when updating references' do
     it "uses 'git fetch --tags'" do
       resource.delete(:source)
       expects_chdir
@@ -495,6 +495,34 @@ branches
         provider.expects(:revision).returns('master')
         provider.expects(:latest_revision).returns('testrev')
         expect(provider).not_to be_latest
+      end
+    end
+  end
+
+  describe 'trust_server_cert' do
+    context 'when true' do
+      before :each do
+        resource[:trust_server_cert] = true
+      end
+
+      it 'raises error with git 1.7.0' do
+        provider.stubs(:git).with('--version').returns '1.7.0'
+        expect { provider.create }.to raise_error RuntimeError, %r{Can't set sslVerify to false}
+      end
+
+      # rubocop:disable RSpec/ExampleLength
+      it 'compiles with git 2.13.0' do
+        resource[:revision] = 'only/remote'
+        Dir.expects(:chdir).with('/').at_least_once.yields
+        Dir.expects(:chdir).with('/tmp/test').at_least_once.yields
+        provider.expects(:git).with('-c', 'http.sslVerify=false', 'clone', resource.value(:source), resource.value(:path))
+        provider.expects(:update_submodules)
+        provider.expects(:update_remote_url).with('origin', resource.value(:source)).returns false
+        provider.expects(:git).with('-c', 'http.sslVerify=false', 'branch', '-a').returns(branch_a_list(resource.value(:revision)))
+        provider.expects(:git).with('-c', 'http.sslVerify=false', 'checkout', '--force', resource.value(:revision))
+
+        provider.stubs(:git).with('--version').returns '2.13.0'
+        expect { provider.create }.not_to raise_error
       end
     end
   end

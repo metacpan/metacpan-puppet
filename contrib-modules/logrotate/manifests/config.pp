@@ -7,10 +7,12 @@ class logrotate::config{
   $config            = $::logrotate::config
 
   file{ $::logrotate::rules_configdir:
-    ensure => directory,
-    owner  => $logrotate::root_user,
-    group  => $logrotate::root_group,
-    mode   => '0755',
+    ensure  => directory,
+    owner   => $logrotate::root_user,
+    group   => $logrotate::root_group,
+    purge   => $::logrotate::purge_configdir,
+    recurse => $::logrotate::purge_configdir,
+    mode    => '0755',
   }
 
   if $manage_cron_daily {

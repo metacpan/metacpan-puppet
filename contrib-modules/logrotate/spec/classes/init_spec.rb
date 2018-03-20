@@ -41,6 +41,36 @@ describe 'logrotate' do
             is_expected.to contain_class('logrotate::defaults')
           end
         end
+
+        context 'logrotate class with manage_package set to to false' do
+          let(:params) { { manage_package: false } }
+
+          it do
+            is_expected.not_to contain_package('logrotate')
+          end
+        end
+
+        context 'logrotate class with purge_configdir set to true' do
+          let(:params) { { purge_configdir: true } }
+
+          it do
+            is_expected.to contain_file('/etc/logrotate.d').with('ensure'  => 'directory',
+                                                                 'owner'   => 'root',
+                                                                 'group'   => 'root',
+                                                                 'mode'    => '0755',
+                                                                 'purge'   => true,
+                                                                 'recurse' => true)
+          end
+        end
+
+        context 'logrotate class with create_base_rules set to to false' do
+          let(:params) { { create_base_rules: false } }
+
+          it do
+            is_expected.not_to contain_logrotate__rule('btmp')
+            is_expected.not_to contain_logrotate__rule('wtmp')
+          end
+        end
       end
     end
   end

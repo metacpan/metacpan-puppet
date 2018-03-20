@@ -12,6 +12,8 @@ Module has been tested on:
 
 * Puppet 4.6.1 and newer
 * CentOS 6, 7
+* Amazon Linux 2017
+* RHEL 7
 
 ## Usage
 
@@ -99,13 +101,21 @@ yum::managed_repos:
 
 Here the Extras repository for CentOS is enabled and its settings are modified.  Because the `repos` parameter uses a deep merge strategy when fed via automatic parameter lookup (APL), only the values requiring modification need be defined.
 
-By default, `mirrorlist` contains some data, and `baseurl` is undefined.  To undefine the `mirrorlist`, we pass it the *knockout prefix*, `--`.  This works with any key.
+To clear a value set below (from default repos, or lower in the hierarchy), pass it the *knockout prefix*, `--`.  This will blank out the value.
 
-**NOTE:** This only works if the data for the repository is included with the module.  Please see the `/data` directory of this module for a list of available repos.
-
-```puppet
-include 'yum'
+```yaml
+---
+yum::managed_repos:
+    - 'extras'
+yum::repos:
+    extras:
+        enabled: true
+        baseurl: 'https://myrepo.example.com/extras'
+        gpgcheck: false
+        gpgkey: '--'
 ```
+
+The built-in repos by default have data in `mirrorlist`, but `baseurl` is undefined.  Using the knockout prefix won't work with `mirrorlist`, as it requires a valid URL or the value `absent`, as shown at https://puppet.com/docs/puppet/latest/types/yumrepo.html.
 
 ```yaml
 ---
@@ -115,7 +125,7 @@ yum::repos:
     extras:
         enabled: true
         baseurl: 'https://mirror.example.com/extras'
-        mirrorlist: '--'
+        mirrorlist: 'absent'
 ```
 
 ### Enable managemnt of multiple repos

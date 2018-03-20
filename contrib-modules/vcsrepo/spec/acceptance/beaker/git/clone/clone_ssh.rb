@@ -32,13 +32,13 @@ hosts.each do |host|
   end
 
   step 'clone with puppet' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "ssh://root@#{host}#{tmpdir}/testrepo.git",
       provider => git,
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)

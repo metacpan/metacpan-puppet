@@ -92,8 +92,9 @@
 #   The user Elasticsearch should run as. This also sets file ownership.
 #
 # @param file_rolling_type
-#   Configuration for the file appender rotation. It can be 'dailyRollingFile'
-#   or 'rollingFile'. The first rotates by name, and the second one by size.
+#   Configuration for the file appender rotation. It can be 'dailyRollingFile',
+#   'rollingFile' or 'file'. The first rotates by name, the second one by size
+#   or third don't rotate automatically.
 #
 # @param homedir
 #   Directory where the elasticsearch installation's files are kept (plugins, etc.)
@@ -267,6 +268,9 @@
 # @param service_provider
 #   The service resource type provider to use when managing elasticsearch instances.
 #
+# @param snapshot_repositories
+#   Define snapshot repositories via a hash. This is mainly used with Hiera's auto binding.
+#
 # @param status
 #   To define the status of the service. If set to `enabled`, the service will
 #   be run and will be started at boot time. If set to `disabled`, the service
@@ -301,76 +305,77 @@
 # @author Tyler Langlois <tyler.langlois@elastic.co>
 #
 class elasticsearch (
-  Enum['absent', 'present']                    $ensure,
-  Optional[String]                             $api_basic_auth_password,
-  Optional[String]                             $api_basic_auth_username,
-  Optional[String]                             $api_ca_file,
-  Optional[String]                             $api_ca_path,
-  String                                       $api_host,
-  Tea::Port                                    $api_port,
-  Enum['http', 'https']                        $api_protocol,
-  Integer                                      $api_timeout,
-  Boolean                                      $autoupgrade,
-  Hash                                         $config,
-  Tea::Absolutepath                            $configdir,
-  String                                       $daily_rolling_date_pattern,
-  Elasticsearch::Multipath                     $datadir,
-  Boolean                                      $datadir_instance_directories,
-  String                                       $default_logging_level,
-  Tea::Absolutepath                            $defaults_location,
-  Optional[String]                             $download_tool,
-  String                                       $elasticsearch_group,
-  String                                       $elasticsearch_user,
-  Enum['dailyRollingFile', 'rollingFile']      $file_rolling_type,
-  Tea::Absolutepath                            $homedir,
-  Hash                                         $indices,
-  Hash                                         $init_defaults,
-  Optional[String]                             $init_defaults_file,
-  String                                       $init_template,
-  Hash                                         $instances,
-  Array[String]                                $jvm_options,
-  Tea::Absolutepath                            $logdir,
-  Hash                                         $logging_config,
-  Optional[String]                             $logging_file,
-  Optional[String]                             $logging_template,
-  Boolean                                      $manage_repo,
-  Tea::Absolutepath                            $package_dir,
-  Integer                                      $package_dl_timeout,
-  String                                       $package_name,
-  Enum['package']                              $package_provider,
-  Optional[String]                             $package_url,
-  Optional[Tea::Absolutepath]                  $pid_dir,
-  Hash                                         $pipelines,
-  Tea::Absolutepath                            $plugindir,
-  Hash                                         $plugins,
-  Optional[Tea::HTTPUrl]                       $proxy_url,
-  Boolean                                      $purge_configdir,
-  Boolean                                      $purge_package_dir,
-  Boolean                                      $purge_secrets,
-  Optional[String]                             $repo_baseurl,
-  String                                       $repo_key_id,
-  Tea::HTTPUrl                                 $repo_key_source,
-  Optional[Integer]                            $repo_priority,
-  Optional[String]                             $repo_proxy,
-  Variant[Boolean, String]                     $repo_stage,
-  String                                       $repo_version,
-  Boolean                                      $restart_on_change,
-  Hash                                         $roles,
-  Integer                                      $rolling_file_max_backup_index,
-  String                                       $rolling_file_max_file_size,
-  Hash                                         $scripts,
-  Optional[Hash]                               $secrets,
-  Optional[String]                             $security_logging_content,
-  Optional[String]                             $security_logging_source,
-  Optional[Enum['shield', 'x-pack']]           $security_plugin,
-  Enum['init', 'openbsd', 'openrc', 'systemd'] $service_provider,
-  Elasticsearch::Status                        $status,
-  Optional[String]                             $system_key,
-  Tea::Absolutepath                            $systemd_service_path,
-  Hash                                         $templates,
-  Hash                                         $users,
-  Boolean                                      $validate_tls,
-  Variant[String, Boolean]                     $version,
+  Enum['absent', 'present']                       $ensure,
+  Optional[String]                                $api_basic_auth_password,
+  Optional[String]                                $api_basic_auth_username,
+  Optional[String]                                $api_ca_file,
+  Optional[String]                                $api_ca_path,
+  String                                          $api_host,
+  Integer[0, 65535]                               $api_port,
+  Enum['http', 'https']                           $api_protocol,
+  Integer                                         $api_timeout,
+  Boolean                                         $autoupgrade,
+  Hash                                            $config,
+  Stdlib::Absolutepath                            $configdir,
+  String                                          $daily_rolling_date_pattern,
+  Elasticsearch::Multipath                        $datadir,
+  Boolean                                         $datadir_instance_directories,
+  String                                          $default_logging_level,
+  Optional[Stdlib::Absolutepath]                  $defaults_location,
+  Optional[String]                                $download_tool,
+  String                                          $elasticsearch_group,
+  String                                          $elasticsearch_user,
+  Enum['dailyRollingFile', 'rollingFile', 'file'] $file_rolling_type,
+  Stdlib::Absolutepath                            $homedir,
+  Hash                                            $indices,
+  Hash                                            $init_defaults,
+  Optional[String]                                $init_defaults_file,
+  String                                          $init_template,
+  Hash                                            $instances,
+  Array[String]                                   $jvm_options,
+  Stdlib::Absolutepath                            $logdir,
+  Hash                                            $logging_config,
+  Optional[String]                                $logging_file,
+  Optional[String]                                $logging_template,
+  Boolean                                         $manage_repo,
+  Stdlib::Absolutepath                            $package_dir,
+  Integer                                         $package_dl_timeout,
+  String                                          $package_name,
+  Enum['package']                                 $package_provider,
+  Optional[String]                                $package_url,
+  Optional[Stdlib::Absolutepath]                  $pid_dir,
+  Hash                                            $pipelines,
+  Stdlib::Absolutepath                            $plugindir,
+  Hash                                            $plugins,
+  Optional[Stdlib::HTTPUrl]                       $proxy_url,
+  Boolean                                         $purge_configdir,
+  Boolean                                         $purge_package_dir,
+  Boolean                                         $purge_secrets,
+  Optional[String]                                $repo_baseurl,
+  String                                          $repo_key_id,
+  Stdlib::HTTPUrl                                 $repo_key_source,
+  Optional[Integer]                               $repo_priority,
+  Optional[String]                                $repo_proxy,
+  Variant[Boolean, String]                        $repo_stage,
+  String                                          $repo_version,
+  Boolean                                         $restart_on_change,
+  Hash                                            $roles,
+  Integer                                         $rolling_file_max_backup_index,
+  String                                          $rolling_file_max_file_size,
+  Hash                                            $scripts,
+  Optional[Hash]                                  $secrets,
+  Optional[String]                                $security_logging_content,
+  Optional[String]                                $security_logging_source,
+  Optional[Enum['shield', 'x-pack']]              $security_plugin,
+  Enum['init', 'openbsd', 'openrc', 'systemd']    $service_provider,
+  Hash                                            $snapshot_repositories,
+  Elasticsearch::Status                           $status,
+  Optional[String]                                $system_key,
+  Stdlib::Absolutepath                            $systemd_service_path,
+  Hash                                            $templates,
+  Hash                                            $users,
+  Boolean                                         $validate_tls,
+  Variant[String, Boolean]                        $version,
   Boolean $restart_config_change  = $restart_on_change,
   Boolean $restart_package_change = $restart_on_change,
   Boolean $restart_plugin_change  = $restart_on_change,
@@ -416,6 +421,7 @@ class elasticsearch (
   create_resources('elasticsearch::plugin', $::elasticsearch::plugins)
   create_resources('elasticsearch::role', $::elasticsearch::roles)
   create_resources('elasticsearch::script', $::elasticsearch::scripts)
+  create_resources('elasticsearch::snapshot_repository', $::elasticsearch::snapshot_repositories)
   create_resources('elasticsearch::template', $::elasticsearch::templates)
   create_resources('elasticsearch::user', $::elasticsearch::users)
 
@@ -473,6 +479,8 @@ class elasticsearch (
     -> Elasticsearch::Pipeline <| |>
     Class['elasticsearch::config']
     -> Elasticsearch::Index <| |>
+    Class['elasticsearch::config']
+    -> Elasticsearch::Snapshot_repository <| |>
 
   } else {
 
@@ -494,6 +502,8 @@ class elasticsearch (
     Elasticsearch::Pipeline <| |>
     -> Class['elasticsearch::config']
     Elasticsearch::Index <| |>
+    -> Class['elasticsearch::config']
+    Elasticsearch::Snapshot_repository <| |>
     -> Class['elasticsearch::config']
 
   }
@@ -532,6 +542,10 @@ class elasticsearch (
   -> Elasticsearch::Index <| |>
   Elasticsearch::User <| |>
   -> Elasticsearch::Index <| |>
+  Elasticsearch::Role <| |>
+  -> Elasticsearch::Snapshot_repository <| |>
+  Elasticsearch::User <| |>
+  -> Elasticsearch::Snapshot_repository <| |>
 
   # Manage users/roles before instances (req'd to keep dir in sync)
   Elasticsearch::Role <| |>
@@ -546,11 +560,15 @@ class elasticsearch (
   -> Elasticsearch::Pipeline <| |>
   Elasticsearch::Instance <| ensure == 'present' |>
   -> Elasticsearch::Index <| |>
+  Elasticsearch::Instance <| ensure == 'present' |>
+  -> Elasticsearch::Snapshot_repository <| |>
   # Ensure instances are stopped after managing REST resources
   Elasticsearch::Template <| |>
   -> Elasticsearch::Instance <| ensure == 'absent' |>
   Elasticsearch::Pipeline <| |>
   -> Elasticsearch::Instance <| ensure == 'absent' |>
   Elasticsearch::Index <| |>
+  -> Elasticsearch::Instance <| ensure == 'absent' |>
+  Elasticsearch::Snapshot_repository <| |>
   -> Elasticsearch::Instance <| ensure == 'absent' |>
 }

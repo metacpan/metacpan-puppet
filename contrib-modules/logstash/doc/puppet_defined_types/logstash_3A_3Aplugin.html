@@ -6,7 +6,7 @@
 <title>
   Defined Type: logstash::plugin
   
-    &mdash; Documentation by YARD 0.9.9
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -295,6 +295,13 @@ define logstash::plugin (
   require logstash::package
   $exe = &quot;${logstash::home_dir}/bin/logstash-plugin&quot;
 
+  Exec {
+    path        =&gt; &#39;/bin:/usr/bin&#39;,
+    user        =&gt; $logstash::logstash_user,
+    timeout     =&gt; 1800,
+    environment =&gt; $environment,
+  }
+
   case $source { # Where should we get the plugin from?
     undef: {
       # No explict source, so search Rubygems for the plugin, by name.
@@ -364,13 +371,6 @@ define logstash::plugin (
     default: {
       fail &quot;&#39;ensure&#39; should be &#39;present&#39;, &#39;absent&#39;, or a version like &#39;1.3.4&#39;.&quot;
     }
-  }
-
-  Exec {
-    path        =&gt; &#39;/bin:/usr/bin&#39;,
-    user        =&gt; $logstash::logstash_user,
-    timeout     =&gt; 1800,
-    environment =&gt; $environment,
   }
 }</pre>
       </td>

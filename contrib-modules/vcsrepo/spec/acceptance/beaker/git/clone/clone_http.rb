@@ -18,12 +18,12 @@ hosts.each do |host|
   end
 
   step 'setup - start http server' do
-    http_daemon = <<-EOF
+    http_daemon = <<-MANIFEST
     require 'webrick'
     server = WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => "#{tmpdir}")
     WEBrick::Daemon.start
     server.start
-    EOF
+    MANIFEST
     create_remote_file(host, '/tmp/http_daemon.rb', http_daemon)
     on(host, "#{ruby} /tmp/http_daemon.rb")
   end
@@ -34,13 +34,13 @@ hosts.each do |host|
   end
 
   step 'clone with puppet' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "http://#{host}:8000/testrepo.git",
       provider => git,
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)

@@ -23,14 +23,14 @@ hosts.each do |host|
   end
 
   step 'shallow clone repo with puppet (bad input ignored, full clone checkedout)' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "file://#{tmpdir}/testrepo.git",
       provider => git,
       depth => 18446744073709551616,
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)

@@ -1,8 +1,10 @@
 #
 class logrotate (
-  Logrotate::Ensurable $ensure       = present,
+  String $ensure                     = present,
   Boolean $hieramerge                = false,
   Boolean $manage_cron_daily         = true,
+  Boolean $create_base_rules         = true,
+  Boolean $purge_configdir           = false,
   String $package                    = 'logrotate',
   Hash $rules                        = {},
   Optional[Hash] $config             = undef,
@@ -13,9 +15,10 @@ class logrotate (
   String $configdir                  = $logrotate::params::configdir,
   String $logrotate_bin              = $logrotate::params::logrotate_bin,
   String $logrotate_conf             = $logrotate::params::logrotate_conf,
+  Boolean $manage_package            = $logrotate::params::manage_package,
   String $rules_configdir            = $logrotate::params::rules_configdir,
-  Logrotate::UserOrGroup $root_user  = $logrotate::params::root_user,
-  Logrotate::UserOrGroup $root_group = $logrotate::params::root_group,
+  String $root_user                  = $logrotate::params::root_user,
+  String $root_group                 = $logrotate::params::root_group,
 ) inherits logrotate::params {
 
   contain ::logrotate::install

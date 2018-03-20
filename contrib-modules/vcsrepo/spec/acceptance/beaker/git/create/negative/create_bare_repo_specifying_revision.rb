@@ -18,13 +18,13 @@ hosts.each do |host|
   end
 
   step 'create bare repo specifying revision using puppet' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => bare,
       revision => master,
       provider => git,
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, expect_failures: true)
   end

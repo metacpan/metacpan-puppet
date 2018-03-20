@@ -74,7 +74,7 @@ Puppet::Type.type(:vcsrepo).provide(:hg, parent: Puppet::Provider::Vcsrepo) do
     at_path do
       begin
         hg_wrapper('pull', remote: true)
-      rescue
+      rescue StandardError
         next
       end
       begin

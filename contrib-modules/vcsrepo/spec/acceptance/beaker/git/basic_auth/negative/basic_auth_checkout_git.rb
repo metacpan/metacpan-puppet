@@ -29,7 +29,7 @@ hosts.each do |host|
   end
 
   step 'checkout with puppet using basic auth' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "git://#{host}/testrepo.git",
@@ -37,7 +37,7 @@ hosts.each do |host|
       basic_auth_username => '#{user}',
       basic_auth_password => '#{password}',
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)

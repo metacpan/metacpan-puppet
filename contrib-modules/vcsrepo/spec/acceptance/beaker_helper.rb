@@ -40,11 +40,11 @@ test_name 'Installing Puppet and vcsrepo module' do
         end
       end
 
-      gitconfig = <<-EOS
+      gitconfig = <<-MANIFEST
       [user]
         email = root@localhost
         name = root
-      EOS
+      MANIFEST
       create_remote_file(host, '/root/.gitconfig', gitconfig)
     end
   end

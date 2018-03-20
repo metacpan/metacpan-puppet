@@ -26,14 +26,14 @@ hosts.each do |host|
   end
 
   step 'checkout as a user with puppet' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "file://#{tmpdir}/testrepo.git",
       provider => git,
       owner => '#{user}',
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, expect_failures: true)
   end

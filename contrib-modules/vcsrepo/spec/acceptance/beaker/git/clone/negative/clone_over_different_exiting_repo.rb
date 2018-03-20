@@ -27,13 +27,13 @@ hosts.each do |host|
     on(host, "cd #{tmpdir}/#{repo_name} && git log --pretty=format:\"%h\"") do |res|
       @existing_sha = res.stdout
     end
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "file://#{tmpdir}/testrepo.git",
       provider => git,
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, expect_failures: true)
   end

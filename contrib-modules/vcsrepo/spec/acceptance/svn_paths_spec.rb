@@ -17,8 +17,8 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
     shell("rm -rf #{tmpdir}/svnrepo")
   end
 
-  context 'include paths' do
-    pp = <<-EOS
+  context 'with include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -26,7 +26,7 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'can checkout specific paths from svn' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -56,8 +56,8 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
     end
   end
 
-  context 'add include paths' do
-    pp = <<-EOS
+  context 'with add include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -65,7 +65,7 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'can add paths to includes' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -80,8 +80,8 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
     end
   end
 
-  context 'remove include paths' do
-    pp = <<-EOS
+  context 'with remove include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -89,7 +89,7 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'can remove paths (and empty parent directories) from includes' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -113,8 +113,8 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
     end
   end
 
-  context 'changing revisions' do
-    pp = <<-EOS
+  context 'with changing revisions' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -122,7 +122,7 @@ describe 'subversion :includes tests on SVN version >= 1.7', unless: ( # rubocop
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1700000,
         }
-    EOS
+    MANIFEST
     it 'can change revisions' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -147,8 +147,8 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
     shell("rm -rf #{tmpdir}/svnrepo")
   end
 
-  context 'include paths' do
-    pp = <<-EOS
+  context 'with include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -156,7 +156,7 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'can checkout specific paths from svn' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -186,8 +186,8 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
     end
   end
 
-  context 'add include paths' do
-    pp = <<-EOS
+  context 'with add include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -195,7 +195,7 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'can add paths to includes' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -210,8 +210,8 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
     end
   end
 
-  context 'remove include paths' do
-    pp = <<-EOS
+  context 'with remove include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -219,7 +219,7 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'can remove directory paths (and empty parent directories) from includes, but not files with siblings' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -242,8 +242,8 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
     end
   end
 
-  context 'changing revisions' do
-    pp = <<-EOS
+  context 'with changing revisions' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -251,7 +251,7 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1700000,
         }
-    EOS
+    MANIFEST
     it 'can change revisions' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -268,8 +268,8 @@ describe 'subversion :includes tests on SVN version == 1.6', if: (
 end
 
 describe 'subversion :includes tests on SVN version < 1.6', if: (fact('osfamily') == 'SLES') do
-  context 'include paths' do
-    pp = <<-EOS
+  context 'with include paths' do
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/svnrepo":
           ensure   => present,
           provider => svn,
@@ -277,7 +277,7 @@ describe 'subversion :includes tests on SVN version < 1.6', if: (fact('osfamily'
           source   => "http://svn.apache.org/repos/asf/subversion/developer-resources",
           revision => 1000000,
         }
-    EOS
+    MANIFEST
     it 'fails when SVN version < 1.6' do
       # Expect error when svn < 1.6 and includes is used
       apply_manifest(pp, expect_failures: true) do |r|

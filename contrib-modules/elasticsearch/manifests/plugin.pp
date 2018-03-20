@@ -21,6 +21,12 @@
 # @param instances
 #   Specify all the instances related
 #
+# @param java_opts
+#   Array of Java options to be passed to `ES_JAVA_OPTS`
+#
+# @param java_home
+#   Path to JAVA_HOME, if Java is installed in a non-standard location.
+#
 # @param module_dir
 #   Directory name where the module has been installed
 #   This is automatically generated based on the module name
@@ -53,15 +59,17 @@
 #
 define elasticsearch::plugin (
   Enum['absent', 'present']      $ensure         = 'present',
-  Tea::Absolutepath              $configdir      = $elasticsearch::configdir,
+  Stdlib::Absolutepath           $configdir      = $elasticsearch::configdir,
   Variant[String, Array[String]] $instances      = [],
+  Array[String]                  $java_opts      = [],
+  Optional[Stdlib::Absolutepath] $java_home      = undef,
   Optional[String]               $module_dir     = undef,
   Optional[String]               $proxy_host     = undef,
   Optional[String]               $proxy_password = undef,
-  Optional[Tea::Port]            $proxy_port     = undef,
+  Optional[Integer[0, 65535]]    $proxy_port     = undef,
   Optional[String]               $proxy_username = undef,
   Optional[String]               $source         = undef,
-  Optional[Tea::HTTPUrl]         $url            = undef,
+  Optional[Stdlib::HTTPUrl]      $url            = undef,
 ) {
 
   include elasticsearch
@@ -127,6 +135,8 @@ define elasticsearch::plugin (
     ensure                     => $ensure,
     configdir                  => $configdir,
     elasticsearch_package_name => $elasticsearch::package_name,
+    java_opts                  => $java_opts,
+    java_home                  => $java_home,
     source                     => $file_source,
     url                        => $url,
     proxy                      => $_proxy,

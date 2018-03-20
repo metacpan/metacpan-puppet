@@ -14,10 +14,10 @@ describe 'clones with special characters' do
     shell("rm -rf #{tmpdir}/testrepo.git")
   end
 
-  context 'as a user with ssh' do
+  context 'when as a user with ssh' do
     before(:all) do
       # create user
-      pp = <<-EOS
+      pp = <<-MANIFEST
         group { 'testuser-ssh':
           ensure => present,
         }
@@ -26,7 +26,7 @@ describe 'clones with special characters' do
           groups     => 'testuser-ssh',
           managehome => true,
         }
-      EOS
+      MANIFEST
       apply_manifest(pp, catch_failures: true)
 
       # create ssh keys
@@ -40,14 +40,14 @@ describe 'clones with special characters' do
       shell("chown testuser-ssh:testuser-ssh #{tmpdir}")
     end
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/testrepo_user_ssh":
           ensure   => present,
           provider => git,
           source   => "git+ssh://testuser-ssh@localhost#{tmpdir}/testrepo.git",
           user     => 'testuser-ssh',
         }
-    EOS
+    MANIFEST
     it 'applies the manifest' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -55,12 +55,12 @@ describe 'clones with special characters' do
     end
 
     after(:all) do
-      pp = <<-EOS
+      pp = <<-MANIFEST
         user { 'testuser-ssh':
           ensure     => absent,
           managehome => true,
         }
-      EOS
+      MANIFEST
       apply_manifest(pp, catch_failures: true)
     end
   end

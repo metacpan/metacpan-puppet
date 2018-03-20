@@ -1,6 +1,6 @@
 {
   "name": "elastic-elasticsearch",
-  "version": "6.0.0",
+  "version": "6.2.2",
   "author": "elastic",
   "summary": "Module for managing and configuring Elasticsearch nodes",
   "license": "Apache-2.0",
@@ -10,8 +10,7 @@
   "dependencies": [
     {"name":"puppetlabs/apt","version_requirement":">= 2.0.0 < 5.0.0"},
     {"name":"richardc/datacat","version_requirement":">= 0.6.2 < 1.0.0"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.6.0 < 5.0.0"},
-    {"name":"puppet/tea","version_requirement":">= 0.2.0 < 1.0.0"}
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.13.0 < 5.0.0"}
   ],
   "data_provider": "hiera",
   "description": "Module for managing and configuring Elasticsearch nodes",

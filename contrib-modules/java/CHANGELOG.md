@@ -1,3 +1,38 @@
+## Supported Release [2.4.0]
+### Summary
+This release uses the PDK convert functionality which in return makes the module PDK compliant. Also includes a clean up from Rubocop.
+
+#### Changed
+- 1.3.2 PDK convert has been applied [MODULES-6456](https://tickets.puppetlabs.com/browse/MODULES-6456)
+- The modules has undergone a Rubocop cleanup.
+
+#### Fixed
+- $java_home for SLES 11.4 has been updated to the correct location.
+
+## Supported Release [2.3.0]
+### Summary
+This release is in order to implement Rubocop changes into the module.
+
+#### Added
+- Several Modulesync changes have been made.
+- Rubocop has been implemented in the module.
+- CentOS 7 is now supported.
+- Red Hat Enterprise Linux (RHEL) 7 is now supported.
+- Ubuntu artful 1710 now supported.
+- Bionic 1804 now supported.
+
+## Supported Release [2.2.0]
+### Summary
+This release is a maintenance release that includes a roll up of minor changes.
+
+#### Added
+- Addition of Ubuntu for Oracle Java.
+- Addition of Debian 9 in supported versions.
+- Addition of OpenBSD case and use `realpath` rather than `readlink` in Java Default Home Facter fact.
+
+#### Removed
+- Removal of OpenBSD as a special case and deprecated `with_env` in Java Version Facter Facter fact.
+
 ## Supported Release 2.1.1
 ### Summary
 This release is a maintenance release that includes a roll up of minor changes.
@@ -256,3 +291,6 @@ Jeff McCune <jeff@puppetlabs.com>
 ## 2011-05-24 - Version 0.0.1
 Jeff McCune <jeff@puppetlabs.com>
 * Initial release
+
+[2.3.0]:https://github.com/puppetlabs/puppetlabs-java/compare/2.2.0...2.3.0
+[2.2.0]:https://github.com/puppetlabs/puppetlabs-java/compare/2.1.1...2.2.0

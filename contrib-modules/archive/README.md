@@ -34,7 +34,7 @@ This module manages download, deployment, and cleanup of archive files.
 This module uses types and providers to download and manage compress files,
 with optional lifecycle functionality such as checksum, extraction, and
 cleanup. The benefits over existing modules such as
-[puppet-staging](https://github.com/voxpupoli/puppet-staging):
+[puppet-staging](https://github.com/voxpupuli/puppet-staging):
 
 * Implemented via types and provider instead of exec resource.
 * Follows 302 redirect and propagate download failure.
@@ -395,7 +395,7 @@ archive { '/tmp/staging/master.zip':
 * `password`: password to download source file.
 * `allow_insecure`: Ignore HTTPS certificate errors (true|false). (default: false)
 * `cookie`: archive file download cookie.
-* `checksum_type`: archive file checksum type (none|md5|sha1|sha2|sh256|sha384|
+* `checksum_type`: archive file checksum type (none|md5|sha1|sha2|sha256|sha384|
   sha512). (default: none)
 * `checksum`: archive file checksum (match checksum_type)
 * `checksum_url`: archive file checksum source (instead of specify checksum)

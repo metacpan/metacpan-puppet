@@ -171,7 +171,7 @@ Puppet::Type.newtype(:vcsrepo) do
         elsif is[-1] == '/'
           return true if is[0..-2] == should
         end
-      rescue
+      rescue StandardError
         return
       end
       false
@@ -275,7 +275,7 @@ Puppet::Type.newtype(:vcsrepo) do
 
   newparam :submodules, required_features: [:submodules] do
     desc 'Initialize and update each submodule in the repository.'
-    newvalues(:true, :false)
+    newvalues(true, false)
     defaultto true
   end
 
@@ -285,7 +285,7 @@ Puppet::Type.newtype(:vcsrepo) do
 
   newparam :trust_server_cert do
     desc 'Trust server certificate'
-    newvalues(:true, :false)
+    newvalues(true, false)
     defaultto :false
   end
 

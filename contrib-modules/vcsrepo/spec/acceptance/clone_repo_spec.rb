@@ -14,14 +14,14 @@ describe 'clones a remote repo' do
     shell("rm -rf #{tmpdir}/testrepo.git")
   end
 
-  context 'get the current master HEAD' do
-    pp = <<-EOS
+  context 'with get the current master HEAD' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -37,14 +37,14 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'using a https source on github' do
-    pp = <<-EOS
+  context 'with using a https source on github' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/httpstestrepo":
         ensure => present,
         provider => git,
         source => "https://github.com/puppetlabs/puppetlabs-vcsrepo.git",
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -60,7 +60,7 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'using a commit SHA' do
+  context 'with using a commit SHA' do
     let(:sha) do
       shell("git --git-dir=#{tmpdir}/testrepo.git rev-list HEAD | tail -1").stdout.chomp
     end
@@ -70,14 +70,14 @@ describe 'clones a remote repo' do
     end
 
     it 'clones a repo' do # rubocop:disable RSpec/ExampleLength : The assignment must be within the example for the test to pass.
-      pp = <<-EOS
+      pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_sha":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         revision => "#{sha}",
       }
-      EOS
+      MANIFEST
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)
@@ -92,15 +92,15 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'using a tag' do
-    pp = <<-EOS
+  context 'with using a tag' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_tag":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         revision => '0.0.2',
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -116,15 +116,15 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'using a branch name' do
-    pp = <<-EOS
+  context 'with using a branch name' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_branch":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         revision => 'a_branch',
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -140,15 +140,15 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'ensure latest with branch specified' do
-    pp = <<-EOS
+  context 'with ensure latest with branch specified' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_latest":
         ensure => latest,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         revision => 'a_branch',
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -162,14 +162,14 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'ensure latest with branch unspecified' do
-    pp = <<-EOS
+  context 'with ensure latest with branch unspecified' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_latest":
         ensure => latest,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -183,15 +183,15 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'with shallow clone' do
-    pp = <<-EOS
+  context 'with with shallow clone' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_shallow":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         depth => '1',
       }
-    EOS
+    MANIFEST
     it 'does a shallow clone' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -203,40 +203,40 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'path is not empty and not a repository' do
+  context 'with path is not empty and not a repository' do
     before(:all) do
       shell("mkdir #{tmpdir}/not_a_repo", acceptable_exit_codes: [0, 1])
       shell("touch #{tmpdir}/not_a_repo/file1.txt", acceptable_exit_codes: [0, 1])
     end
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/not_a_repo":
         ensure => present,
         provider => git
         source => "file://#{tmpdir}/testrepo.git",
       }
-    EOS
+    MANIFEST
     it 'raises an exception' do
       apply_manifest(pp, expect_failures: true)
     end
   end
 
-  context 'with an owner' do
-    pp = <<-EOS
+  context 'with with an owner' do
+    pp = <<-MANIFEST
     user { 'vagrant':
       ensure => present,
     }
-    EOS
+    MANIFEST
 
     apply_manifest(pp, catch_failures: true)
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_owner":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         owner => 'vagrant',
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -249,23 +249,23 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'with a group' do
-    pp = <<-EOS
+  context 'with with a group' do
+    pp = <<-MANIFEST
     group { 'vagrant':
       ensure => present,
     }
-    EOS
+    MANIFEST
 
     apply_manifest(pp, catch_failures: true)
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "/#{tmpdir}/testrepo_group":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         group => 'vagrant',
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -278,15 +278,15 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'with excludes' do
-    pp = <<-EOS
+  context 'with with excludes' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_excludes":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         excludes => ['exclude1.txt', 'exclude2.txt'],
       }
-    EOS
+    MANIFEST
     it 'clones a repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -306,20 +306,20 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'with force' do
+  context 'with with force' do
     before(:all) do
       shell("mkdir -p #{tmpdir}/testrepo_force/folder")
       shell("touch #{tmpdir}/testrepo_force/temp.txt")
     end
     it 'applies the manifest' do # rubocop:disable RSpec/ExampleLength : The assignment must be placed within the example for the test to pass
-      pp = <<-EOS
+      pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_force":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         force => true,
       }
-      EOS
+      MANIFEST
 
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -338,7 +338,7 @@ describe 'clones a remote repo' do
       it { is_expected.to be_directory }
     end
 
-    context 'and noop' do
+    context 'with and noop' do
       before(:all) do
         shell("mkdir #{tmpdir}/testrepo_already_exists")
         shell("cd #{tmpdir}/testrepo_already_exists && git init")
@@ -348,7 +348,7 @@ describe 'clones a remote repo' do
         shell("rm -rf #{tmpdir}/testrepo_already_exists")
       end
 
-      pp = <<-EOS
+      pp = <<-MANIFEST
         vcsrepo { "#{tmpdir}/testrepo_already_exists":
           ensure   => present,
           source   => "file://#{tmpdir}/testrepo.git",
@@ -356,17 +356,17 @@ describe 'clones a remote repo' do
           force    => true,
           noop     => true,
         }
-      EOS
+      MANIFEST
       it 'applies the manifest' do
         apply_manifest(pp, catch_changes: true)
       end
     end
   end
 
-  context 'as a user' do
+  context 'with as a user' do
     before(:all) do
       shell("chmod 707 #{tmpdir}")
-      pp = <<-EOS
+      pp = <<-MANIFEST
       group { 'testuser':
         ensure => present,
       }
@@ -374,19 +374,19 @@ describe 'clones a remote repo' do
         ensure => present,
         groups => 'testuser',
       }
-      EOS
+      MANIFEST
 
       apply_manifest(pp, catch_failures: true)
     end
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_user":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         user => 'testuser',
       }
-    EOS
+    MANIFEST
     it 'applies the manifest' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -409,15 +409,15 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'non-origin remote name' do
-    pp = <<-EOS
+  context 'with non-origin remote name' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_remote":
         ensure => present,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
         remote => 'testorigin',
       }
-    EOS
+    MANIFEST
     it 'applies the manifest' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -429,10 +429,10 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'as a user with ssh' do
+  context 'with as a user with ssh' do
     before(:all) do
       # create user
-      pp = <<-EOS
+      pp = <<-MANIFEST
       group { 'testuser-ssh':
         ensure => present,
       }
@@ -441,7 +441,7 @@ describe 'clones a remote repo' do
         groups => 'testuser-ssh',
         managehome => true,
       }
-      EOS
+      MANIFEST
       apply_manifest(pp, catch_failures: true)
 
       # create ssh keys
@@ -454,14 +454,14 @@ describe 'clones a remote repo' do
       shell('chown -R testuser-ssh:testuser-ssh /home/testuser-ssh/.ssh')
     end
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_user_ssh":
         ensure => present,
         provider => git,
         source => "testuser-ssh@localhost:#{tmpdir}/testrepo.git",
         user => 'testuser-ssh',
       }
-    EOS
+    MANIFEST
     it 'applies the manifest' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -469,25 +469,25 @@ describe 'clones a remote repo' do
     end
 
     after(:all) do
-      pp = <<-EOS
+      pp = <<-MANIFEST
       user { 'testuser-ssh':
         ensure => absent,
         managehome => true,
       }
-      EOS
+      MANIFEST
       apply_manifest(pp, catch_failures: true)
     end
   end
 
-  context 'using an identity file' do
+  context 'with using an identity file' do
     before(:all) do
       # create user
-      pp = <<-EOS
+      pp = <<-MANIFEST
       user { 'testuser-ssh':
         ensure => present,
         managehome => true,
       }
-      EOS
+      MANIFEST
       apply_manifest(pp, catch_failures: true)
 
       # create ssh keys
@@ -500,14 +500,14 @@ describe 'clones a remote repo' do
       shell('chown -R testuser-ssh:testuser-ssh /home/testuser-ssh/.ssh')
     end
 
-    pp = <<-EOS
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_user_ssh_id":
         ensure => present,
         provider => git,
         source => "testuser-ssh@localhost:#{tmpdir}/testrepo.git",
         identity => '/home/testuser-ssh/.ssh/id_rsa',
       }
-    EOS
+    MANIFEST
     it 'applies the manifest' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -515,14 +515,14 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'bare repo' do
-    pp = <<-EOS
+  context 'with bare repo' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_bare_repo":
         ensure => bare,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
       }
-    EOS
+    MANIFEST
     it 'creates a bare repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)
@@ -540,14 +540,14 @@ describe 'clones a remote repo' do
     end
   end
 
-  context 'mirror repo' do
-    pp = <<-EOS
+  context 'with mirror repo' do
+    pp = <<-MANIFEST
       vcsrepo { "#{tmpdir}/testrepo_mirror_repo":
         ensure => mirror,
         provider => git,
         source => "file://#{tmpdir}/testrepo.git",
       }
-    EOS
+    MANIFEST
     it 'creates a mirror repo' do
       # Run it twice and test for idempotency
       apply_manifest(pp, catch_failures: true)

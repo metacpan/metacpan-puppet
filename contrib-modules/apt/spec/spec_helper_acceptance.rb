@@ -27,7 +27,8 @@ def puppet_version
   (on default, puppet('--version')).output.chomp
 end
 
-def run_puppet_access_login(user:, password: '~!@#$%^*-/ aZ', lifetime: '5y')
+def run_puppet_access_login(user:, password:
+                            '~!@#$%^*-/ aZ', lifetime: '5y')
   on(master, puppet('access', 'login', '--username', user, '--lifetime', lifetime), stdin: password)
 end
 
@@ -69,19 +70,15 @@ def retry_on_error_matching(max_retry_count = 3, retry_wait_interval_secs = 5, e
   begin
     try += 1
     yield
-  rescue Exception => e
-    if try < max_retry_count && (error_matcher.nil? || e.message =~ error_matcher)
-      sleep retry_wait_interval_secs
-      retry
-    else
-      raise
-    end
+  rescue StandardError => e
+    raise unless try < max_retry_count && (error_matcher.nil? || e.message =~ error_matcher)
+    sleep retry_wait_interval_secs
+    retry
   end
 end
 
 RSpec.configure do |c|
-  # Project root
-  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
   # Readable test descriptions
   c.formatter = :documentation

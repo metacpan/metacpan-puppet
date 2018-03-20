@@ -17,7 +17,7 @@ hosts.each do |host|
     on(host, "cd #{tmpdir} && ./create_git_repo.sh")
   end
   step 'setup - start https server' do
-    https_daemon = <<-EOF
+    https_daemon = <<-MANIFEST
     require 'webrick'
     require 'webrick/https'
     server = WEBrick::HTTPServer.new(
@@ -30,7 +30,7 @@ hosts.each do |host|
     :SSLCertName        => [ [ "CN",WEBrick::Utils::getservername ] ])
     WEBrick::Daemon.start
     server.start
-    EOF
+    MANIFEST
     create_remote_file(host, '/tmp/https_daemon.rb', https_daemon)
     # on(host, "#{ruby} /tmp/https_daemon.rb")
   end
@@ -48,14 +48,14 @@ hosts.each do |host|
   end
 
   step 'checkout a revision with puppet' do
-    pp = <<-EOS
+    pp = <<-MANIFEST
     vcsrepo { "#{tmpdir}/#{repo_name}":
       ensure => present,
       source => "https://github.com/johnduarte/testrepo.git",
       provider => git,
       revision => '#{@sha}',
     }
-    EOS
+    MANIFEST
 
     apply_manifest_on(host, pp, catch_failures: true)
     apply_manifest_on(host, pp, catch_changes: true)
