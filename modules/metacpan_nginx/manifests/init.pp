@@ -9,7 +9,6 @@ class metacpan_nginx {
         }->
         package { "nginx":
           ensure => present,
-          ensure => present,
         }
 
         file { "/etc/nginx/conf.d":
