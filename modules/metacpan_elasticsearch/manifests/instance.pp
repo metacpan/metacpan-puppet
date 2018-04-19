@@ -1,11 +1,11 @@
 class metacpan_elasticsearch::instance(
+  $env = hiera('metacpan::elasticsearch::env','production'),
   $version = hiera('metacpan::elasticsearch::version'),
   $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', true),
   $ensure = hiera('metacpan::elasticsearch::ensure', 'present'),
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
-  $env = hiera('metacpan::elasticsearch::env','production'),
   $cluster_name = hiera('metacpan::elasticsearch::cluster_name','bm'),
   $number_of_shards     = hiera('metacpan::elasticsearch::shards',1),
   $number_of_replicas   = hiera('metacpan::elasticsearch::replicas',2),
