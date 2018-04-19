@@ -1,19 +1,5 @@
 ---
 
-metacpan::elasticsearch::cluster_name: 'stage'
-metacpan::elasticsearch::master_nodes: 1
-metacpan::elasticsearch::expected_nodes: 1
-metacpan::elasticsearch::replicas: 0
-metacpan::elasticsearch::recover_after_nodes: 1
-metacpan::elasticsearch::cluster_hosts:
-  - 5.153.225.20 # bm-mc-02
-
-metacpan::web::starman:
-  metacpan-web:
-    git_revision: 'stage'
-  metacpan-api:
-    git_revision: 'stage'
-
 metacpan::users:
     toddr:
         fullname : "Todd <toddr@cpan.org>"
