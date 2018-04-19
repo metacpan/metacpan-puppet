@@ -60,7 +60,7 @@ class metacpan::system::packages {
     package{ build-essential: ensure => present }
 
     # For accessing postgress from psql
-    package{ 'postgresql-client-9.1': ensure => present }
+    package{ 'postgresql-client-9.6': ensure => present }
     Package{ provider => apt }
 
     # Install a few utilities through node/npm.
