@@ -71,3 +71,11 @@ metacpan::crons::api:
       ensure : present
     external_fedora:
       ensure : present
+    contributor_daily:
+      ensure : present
+    contributor_weekly:
+      ensure : present
+    favorite_hourly:
+      ensure : present
+    favorite_weekly:
+      ensure : present
