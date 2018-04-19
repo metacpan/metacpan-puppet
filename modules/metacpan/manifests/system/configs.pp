@@ -14,7 +14,8 @@ class metacpan::system::configs {
     }
 
     # So many servers, so much noise! - turn it off
-    package { apticron: ensure => absent }->
+    package { "apticron": ensure => absent }
+
     file { "/etc/apticron/apticron.conf":
             source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
     }
