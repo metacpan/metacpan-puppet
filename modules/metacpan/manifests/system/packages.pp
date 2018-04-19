@@ -59,10 +59,6 @@ class metacpan::system::packages {
 
     package{ build-essential: ensure => present }
 
-    # Helped get Elasticsearch running
-    # https://ask.puppetlabs.com/question/2147/could-not-find-a-suitable-provider-for-augeas/
-    package{ libaugeas-ruby: ensure => present }
-
     # For accessing postgress from psql
     package{ 'postgresql-client-9.1': ensure => present }
     Package{ provider => apt }
