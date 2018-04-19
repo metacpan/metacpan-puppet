@@ -1,4 +1,4 @@
-define nginx::vhost(
+define metacpan_nginx::vhost(
         $html = "",
         $ssl_only = false,
         $ssl = $ssl_only,
@@ -7,7 +7,7 @@ define nginx::vhost(
 	    $aliases,
         $allowed = hiera('nginx::allowed', []),
 ) {
-        include nginx
+        include metacpan_nginx
 
         $log_dir = "/var/log/nginx/${name}"
         $ssl_dir = "/etc/nginx/ssl_certs/${name}"
@@ -18,7 +18,7 @@ define nginx::vhost(
         }->
         file { "/etc/nginx/conf.d/$name.conf":
                 ensure => file,
-                content => template("nginx/vhost.conf.erb"),
+                content => template("metacpan_nginx/vhost.conf.erb"),
                 notify => Service["nginx"],
         }
         @file { "/etc/nginx/conf.d/$name.d":

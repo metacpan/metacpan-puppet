@@ -5,7 +5,7 @@ define metacpan::web::nginx_extra_confs (
 ) {
         $config_dir = "/etc/nginx/conf.d/${site}.d"
 
-        include nginx
+        include metacpan_nginx
         realize File[$config_dir]
 
         file { "${config_dir}/${template}.conf":

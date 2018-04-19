@@ -42,7 +42,7 @@ define metacpan::web::static (
     }
   }
 
-  nginx::vhost { $name:
+  metacpan_nginx::vhost { $name:
     html      => $vhost_html,
     ssl       => $vhost_ssl,
     ssl_only  => $vhost_ssl_only,

@@ -4,7 +4,7 @@
 
 PUPPET="puppet module install --force --modulepath /etc/puppet/contrib-modules"
 
-declare -a arr=("apt" "concat" "firewall" "java" "nginx" "nodejs" "postgresql" "stdlib" "vcsrepo")
+declare -a arr=("apt" "concat" "firewall" "java" "nodejs" "postgresql" "stdlib" "vcsrepo")
 
 for m in "${arr[@]}"
     do

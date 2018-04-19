@@ -1,4 +1,4 @@
-class nginx {
+class metacpan_nginx {
 
         $backport_nginx = '1.6.2-5+deb8u2~bpo70+1'
 
@@ -10,7 +10,7 @@ class nginx {
           ensure => $backport_nginx,
         }->
         package { "nginx":
-          ensure => $backport_nginx,
+          ensure => present,
         }
 
         file { "/etc/nginx/conf.d":
@@ -27,28 +27,28 @@ class nginx {
 
         file { "/etc/nginx/nginx.conf":
                 ensure => file,
-                content => template("nginx/nginx.conf.erb"),
+                content => template("metacpan_nginx/nginx.conf.erb"),
                 notify => Service["nginx"],
         }->
 
         file { "/etc/nginx/conf.d/basics.conf":
-                source => "puppet:///modules/nginx/basics.conf",
+                source => "puppet:///modules/metacpan_nginx/basics.conf",
                 ensure => file,
         }->
 
         file { "/etc/logrotate.d/nginx":
-                source => "puppet:///modules/nginx/logrotate.conf",
+                source => "puppet:///modules/metacpan_nginx/logrotate.conf",
                 ensure => file,
         }->
 
         file { "/etc/nginx/conf.d/types.conf":
-                source => "puppet:///modules/nginx/types.conf",
+                source => "puppet:///modules/metacpan_nginx/types.conf",
                 ensure => file,
         }->
 
         file { "/etc/nginx/conf.d/status.conf":
                 ensure => file,
-                source => "puppet:///modules/nginx/status.conf",
+                source => "puppet:///modules/metacpan_nginx/status.conf",
         }->
 
         file { "/var/log/nginx":
