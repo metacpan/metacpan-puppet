@@ -124,9 +124,9 @@ To change the ownership of all objects within a database using REASSIGN OWNED:
 
 ```puppet
 postgresql::server::reassign_owned_by { 'new owner is meerkat':
-  db        => 'test_db',
-  old_owner => 'marmot',
-  new_owner => 'meerkat',
+  db       => 'test_db',
+  old_role => 'marmot',
+  new_role => 'meerkat',
 }
 ```
 
@@ -1152,6 +1152,16 @@ Default value: 'template0'.
 
 Manages grant-based access privileges for users, wrapping the `postgresql::server::database_grant` for database specific permissions. Consult the [PostgreSQL documentation for `grant`](http://www.postgresql.org/docs/current/static/sql-grant.html) for more information.
 
+##### `ensure`
+
+Specifies whether to grant or revoke the privilege. Revoke or 'absent' works only in PostgreSQL version 9.1.24 or later.
+
+Valid values: 'present', 'absent'.
+* 'present' to grant the privilege
+* 'absent' to revoke the privilege
+
+Default value: 'present'.
+
 #### `connect_settings`
 
 Specifies a hash of environment variables used when connecting to a remote server.
@@ -1236,6 +1246,16 @@ By default, the package specified with `package_name` is installed when the exte
 #### postgresql::server::grant
 
 Manages grant-based access privileges for roles. See [PostgreSQL documentation for `grant`](http://www.postgresql.org/docs/current/static/sql-grant.html) for more information.
+
+##### `ensure`
+
+Specifies whether to grant or revoke the privilege. Default is to grant the privilege.
+
+Valid values: 'present', 'absent'.
+* 'present' to grant the privilege
+* 'absent' to revoke the privilege
+
+Default value: 'present'.
 
 ##### `db`
 
@@ -1493,7 +1513,6 @@ Provides the target for the rule, and is generally an internal only property.
 **Use with caution.**
 
 #### postgresql::server::role
-
 Creates or drops a role or user in PostgreSQL.
 
 ##### `ensure`
@@ -1594,6 +1613,16 @@ Default value: the namevar.
 #### postgresql::server::table_grant
 
 Manages grant-based access privileges for users. Consult the PostgreSQL documentation for `grant` for more information.
+
+##### `ensure`
+
+Specifies whether to grant or revoke the privilege. Default is to grant the privilege.
+
+Valid values: 'present', 'absent'.
+* 'present' to grant the privilege
+* 'absent' to revoke the privilege
+
+Default value: 'present'.
 
 ##### `connect_settings`
 
@@ -1849,7 +1878,8 @@ This internal function converts a list of `pg_hba.conf` based ACLs (passed in as
 
 ### Tasks
 
-The postgresql module `sql` example task executes arbitary SQL against a database. Please refer to to the [PE documentation](https://puppet.com/docs/pe/2017.3/orchestrator/running_tasks.html) or [Bolt documentation](https://puppet.com/docs/bolt/latest/bolt.html) on how to execute a task.
+The Postgresql module has an example task that allows a user to execute arbitary SQL against a database. Please refer to to the [PE documentation](https://puppet.com/docs/pe/2017.3/orchestrator/running_tasks.html) or [Bolt documentation](https://puppet.com/docs/bolt/latest/bolt.html) on how to execute a task.
+
 
 ## Limitations
 
@@ -1865,7 +1895,8 @@ Other systems might be compatible, but are not being actively tested.
 
 ### Apt module support
 
-While this module supports both 1.x and 2.x versions of the `puppetlabs-apt` module, it does not support `puppetlabs-apt` 2.0.0 or 2.0.1.
+While this module supports both 1.x and 2.x versions of the 'puppetlabs-apt' module, it does not support 'puppetlabs-apt' 2.0.0 or 2.0.1.
+
 
 ### PostGIS support
 

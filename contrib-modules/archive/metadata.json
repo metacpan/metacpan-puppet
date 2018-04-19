@@ -1,6 +1,6 @@
 {
   "name": "puppet-archive",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "author": "Vox Pupuli",
   "summary": "Compressed archive file download and extraction with native types/providers for Windows and Unix",
   "license": "Apache-2.0",
@@ -89,6 +89,7 @@
         "Server 2008 R2",
         "Server 2012",
         "Server 2012 R2",
+        "2016",
         "7",
         "8"
       ]
@@ -105,7 +106,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">=4.7.1 <6.0.0"
+      "version_requirement": ">=4.10.0 <6.0.0"
     }
   ],
   "description": "The archive module provides native puppet resources for managing compressed file download and extraction with optional checksum verification and cleanup."

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.2.1](https://github.com/voxpupuli/puppet-logrotate/tree/v3.2.1) (2018-03-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-logrotate/compare/v3.2.0...v3.2.1)
+
+**Merged pull requests:**
+
+- bump puppet to latest supported version 4.10.0 [\#107](https://github.com/voxpupuli/puppet-logrotate/pull/107) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v3.2.0](https://github.com/voxpupuli/puppet-logrotate/tree/v3.2.0) (2018-01-04)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-logrotate/compare/v3.1.0...v3.2.0)
@@ -11,6 +19,7 @@ These should not affect the functionality of the module.
 **Implemented enhancements:**
 
 - Deprecation warnings from newer stdlib [\#54](https://github.com/voxpupuli/puppet-logrotate/issues/54)
+- Add option to not manage logrotate package [\#44](https://github.com/voxpupuli/puppet-logrotate/issues/44)
 - Add manage\_package parameter [\#97](https://github.com/voxpupuli/puppet-logrotate/pull/97) ([juniorsysadmin](https://github.com/juniorsysadmin))
 - Make the creation of default \[bw\]tmp-rulesets configurable [\#65](https://github.com/voxpupuli/puppet-logrotate/pull/65) ([mcgege](https://github.com/mcgege))
 - Add purge\_configdir to purge old configs [\#23](https://github.com/voxpupuli/puppet-logrotate/pull/23) ([patricktoelle](https://github.com/patricktoelle))
@@ -31,14 +40,12 @@ These should not affect the functionality of the module.
 **Closed issues:**
 
 - parameter 'path' references an unresolved type 'Stdlib::UnixPath' [\#95](https://github.com/voxpupuli/puppet-logrotate/issues/95)
-- Add option to not manage logrotate package [\#44](https://github.com/voxpupuli/puppet-logrotate/issues/44)
 - logrotate::rule adds blank su to wtmp and btmp [\#41](https://github.com/voxpupuli/puppet-logrotate/issues/41)
 - Add tests for all OSes for defaults.pp [\#3](https://github.com/voxpupuli/puppet-logrotate/issues/3)
 
 **Merged pull requests:**
 
 - Remove obsolete su parameter in documentation [\#91](https://github.com/voxpupuli/puppet-logrotate/pull/91) ([stefanandres](https://github.com/stefanandres))
-- release 3.1.0 [\#87](https://github.com/voxpupuli/puppet-logrotate/pull/87) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v3.1.0](https://github.com/voxpupuli/puppet-logrotate/tree/v3.1.0) (2017-11-13)
 
@@ -68,7 +75,6 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- release 3.0.1 [\#79](https://github.com/voxpupuli/puppet-logrotate/pull/79) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v3.0.0](https://github.com/voxpupuli/puppet-logrotate/tree/v3.0.0) (2017-10-10)
 
@@ -80,11 +86,9 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
-- release 3.0.0 [\#75](https://github.com/voxpupuli/puppet-logrotate/pull/75) ([bastelfreak](https://github.com/bastelfreak))
 - Fix changelog [\#73](https://github.com/voxpupuli/puppet-logrotate/pull/73) ([alexjfisher](https://github.com/alexjfisher))
 - Added support for dateyesterday within logrotate::rule [\#71](https://github.com/voxpupuli/puppet-logrotate/pull/71) ([cliff-wakefield](https://github.com/cliff-wakefield))
 - BREAKING: Introduce Puppet 4 datatypes and drop Puppet 3 support [\#68](https://github.com/voxpupuli/puppet-logrotate/pull/68) ([mmerfort](https://github.com/mmerfort))
-- release 2.0.0 [\#64](https://github.com/voxpupuli/puppet-logrotate/pull/64) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v2.0.0](https://github.com/voxpupuli/puppet-logrotate/tree/v2.0.0) (2017-05-25)
 

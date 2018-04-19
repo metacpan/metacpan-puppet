@@ -10,7 +10,7 @@ This module provides helpful definitions for dealing with *yum*.
 
 Module has been tested on:
 
-* Puppet 4.6.1 and newer
+* Puppet 4.10.9 and newer
 * CentOS 6, 7
 * Amazon Linux 2017
 * RHEL 7

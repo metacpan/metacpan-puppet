@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v2.2.1](https://github.com/voxpupuli/puppet-yum/tree/v2.2.1) (2018-03-28)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-yum/compare/v2.2.0...v2.2.1)
+
+**Fixed bugs:**
+
+- Hiera 5 warning on puppet 5.3.2 [\#77](https://github.com/voxpupuli/puppet-yum/issues/77)
+
+**Closed issues:**
+
+- Unable to exclude multiple packages in yum.conf [\#80](https://github.com/voxpupuli/puppet-yum/issues/80)
+
+**Merged pull requests:**
+
+- update required Puppet version in the documentation [\#88](https://github.com/voxpupuli/puppet-yum/pull/88) ([joekohlsdorf](https://github.com/joekohlsdorf))
+- migrate Hiera 4 to Hiera 5 [\#87](https://github.com/voxpupuli/puppet-yum/pull/87) ([joekohlsdorf](https://github.com/joekohlsdorf))
+
 ## [v2.2.0](https://github.com/voxpupuli/puppet-yum/tree/v2.2.0) (2018-01-04)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-yum/compare/v2.1.0...v2.2.0)
@@ -24,7 +41,6 @@ These should not affect the functionality of the module.
 - Fix documentation instructions for mirrorlist [\#83](https://github.com/voxpupuli/puppet-yum/pull/83) ([jorhett](https://github.com/jorhett))
 - Run beaker tests on all supported & available docker sets [\#79](https://github.com/voxpupuli/puppet-yum/pull/79) ([ekohl](https://github.com/ekohl))
 - Add RHEL repos and update README. [\#75](https://github.com/voxpupuli/puppet-yum/pull/75) ([pillarsdotnet](https://github.com/pillarsdotnet))
-- release 2.1.0 [\#74](https://github.com/voxpupuli/puppet-yum/pull/74) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [v2.1.0](https://github.com/voxpupuli/puppet-yum/tree/v2.1.0) (2017-11-02)
 
@@ -72,7 +88,6 @@ These should not affect the functionality of the module.
 
 - Contain the versionlock subclass to help with ordering around package resources [\#65](https://github.com/voxpupuli/puppet-yum/pull/65) ([bovy89](https://github.com/bovy89))
 - Support `ensure =\> absent` with yum::versionlock [\#62](https://github.com/voxpupuli/puppet-yum/pull/62) ([bovy89](https://github.com/bovy89))
-- Prepare release 2.0.0 [\#52](https://github.com/voxpupuli/puppet-yum/pull/52) ([traylenator](https://github.com/traylenator))
 
 ## [v2.0.0](https://github.com/voxpupuli/puppet-yum/tree/v2.0.0) (2017-06-14)
 

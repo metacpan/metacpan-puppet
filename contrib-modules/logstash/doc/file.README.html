@@ -263,6 +263,9 @@ Java runtime. The settings files can be configured with class parameters.</p>
 <code>path.config</code> setting from <code>logstash.yml</code>, since this is incompatible with
 <code>pipelines.yml</code>.</p>
 
+<p>Enabling centralized pipeline management with <code>xpack.management.enabled</code> will
+also remove the default <code>path.config</code>.</p>
+
 <h3>Pipeline Configuration</h3>
 
 <p>Pipeline configuration files can be declared with the <code>logstash::configfile</code>

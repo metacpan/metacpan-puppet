@@ -155,7 +155,8 @@
 46
 47
 48
-49</pre>
+49
+50</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 8</span>
@@ -184,6 +185,7 @@ class logstash::config {
       purge   =&gt; $logstash::purge_config,
       recurse =&gt; $logstash::purge_config,
       mode    =&gt; &#39;0775&#39;,
+      notify  =&gt; Service[&#39;logstash&#39;],
     }
 
     file {     &quot;${logstash::config_dir}/patterns&quot;:
