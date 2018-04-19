@@ -4,7 +4,7 @@ class metacpan_elasticsearch::firewall(
 
   if($env == 'dev') {
 
-    firewall{ "300 Elasticsearch private transport for ${source} - ${name} (${module})":
+    firewall{ "300 Elasticsearch private transport":
       ensure  => present,
       port    => [ 9200, 9300, 9900 ],
       proto   => tcp,
