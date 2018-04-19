@@ -31,11 +31,12 @@ class metacpan_elasticsearch::instance(
           source => "puppet:///modules/metacpan_elasticsearch/etc/security/elasticsearch";
   }
 
+  include ::java
+
   # Install ES, but don't run
   class { 'elasticsearch':
 
     package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${$version}.deb",
-    java_install => true,
     autoupgrade => $autoupgrade,
     ensure => $ensure,
     # Defaults can be in here...
