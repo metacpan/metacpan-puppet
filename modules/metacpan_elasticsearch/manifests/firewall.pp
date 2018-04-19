@@ -6,7 +6,7 @@ class metacpan_elasticsearch::firewall(
 
     firewall{ "300 Elasticsearch private transport":
       ensure  => present,
-      port    => [ 9200, 9300, 9900 ],
+      sport   => [ 9200, 9300, 9900 ],
       proto   => tcp,
       action  => 'accept',
       source  => "0.0.0.0/0",  # Anyone
