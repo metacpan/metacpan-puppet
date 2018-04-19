@@ -36,4 +36,7 @@ else
     exit
 fi
 
+# Stop complaints on vagrant
+mkdir -p private
+
 puppet apply --modulepath /etc/puppet/contrib-modules:/etc/puppet/modules --show_diff --certname=$CERTNAME manifests/site.pp $@
