@@ -28,9 +28,6 @@ class metacpan::system::packages {
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
 
-    # get version from https://packages.debian.org/wheezy-backports/tmux
-    package { tmux:  ensure => '1.9-6~bpo70+1' } # from backports
-
     package { ack-grep: ensure => present }
     package { less: ensure => present }
     package { mosh: ensure => present }
@@ -40,6 +37,7 @@ class metacpan::system::packages {
     package { sqlite3: ensure => present }
     package { sudo: ensure => present }
     package { sysstat: ensure => present }
+    package { tmux:  ensure => present }
     package { tree: ensure => present }
     package { whois: ensure => present }
 
