@@ -13,13 +13,6 @@ class metacpan::system::configs {
             mode    => '0644',
     }
 
-    # So many servers, so much noise! - turn it off
-    package { "apticron": ensure => absent }
-
-    file { "/etc/apticron/apticron.conf":
-            source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
-    }
-
     # Turn on sysstat
     line { "replace":
         file => "/etc/default/sysstat",
