@@ -71,7 +71,7 @@ define starman::service (
           copytruncate => true,
           missingok    => true,
           rotate_every => 'day',
-          rotate       => '7',
+          rotate       => 7,
           compress     => true,
           ifempty      => true,
         }
