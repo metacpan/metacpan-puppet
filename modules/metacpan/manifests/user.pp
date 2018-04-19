@@ -90,7 +90,6 @@ define metacpan::user(
               mode  => '0600',
               source => [
                       "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
-                      "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
                       "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
                       ],
           }
