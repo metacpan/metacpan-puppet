@@ -1,15 +1,14 @@
 class metacpan_nginx {
 
-        $backport_nginx = '1.6.2-5+deb8u2~bpo70+1'
-
         # Hard code versions
         package { "nginx-common":
-          ensure => $backport_nginx,
+          ensure => present,
         }->
         package { "nginx-full":
-          ensure => $backport_nginx,
+          ensure => present,
         }->
         package { "nginx":
+          ensure => present,
           ensure => present,
         }
 
