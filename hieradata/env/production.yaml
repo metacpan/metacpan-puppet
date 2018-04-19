@@ -56,23 +56,10 @@ metacpan::users:
         admin    : true
         fullname : "Leo Lapworth <leo@cuckoo.org>"
         no_passwd_sudo : true
-    clinton:
-        ensure   : absent
-        admin    : true
-        fullname : "Clinton Gormley <clint@traveljury.com>"
-    mo:
-        ensure   : absent
-        admin    : true
-        fullname : "Moritz Onken <onken@netcubed.de>"
     olaf:
         admin    : true
         fullname : "Olaf Alders <olaf.alders@gmail.com>"
         no_passwd_sudo : true
-    rafl:
-        ensure   : absent
-        admin    : true
-        fullname : "Florian Ragwitz <rafl@perldition.org>"
-        shell    : /bin/zsh
     rwstauner:
         admin    : true
         fullname : 'Randy Stauner <rwstauner@cpan.org>'
