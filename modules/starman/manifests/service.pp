@@ -78,7 +78,6 @@ define starman::service (
 
     }
 
-
     file { $init:
         ensure  => file,
         mode    => '0755',
