@@ -1,28 +1,25 @@
 require 'puppet/provider/package'
 
+# Extracted from: https://github.com/puppetlabs/puppetlabs-nodejs
+# Improved to ensure 'npm' is installed before to install packages.
 Puppet::Type.type(:package).provide :npm, :parent => Puppet::Provider::Package do
-  desc "npm is the package manager for Node.js. This provider only handles global packages."
+  desc "npm is a package management for node.js. This provider only handles global packages."
 
   has_feature :versionable
 
-  if Puppet::Util::Package.versioncmp(Puppet.version, '3.0') >= 0
-    has_command(:npm, 'npm') do
-      is_optional
-      environment :HOME => "/root"
-    end
-  else
-    optional_commands :npm => 'npm'
+  has_command(:npm, 'npm') do
+    is_optional
+    environment :HOME => "/root"
   end
 
   def self.npmlist
-    # Ignore non-zero exit codes as they can be minor, just try and parse JSON
-    output = execute([command(:npm), 'list', '--json', '--global'], {:combine => false})
-    Puppet.debug("Warning: npm list --json exited with code #{$CHILD_STATUS.exitstatus}") unless $CHILD_STATUS.success?
     begin
+      output = execute([command(:npm), 'list', '--json', '--global'], {:combine => false})
       # ignore any npm output lines to be a bit more robust
-      output = PSON.parse(output.lines.select{ |l| l =~ /^((?!^npm).*)$/}.join("\n"), {:max_nesting => 100} )
+      # set max_nesting to 100 so parsing will not fail if we have module with big dependencies tree
+      output = PSON.parse(output.lines.select{ |l| l =~ /^((?!^npm).*)$/}.join("\n"), {:max_nesting => 100})
       @npmlist = output['dependencies'] || {}
-    rescue PSON::ParserError => e
+    rescue Exception => e
       Puppet.debug("Error: npm list --json command error #{e.message}")
       @npmlist = {}
     end

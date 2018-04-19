@@ -4,7 +4,7 @@
 
 PUPPET="puppet module install --force --modulepath /etc/puppet/contrib-modules"
 
-declare -a arr=("apt" "concat" "firewall" "java" "nodejs" "postgresql" "stdlib" "vcsrepo")
+declare -a arr=("apt" "concat" "firewall" "java" "postgresql" "stdlib" "vcsrepo")
 
 for m in "${arr[@]}"
     do
@@ -23,3 +23,4 @@ $PUPPET saz-rsyslog
 $PUPPET bashtoni-timezone
 $PUPPET puppet-logrotate
 $PUPPET puppet-yum
+$PUPPET willdurand/nodejs

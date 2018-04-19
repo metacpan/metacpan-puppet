@@ -1,57 +1,92 @@
-# == Class: nodejs: See README.md for documentation.
+# = Class: nodejs
+#
+# == Parameters:
+#
+# [*version*]
+#   The NodeJS version ('vX.Y.Z', 'latest', 'lts' or 'v6.x' (latest release from the NodeJS 6 branch)).
+#
+# [*target_dir*]
+#   Where to install the executables.
+#
+# [*make_install*]
+#   If false, will install from nodejs.org binary distributions.
+#
+# [*node_path*]
+#   Value of the system environment variable (default: "/usr/local/node/node-default/lib/node_modules").
+#
+# [*cpu_cores*]
+#   Number of CPU cores to use for compiling nodejs. Will be used for parallel 'make' jobs.
+#
+# [*instances*]
+#   List of instances to install.
+#
+# [*instances_to_remove*]
+#   Instances to be removed.
+#
+# [*download_timeout*]
+#   Maximum download timeout.
+#
+# [*build_deps*]
+#   Optional parameter whether or not to allow the module to installs its dependant packages.
+#
+# == Example:
+#
+#  include nodejs
+#
+#  class { 'nodejs':
+#    version  => 'v0.10.17'
+#  }
+#
 class nodejs(
-  $cmd_exe_path                = $nodejs::params::cmd_exe_path,
-  $legacy_debian_symlinks      = $nodejs::params::legacy_debian_symlinks,
-  $manage_package_repo         = $nodejs::params::manage_package_repo,
-  $nodejs_debug_package_ensure = $nodejs::params::nodejs_debug_package_ensure,
-  $nodejs_debug_package_name   = $nodejs::params::nodejs_debug_package_name,
-  $nodejs_dev_package_ensure   = $nodejs::params::nodejs_dev_package_ensure,
-  $nodejs_dev_package_name     = $nodejs::params::nodejs_dev_package_name,
-  $nodejs_package_ensure       = $nodejs::params::nodejs_package_ensure,
-  $nodejs_package_name         = $nodejs::params::nodejs_package_name,
-  $npm_package_ensure          = $nodejs::params::npm_package_ensure,
-  $npm_package_name            = $nodejs::params::npm_package_name,
-  $npm_path                    = $nodejs::params::npm_path,
-  $repo_class                  = $nodejs::params::repo_class,
-  $repo_enable_src             = $nodejs::params::repo_enable_src,
-  $repo_ensure                 = $nodejs::params::repo_ensure,
-  $repo_pin                    = $nodejs::params::repo_pin,
-  $repo_priority               = $nodejs::params::repo_priority,
-  $repo_proxy                  = $nodejs::params::repo_proxy,
-  $repo_proxy_password         = $nodejs::params::repo_proxy_password,
-  $repo_proxy_username         = $nodejs::params::repo_proxy_username,
-  $repo_url_suffix             = $nodejs::params::repo_url_suffix,
-  $use_flags                   = $nodejs::params::use_flags,
-) inherits nodejs::params {
+  $version             = $::nodejs::params::version,
+  $target_dir          = $::nodejs::params::target_dir,
+  $make_install        = $::nodejs::params::make_install,
+  $node_path           = $::nodejs::params::node_path,
+  $cpu_cores           = $::nodejs::params::cpu_cores,
+  $instances           = $::nodejs::params::instances,
+  $instances_to_remove = $::nodejs::params::instances_to_remove,
+  $download_timeout    = $::nodejs::params::download_timeout,
+  $build_deps          = $::nodejs::params::build_deps,
+) inherits ::nodejs::params  {
+  validate_string($node_path)
+  validate_integer($cpu_cores)
+  validate_string($version)
+  validate_string($target_dir)
+  validate_bool($make_install)
+  validate_hash($instances)
+  validate_array($instances_to_remove)
+  validate_integer($download_timeout)
+  validate_bool($build_deps)
 
-  validate_bool($legacy_debian_symlinks)
-  validate_bool($manage_package_repo)
+  $node_version        = evaluate_version($version)
+  $nodejs_default_path = '/usr/local/node/node-default'
 
-  if $manage_package_repo and !$repo_class {
-    fail("${module_name}: The manage_package_repo parameter was set to true but no repo_class was provided.")
+  if $build_deps {
+    Anchor['nodejs::start'] ->
+    class { '::nodejs::instance::pkgs':
+      make_install => $make_install,
+    } ->
+    Class['::nodejs::instances']
   }
-
-  if $nodejs_debug_package_name {
-    validate_string($nodejs_debug_package_name)
-  }
-
-  if $nodejs_dev_package_name {
-    validate_string($nodejs_dev_package_name)
-  }
-
-  if $npm_package_name {
-    validate_string($npm_package_name)
-  }
-
-  validate_array($use_flags)
-
-  include '::nodejs::install'
-
-  if $manage_package_repo {
-    include $repo_class
-    anchor { '::nodejs::begin': } ->
-    Class[$repo_class] ->
-    Class['::nodejs::install'] ->
-    anchor { '::nodejs::end': }
-  }
+  anchor { 'nodejs::start': } ->
+    class { '::nodejs::instances':
+      instances           => $instances,
+      node_version        => $node_version,
+      target_dir          => $target_dir,
+      make_install        => $make_install,
+      cpu_cores           => $cpu_cores,
+      instances_to_remove => $instances_to_remove,
+      nodejs_default_path => $nodejs_default_path,
+      download_timeout    => $download_timeout,
+    } ->
+    # TODO remove!
+    file { '/etc/profile.d/nodejs.sh':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template("${module_name}/nodejs.sh.erb"),
+      require => File[$nodejs_default_path],
+    } ->
+  anchor { 'nodejs::end': }
 }

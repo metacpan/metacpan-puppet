@@ -1,156 +1,59 @@
-## 2016-07-05
+# 2.0.0
 
-##2015-05-12 0.8.0
+## Version/Requirement changes
 
-Deprecation upload in favour of Vox Pupuli
+- dropped support for Node.js versions until `v0.12.0`
+- dropped support for all Puppet versions below `v3.4`
+- dropped support for all ruby versions below `v2.1`
 
-This module has been moved to the care of [Vox Pupuli](https://voxpupuli.org),
-where it is now being maintained and updated. Find new versions at
-https://forge.puppet.com/puppet/nodejs.
+## Code changes
 
-##2015-05-12 0.8.0
-###Backwards-incompatible changes
-- Puppet versions below 3.4.0 are no longer supported
-- Debian Squeeze and Fedora version 18 and below are explicitly no longer
-  supported
-- Parameter naming changes to node_pkg, npm_pkg, dev_pkg, manage_repo,
-  dev_pkg to approximate equivalents: nodejs_package_name, npm_package_name,
-  nodejs_dev_package_name, manage_package_repo, nodejs_dev_package_ensure
-- RedHat-family operating systems now use the NodeSource repository by default
-  rather than the Fedora People repositories
-- Debian Wheezy now uses the NodeSource repository by default rather than the
-  Debian Sid repository
-- The proxy parameter has been removed. Equivalent functionality can be
-  obtained by using the nodejs::npm::global_config_entry defined type
-- The version parameter has been removed. The approximate equivalent is
-  nodejs_package_ensure (or nodejs_dev_package_ensure)
-- The nodejs::npm defined type title is now an arbitary unique string rather
-  than 'destination_dir:package'. The same functionality is now done with
-  the target and package parameters.
-- The nodejs::npm version parameter has been removed. The same functionality
-  can now be performed with the ensure parameter
-- Parameter naming changes to install_opt, remove_opt in nodejs::npm to
-  approximate equivalents install_options and uninstall_options. Both must
-  now be an array of strings and not strings.
+### Minor changes
 
-###Summary
+- removed the `::nodejs_latest_version` and `::nodejs_stable_version` fact and replaced them with a puppet function to avoid evaluations on each node
 
-This release performs major API changes and defaults to using the NodeSource
-repository where possible.
+- removed `with_npm` parameter (only used for Node.js 0.6 and below)
 
-####Features
-- Defaults to using the NodeSource repositories where possible, but allows
-  native packages to be installed when appropriate parameters are set
-- Introduces a parameter repo_class, which allows one to use alternative
-  repositories like EPEL for the Node.js packages
-- Adds Windows installation support via Chocolatey
-- Adds FreeBSD and OpenBSD installation support
-- Adds tag and scope support to the defined type nodejs::npm
-- Adds a defined type nodejs::npm::global_config_entry, which allows one to
-  set and delete global npm config options
+- fixed bug [#94](https://github.com/willdurand/puppet-nodejs/issues/94)
 
-####Bugfixes
-- Supercedes PRs 99 (MODULES-1075), 97, 96, 94, 93, 85, 82, 80, 79, 51, 69, 66
-  and 102
-- apt: update. pin to version. change key to 40 characters.
-- Debian: Handle NodeSource. Improve Repository handling.
-- windows: dont use deprecated chocolately module.
-- testing: Pin RSpec version.
+- added `cpu_cores` option to speedup the compilation process
 
+- changed all downloads from `http` to `https`
 
-##2015-01-21 - Release 0.7.1
-###Summary
+- remove installation of `git` package.
 
-This fixes the incorrect application of https://github.com/puppetlabs/puppetlabs-nodejs/pull/70 so that the code will actually run.
+- added support for ARM architecture (`armv6l` and `armv7l`).
 
-##2015-01-20 - Release 0.7.0
-###Summary
+- added `download_timeout` parameter to simplify configuration of package download timeouts.
 
-This release adds some new features and improvements, including archlinux support and improved ubuntu support.
+- dropped `profile.d` script to patch NodeJS paths. Target directory will be set with `nodejs::$target_dir` which should be in `$PATH`.
+  See [bcfdda3341aa8b0d885b40e9a6ab7f90859f9f3e](https://github.com/willdurand/puppet-nodejs/commit/bcfdda3341aa8b0d885b40e9a6ab7f90859f9f3e) and [#177](https://github.com/willdurand/puppet-nodejs/issues/177) for further reference.
 
-####Features
-- Add max_nesting parameter to npm list json parse
-- Replace Chris's PPA with the Nodesource repo
-- Parameterize package names
-- Add archlinux support
-- TravisCI updates
+### Installer Refactoring
 
-####Bugfixes
-- Fix proxy config requiers for Ubunutu
-- Fix rspec tests
-- Fix typo in README.md
+- added `puppetlabs-gcc` for package handling of the compiler (and removed custom implementation)
+- killed the `python_package` option (not needed anymore)
+- `nodejs::install` has been replaced by an internal API. to use multiple instances, use the `instances` and `instances_to_remove` option of the `nodejs` class (see the docs for more details)
+- Introduced a new `build_deps` parameter which makes the entire package setup optional (see `willdurand/composer#44`).
 
-##2014-07-15 - Release 0.6.1
-###Summary
+### Version refactoring
 
-This release merely updates metadata.json so the module can be uninstalled and
-upgraded via the puppet module command.
+The whole version detection logic was quite outdated and needed a refactoring:
 
-##2014-06-18 - Release 0.6.0
-###Summary
+- removed the `stable` flag for versions. The behavior of `latest` was equal.
+- introduced the `lts` flag to fetch the latest LTS release of Node.js.
+- generic versions:
+  - `7.x` to fetch the latest release of the Node.js v7 branch.
+  - `7.0` to fetch the latest `7.0.x` release.
 
-This release primarily has improved support for Gentoo and testing
-improvements.
+### `nodejs::npm` refactoring
 
-####Features
-- Improved Gentoo support.
-- Test updates
+The `nodejs::npm` resource has been refactored in order to keep the logic inside maintainable.
 
-##2014-03-20 - Release 0.5.0
-###Summary
+The following breaking changes were made:
 
-This release is just a wrap up of a number of submitted PRs, mostly around
-improvements to operating system support, as well as some improvements to
-handling npm.
-
-####Features
-- Update travis to test more recent versions of Puppet.
-- Changed package name for Amazon Linux.
-- Add support for Scientific Linux.
-
-####Bugfixes
-- Ubuntu uses uppercase for the operatingsystem fact.
-- Ignore exit codes from "npm list --json" as they can be misleading, and instead just parse the JSON.
-- Set $HOME for npm commands.
-- Don't include development version accidently.
-- Fix for chrislea ppa that already installs npm.
-
-##2013-08-29 - Release 0.4.0
-###Summary
-
-This release removes the precise special handling
-and adds the ability to pass in $version.
-
-####Features
-- Precise uses the same ppa as every other release.
-- New parameters in nodejs:
-- `version`: Set the version to install.
-
-##2013-08-01 - Release 0.3.0
-###Summary
-
-The focus of this release is ensuring the module
-still works on newer distributions.
-
-####Features
-- New parameters in nodejs:
-- `manage_repo`: Enable/Disable repo management.
-
-####Bugfixes
-- Fixed npm on Ubuntuwhen using Chris Lea's PPA
-- Make RHEL6 variants the default.
-- Fix yumrepo file ordering.
-
-##0.2.1 2012-12-28 Puppet Labs <info@puppetlabs.com>
-- Updated EL RPM repositories
-
-##0.2.0 2012-05-22 Puppet Labs <info@puppetlabs.com>
-- Add RedHat family support
-- Use npm package instead of exec script.
-- Remove ppa repo for Ubuntu Precise.
-
-##0.1.1 2012-05-04 Puppet Labs <info@puppetlabs.com>
-- Use include for apt class and add spec tests.
-
-##0.1.0 2012-04-30 Puppet Labs <info@puppetlabs.com>
-- Initial module release.
+- Removed `install_opt` and `remove_opt` and replaced it with a single `options` parameter.
+- Renamed `exec_as_user` to `exec_user` as it's describes the intent of the parameter in a better way.
+- Dropped automatic generation of a home directory for the `npm` calls and added a `home_dir` parameter which does the job.
+- Removed the ability to write `dir:pkg` as resource title.
+- The `pkg_name` has now `$title` as default parameter.

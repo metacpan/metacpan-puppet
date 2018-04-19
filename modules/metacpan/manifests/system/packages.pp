@@ -61,15 +61,18 @@ class metacpan::system::packages {
     package{ 'postgresql-client-9.6': ensure => present }
     Package{ provider => apt }
 
-    # Install a few utilities through node/npm.
-    npm::install {
-        [
-            'js-beautify',
-            'cssunminifier',
-        ]:
+    class { 'nodejs':
+        version => 'latest',
     }
-    npm::install { 'less':
-      exe => 'lessc',
+    package { 'js-beautify':
+      ensure   => 'present',
+      provider => 'npm',
+      require  =>  Class['nodejs'],
     }
 
+    package { 'cssunminifier':
+      ensure   => 'present',
+      provider => 'npm',
+      require  =>  Class['nodejs']
+    }
 }
