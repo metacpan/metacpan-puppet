@@ -9,7 +9,7 @@ define metacpan::system::firewall(
 
   firewall { "${order} ${action} ${proto} ${port} ${name}":
       ensure  => $ensure,
-      sport   => [ $port ],
+      dport   => [ $port ],
       proto   => $proto,
       action  => $action,
       source  => $source, # anywhere

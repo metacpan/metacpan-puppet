@@ -12,7 +12,7 @@ class metacpan_postgres::firewall(
 
     firewall{ "600 Postgres ${source} - ${name} (${module})":
       ensure  => present,
-      sport   => [ $port ],
+      dport   => [ $port ],
       proto   => tcp,
       action  => 'accept',
       source  => "${source}/32",

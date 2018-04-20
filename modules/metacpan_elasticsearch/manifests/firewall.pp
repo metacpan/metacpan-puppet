@@ -6,7 +6,7 @@ class metacpan_elasticsearch::firewall(
 
     firewall{ "300 Elasticsearch private transport":
       ensure  => present,
-      sport   => [ 9200, 9300, 9900 ],
+      dport   => [ 9200, 9300, 9900 ],
       proto   => tcp,
       action  => 'accept',
       source  => "0.0.0.0/0",  # Anyone
@@ -23,7 +23,7 @@ class metacpan_elasticsearch::firewall(
 
       firewall{ "300 Elasticsearch private transport for ${source} - ${name} (${module})":
         ensure  => present,
-        port    => [ 9200, 9300 ],
+        dport   => [ 9200, 9300 ],
         proto   => tcp,
         action  => 'accept',
         source  => "${source}/32",
