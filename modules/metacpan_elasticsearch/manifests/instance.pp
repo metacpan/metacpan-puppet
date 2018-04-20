@@ -54,7 +54,7 @@ class metacpan_elasticsearch::instance(
   }
 
 
-  $network_host = "['${ipaddress}', 'localhost']";
+  $network_host = '0.0.0.0';
 
   # As recommended by clinton, for ES 1.4 as a cluster
   # This should really be via hiera or something

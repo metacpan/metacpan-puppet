@@ -25,7 +25,7 @@ class metacpan_elasticsearch::test_instance(
     'ES_HEAP_SIZE' => $memory,
   }
 
-  $network_host = "['${ipaddress}', 'localhost']";
+  $network_host = '0.0.0.0';
 
   $config_hash_dev = {
     'http.port' => '9900',
