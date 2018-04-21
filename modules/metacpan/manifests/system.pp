@@ -3,10 +3,6 @@ class metacpan::system(
 
   include apt
 
-  # For nginx
-  class { 'apt::backports':
-  }
-
   # Set all servers to London timezone
   class { 'timezone':
     region   => 'Europe',
