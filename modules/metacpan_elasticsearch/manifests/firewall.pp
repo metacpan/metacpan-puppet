@@ -21,7 +21,7 @@ class metacpan_elasticsearch::firewall(
     # outside of this.
     $local_net.each |$source| {
 
-      firewall{ "300 Elasticsearch private transport for ${source} - ${name} (${module})":
+      firewall{ "300 Elasticsearch private transport for ${source} - ${name}":
         ensure  => present,
         dport   => [ 9200, 9300 ],
         proto   => tcp,

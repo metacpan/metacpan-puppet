@@ -45,7 +45,7 @@ define metacpan::user(
               path        => "/usr/bin",
               subscribe   => User[$user],
               refreshonly => true,
-              require     => Exec["usermod --password '$password' $user"],
+              require     => Exec["usermod --password '' $user"],
           }
       }
 
