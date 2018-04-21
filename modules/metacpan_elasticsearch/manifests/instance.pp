@@ -5,7 +5,6 @@ class metacpan_elasticsearch::instance(
   $memory = hiera('metacpan::elasticsearch::memory', '64'),
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::datadir', '/var/elasticsearch'),
-  $env = hiera('metacpan::elasticsearch::env','production'),
   $cluster_name = hiera('metacpan::elasticsearch::cluster_name','bm'),
   $number_of_shards     = hiera('metacpan::elasticsearch::shards',1),
   $number_of_replicas   = hiera('metacpan::elasticsearch::replicas',2),
@@ -31,11 +30,12 @@ class metacpan_elasticsearch::instance(
           source => "puppet:///modules/metacpan_elasticsearch/etc/security/elasticsearch";
   }
 
+  include ::java
+
   # Install ES, but don't run
   class { 'elasticsearch':
 
     package_url => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${$version}.deb",
-    java_install => true,
     autoupgrade => $autoupgrade,
     ensure => $ensure,
     # Defaults can be in here...
@@ -53,7 +53,7 @@ class metacpan_elasticsearch::instance(
   }
 
 
-  $network_host = "['${ipaddress}', 'localhost']";
+  $network_host = '0.0.0.0';
 
   # As recommended by clinton, for ES 1.4 as a cluster
   # This should really be via hiera or something

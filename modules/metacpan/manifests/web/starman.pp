@@ -52,7 +52,7 @@ define metacpan::web::starman (
     }
   }
 
-  nginx::vhost { $name:
+  metacpan_nginx::vhost { $name:
     html      => $vhost_html,
     ssl       => $vhost_ssl,
     ssl_only  => $vhost_ssl_only,
@@ -62,7 +62,7 @@ define metacpan::web::starman (
   }
 
   # Add all the extra proxy / config gumpf
-  create_resources('nginx::proxy', $vhost_extra_proxies, {
+  create_resources('metacpan_nginx::proxy', $vhost_extra_proxies, {
     target   => "http://localhost:${starman_port}/",
     site    =>  $name,
     location => '',
@@ -72,8 +72,8 @@ define metacpan::web::starman (
     site    =>  $name,
   })
 
-  # Setup rev-proxt to starman
-  nginx::proxy { "proxy_${name}":
+  # Setup rev-proxy to starman
+  metacpan_nginx::proxy { "proxy_${name}":
       target   => "http://localhost:${starman_port}/",
       site    => $name,
       location => '',

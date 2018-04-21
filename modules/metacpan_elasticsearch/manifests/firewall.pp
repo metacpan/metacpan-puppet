@@ -1,12 +1,12 @@
 class metacpan_elasticsearch::firewall(
-    $env = hiera('metacpan::elasticsearch::env','production'),
+    $mcenv = hiera('metacpan::elasticsearch::env','production'),
 ) {
 
-  if($env == 'dev') {
+  if($mcenv == 'dev') {
 
-    firewall{ "300 Elasticsearch private transport for ${source} - ${name} (${module})":
+    firewall{ "300 Elasticsearch private transport":
       ensure  => present,
-      port    => [ 9200, 9300, 9900 ],
+      dport   => [ 9200, 9300, 9900 ],
       proto   => tcp,
       action  => 'accept',
       source  => "0.0.0.0/0",  # Anyone
@@ -21,9 +21,9 @@ class metacpan_elasticsearch::firewall(
     # outside of this.
     $local_net.each |$source| {
 
-      firewall{ "300 Elasticsearch private transport for ${source} - ${name} (${module})":
+      firewall{ "300 Elasticsearch private transport for ${source} - ${name}":
         ensure  => present,
-        port    => [ 9200, 9300 ],
+        dport   => [ 9200, 9300 ],
         proto   => tcp,
         action  => 'accept',
         source  => "${source}/32",

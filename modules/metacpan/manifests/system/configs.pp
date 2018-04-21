@@ -13,12 +13,6 @@ class metacpan::system::configs {
             mode    => '0644',
     }
 
-    # So many servers, so much noise! - turn it off
-    package { apticron: ensure => absent }->
-    file { "/etc/apticron/apticron.conf":
-            source => "puppet:///modules/metacpan/default/etc/apticron/apticron.conf",
-    }
-
     # Turn on sysstat
     line { "replace":
         file => "/etc/default/sysstat",
@@ -29,7 +23,7 @@ class metacpan::system::configs {
 
     # make logrotate use dateext for all logs
     # speeds up backups because file names don't change
-    include logrotate::base
+    #include logrotate::base
     file { "/etc/logrotate.d/dateext":
             content => "dateext",
             require => Package["logrotate"],

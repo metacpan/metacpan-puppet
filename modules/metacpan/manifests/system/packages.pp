@@ -28,9 +28,6 @@ class metacpan::system::packages {
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
 
-    # get version from https://packages.debian.org/wheezy-backports/tmux
-    package { tmux:  ensure => '1.9-6~bpo70+1' } # from backports
-
     package { ack-grep: ensure => present }
     package { less: ensure => present }
     package { mosh: ensure => present }
@@ -40,6 +37,7 @@ class metacpan::system::packages {
     package { sqlite3: ensure => present }
     package { sudo: ensure => present }
     package { sysstat: ensure => present }
+    package { tmux:  ensure => present }
     package { tree: ensure => present }
     package { whois: ensure => present }
 
@@ -59,30 +57,22 @@ class metacpan::system::packages {
 
     package{ build-essential: ensure => present }
 
-    # Helped get Elasticsearch running
-    # https://ask.puppetlabs.com/question/2147/could-not-find-a-suitable-provider-for-augeas/
-    package{ libaugeas-ruby: ensure => present }
-
     # For accessing postgress from psql
-    package{ 'postgresql-client-9.1': ensure => present }
+    package{ 'postgresql-client-9.6': ensure => present }
+    Package{ provider => apt }
 
-    case $operatingsystem {
-      Debian: {
-      }
-      default: {
-        Package{ provider => apt }
-      }
+    class { 'nodejs':
+        version => 'latest',
+    }
+    package { 'js-beautify':
+      ensure   => 'present',
+      provider => 'npm',
+      require  =>  Class['nodejs'],
     }
 
-    # Install a few utilities through node/npm.
-    npm::install {
-        [
-            'js-beautify',
-            'cssunminifier',
-        ]:
+    package { 'cssunminifier':
+      ensure   => 'present',
+      provider => 'npm',
+      require  =>  Class['nodejs']
     }
-    npm::install { 'less':
-      exe => 'lessc',
-    }
-
 }

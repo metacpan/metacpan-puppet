@@ -1,0 +1,19 @@
+{
+  "CHANGELOG.md": "0284904344a12171663b11d9019871dd",
+  "Gemfile": "183549d55a41bd882aef8dfa8218356c",
+  "README.md": "e721c8dab0499213e866541caad1e5b0",
+  "Rakefile": "1229bb6a344b98c0e53d34e9e01b5776",
+  "Vagrantfile": "ee539cfb5f121a434c0abe146a73c428",
+  "Vagrantfile.d/provision.sh": "c3c6788b9e84cb8de79ae61caae60b11",
+  "appveyor.yml": "890733598bc8d3cc58268aad08ca0a40",
+  "bin/metadata-json-lint": "f81b2db79e27512a1113dadcefeda588",
+  "bin/puppet": "942860ab5244c62578a4a0e5b2952bd9",
+  "bin/puppet-lint": "40f3af7d22bfcdc0d1bdfe121f2addcb",
+  "bin/rake": "f663040ad9a495d23d446a56f2f42bcc",
+  "bin/rubocop": "ad4ad86162fd167c1fdddfe31abdd054",
+  "manifests/repo.pp": "be0ec6518b82c3c516df59b1d5f60ac6",
+  "metadata.json": "e8015fab279e6c972a1ee02ffa27e99e",
+  "spec/classes/repo_spec.rb": "5c7e84da3727cd0c008ad98b00bf19df",
+  "spec/default_facts.yml": "4de3cb611af6981a6d22bc77d7dd6f6f",
+  "spec/spec_helper.rb": "898577ed31fbf848330924de64091e60"
+}

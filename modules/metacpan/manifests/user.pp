@@ -45,7 +45,7 @@ define metacpan::user(
               path        => "/usr/bin",
               subscribe   => User[$user],
               refreshonly => true,
-              require     => Exec["usermod --password '$password' $user"],
+              require     => Exec["usermod --password '' $user"],
           }
       }
 
@@ -90,7 +90,6 @@ define metacpan::user(
               mode  => '0600',
               source => [
                       "puppet:///modules/metacpan/nodes/$hostname/$path/$user/ssh/authorized_keys",
-                      "puppet:///modules/metacpan/location/$location/$path/$user/ssh/authorized_keys",
                       "puppet:///modules/metacpan/default/$path/$user/ssh/authorized_keys"
                       ],
           }

@@ -1,6 +1,7 @@
 .DS_Store
+private/*
 puppet.conf
+puppet.conf.dpkg-dist
 ssl/*
 !ssl/vagrant.txt
-puppet.conf.dpkg-dist
-private/*
+*.sw*

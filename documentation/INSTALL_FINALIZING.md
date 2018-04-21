@@ -4,7 +4,7 @@
 # To Run - as root (start master, run puppet client, stop master)
     /etc/puppet/run.sh
 
-You may have to run this a couple of times to get everything setup
+You may have to run this a couple of times to get everything set up
 correctly. The very first time it will take quite a while to run
 (it has a lot to do!)
 

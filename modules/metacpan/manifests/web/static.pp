@@ -42,7 +42,7 @@ define metacpan::web::static (
     }
   }
 
-  nginx::vhost { $name:
+  metacpan_nginx::vhost { $name:
     html      => $vhost_html,
     ssl       => $vhost_ssl,
     ssl_only  => $vhost_ssl_only,
@@ -50,13 +50,6 @@ define metacpan::web::static (
     autoindex => $vhost_autoindex,
     aliases   => $vhost_aliases,
   }
-
-  # Add all the extra proxy / config gumpf
-  create_resources('nginx::proxy', $vhost_extra_proxies, {
-    target   => "http://localhost:${starman_port}/",
-    site    =>  $name,
-    location => '',
-  })
 
   create_resources('metacpan::web::nginx_extra_confs', $vhost_extra_configs, {
     site    =>  $name,

@@ -1,0 +1,13 @@
+{
+  "CHANGELOG": "597a08aa9b322703f08d22ce36bfec7e",
+  "LICENSE": "2931ef69b3e476ae56535bda5901769b",
+  "README.md": "2b1747d103bddaa335a3ebb4173e6f01",
+  "manifests/init.pp": "73d81481e44a9f6e9e2331d47391b6e7",
+  "metadata.json": "5d0477c07c92b33f659a87a7735603fa",
+  "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+  "templates/debian.erb": "c5ba16175cb2ca221c795fe013f3e6a5",
+  "templates/el.erb": "bd2d98be43ff8f23227bb9653af189cb",
+  "templates/gentoo.erb": "71c2a0a080580243eacd0e4bb5c1b74f",
+  "templates/suse.erb": "3374b0e890290488311e6ed88c57f87e",
+  "tests/init.pp": "279d73033eae34e22f2212c66c377041"
+}
