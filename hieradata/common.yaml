@@ -159,6 +159,19 @@ metacpan::web::starman:
     starman_port: 5002
     starman_workers: 1
 
+  sco-redirect:
+    git_source: 'https://github.com/metacpan/sco-redirect.git'
+    git_revision: 'master'
+    vhost_bare: true
+    vhost_aliases:
+      - 'search.cpan.org' # not fastly
+      - "cpansearch.perl.org" # not fastly
+      - 'sco.metacpan.org'
+      - "sco.lo.metacpan.org"
+      - "sco.%{hostname}.metacpan.org"
+      - ".mcpan.org"
+    starman_port: 5005
+    starman_workers: 1
 
 metacpan::web::static:
 
@@ -212,19 +225,6 @@ metacpan::web::static:
       - 'explorer.metacpan.org'
       - "explorer.lo.metacpan.org"
       - "explorer.%{hostname}.metacpan.org"
-
-  metacpan-sco:
-    vhost_bare: true
-    vhost_aliases:
-      - 'search.cpan.org' # not fastly
-      - "cpansearch.perl.org" # not fastly
-      - 'sco.metacpan.org'
-      - "sco.lo.metacpan.org"
-      - "sco.%{hostname}.metacpan.org"
-      - ".mcpan.org"
-    vhost_extra_configs:
-      rewrite:
-          template: 'rewrite'
 
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::general:
