@@ -46,6 +46,9 @@ metacpan::web::starman:
   github-meets-cpan:
     git_enable: true
     starman_workers: 1
+  sco-redirect:
+    git_enable: true
+    starman_workers: 2
 
 metacpan::web::static:
   metacpan-explorer:
