@@ -1,5 +1,4 @@
 class metacpan_elasticsearch::instance(
-  $env = hiera('metacpan::elasticsearch::env','production'),
   $version = hiera('metacpan::elasticsearch::version'),
   $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', true),
   $ensure = hiera('metacpan::elasticsearch::ensure', 'present'),

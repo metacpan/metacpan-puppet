@@ -1,8 +1,8 @@
 class metacpan_elasticsearch::firewall(
-    $env = hiera('metacpan::elasticsearch::env','production'),
+    $mcenv = hiera('metacpan::elasticsearch::env','production'),
 ) {
 
-  if($env == 'dev') {
+  if($mcenv == 'dev') {
 
     firewall{ "300 Elasticsearch private transport":
       ensure  => present,
