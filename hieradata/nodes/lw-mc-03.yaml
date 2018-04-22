@@ -79,3 +79,5 @@ metacpan::crons::api:
       ensure : present
     favorite_weekly:
       ensure : present
+    cover_full:
+      ensure : present

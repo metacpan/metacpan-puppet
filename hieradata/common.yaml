@@ -422,6 +422,11 @@ metacpan::crons::api:
         minute: 0
         weekday: 0
         ensure : absent
+    cover_full:
+        cmd : 'cover'
+        hour: 14
+        minute: 0
+        ensure : absent
 
 metacpan::fw_ports:
   http:
