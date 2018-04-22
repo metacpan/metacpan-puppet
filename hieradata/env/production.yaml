@@ -48,7 +48,7 @@ metacpan::web::starman:
     starman_workers: 1
   sco-redirect:
     git_enable: true
-    starman_workers: 2
+    starman_workers: 10
 
 metacpan::web::static:
   metacpan-explorer:
