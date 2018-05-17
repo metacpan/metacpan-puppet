@@ -5,7 +5,7 @@ class metacpan_elasticsearch::test_instance(
   $ip_address = hiera('metacpan::elasticsearch::ipaddress', '127.0.0.1'),
   $data_dir = hiera('metacpan::elasticsearch::test_datadir', '/var/elasticsearch_test'),
   $version = hiera('metacpan::elasticsearch::version'),
-  $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', true),
+  $autoupgrade = hiera('metacpan::elasticsearch::autoupgrade', false),
 ) {
 
   $cluster_hosts = hiera_array('metacpan::elasticsearch::cluster_hosts', [])
