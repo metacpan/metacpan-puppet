@@ -16,6 +16,7 @@ class metacpan::system::packages {
     package { psmisc: ensure => present } # killall pstree fuser commands
     package { rsync: ensure => present }
     package { screen: ensure => present }
+    package { apt-transport-https: ensure => present } # for ES repo
 
     # for monitoring
     # https://debian-administration.org/article/327/Monitoring_your_hardware's_temperature
