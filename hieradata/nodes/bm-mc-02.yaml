@@ -2,6 +2,7 @@
 
 metacpan::users:
     toddr:
+        admin: true
         fullname : "Todd <toddr@cpan.org>"
     atoomic:
         fullname : "Atoomic <atoomic@cpan.org>"
