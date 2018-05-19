@@ -38,7 +38,7 @@ class metacpan::system::packages {
     package { sqlite3: ensure => present }
     package { sudo: ensure => present }
     package { sysstat: ensure => present }
-    package { tmux:  ensure => present }
+    package { tmux:  ensure => '2.7-1~bpo9+1' } # back ports
     package { tree: ensure => present }
     package { whois: ensure => present }
 
