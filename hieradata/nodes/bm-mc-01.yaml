@@ -1,1 +1,11 @@
 ---
+classes:
+    - metacpan_postgres
+    - minion_queue
+
+minion_queue::service::workers: 5
+minion_queue::service::ensure: running
+minion_queue::service::enable: true
+
+# We want watcher enabled
+# metacpan::watcher::enable: true

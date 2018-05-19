@@ -1,5 +1,4 @@
 ---
-# Using this box as a stage box
 classes:
     - metacpan_postgres
     - minion_queue
