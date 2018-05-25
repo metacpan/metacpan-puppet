@@ -23,4 +23,4 @@ $PUPPET saz-rsyslog
 $PUPPET bashtoni-timezone
 $PUPPET puppet-logrotate
 $PUPPET puppet-yum
-$PUPPET willdurand/nodejs
+$PUPPET puppet/nodejs
