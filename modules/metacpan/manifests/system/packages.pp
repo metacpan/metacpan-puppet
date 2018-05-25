@@ -62,18 +62,25 @@ class metacpan::system::packages {
     package{ 'postgresql-client-9.6': ensure => present }
     Package{ provider => apt }
 
-    class { 'nodejs':
-        version => 'latest',
-    }
-    package { 'js-beautify':
-      ensure   => 'present',
-      provider => 'npm',
-      require  =>  Class['nodejs'],
+    class { 'nodejs': }
+
+    # Avoid "Duplicate declaration: Package[less] is already declared in file"
+    nodejs::npm { 'lessc':
+      ensure  => 'present',
+      package => 'lessc',
+      target  => '/usr/local/bin',
     }
 
-    package { 'cssunminifier':
-      ensure   => 'present',
-      provider => 'npm',
-      require  =>  Class['nodejs']
+    nodejs::npm { 'js-beautify':
+      ensure  => 'present',
+      package => 'js-beautify',
+      target  => '/usr/local/bin',
     }
+
+    nodejs::npm { 'cssunminifier':
+      ensure  => 'present',
+      package => 'cssunminifier',
+      target  => '/usr/local/bin',
+    }
+
 }
