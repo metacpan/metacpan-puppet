@@ -87,6 +87,8 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
 
-# Only members of the shell access are allowed to attempt authentication.
-AllowGroups shellaccess
+# Only members of the shellaccess and vagrant groups are allowed to attempt
+# authentication.
+AllowGroups shellaccess vagrant
+
 # When AllowGroups is stated, a default DENY policy is applied.
