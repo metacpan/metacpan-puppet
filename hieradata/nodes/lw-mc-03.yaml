@@ -22,7 +22,6 @@ munin::node::plugins:
       ensure: 'link'
       config: ['user metacpan']
 
-# Run the swat cronjob
 metacpan::crons::general:
     swat_monitoring:
       ensure : present
@@ -30,6 +29,8 @@ metacpan::crons::general:
       ensure : present
     import_authors:
       ensure : present
+    metacpan_sitemaps:
+      minute : 30
 
 metacpan::crons::api:
     snapshot_cpan_index:

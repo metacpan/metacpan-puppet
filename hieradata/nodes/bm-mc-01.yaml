@@ -9,3 +9,7 @@ minion_queue::service::enable: true
 
 # We want watcher enabled
 # metacpan::watcher::enable: true
+
+metacpan::crons::general:
+    metacpan_sitemaps:
+      minute : 5

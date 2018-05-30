@@ -18,3 +18,7 @@ metacpan::fw_ports:
 
 rsyslog::extra_modules:
     - "omprog"
+
+metacpan::crons::general:
+    metacpan_sitemaps:
+      minute : 15

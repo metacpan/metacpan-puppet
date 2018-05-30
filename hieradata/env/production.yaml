@@ -26,6 +26,8 @@ metacpan::crons::general:
       ensure : present
     run_puppet:
       ensure : present
+    metacpan_sitemaps:
+      ensure : present
 
 metacpan::web::starman:
   api-v0-shim:
