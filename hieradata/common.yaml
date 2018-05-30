@@ -263,7 +263,7 @@ metacpan::crons::general:
     metacpan_sitemaps:
       cmd : "/home/%{hiera('metacpan::user')}/bin/metacpan-web-carton-exec bin/generate_sitemap.pl"
       hour : 2
-      minute : 30
+      minute : 0
       ensure : absent
 
     github-meets-cpan:

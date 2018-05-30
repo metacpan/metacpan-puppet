@@ -15,6 +15,11 @@ metacpan::users:
     atoomic:
         fullname : "Atoomic <atoomic@cpan.org>"
 
+metacpan::crons::general:
+    metacpan_sitemaps:
+      minute : 10
+
+
 metacpan::web::starman:
 
   metacpan-grep-front-end:
