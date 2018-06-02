@@ -29,6 +29,10 @@ class metacpan::system::packages {
     package { zsh: ensure => present } # for rafl
     package { byobu: ensure => present } # for mo
 
+    package { libpcre3: ensure => present } # for gitgrep in grep.mc.org
+    package { libpcre3-dev: ensure => present } # for gitgrep in grep.mc.org
+    package { gettext: ensure => present } # for gitgrep in grep.mc.org
+
     package { ack-grep: ensure => present }
     package { less: ensure => present }
     package { mosh: ensure => present }
