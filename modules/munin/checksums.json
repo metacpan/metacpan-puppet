@@ -1,0 +1,23 @@
+{
+  "CHANGELOG.md": "f21c2cbe1b2d1dc9945f718500aeab4d",
+  "Gemfile": "5f200cd431802be504f5d1e9143915e4",
+  "Guardfile": "5801d6a90ec8dc66c359d099231938e4",
+  "README.md": "7c2ea263fba3eaa54cb02409baf9bb3a",
+  "Rakefile": "d285c6f9fc096c5da5b3fb90951246da",
+  "manifests/master/node_definition.pp": "a23b1545f8654fef095ae19810e868d1",
+  "manifests/master.pp": "23b9e147a6d43050df2394302f483ce3",
+  "manifests/node.pp": "6b6302c9ec224423ca72116fd743613a",
+  "manifests/params/master.pp": "01ec4a371c5cc1bae9a334e94e24d8f0",
+  "manifests/params/node.pp": "d37eb06756d40fca65bbe2c3508cb4dd",
+  "manifests/plugin.pp": "ef17f4589bba321ca8cdf6cb737732be",
+  "metadata.json": "609831fed1addd582975df8ec31f4f98",
+  "spec/classes/munin_master_spec.rb": "88f8d6a1c213809feab96464901d5889",
+  "spec/classes/munin_node_spec.rb": "d9621842ae6e6507b6806dd6f2f00a04",
+  "spec/defines/munin_plugin_spec.rb": "48d5df7c5cbf47e3e3cf9d026d5d3fe3",
+  "spec/defines/regression_13_munin_plugin_config_name_spec.rb": "29a498ede3107979d889060677d7c845",
+  "spec/spec_helper.rb": "ba61932d8fb195fd7b04289cc9e0300b",
+  "templates/master/node.definition.conf.erb": "b321f84d2118f489b7c2e27518ee51e7",
+  "templates/munin-node.conf.erb": "2f5855c640f78a55b6d32962d7a8ecb8",
+  "templates/munin.conf.erb": "aed4f1d629c58260a87e9f71e45b018f",
+  "templates/plugin_conf.erb": "e4d0fd7c2e1d5421481efd10ebd5a078"
+}
