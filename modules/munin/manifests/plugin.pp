@@ -20,7 +20,7 @@ define munin::plugin (
     include munin::node
 
     $plugin_share_dir=$munin::node::plugin_share_dir
-    validate_absolute_path($plugin_share_dir)
+    # validate_absolute_path($plugin_share_dir)
 
     File {
         require => Package[$munin::node::package_name],
@@ -35,6 +35,7 @@ define munin::plugin (
         absent: {
             $handle_plugin = true
             $plugin_ensure = absent
+            $plugin_target = "notlink"
         }
         link: {
             $handle_plugin = true
