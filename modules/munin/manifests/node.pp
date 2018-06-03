@@ -62,20 +62,20 @@ class munin::node (
   $file_group     = $munin::params::node::file_group,
 ) inherits munin::params::node {
 
-  validate_array($allow)
-  validate_array($nodeconfig)
-  validate_array($masterconfig)
-  validate_string($mastergroup)
-  validate_string($mastername)
-  validate_hash($plugins)
-  validate_string($address)
-  validate_absolute_path($config_root)
-  validate_string($package_name)
-  validate_string($service_name)
-  validate_re($service_ensure, '^(|running|stopped)$')
-  validate_re($export_node, '^(enabled|disabled)$')
-  validate_absolute_path($log_dir)
-  validate_string($file_group)
+  # validate_array($allow)
+  # validate_array($nodeconfig)
+  # validate_array($masterconfig)
+  # validate_string($mastergroup)
+  # validate_string($mastername)
+  # validate_hash($plugins)
+  # validate_string($address)
+  # validate_absolute_path($config_root)
+  # validate_string($package_name)
+  # validate_string($service_name)
+  # validate_re($service_ensure, '^(|running|stopped)$')
+  # validate_re($export_node, '^(enabled|disabled)$')
+  # validate_absolute_path($log_dir)
+  # validate_string($file_group)
 
   if $mastergroup {
     $fqn = "${mastergroup};${host_name}"
