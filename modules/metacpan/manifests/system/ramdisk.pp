@@ -32,7 +32,7 @@ define metacpan::system::ramdisk (
 
   }
 
-  $cmd = "find ${name} -maxdepth 1 -mindepth 1 -mmin +${valid_mins} -exec rm -rf {} \;"
+  $cmd = "find ${name} -maxdepth 1 -mindepth 1 -mmin +${valid_mins} -exec rm -rf {} ';'"
 
   cron {
     "cron_${name}":
