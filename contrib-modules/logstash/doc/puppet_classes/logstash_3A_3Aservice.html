@@ -6,7 +6,7 @@
 <title>
   Puppet Class: logstash::service
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.13
   
 </title>
 
@@ -273,7 +273,13 @@ that you will need to declare this class yourself.</p>
 164
 165
 166
-167</pre>
+167
+168
+169
+170
+171
+172
+173</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/service.pp', line 11</span>
@@ -412,6 +418,12 @@ class logstash::service {
   }
   elsif($os =~ /opensuse/ and $release == &#39;13&#39;) {
     $service_provider = &#39;systemd&#39;
+  }
+  #Older Amazon Linux AMIs has its release based on the year
+  #it came out (2010 and up); the provider needed to be set explicitly;
+  #New Amazon Linux 2 AMIs has the release set to 2, Puppet can handle it 
+  elsif($os =~ /amazon/ and versioncmp($release, &#39;2000&#39;) &gt; 0) {
+    $service_provider = &#39;upstart&#39;
   }
   else {
     # In most cases, Puppet(4) can figure out the correct service

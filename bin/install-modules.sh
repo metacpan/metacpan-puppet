@@ -4,7 +4,7 @@
 
 PUPPET="puppet module install --force --modulepath /etc/puppet/contrib-modules"
 
-declare -a arr=("apt" "archive" "concat" "firewall" "gcc" "java" "postgresql" "stdlib" "vcsrepo")
+declare -a arr=("apt" "concat" "firewall" "gcc" "java" "postgresql" "stdlib" "vcsrepo")
 
 for m in "${arr[@]}"
     do
@@ -18,7 +18,6 @@ $PUPPET puppet-tea # elastic-elasticsearch
 $PUPPET richardc-datacat
 $PUPPET ispavailability-file_concat
 $PUPPET elastic-logstash
-$PUPPET ssm-munin
 $PUPPET saz-rsyslog
 $PUPPET bashtoni-timezone
 $PUPPET puppet-logrotate

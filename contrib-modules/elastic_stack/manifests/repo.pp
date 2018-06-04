@@ -5,25 +5,55 @@
 # @example
 #   include elastic_stack::repo
 #
-# @param version The (major) version of the Elastic Stack for which to configure the repo
+# @param oss Whether to use the purely open source (i.e., bundled without X-Pack) repository
+# @param prerelease Whether to use a repo for prerelease versions, like "6.0.0-rc2"
 # @param priority A numeric priority for the repo, passed to the package management system
 # @param proxy The URL of a HTTP proxy to use for package downloads (YUM only)
-# @param prerelease Whether to use a repo for prerelease versions, like "6.0.0-rc2"
+# @param version The (major) version of the Elastic Stack for which to configure the repo
 class elastic_stack::repo(
-  Integer $version=6,
-  Optional[Integer] $priority=undef,
-  String $proxy='absent',
-  Boolean $prerelease=false,
+  Boolean           $oss        = false,
+  Boolean           $prerelease = false,
+  Optional[Integer] $priority   = undef,
+  String            $proxy      = 'absent',
+  Integer           $version    = 6,
 )
 
 {
   if $prerelease {
-    $url_suffix = '-prerelease'
+    $version_suffix = '.x-prerelease'
+  } else {
+    $version_suffix = '.x'
   }
-  else {
-    $url_suffix = ''
+
+  if $oss {
+    $version_prefix = 'oss-'
+  } else {
+    $version_prefix = ''
   }
-  $base_url = "https://artifacts.elastic.co/packages/${version}.x${url_suffix}"
+
+  if $version > 2 {
+    $_repo_url = 'https://artifacts.elastic.co/packages'
+    case $facts['os']['family'] {
+      'Debian': {
+        $_repo_path = 'apt'
+      }
+      default: {
+        $_repo_path = 'yum'
+      }
+    }
+  } else {
+    $_repo_url = 'https://packages.elastic.co/elasticsearch'
+    case $facts['os']['family'] {
+      'Debian': {
+        $_repo_path = 'debian'
+      }
+      default: {
+        $_repo_path = 'centos'
+      }
+    }
+  }
+
+  $base_url = "${_repo_url}/${version_prefix}${version}${version_suffix}/${_repo_path}"
   $key_id='46095ACC8548582C1A2699A9D27D666CD88E42B4'
   $key_source='https://artifacts.elastic.co/GPG-KEY-elasticsearch'
   $description='Elastic package repository.'
@@ -35,7 +65,7 @@ class elastic_stack::repo(
       apt::source { 'elastic':
         ensure   => 'present',
         comment  => $description,
-        location => "${base_url}/apt",
+        location => $base_url,
         release  => 'stable',
         repos    => 'main',
         key      => {
@@ -52,7 +82,7 @@ class elastic_stack::repo(
     'RedHat', 'Linux': {
       yumrepo { 'elastic':
         descr    => $description,
-        baseurl  => "${base_url}/yum",
+        baseurl  => $base_url,
         gpgcheck => 1,
         gpgkey   => $key_source,
         enabled  => 1,
@@ -85,7 +115,7 @@ class elastic_stack::repo(
       }
 
       zypprepo { 'elastic':
-        baseurl     => "${base_url}/yum",
+        baseurl     => $base_url,
         enabled     => 1,
         autorefresh => 1,
         name        => 'elastic',

@@ -2,7 +2,8 @@
 # exploratory testing of puppet-elastic-stack. It's not used by the formal
 # testing framwork, it's just for hacking.
 #
-module_root = '/etc/puppetlabs/code/environments/production/modules/elastic_stack'
+puppet_code_root = '/etc/puppetlabs/code/environments/production'
+module_root = "#{puppet_code_root}/modules/elastic_stack"
 
 Vagrant.configure(2) do |config|
   config.vm.box = 'bento/ubuntu-16.04'
@@ -12,9 +13,10 @@ Vagrant.configure(2) do |config|
   end
 
   # Make the module available.
-  %w[manifests templates].each do |dir|
-    config.vm.synced_folder(dir, "#{module_root}/#{dir}")
-  end
+  config.vm.synced_folder('manifests', "#{module_root}/manifests")
+
+  # Map in a Puppet manifest that can be used for experiments.
+  config.vm.synced_folder('Vagrantfile.d/manifests', "#{puppet_code_root}/manifests")
 
   # Provision with Puppet and Puppetserver
   config.vm.provision('shell', path: 'Vagrantfile.d/provision.sh')

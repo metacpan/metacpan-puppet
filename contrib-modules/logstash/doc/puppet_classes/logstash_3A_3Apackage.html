@@ -6,7 +6,7 @@
 <title>
   Puppet Class: logstash::package
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.13
   
 </title>
 
@@ -281,7 +281,10 @@ that you will need to declare this class yourself.</p>
 126
 127
 128
-129</pre>
+129
+130
+131
+132</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/package.pp', line 20</span>
@@ -369,7 +372,10 @@ class logstash::package(
       $package_local_file = undef
       $package_provider = undef
       if $::osfamily == &#39;Debian&#39; {
-        $package_require = Class[&#39;apt::update&#39;]
+        $package_require = $logstash::manage_repo ? {
+          true  =&gt; Class[&#39;apt::update&#39;],
+          false =&gt; undef,
+        }
       } else {
         $package_require = undef
       }

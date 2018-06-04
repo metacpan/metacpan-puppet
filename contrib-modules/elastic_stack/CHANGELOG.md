@@ -1,3 +1,7 @@
+## Release 6.1.0
+
+- Support OSS-only package repositories
+
 ## Release 6.0.1
 
 - Remove aggressive ordering causing all packages to come after apt::update
