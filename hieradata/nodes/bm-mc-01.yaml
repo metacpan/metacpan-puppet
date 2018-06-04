@@ -8,8 +8,64 @@ minion_queue::service::ensure: running
 minion_queue::service::enable: true
 
 # We want watcher enabled
-# metacpan::watcher::enable: true
+metacpan::watcher::enable: true
 
 metacpan::crons::general:
+    swat_monitoring:
+      ensure : absent
+    user_data_index_backups:
+      ensure : absent
+    import_authors:
+      ensure : present
     metacpan_sitemaps:
       minute : 5
+
+metacpan::crons::api:
+    snapshot_cpan_index:
+      ensure : absent
+    snapshot_user_index:
+      ensure : absent
+    snapshot_purge_old:
+      ensure : absent
+    ratings:
+      ensure : present
+    mirrors:
+      ensure : present
+    cpantesters:
+      ensure : present
+    latest:
+      ensure : present
+    backup_purge:
+      ensure : absent
+    session:
+      ensure : present
+    release:
+      ensure : present
+    package:
+      ensure : present
+    package_cleanup:
+      ensure : present
+    permission:
+      ensure : present
+    permission_cleanup:
+      ensure : present
+    tickets:
+      ensure : present
+    river:
+      ensure : present
+    external_cygwin:
+      ensure : present
+    external_debian:
+      ensure : present
+    external_fedora:
+      ensure : present
+    contributor_daily:
+      ensure : present
+    contributor_weekly:
+      ensure : present
+    favorite_hourly:
+      ensure : present
+    favorite_weekly:
+      ensure : present
+    cover_full:
+      ensure : present
