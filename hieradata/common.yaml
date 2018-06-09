@@ -463,3 +463,26 @@ rsyslog::im_journal_ratelimit_interval: false
 rsyslog::im_journal_statefile: false
 rsyslog::im_journal_ratelimit_burst: false
 rsyslog::im_journal_ignore_previous_messages: false
+
+# OSSEC Configurations
+ossec::email_alert_level: 9
+ossec::email_notification: no
+ossec::email_to: security@metacpan.org
+ossec::email_from: ossec@metacpan.org
+ossec::ip_whitelist:
+  - 5.153.225.19 # bm-mc-01
+  - 5.153.225.20 # bm-mc-02
+  - 46.43.35.68  # bm-mc-03
+  - 50.28.18.102 # lw-mc-01
+  - 50.28.18.103 # lw-mc-02
+  - 50.28.18.168 # lw-mc-03
+ossec::logfiles:
+  - /var/log/auth.log
+  - /var/log/daemon.log
+  - /var/log/dpkg.log
+  - /var/log/kern.log
+ossec::role: agent
+ossec::smtp_server: 127.0.0.1
+ossec::server_ip: 127.0.0.1
+ossec::zeromq_output: no
+ossec::zeromq_uri: tcp://127.0.0.1:9514/

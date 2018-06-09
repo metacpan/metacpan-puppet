@@ -137,3 +137,6 @@ metacpan::users:
         admin    : true
         fullname : "Joel Berger <joel.a.berger@gmail.com>"
 
+# OSSEC Configuration
+ossec::email_notification: yes
+ossec::server_ip: 46.43.35.68

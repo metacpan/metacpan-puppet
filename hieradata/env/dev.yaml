@@ -14,3 +14,6 @@ metacpan::elasticsearch::master_nodes: 1
 metacpan::elasticsearch::expected_nodes: 1
 metacpan::elasticsearch::recover_after_nodes: 1
 metacpan::elasticsearch::replicas: 0
+
+# OSSEC Settings
+ossec::role: server

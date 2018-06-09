@@ -36,3 +36,4 @@ metacpan::crons::general:
 #   metacpan-web:
 #     git_revision: 'stage'
 
+ossec::role: server

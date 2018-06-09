@@ -26,5 +26,6 @@ class metacpan::system(
 
   include metacpan::system::rsyslog::certs
   #include metacpan::system::rsyslog::client
+  include ossec
 
 }
