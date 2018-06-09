@@ -1,0 +1,12 @@
+<!--
+    MetaCPAN Local OSSEC Rules
+-->
+
+<group name="local,syslog,">
+	<rule id="100001" level="0">
+		<if_sid>5711</if_sid>
+		<srcip>1.1.1.1</srcip>
+		<description>Example of rule that will ignore sshd </description>
+		<description>failed logins from IP 1.1.1.1.</description>
+	</rule>
+</group>
