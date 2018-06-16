@@ -25,6 +25,8 @@ munin::master::node_definitions:
       address: 5.153.225.20
     'bm-mc-03.metacpan.org':
       address: 46.43.35.68
+    'bm-mc-04.metacpan.org':
+      address: 89.16.178.21
 
 # Munin node config
 munin::node::allow:
