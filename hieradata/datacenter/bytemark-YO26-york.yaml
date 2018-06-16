@@ -13,6 +13,4 @@ metacpan::postgres::access_hosts:
 # to other nodes in our cluster)
 metacpan::elasticsearch::ipaddress: "%{::ipaddress}"
 
-metacpan::elasticsearch::auto_create_indexes: 'syslog-*,app-*,access-*'
-
 metacpan::rsyslog::client::log_remote: true
