@@ -2,12 +2,12 @@
 metacpan::elasticsearch::cluster_hosts:
   - 5.153.225.19 # bm-mc-01
   - 5.153.225.20 # bm-mc-02
-  - 46.43.35.68  # bm-mc-03
+  - 89.16.178.21 # bm-mc-04
 
 metacpan::postgres::access_hosts:
   - 5.153.225.19 # bm-mc-01
   - 5.153.225.20 # bm-mc-02
-  - 46.43.35.68  # bm-mc-03
+  - 89.16.178.21 # bm-mc-04
 
 # Run on our public IP address (firewall limits access
 # to other nodes in our cluster)

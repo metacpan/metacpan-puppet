@@ -2,13 +2,15 @@
 classes:
   - metacpan::system::rsyslog::server
   - metacpan_kibana
-  - metacpan_postgres::install_only
-  - metacpan_postgres::pgpass
-  - minion_queue
 
-minion_queue::service::workers: 10
-minion_queue::service::ensure: running
-minion_queue::service::enable: true
+metacpan::elasticsearch::cluster_name: 'meta_log'
+metacpan::elasticsearch::master_nodes: 1
+metacpan::elasticsearch::expected_nodes: 1
+metacpan::elasticsearch::replicas: 0
+metacpan::elasticsearch::recover_after_nodes: 1
+metacpan::elasticsearch::cluster_hosts:
+  - 46.43.35.68 # bm-mc-03
+metacpan::elasticsearch::auto_create_indexes: 'syslog-*,app-*,access-*'
 
 metacpan::fw_ports:
   rsyslog:
@@ -22,3 +24,9 @@ rsyslog::extra_modules:
 metacpan::crons::general:
     metacpan_sitemaps:
       minute : 15
+
+# Use this to run stage branch if required
+# metacpan::web::starman:
+#   metacpan-web:
+#     git_revision: 'stage'
+
