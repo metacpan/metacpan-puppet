@@ -1,0 +1,13 @@
+---
+classes:
+  - metacpan_postgres::install_only
+  - metacpan_postgres::pgpass
+  - minion_queue
+
+minion_queue::service::workers: 10
+minion_queue::service::ensure: running
+minion_queue::service::enable: true
+
+metacpan::crons::general:
+    metacpan_sitemaps:
+      minute : 35
