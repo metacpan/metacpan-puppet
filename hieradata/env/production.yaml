@@ -76,7 +76,7 @@ metacpan::web::starman:
       - "sco.%{hostname}.metacpan.org"
       - ".mcpan.org"
     starman_port: 5005
-    starman_workers: 1
+
 
 metacpan::web::static:
   metacpan-explorer:
