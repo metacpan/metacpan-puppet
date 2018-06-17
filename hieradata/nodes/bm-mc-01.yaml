@@ -21,6 +21,10 @@ metacpan::crons::general:
       minute : 5
 
 metacpan::crons::api:
+    snapshot_cover_index:
+      ensure : present
+    snapshot_contributor_index:
+      ensure : present
     snapshot_cpan_index:
       ensure : absent
     snapshot_user_index:
@@ -28,7 +32,7 @@ metacpan::crons::api:
     snapshot_purge_old:
       ensure : absent
     ratings:
-      ensure : present
+      ensure : absent
     mirrors:
       ensure : present
     cpantesters:

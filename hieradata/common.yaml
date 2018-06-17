@@ -298,6 +298,16 @@ metacpan::crons::api:
         hour : 2
         minute : 5
         ensure : absent
+    snapshot_cover_index:
+        cmd : snapshot --snap --indices 'cover' --snap-stub cover --date-format '\%Y-\%m-\%d'
+        hour : 2
+        minute : 15
+        ensure : absent
+    snapshot_contributor_index:
+        cmd : snapshot --snap --indices 'contributor' --snap-stub contributor --date-format '\%Y-\%m-\%d'
+        hour : 2
+        minute : 20
+        ensure : absent
     snapshot_purge_old:
         cmd : snapshot --purge-old
         hour : 3

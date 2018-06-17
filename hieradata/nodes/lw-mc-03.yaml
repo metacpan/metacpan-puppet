@@ -40,7 +40,7 @@ metacpan::crons::api:
     snapshot_purge_old:
       ensure : present
     ratings:
-      ensure : present
+      ensure : absent
     mirrors:
       ensure : present
     cpantesters:
