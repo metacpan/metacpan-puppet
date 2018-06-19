@@ -91,6 +91,10 @@ metacpan::users:
         admin    : true
         fullname : "Olaf Alders <olaf.alders@gmail.com>"
         no_passwd_sudo : true
+    ssoriche:
+        admin    : true
+        fullname : 'Shawn Sorichetti <shawn@coloredblocks.com>'
+        shell    : /bin/zsh
     rwstauner:
         admin    : true
         fullname : 'Randy Stauner <rwstauner@cpan.org>'
