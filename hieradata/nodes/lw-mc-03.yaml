@@ -34,11 +34,11 @@ metacpan::crons::general:
 
 metacpan::crons::api:
     snapshot_cpan_index:
-      ensure : present
+      ensure : absent
     snapshot_user_index:
-      ensure : present
+      ensure : absent
     snapshot_purge_old:
-      ensure : present
+      ensure : absent
     ratings:
       ensure : absent
     mirrors:

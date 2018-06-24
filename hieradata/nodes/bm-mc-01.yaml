@@ -26,11 +26,11 @@ metacpan::crons::api:
     snapshot_contributor_index:
       ensure : present
     snapshot_cpan_index:
-      ensure : absent
+      ensure : present
     snapshot_user_index:
-      ensure : absent
+      ensure : present
     snapshot_purge_old:
-      ensure : absent
+      ensure : present
     ratings:
       ensure : absent
     mirrors:
@@ -40,7 +40,7 @@ metacpan::crons::api:
     latest:
       ensure : present
     backup_purge:
-      ensure : absent
+      ensure : present
     session:
       ensure : present
     release:
