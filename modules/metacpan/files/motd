@@ -1,0 +1,6 @@
+See https://github.com/metacpan/network-infrastructure for current status
+
+Summary:
+BM-01,02,04 - main production ES cluster + web sites
+BM-03       - non-production (stage)
+LW-01,02,03 - some production websites + DR

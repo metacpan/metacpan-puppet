@@ -101,6 +101,13 @@ class metacpan(
       mode   => '0755',
     }
 
+    file { '/etc/motd':
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      source => "puppet:///modules/metacpan/motd",
+    }
+
     file { '/var/tmp/metacpan':
         ensure => link,
         target => $tmp_dir,
