@@ -1,8 +1,8 @@
-# Munin master configuration fragment for <%= title %>
+# Munin master configuration fragment for <%= @name %>
 #
 # This file is handled by puppet, all modifications will be lost
 
-[<%= @title %>]
+[<%= @name %>]
   address <%= @address %>
 <% Array(@config).each do |line| -%>
   <%= line %>
