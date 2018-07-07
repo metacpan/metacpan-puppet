@@ -52,5 +52,8 @@ metacpan::fw_ports:
   github-meets-cpan:
     port: 5002
     source: '0.0.0.0/0'
+  perlresume:
+    port: 5003
+    source: '0.0.0.0/0'
 
 starman::config::plack_env: development

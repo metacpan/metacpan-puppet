@@ -39,5 +39,13 @@ class metacpan::web::production(
       notify => Starman::Service['github-meets-cpan'],
   }
 
+  file { "/home/${user}/perlresume/environment.json":
+      ensure => file,
+      owner => $user,
+      group => $group,
+      source => "puppet:///private/perlresume/environment.json",
+      require => Metacpan::Gitrepo['gitrepo_perlresume'], # after repo created
+      notify => Starman::Service['perlresume'],
+  }
 
 }
