@@ -41,9 +41,9 @@ $ENV{PERL_CARTON_PATH} = $carton_path;
 # We need the right perl in the ENV
 $ENV{PATH} = '<%= @perlbin %>:' . $ENV{PATH};
 
-#  carton exec bin/queue.pl
+#  carton exec bin/api.pl
 my @program_args = (
-    'exec', "${home}/bin/queue.pl",
+    'exec', "${home}/bin/api.pl",
     'minion', 'worker',
     '-j', $workers
 );
