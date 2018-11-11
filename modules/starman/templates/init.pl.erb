@@ -38,7 +38,7 @@ $ENV{PERL_CARTON_PATH} = $carton_path;
 my @program_args = (
     '--', "bin/api.pl",
     'prefork', '--proxy',
-    '--listen'    => "http://localhost:<%= @port %>",
+    '--listen'    => "http://*:<%= @port %>",
     '--workers' => $workers,
 );
 
