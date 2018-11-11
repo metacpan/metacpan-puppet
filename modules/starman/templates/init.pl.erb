@@ -26,7 +26,7 @@ my %dirs = (
     pid => "$home/var/run",
     log => "$home/var/log",
 );
-my $carton    = '<%= @perlbin %>/carton';
+my $carton    = "$home/../bin/metacpan-api-carton-exec";
 my $workers   = <%= @workers %>;
 
 my $carton_dir = "/home/${user}/carton";
@@ -36,7 +36,7 @@ my $carton_path = "${carton_dir}/${name}";
 $ENV{PERL_CARTON_PATH} = $carton_path;
 
 my @program_args = (
-    'exec', '--', "${carton_path}/bin/api.pl",
+    '--', "bin/api.pl",
     'prefork', '--proxy',
     '--listen'    => "http://localhost:<%= @port %>",
     '--workers' => $workers,
