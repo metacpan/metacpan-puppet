@@ -26,9 +26,8 @@ my %dirs = (
     pid => "$home/var/run",
     log => "$home/var/log",
 );
-my $carton    = '<%= @perlbin %>/carton';
+my $carton    = "$home/../bin/metacpan-api-carton-exec";
 my $workers   = <%= @workers %>;
-my $plack_env = '<%= @plack_env %>';
 
 my $carton_dir = "/home/${user}/carton";
 my $carton_path = "${carton_dir}/${name}";
@@ -37,14 +36,10 @@ my $carton_path = "${carton_dir}/${name}";
 $ENV{PERL_CARTON_PATH} = $carton_path;
 
 my @program_args = (
-    'exec', "${carton_path}/bin/plackup",
-    '--port'    => <%= @port %>,
+    '--', "bin/api.pl",
+    'prefork', '--proxy',
+    '--listen'    => "http://*:<%= @port %>",
     '--workers' => $workers,
-    '-E'        => $plack_env,
-    '-Ilib',
-    '-a'  => 'app.psgi',
-    '-s', => 'Gazelle',
-    '--disable-proctitle', # so we know which processes are what
 );
 
 # Puppet should be doing this with symlinks

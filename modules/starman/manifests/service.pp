@@ -6,6 +6,7 @@ define starman::service (
     $service_enable = true,
     $user = hiera('metacpan::user', 'metacpan'),
     $group = hiera('metacpan::group', 'metacpan'),
+    $init_template = 'starman/init.pl.erb',
 ) {
     include perl
     include starman::config
@@ -83,7 +84,7 @@ define starman::service (
         mode    => '0755',
         owner   => 'root',
         group   => 'root',
-        content => template('starman/init.pl.erb'),
+        content => template($init_template),
         notify => Service[$service_name],
     }
 
