@@ -28,6 +28,7 @@ define metacpan::web::starman (
     # starman
     $starman_port = 'UNSET',
     $starman_workers = 1,
+    $starman_init_template = 'starman/init.pl.erb',
 ) {
 
   $path = "/home/${owner}/${name}"
@@ -83,6 +84,7 @@ define metacpan::web::starman (
       root    => $path,
       port    => $starman_port,
       workers => $starman_workers,
+      init_template => $starman_init_template,
   }
 
 
