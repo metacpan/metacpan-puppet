@@ -16,3 +16,18 @@ metacpan::crons::general:
 metacpan::crons::general:
     metacpan_sitemaps:
       minute : 25
+
+metacpan_nginx::vhost:
+
+  metacpan-hound:
+    ssl_only: true
+    bare:     true
+    aliases:
+     - 'hound.metacpan.org'
+
+metacpan_nginx::proxy:
+
+  proxy_metacpan-hound:
+    target:   'http://localhost:6080/'
+    site:     'metacpan-hound'
+    location: ''
