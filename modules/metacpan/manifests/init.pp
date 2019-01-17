@@ -89,6 +89,10 @@ class metacpan(
     $git_repos = hiera_hash('metacpan::git::repo', {})
     create_resources('metacpan::gitrepo', $git_repos)
 
+    # Proxy sites
+    $proxy = hiera_hash('metacpan::web::proxy', {})
+    create_resources('metacpan::web::proxy', $proxy)
+
     group {
       'shellaccess':
         ensure => present;
