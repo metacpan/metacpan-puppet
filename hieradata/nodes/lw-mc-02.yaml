@@ -17,17 +17,11 @@ metacpan::crons::general:
     metacpan_sitemaps:
       minute : 25
 
-metacpan_nginx::vhost:
+metacpan::web::proxy:
 
   metacpan-hound:
-    ssl_only: true
-    bare:     true
-    aliases:
+    vhost_ssl_only: true
+    vhost_bare:     true
+    vhost_aliases:
      - 'hound.metacpan.org'
-
-metacpan_nginx::proxy:
-
-  proxy_metacpan-hound:
-    target:   'http://localhost:6080/'
-    site:     'metacpan-hound'
-    location: ''
+    proxy_port:     6080
