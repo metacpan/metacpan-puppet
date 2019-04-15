@@ -1,4 +1,5 @@
 #!/bin/sh
 
 cd /home/<%= @user %>/<%= @name %>/
-PERL_CARTON_PATH=<%= @carton_service_dir %> <%= @perlbin %>/carton "$@"
+export PERL_CARTON_PATH=<%= @carton_service_dir %>
+exec <%= @perlbin %>/carton "$@"
