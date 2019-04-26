@@ -49,8 +49,6 @@ metacpan::fw_ports:
   metacpan_api:
     port: 5000
     source: '0.0.0.0/0'
-  github-meets-cpan:
-    port: 5002
-    source: '0.0.0.0/0'
+
 
 starman::config::plack_env: development

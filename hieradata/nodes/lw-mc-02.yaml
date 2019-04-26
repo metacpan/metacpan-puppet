@@ -10,10 +10,6 @@ minion_queue::service::enable: true
 
 
 metacpan::crons::general:
-    github-meets-cpan:
-      ensure : present
-
-metacpan::crons::general:
     metacpan_sitemaps:
       minute : 25
 
