@@ -29,6 +29,15 @@ metacpan::crons::general:
     metacpan_sitemaps:
       ensure : present
 
+metacpan::web::docker:
+
+  github-meets-cpan:
+    vhost_aliases:
+      - 'gh.metacpan.org'
+      - "gh.lo.metacpan.org"
+      - "gh.%{hostname}.metacpan.org"
+    docker_port: 5002
+
 metacpan::web::starman:
 
   metacpan-web:
@@ -50,10 +59,6 @@ metacpan::web::starman:
     starman_workers: 2
 
   github-meets-cpan:
-    git_enable: true
-    starman_workers: 1
-    git_source: 'https://github.com/metacpan/github-meets-cpan.git'
-    git_revision: 'master'
     vhost_bare: true
     vhost_aliases:
       - 'gh.metacpan.org'

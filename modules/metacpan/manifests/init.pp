@@ -69,6 +69,10 @@ class metacpan(
     $websites = hiera_hash('metacpan::web::starman', {})
     create_resources('metacpan::web::starman', $websites)
 
+    # Docker backed sites
+    $docker_sites = hiera_hash('metacpan::web::docker', {})
+    create_resources('metacpan::web::docker', $docker_sites)
+
     # Swat site
     $swat = hiera_hash('metacpan::system::swat', {})
     create_resources('metacpan::system::swat', $swat)

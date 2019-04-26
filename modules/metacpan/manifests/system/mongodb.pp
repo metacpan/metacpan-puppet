@@ -1,5 +1,5 @@
 class metacpan::system::mongodb {
 
-    # Needed for gh.metacpan.org
-    package { 'mongodb': ensure => present }
+    # Was needed for gh.metacpan.org - now using docker
+    package { 'mongodb': ensure => absent }
 }
