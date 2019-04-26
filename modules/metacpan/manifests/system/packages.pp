@@ -3,6 +3,10 @@ class metacpan::system::packages {
     # Editors
     package { 'vim': ensure => present }
 
+    # Docker Stuff
+    package { 'docker': ensure => present }
+    package { 'docker-compose': ensure => present }
+
     # System Tools
     package { bzip2: ensure => present }
     package { curl: ensure => present }
