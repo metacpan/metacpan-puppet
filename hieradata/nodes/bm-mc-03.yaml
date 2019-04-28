@@ -26,7 +26,7 @@ metacpan::crons::general:
       minute : 15
 
     backup_cpancover:
-      cmd : "rsync -q -a -e "ssh -i ~/.ssh/cpancover" metacpan@cpancover.com:/cover/staging /mnt/lv-cpancover-html/ > /dev/null"
+      cmd : "rsync -q -a -e 'ssh -i ~/.ssh/cpancover' metacpan@cpancover.com:/cover/staging /mnt/lv-cpancover-html/ > /dev/null"
       minute : 40
       user: "%{hiera('metacpan::user')}"
       ensure : present
