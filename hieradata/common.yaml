@@ -440,7 +440,7 @@ nginx::allowed:
   - 192.168.0.0/16
   - 127.0.0.1/32
   # local machine's IP
-  - "%{ipaddress_eth0}/32"
+  - "%{ipaddress}/32"
   # https://api.fastly.com/public-ip-list + 127.0.0.1/32
   - 103.244.50.0/24
   - 103.245.222.0/23
