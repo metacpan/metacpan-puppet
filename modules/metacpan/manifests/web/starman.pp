@@ -29,6 +29,11 @@ define metacpan::web::starman (
     $starman_port = 'UNSET',
     $starman_workers = 1,
     $starman_init_template = 'starman/init.pl.erb',
+
+    # allow overriding the nginx target
+    $proxy_target_port = $starman_port,
+    $service_enable    = true,
+
 ) {
 
   $path = "/home/${owner}/${name}"
@@ -64,7 +69,7 @@ define metacpan::web::starman (
 
   # Add all the extra proxy / config gumpf
   create_resources('metacpan_nginx::proxy', $vhost_extra_proxies, {
-    target   => "http://localhost:${starman_port}/",
+    target   => "http://localhost:${proxy_target_port}/",
     site    =>  $name,
     location => '',
   })
@@ -75,16 +80,17 @@ define metacpan::web::starman (
 
   # Setup rev-proxy to starman
   metacpan_nginx::proxy { "proxy_${name}":
-      target   => "http://localhost:${starman_port}/",
+      target   => "http://localhost:${proxy_target_port}/",
       site    => $name,
       location => '',
   }
 
   starman::service { $name:
-      root    => $path,
-      port    => $starman_port,
-      workers => $starman_workers,
-      init_template => $starman_init_template,
+      root           => $path,
+      port           => $starman_port,
+      workers        => $starman_workers,
+      init_template  => $starman_init_template,
+      service_enable => $service_enable,
   }
 
 
