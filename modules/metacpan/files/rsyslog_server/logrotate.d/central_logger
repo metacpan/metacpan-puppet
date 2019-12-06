@@ -1,0 +1,15 @@
+/var/log/remote/*/*.log
+/var/log/remote/*/messages
+/var/log/remote/*/syslog
+{
+        rotate 12
+        weekly
+        missingok
+        notifempty
+        compress
+        delaycompress
+        sharedscripts
+        postrotate
+                invoke-rc.d rsyslog rotate > /dev/null
+        endscript
+}
