@@ -1,6 +1,6 @@
 Facter.add(:datacenter) do
   setcode do
-    case Facter.value(:ipaddress_eth0)
+    case Facter.value(:ipaddress)
     when /^5\.153\.225\./
       # bm-mc-01 and bm-mc-02
       'bytemark-YO26-york'
