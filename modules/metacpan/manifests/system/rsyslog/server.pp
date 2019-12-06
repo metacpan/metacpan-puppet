@@ -8,9 +8,9 @@ class metacpan::system::rsyslog::server(
     enable_relp               => false,
     enable_onefile            => false,
     server_dir                => '/mnt/lv-metacpan--tmp/rsyslog_server/',
+    logdir_symlink            =>  '/var/log/remote',
     custom_config             => 'metacpan/rsyslog/server-metacpan.conf.erb',
     port                      => '514',
-#    relp_port                 => '20514',
     address                   => '*',
     high_precision_timestamps => false,
     log_templates             => false,
@@ -45,6 +45,20 @@ class metacpan::system::rsyslog::server(
       content => "#!/bin/sh\n/opt/perl-$perl_version/bin/perl /opt/perl-$perl_version/bin/eris-dispatcher-stdin.pl\n",
       mode    => '0555',
       notify  =>  Service['rsyslog'];
+  }
+
+  # Handles the remote log storage and rotation
+  file {
+    # Drop a symlink somewhere that makes more sense
+    "$logdir_symlink":
+      ensure => 'link',
+      target => "$server_dir";
+    # Rotate logs
+    "/etc/logrotate.d/central_logger":
+      source => "puppet:///modules/metacpan/rsyslog_server/central_logger",
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
   }
 }
 
