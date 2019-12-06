@@ -1,5 +1,6 @@
 class metacpan::system::rsyslog::server(
-
+    $server_dir                = '/mnt/lv-metacpan--tmp/rsyslog_server/',
+    $logdir_symlink            =  '/var/log/remote',
 ) {
 
   class { '::rsyslog::server':
@@ -7,8 +8,7 @@ class metacpan::system::rsyslog::server(
     enable_udp                => false,
     enable_relp               => false,
     enable_onefile            => false,
-    server_dir                => '/mnt/lv-metacpan--tmp/rsyslog_server/',
-    logdir_symlink            =>  '/var/log/remote',
+    server_dir                => $server_dir,
     custom_config             => 'metacpan/rsyslog/server-metacpan.conf.erb',
     port                      => '514',
     address                   => '*',
