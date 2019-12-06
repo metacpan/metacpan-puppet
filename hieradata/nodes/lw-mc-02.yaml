@@ -25,3 +25,8 @@ metacpan::web::proxy:
     vhost_aliases:
      - 'hound.metacpan.org'
     proxy_port:     6080
+
+metacpan::web::starman:
+
+  github-meets-cpan:
+    starman_port: 3000
