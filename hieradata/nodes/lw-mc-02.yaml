@@ -29,6 +29,5 @@ metacpan::web::proxy:
 metacpan::web::starman:
 
   github-meets-cpan:
-    git_enable: false
     proxy_target_port: 3000
     service_enable: false
