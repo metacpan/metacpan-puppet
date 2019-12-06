@@ -6,10 +6,6 @@ File {
   mode  => '0644',
 }
 
-resources { "firewall":
-  purge => true
-}
-
 firewall { "000 accept related established rules":
   ensure  => present,
   proto   => 'all',
