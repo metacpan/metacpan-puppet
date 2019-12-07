@@ -10,7 +10,7 @@ if File.exist? '/sbin/ip'
   if interfaces
       interfaces.split(/\n+/).each do |inf|
       if inf.match(/^default/)
-        default_interface = inf.split()[-1]
+        default_interface = inf.match(/dev (\w+)/).captures[0]
       end
     end
   end
