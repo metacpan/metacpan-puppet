@@ -38,5 +38,7 @@ fi
 
 # Stop complaints on vagrant
 mkdir -p private
-
+# Ugly hack to make a local class apply the facts
+export FACTERLIB=/etc/puppet/modules/facts/lib/facter
+# Run Puppet
 puppet apply --modulepath /etc/puppet/contrib-modules:/etc/puppet/modules --show_diff --certname=$CERTNAME manifests/site.pp $@
