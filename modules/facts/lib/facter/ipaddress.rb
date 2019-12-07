@@ -8,7 +8,7 @@ if File.exist? '/sbin/ip'
   ipaddress = nil
 
   if interfaces
-    interfaces.each do |inf|
+      interfaces.split(/\n+/).each do |inf|
       if inf.match(/^default/)
         default_interface = inf.split()[-1]
       end
@@ -17,7 +17,7 @@ if File.exist? '/sbin/ip'
 
   if default_interface
     lines = Facter::Core::Execution.exec("/sbin/ip addr show dev #{default_interface}")
-    lines.each do |line|
+    lines.split(/\n+/).each do |line|
       line.strip!
 
       if line.match(/^inet .*#{default_interface}/)
