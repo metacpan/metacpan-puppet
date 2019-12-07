@@ -1,17 +1,12 @@
 Facter.add(:datacenter) do
   setcode do
-    case Facter.value(:ipaddress)
-    when /^5\.153\.225\./
-      # bm-mc-01 and bm-mc-02
+    case Facter.value(:hostname)
+    when /^bm-mc-/
       'bytemark-YO26-york'
-    when /^46\.43\.35\.68/
-      # bm-mc-03
-      'bytemark-YO26-york'
-    when /^89\.16\.178\.21/
-      # bm-mc-04
-      'bytemark-YO26-york'
-    when /^50\.28\.18\./
+    when /^lw-mc-/
       'liquidweb'
+    when /^hc-mc-/
+      'hivelocity'
     else
       'development'
     end

@@ -11,6 +11,6 @@ metacpan::postgres::access_hosts:
 
 # Run on our public IP address (firewall limits access
 # to other nodes in our cluster)
-metacpan::elasticsearch::ipaddress: "%{::ipaddress}"
+metacpan::elasticsearch::ipaddress: "%{::default_ipaddress}"
 
 metacpan::rsyslog::client::log_remote: true
