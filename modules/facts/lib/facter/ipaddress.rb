@@ -1,5 +1,10 @@
-require 'facter'
-require 'facter/core/execution'
+begin
+    # facter version 2 needs these loads
+    require 'facter'
+    require 'facter/core/execution'
+rescue LoadError => e
+    # No big defal, facter version 3 autloads these things differently
+end
 
 
 if File.exist? '/sbin/ip'
