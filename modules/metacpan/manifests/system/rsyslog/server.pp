@@ -55,7 +55,7 @@ class metacpan::system::rsyslog::server(
       target => "$server_dir";
     # Rotate logs
     "/etc/logrotate.d/central_logger":
-      source => "puppet:///modules/metacpan/rsyslog_server/central_logger",
+      source => "puppet:///modules/metacpan/rsyslog_server/logrotate.d/central_logger",
       owner  => 'root',
       group  => 'root',
       mode   => '0444',
