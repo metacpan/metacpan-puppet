@@ -1,16 +1,8 @@
-begin
-    # facter version 2 needs these loads
-    require 'facter'
-    require 'facter/core/execution'
-rescue LoadError => e
-    # No big defal, facter version 3 autloads these things differently
-end
-
+default_interface = nil
+ipaddress = nil
 
 if File.exist? '/sbin/ip'
   interfaces = Facter::Core::Execution.exec('/sbin/ip route show')
-  default_interface = nil
-  ipaddress = nil
 
   if interfaces
       interfaces.split(/\n+/).each do |inf|
@@ -31,15 +23,16 @@ if File.exist? '/sbin/ip'
     end
   end
 
-  Facter.add("default_interface") do
-    setcode do
-      default_interface
-    end
-  end
+end
 
-  Facter.add("default_ipaddress") do
-    setcode do
-      ipaddress
-    end
+Facter.add("default_interface") do
+  setcode do
+    default_interface
+  end
+end
+
+Facter.add("default_ipaddress") do
+  setcode do
+    ipaddress
   end
 end
