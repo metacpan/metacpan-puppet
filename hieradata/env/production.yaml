@@ -136,4 +136,7 @@ metacpan::users:
     jberger:
         admin    : true
         fullname : "Joel Berger <joel.a.berger@gmail.com>"
+    mohawk2:
+        admin    : true
+        fullname : "Ed J <etj@cpan.org>"
 
