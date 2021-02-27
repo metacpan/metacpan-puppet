@@ -42,7 +42,7 @@ location ~ /authors/ {
 }
 
 # Try to mimic cpan.org's caching for 02packages
-location ~ /modules/.*/$ {
+location ~ /modules/.*$ {
   autoindex on;
   add_header Cache-Control 'public, max-age=600, stale-while-revalidate=90, stale-if-error=172800';
 }
