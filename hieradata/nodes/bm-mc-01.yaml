@@ -33,8 +33,6 @@ metacpan::crons::api:
       ensure : present
     ratings:
       ensure : absent
-    mirrors:
-      ensure : present
     cpantesters:
       ensure : present
     latest:
