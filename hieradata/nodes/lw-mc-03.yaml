@@ -41,8 +41,6 @@ metacpan::crons::api:
       ensure : absent
     ratings:
       ensure : absent
-    mirrors:
-      ensure : present
     cpantesters:
       ensure : present
     latest:
