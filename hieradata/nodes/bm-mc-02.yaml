@@ -18,13 +18,3 @@ metacpan::users:
 metacpan::crons::general:
     metacpan_sitemaps:
       minute : 10
-
-metacpan::git::repo:
-
-  metacpan-cpan-extracted:
-    enable_git_repo: true
-    source: 'https://github.com/metacpan/metacpan-cpan-extracted.git'
-    revision: 'master'
-    path: '/mnt/lv-ssdscratch/metacpan-cpan-extracted'
-    owner: 'toddr'
-    group: 'toddr'
