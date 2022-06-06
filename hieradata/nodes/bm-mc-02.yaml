@@ -18,27 +18,3 @@ metacpan::users:
 metacpan::crons::general:
     metacpan_sitemaps:
       minute : 10
-
-
-metacpan::web::starman:
-
-  metacpan-grep-front-end:
-    git_source: 'https://github.com/metacpan/metacpan-grep-front-end.git'
-    git_revision: 'master'
-    git_enable: true
-    vhost_ssl_only: true
-    vhost_bare: true
-    vhost_aliases:
-      - 'grep.metacpan.org'
-    starman_port: 5006
-    starman_workers: 20
-
-metacpan::git::repo:
-
-  metacpan-cpan-extracted:
-    enable_git_repo: true
-    source: 'https://github.com/metacpan/metacpan-cpan-extracted.git'
-    revision: 'master'
-    path: '/mnt/lv-ssdscratch/metacpan-cpan-extracted'
-    owner: 'toddr'
-    group: 'toddr'
