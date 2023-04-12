@@ -222,7 +222,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.4.3)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
+    mini_portile2 (2.8.1)
     minitest (5.17.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
@@ -230,7 +230,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
-    nokogiri (1.13.10)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     os (1.1.4)
@@ -257,7 +257,7 @@ GEM
       puppet-syntax
       rake
       rspec-puppet
-    racc (1.6.1)
+    racc (1.6.2)
     rake (12.3.3)
     rbvmomi (1.8.2)
       builder
