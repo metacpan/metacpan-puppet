@@ -253,13 +253,6 @@ metacpan::crons::general:
       hour : 1
       ensure : absent
 
-    swat_monitoring:
-      cmd : "/bin/sh /home/%{hiera('metacpan::user')}/metacpan-monitoring/cron.sh"
-      minute : 37
-      ensure : absent
-
-
-
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::api:
     # Remvoe author - now in wrapper script in general

@@ -69,10 +69,6 @@ class metacpan(
     $websites = hiera_hash('metacpan::web::starman', {})
     create_resources('metacpan::web::starman', $websites)
 
-    # Swat site
-    $swat = hiera_hash('metacpan::system::swat', {})
-    create_resources('metacpan::system::swat', $swat)
-
     # Run any fire wall stuff here
     $fw_rules = hiera_hash('metacpan::fw_ports', {})
     create_resources('metacpan::system::firewall', $fw_rules)
