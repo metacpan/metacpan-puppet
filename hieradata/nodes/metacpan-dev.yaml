@@ -37,9 +37,6 @@ metacpan::elasticsearch::env: 'dev'
 #metacpan::elasticsearch::cluster_hosts:
 #  - 1.2.3.4
 #  - 1.2.3.5
-metacpan::system::swat:
-  metacpan-monitoring:
-    enable: true
 
 # Open up ports for development
 metacpan::fw_ports:
