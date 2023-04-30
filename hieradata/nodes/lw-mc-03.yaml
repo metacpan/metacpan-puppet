@@ -23,8 +23,6 @@ munin::node::plugins:
       config: ['user metacpan']
 
 metacpan::crons::general:
-    swat_monitoring:
-      ensure : present
     user_data_index_backups:
       ensure : present
     import_authors:

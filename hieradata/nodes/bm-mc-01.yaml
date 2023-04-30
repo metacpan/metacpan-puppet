@@ -11,8 +11,6 @@ minion_queue::service::enable: true
 metacpan::watcher::enable: true
 
 metacpan::crons::general:
-    swat_monitoring:
-      ensure : absent
     user_data_index_backups:
       ensure : absent
     import_authors:
