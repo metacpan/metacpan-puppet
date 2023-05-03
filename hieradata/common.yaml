@@ -406,6 +406,10 @@ metacpan::crons::api:
         hour: 14
         minute: 0
         ensure : absent
+    cve_hourly:
+        cmd : 'cve'
+        minute: '*/45'
+        ensure : absent
 
 metacpan::fw_ports:
   http:

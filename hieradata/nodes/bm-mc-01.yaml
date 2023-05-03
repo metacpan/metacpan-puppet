@@ -67,3 +67,5 @@ metacpan::crons::api:
       ensure : present
     cover_full:
       ensure : present
+    cve_hourly:
+      ensure : present
