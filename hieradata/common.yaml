@@ -380,11 +380,6 @@ metacpan::crons::api:
         minute : 33
         hour : 3
         ensure : absent
-    external_fedora:
-        cmd : 'external --external_source fedora --email_to book@cpan.org'
-        minute : 35
-        hour : 3
-        ensure : absent
     favorite_hourly:
         cmd : 'favorite --check_missing --age 240 --queue'
         minute: '*/30'

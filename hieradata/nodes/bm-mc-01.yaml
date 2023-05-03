@@ -57,8 +57,6 @@ metacpan::crons::api:
       ensure : present
 #    external_debian:
 #      ensure : present
-#    external_fedora:
-#      ensure : present
     contributor_daily:
       ensure : present
     contributor_weekly:
