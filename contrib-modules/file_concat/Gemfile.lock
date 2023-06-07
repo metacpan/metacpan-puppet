@@ -88,7 +88,7 @@ GEM
       json
     equalizer (0.0.11)
     excon (0.71.0)
-    facter (1.7.6)
+    facter (2.5.7)
     faraday (2.3.0)
       faraday-net_http (~> 2.0)
       ruby2_keywords (>= 0.0.4)
