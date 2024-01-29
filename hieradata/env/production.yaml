@@ -140,4 +140,8 @@ metacpan::users:
     mohawk2:
         admin    : true
         fullname : "Ed J <etj@cpan.org>"
+    abraxxa:
+        admin    : true
+        fullname : "Alexander Hartmaier <abraxxa@cpan.org>"
+        no_passwd_sudo : true
 
