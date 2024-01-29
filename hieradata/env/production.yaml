@@ -114,7 +114,6 @@ metacpan::users:
         admin    : true
         fullname : "Graham Knop <haarg@haarg.org>"
     mhorsfall:
-        ensure   : absent
         admin    : true
         fullname : "Matthew Horsfall (alh) <wolfsage@gmail.com>"
     ben:
