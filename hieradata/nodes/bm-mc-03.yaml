@@ -31,8 +31,3 @@ metacpan::crons::general:
       user: "%{hiera('metacpan::user')}"
       ensure : present
 
-# Use this to run stage branch if required
-# metacpan::web::starman:
-#   metacpan-web:
-#     git_revision: 'stage'
-

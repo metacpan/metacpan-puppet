@@ -112,22 +112,6 @@ metacpan::logstash::status: disabled
 
 metacpan::web::starman:
 
-  metacpan-web:
-    git_source: 'https://github.com/metacpan/metacpan-web.git'
-    git_revision: 'master'
-    vhost_ssl_only: true
-    vhost_bare: true
-    vhost_aliases:
-      - 'v1.metacpan.org'
-      - 'metacpan.org'
-      - "lo.metacpan.org"
-      - "%{hostname}.metacpan.org"
-    starman_port: 5001
-    starman_workers: 3
-    vhost_extra_configs:
-      trailing_slash_rewrite:
-          template: 'trailing_slash'
-
   metacpan-api:
     git_source: 'https://github.com/metacpan/metacpan-api.git'
     git_revision: 'master'
