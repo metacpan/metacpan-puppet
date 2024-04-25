@@ -31,10 +31,6 @@ metacpan::crons::general:
 
 metacpan::web::starman:
 
-  metacpan-web:
-    git_enable: true
-    starman_workers: 10
-
   metacpan-api:
     git_enable: true
     starman_workers: 14
