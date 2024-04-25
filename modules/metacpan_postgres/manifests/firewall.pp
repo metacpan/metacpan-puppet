@@ -10,7 +10,7 @@ class metacpan_postgres::firewall(
   # outside of this.
   $local_net.each |$source| {
 
-    firewall{ "600 Postgres ${source} - ${name} (${module})":
+    firewall{ "600 Postgres ${source} - ${name}":
       ensure  => present,
       dport   => [ $port ],
       proto   => tcp,
