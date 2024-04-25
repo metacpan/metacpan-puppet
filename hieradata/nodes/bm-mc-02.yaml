@@ -7,6 +7,9 @@ minion_queue::service::workers: 5
 minion_queue::service::ensure: running
 minion_queue::service::enable: true
 
+# we do want this running
+metacpan::watcher::enable: true
+
 metacpan::users:
     toddr:
         admin: true
