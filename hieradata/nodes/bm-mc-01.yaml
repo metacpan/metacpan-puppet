@@ -1,71 +1,20 @@
 ---
 classes:
-    - metacpan_postgres
+    - metacpan_postgres::install_only
+    - metacpan_postgres::pgpass
     - minion_queue
 
 minion_queue::service::workers: 4
 minion_queue::service::ensure: running
 minion_queue::service::enable: true
 
-# We want watcher enabled
-metacpan::watcher::enable: true
+# Enabled on 02 now
+metacpan::watcher::enable: false
 
 metacpan::crons::general:
     user_data_index_backups:
       ensure : absent
     import_authors:
-      ensure : present
+      ensure : absent
     metacpan_sitemaps:
       minute : 5
-
-metacpan::crons::api:
-    snapshot_cover_index:
-      ensure : present
-    snapshot_contributor_index:
-      ensure : present
-    snapshot_cpan_index:
-      ensure : present
-    snapshot_user_index:
-      ensure : present
-    snapshot_purge_old:
-      ensure : present
-    ratings:
-      ensure : absent
-    cpantesters:
-      ensure : present
-    latest:
-      ensure : present
-    backup_purge:
-      ensure : present
-    session:
-      ensure : present
-    release:
-      ensure : present
-    package:
-      ensure : present
-    package_cleanup:
-      ensure : present
-    permission:
-      ensure : present
-    permission_cleanup:
-      ensure : present
-    tickets:
-      ensure : present
-    river:
-      ensure : present
-    external_cygwin:
-      ensure : present
-#    external_debian:
-#      ensure : present
-    contributor_daily:
-      ensure : present
-    contributor_weekly:
-      ensure : present
-    favorite_hourly:
-      ensure : present
-    favorite_weekly:
-      ensure : present
-    cover_full:
-      ensure : present
-    cve_hourly:
-      ensure : present
