@@ -12,15 +12,6 @@ class metacpan::web::production(
       require => Metacpan::Gitrepo['gitrepo_metacpan-explorer'], # after repo created
   }
 
-  file { "/home/${user}/metacpan-web/metacpan_web_local.conf":
-      ensure => file,
-      owner => $user,
-      group => $group,
-      source => "puppet:///private/metacpan-web/metacpan_web_local.conf",
-      require => Metacpan::Gitrepo['gitrepo_metacpan-web'], # after repo created
-      notify => Starman::Service['metacpan-web'],
-  }
-
   file { "/home/${user}/metacpan-api/metacpan_server_local.conf":
       ensure => file,
       owner => $user,
