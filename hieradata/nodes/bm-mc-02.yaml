@@ -1,6 +1,7 @@
 ---
 classes:
   - metacpan_postgres
+  - metacpan_postgres::pgpass
   - minion_queue
 
 minion_queue::service::workers: 5
