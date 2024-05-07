@@ -4,10 +4,4 @@ class metacpan::web(
 		$group = hiera('metacpan::group', 'metacpan'),
 ) {
 
-	file { "/home/${user}/metacpan-web/root/static/sitemaps":
-			ensure => directory,
-			owner => $user,
-			group => $group,
-	}
-
 }

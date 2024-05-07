@@ -225,18 +225,6 @@ metacpan::crons::general:
       minute : 22
       ensure : absent
 
-    metacpan_sitemaps:
-      cmd : "/home/%{hiera('metacpan::user')}/bin/metacpan-web-carton-exec bin/generate_sitemap.pl"
-      hour : 2
-      minute : 0
-      ensure : absent
-
-    github-meets-cpan:
-      cmd : "/home/%{hiera('metacpan::user')}/bin/github-meets-cpan-carton-exec cron/update.pl"
-      minute : 20
-      hour : 1
-      ensure : absent
-
 # NOTE: set to `absent` here - turn on in the node
 metacpan::crons::api:
     # Remvoe author - now in wrapper script in general

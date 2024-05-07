@@ -35,29 +35,6 @@ metacpan::web::starman:
     git_enable: true
     starman_workers: 14
 
-  api-v0-shim:
-    git_source: 'https://github.com/metacpan/metacpan-api-v0-shim.git'
-    git_revision: 'master'
-    vhost_bare: true
-    vhost_aliases:
-      - 'api-v0-shim.metacpan.org'
-    starman_port: 5003
-    git_enable: true
-    starman_workers: 2
-
-  github-meets-cpan:
-    git_enable: true
-    starman_workers: 1
-    git_source: 'https://github.com/metacpan/github-meets-cpan.git'
-    git_revision: 'master'
-    vhost_bare: true
-    vhost_aliases:
-      - 'gh.metacpan.org'
-      - "gh.lo.metacpan.org"
-      - "gh.%{hostname}.metacpan.org"
-    starman_port: 5002
-    starman_workers: 1
-
   sco-redirect:
     git_enable: true
     starman_workers: 10
