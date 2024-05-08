@@ -40,14 +40,8 @@ metacpan::elasticsearch::env: 'dev'
 
 # Open up ports for development
 metacpan::fw_ports:
-  metacpan_web:
-    port: 5001
-    source: '0.0.0.0/0'
   metacpan_api:
     port: 5000
-    source: '0.0.0.0/0'
-  github-meets-cpan:
-    port: 5002
     source: '0.0.0.0/0'
 
 starman::config::plack_env: development

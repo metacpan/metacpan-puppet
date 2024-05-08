@@ -10,10 +10,6 @@ minion_queue::service::enable: true
 
 
 metacpan::crons::general:
-    github-meets-cpan:
-      ensure : present
-
-metacpan::crons::general:
     metacpan_sitemaps:
       minute : 25
 
@@ -26,8 +22,3 @@ metacpan::web::proxy:
      - 'hound.metacpan.org'
     proxy_port:     6080
 
-metacpan::web::starman:
-
-  github-meets-cpan:
-    proxy_target_port: 3000
-    service_enable: false
