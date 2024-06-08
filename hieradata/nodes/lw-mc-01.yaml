@@ -10,7 +10,3 @@ classes:
 minion_queue::service::workers: 10
 minion_queue::service::ensure: running
 minion_queue::service::enable: true
-
-metacpan::crons::general:
-    metacpan_sitemaps:
-      minute : 20

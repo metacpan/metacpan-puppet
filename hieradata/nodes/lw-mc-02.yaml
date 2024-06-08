@@ -9,10 +9,6 @@ minion_queue::service::ensure: running
 minion_queue::service::enable: true
 
 
-metacpan::crons::general:
-    metacpan_sitemaps:
-      minute : 25
-
 metacpan::web::proxy:
 
   metacpan-hound:
