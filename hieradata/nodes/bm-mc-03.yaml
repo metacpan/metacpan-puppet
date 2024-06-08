@@ -22,8 +22,6 @@ rsyslog::extra_modules:
     - "omprog"
 
 metacpan::crons::general:
-    metacpan_sitemaps:
-      minute : 15
 
     backup_cpancover:
       cmd : "rsync -q -a -e 'ssh -i ~/.ssh/cpancover' metacpan@cpancover.com:/cover/staging /mnt/lv-cpancover-html/ >/dev/null 2>&1"

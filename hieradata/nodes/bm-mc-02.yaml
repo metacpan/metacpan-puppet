@@ -19,8 +19,6 @@ metacpan::users:
         fullname : "Atoomic <atoomic@cpan.org>"
 
 metacpan::crons::general:
-    metacpan_sitemaps:
-      minute : 10
     user_data_index_backups:
       ensure : absent
     import_authors:

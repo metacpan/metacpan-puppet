@@ -16,5 +16,3 @@ metacpan::crons::general:
       ensure : absent
     import_authors:
       ensure : absent
-    metacpan_sitemaps:
-      minute : 5

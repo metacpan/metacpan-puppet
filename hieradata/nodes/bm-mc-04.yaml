@@ -8,6 +8,3 @@ minion_queue::service::workers: 5
 minion_queue::service::ensure: running
 minion_queue::service::enable: true
 
-metacpan::crons::general:
-    metacpan_sitemaps:
-      minute : 35
