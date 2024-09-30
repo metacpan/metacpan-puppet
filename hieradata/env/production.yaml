@@ -33,22 +33,6 @@ metacpan::web::starman:
     git_enable: true
     starman_workers: 14
 
-  sco-redirect:
-    git_enable: true
-    starman_workers: 10
-    git_source: 'https://github.com/metacpan/sco-redirect.git'
-    git_revision: 'master'
-    vhost_bare: true
-    vhost_aliases:
-      - 'search.cpan.org'
-      - "cpansearch.perl.org" # not fastly
-      - 'sco.metacpan.org'
-      - "sco.lo.metacpan.org"
-      - "sco.%{hostname}.metacpan.org"
-      - ".mcpan.org"
-    starman_port: 5005
-
-
 metacpan::web::static:
   metacpan-explorer:
     git_enable: true
