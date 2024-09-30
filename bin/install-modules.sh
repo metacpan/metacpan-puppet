@@ -16,7 +16,6 @@ $PUPPET elastic-elasticsearch
 $PUPPET elastic-elastic_stack # elastic-logstash
 $PUPPET puppet-tea # elastic-elasticsearch
 $PUPPET richardc-datacat
-$PUPPET ispavailability-file_concat
 $PUPPET elastic-logstash
 $PUPPET saz-rsyslog
 $PUPPET bashtoni-timezone
