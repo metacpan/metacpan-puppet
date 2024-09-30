@@ -35,7 +35,7 @@ appender:
     type: <%= @file_rolling_type %>
     file: ${path.logs}/${cluster.name}.log
     <%- if @file_rolling_type == 'dailyRollingFile' -%>
-    datePattern: <%= @daily_rolling_date_pattern %>
+    datePattern: "<%= @daily_rolling_date_pattern %>"
     <%- elsif @file_rolling_type == 'rollingFile' -%>
     maxBackupIndex: <%= @rolling_file_max_backup_index %>
     maxFileSize: <%= @rolling_file_max_file_size %>
