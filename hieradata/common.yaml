@@ -125,7 +125,7 @@ metacpan::web::starman:
       - "st.aticpan.org"
     starman_port: 5000
     starman_workers: 2
-    starman_init_template: 'starman/init.api.erb'
+    starman_init_template: 'starman/init.pl.erb'
     vhost_extra_proxies:
       proxy_cpan_index:
           location: '/v1/cpan'
