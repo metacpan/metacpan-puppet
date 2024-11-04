@@ -25,13 +25,7 @@ metacpan::crons::general:
       ensure : present
 
 metacpan::crons::api:
-    snapshot_cover_index:
-      ensure : present
-    snapshot_contributor_index:
-      ensure : present
-    snapshot_cpan_index:
-      ensure : present
-    snapshot_user_index:
+    snapshot_full:
       ensure : present
     snapshot_purge_old:
       ensure : present
