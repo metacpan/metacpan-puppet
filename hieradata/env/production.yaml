@@ -10,6 +10,7 @@ exim::relayhost: '*.mailgun.org'
 
 metacpan::carton_args: '--deployment'
 
+metacpan::elasticsearch::status: 'disabled'
 metacpan::elasticsearch::memory: '10g'
 
 # Let's have rrr on all machines for now
