@@ -1,22 +1,22 @@
 ---
 classes:
   - metacpan::system::rsyslog::server
-  - metacpan_kibana
+  # - metacpan_kibana
 
-metacpan::elasticsearch::cluster_name: 'meta_log'
-metacpan::elasticsearch::master_nodes: 1
-metacpan::elasticsearch::expected_nodes: 1
-metacpan::elasticsearch::replicas: 0
-metacpan::elasticsearch::recover_after_nodes: 1
-metacpan::elasticsearch::cluster_hosts:
-  - 46.43.35.68 # bm-mc-03
-metacpan::elasticsearch::auto_create_indexes: 'syslog-*,app-*,access-*'
+# metacpan::elasticsearch::cluster_name: 'meta_log'
+# metacpan::elasticsearch::master_nodes: 1
+# metacpan::elasticsearch::expected_nodes: 1
+# metacpan::elasticsearch::replicas: 0
+# metacpan::elasticsearch::recover_after_nodes: 1
+# metacpan::elasticsearch::cluster_hosts:
+#   - 46.43.35.68 # bm-mc-03
+# metacpan::elasticsearch::auto_create_indexes: 'syslog-*,app-*,access-*'
 
 metacpan::fw_ports:
   rsyslog:
     order: 120
     port: 514
-    source: '0.0.0.0/0'
+    source: '0.0.0.0/0' 
 
 rsyslog::extra_modules:
     - "omprog"

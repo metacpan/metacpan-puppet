@@ -9,4 +9,7 @@ location <%= @location %>/ {
   proxy_set_header   X-Forwarded-Port $server_port;
   proxy_set_header   X-Forwarded-Host $host;
   proxy_set_header   X-Forwarded-Proto $scheme;
+  proxy_buffer_size 128k;
+  proxy_buffers 40 128k;
+  proxy_busy_buffers_size 256k;
 }
