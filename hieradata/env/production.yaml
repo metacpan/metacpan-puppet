@@ -43,6 +43,10 @@ metacpan::users:
         admin    : true
         fullname : "Leo Lapworth <leo@cuckoo.org>"
         no_passwd_sudo : true
+    rhodri:
+        admin    : true
+        fullname : "Rhodri Metcalfe-Davies <rhodrimd@digitalcraftsmen.com>"
+        no_passwd_sudo : true
     olaf:
         admin    : true
         fullname : "Olaf Alders <olaf.alders@gmail.com>"
