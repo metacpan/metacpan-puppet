@@ -30,6 +30,7 @@ define rrrclient::cron(
           user        => $user,
           # NOTE: No "--delete" arg since we're also a backpan.
           command     => "/usr/bin/rsync -a 23.29.118.28::PAUSE/authors/ ${cpan_mirror}/authors/ && /usr/bin/rsync -a 23.29.118.28::PAUSE/modules/ ${cpan_mirror}/modules/",
+          hour        => '*',
           minute      => '*/15',
           ensure      => $ensure;
     }
