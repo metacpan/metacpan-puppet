@@ -8,7 +8,7 @@ exim::config_type: 'satellite'
 exim::smarthost: 'smtp.mailgun.org'
 exim::relayhost: '*.mailgun.org'
 
-metacpan::carton_args: '--deployment'
+metacpan::carton_args: '--deployment --without develop'
 
 metacpan::elasticsearch::status: 'disabled'
 metacpan::elasticsearch::memory: '10g'
