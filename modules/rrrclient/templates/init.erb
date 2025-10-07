@@ -30,7 +30,7 @@ test -x $BIN || { echo "$BIN not installed";
 case "$1" in
     start)
 	echo -n "Starting <%= @filename %> "
-        start-stop-daemon --start --background -c <%= @owner %> -m -p <%= @pid_file %> --startas <%= @bin %> -- --source cpan-rsync.perl.org::CPAN/RECENT.recent --target <%= @cpan_mirror %> --skip-deletes
+        start-stop-daemon --start --background -c <%= @owner %> -m -p <%= @pid_file %> --startas <%= @bin %> -- --source 23.29.118.28::PAUSE/RECENT.recent --target <%= @cpan_mirror %> --skip-deletes
 	;;
     stop)
 	echo -n "Shutting down <%= @filename %> "
