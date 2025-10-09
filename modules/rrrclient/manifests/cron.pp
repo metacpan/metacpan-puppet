@@ -29,8 +29,9 @@ define rrrclient::cron(
       'metacpan_daily_rsync':
           user        => $user,
           # NOTE: No "--delete" arg since we're also a backpan.
-          command     => "/usr/bin/rsync -a 23.29.118.28::PAUSE/authors/ ${cpan_mirror}/authors/ && /usr/bin/rsync -a 23.29.118.28::PAUSE/modules/ ${cpan_mirror}/modules/",
-          minute      => '*/15',
+          command     => "/usr/bin/rsync -a 23.29.118.28::PAUSE ${cpan_mirror}",
+          hour        => '23',
+          minute      => '13',
           ensure      => $ensure;
     }
 }
