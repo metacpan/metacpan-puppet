@@ -3,6 +3,7 @@ define rrrclient::service(
     $cpan_mirror,
     $pid_file = "/var/run/rrrclient-$name.pid",
     $enable = false,
+    $rrr_server = hiera('metacpan::rrrclient::server'),
 ) {
     include perl
     perl::module{ 'File::Rsync::Mirror::Recent':

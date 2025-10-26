@@ -86,6 +86,8 @@ metacpan::watcher::enable: false
 
 # We don't want to have CPAN synced
 metacpan::rrrclient::enable: false
+# Default server to use
+metacpan::rrrclient::server: 'cpan-rsync.perl.org'
 
 # Elasticsearch basic options
 metacpan::elasticsearch::version: 2.4.3

@@ -2,6 +2,7 @@ define rrrclient::cron(
   $ensure = absent,
   $cpan_mirror,
   $user = hiera('metacpan::user', 'metacpan'),
+  $rrr_server = hiera('metacpan::rrrclient::server'),
 ) {
 
     # BARBIE pointed out an issue where rrr_client misses arbitrary uploads. He and
@@ -29,7 +30,7 @@ define rrrclient::cron(
       'metacpan_daily_rsync':
           user        => $user,
           # NOTE: No "--delete" arg since we're also a backpan.
-          command     => "/usr/bin/rsync -a cpan-rsync.perl.org::CPAN ${cpan_mirror}",
+          command     => "/usr/bin/rsync -a ${rrr_server}::CPAN ${cpan_mirror}",
           hour        => '23',
           minute      => '13',
           ensure      => $ensure;
