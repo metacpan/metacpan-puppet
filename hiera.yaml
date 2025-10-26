@@ -8,4 +8,5 @@
   - "nodes/%{hostname}"
   - "datacenter/%{datacenter}"
   - "env/%{env}"
+  - private/common
   - common
