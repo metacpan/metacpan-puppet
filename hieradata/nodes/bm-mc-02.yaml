@@ -18,16 +18,12 @@ metacpan::users:
     atoomic:
         fullname : "Atoomic <atoomic@cpan.org>"
 
-metacpan::crons::general:
-    user_data_index_backups:
-      ensure : absent
-    import_authors:
-      ensure : present
-
 metacpan::crons::api:
     snapshot_full:
       ensure : present
     snapshot_purge_old:
+      ensure : present
+    author:
       ensure : present
     ratings:
       ensure : absent
