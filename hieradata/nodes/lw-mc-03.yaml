@@ -17,12 +17,6 @@ munin::node::plugins:
       ensure: 'link'
       config: ['user metacpan']
 
-metacpan::crons::general:
-    user_data_index_backups:
-      ensure : present
-    import_authors:
-      ensure : present
-
 metacpan::crons::api:
     snapshot_cpan_index:
       ensure : absent
@@ -30,6 +24,8 @@ metacpan::crons::api:
       ensure : absent
     snapshot_purge_old:
       ensure : absent
+    author:
+      ensure : present
     ratings:
       ensure : absent
     cpantesters:
