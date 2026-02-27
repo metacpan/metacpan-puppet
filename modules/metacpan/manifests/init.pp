@@ -11,7 +11,6 @@ class metacpan(
     include metacpan::elasticsearch_volume_cleanup
     include metacpan::watcher
     include metacpan::rrrclient
-    include metacpan::logstash
 
     # Setup users
     $users = hiera_hash('metacpan::users', {})

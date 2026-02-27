@@ -89,9 +89,6 @@ metacpan::rrrclient::enable: false
 # Default server to use
 metacpan::rrrclient::server: 'cpan-rsync.perl.org'
 
-# Install logstash but don't run by default
-metacpan::logstash::status: disabled
-
 metacpan::web::starman:
 
   metacpan-api:

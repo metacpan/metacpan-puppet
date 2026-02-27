@@ -19,7 +19,6 @@ How is this puppet repository set up?..
     # static files and templates are in
     modules/metacpan/files or modules/metacpan/templates
 
-    modules/elasticsearch
     modules/logrotate
     modules/nginx
     modules/perlbrew
