@@ -2,8 +2,6 @@
 
 classes:
     - minion_queue
-    # Get a test ES running additionally to the default one
-    - metacpan_elasticsearch::test_instance
 
 minion_queue::service::workers: 1
 minion_queue::service::ensure: running
@@ -21,23 +19,9 @@ metacpan::users:
         ssh_dir: false
         bin_dir: true
 
-metacpan::elasticsearch::datadir: '/var/elasticsearch'
-
-# As we are dev, just run on localhost
-metacpan::elasticsearch::cluster_hosts:
-  - "127.0.0.1"
-
-metacpan::elasticsearch::ipaddress: "127.0.0.1"
-metacpan::elasticsearch::env: 'dev'
-
 # metacpan::system::ramdisks:
 #     '/mnt/scratch_disk':
 #         size: '1M'
-
-#metacpan::elasticsearch::cluster_hosts:
-#  - 1.2.3.4
-#  - 1.2.3.5
-
 # Open up ports for development
 metacpan::fw_ports:
   metacpan_api:
