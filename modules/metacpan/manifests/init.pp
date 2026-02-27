@@ -45,17 +45,6 @@ class metacpan(
     perl::module{ 'Getopt::Long::Descriptive':
     }
 
-
-
-    # For App::Es::Utils, doesn't always install
-    # even via puppet a manual cpanm does work though?!?
-    perl::module{ 'Term::ReadKey':
-        version => '2.33'
-    }
-
-    perl::module{ 'App::ElasticSearch::Utilities':
-    }
-
     # Create ramdisks if required
     $ramdisks = hiera_hash('metacpan::system::ramdisks', {})
     create_resources('metacpan::system::ramdisk', $ramdisks)
