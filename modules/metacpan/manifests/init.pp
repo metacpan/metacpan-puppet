@@ -8,7 +8,7 @@ class metacpan(
 
     # Standard metacpan server setup
     include metacpan::system
-    include metacpan_elasticsearch
+    include metacpan::elasticsearch_volume_cleanup
     include metacpan::watcher
     include metacpan::rrrclient
     include metacpan::logstash
