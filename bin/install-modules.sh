@@ -12,11 +12,6 @@ for m in "${arr[@]}"
     done
 
 $PUPPET puppet-archive # puppetlabs-java
-$PUPPET elastic-elasticsearch
-$PUPPET elastic-elastic_stack # elastic-logstash
-$PUPPET puppet-tea # elastic-elasticsearch
-$PUPPET richardc-datacat
-$PUPPET elastic-logstash
 $PUPPET saz-rsyslog
 $PUPPET bashtoni-timezone
 $PUPPET puppet-logrotate

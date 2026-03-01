@@ -89,29 +89,6 @@ metacpan::rrrclient::enable: false
 # Default server to use
 metacpan::rrrclient::server: 'cpan-rsync.perl.org'
 
-# Elasticsearch basic options
-metacpan::elasticsearch::version: 2.4.3
-metacpan::elasticsearch::memory: '40m'
-metacpan::elasticsearch::datadir: '/mnt/lv-elasticsearch'
-
-metacpan::elasticsearch::scripts:
-
-  status_is_latest:
-    a_value: 1
-
-  score_version_numified:
-    a_value: 1
-
-  prefer_shorter_module_names_400:
-    a_value: 1
-
-  prefer_shorter_module_names_100:
-    a_value: 1
-
-
-# Install logstash but don't run by default
-metacpan::logstash::status: disabled
-
 metacpan::web::starman:
 
   metacpan-api:

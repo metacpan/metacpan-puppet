@@ -8,10 +8,9 @@ class metacpan(
 
     # Standard metacpan server setup
     include metacpan::system
-    include metacpan_elasticsearch
+    include metacpan::elasticsearch_volume_cleanup
     include metacpan::watcher
     include metacpan::rrrclient
-    include metacpan::logstash
 
     # Setup users
     $users = hiera_hash('metacpan::users', {})
@@ -43,17 +42,6 @@ class metacpan(
     }
 
     perl::module{ 'Getopt::Long::Descriptive':
-    }
-
-
-
-    # For App::Es::Utils, doesn't always install
-    # even via puppet a manual cpanm does work though?!?
-    perl::module{ 'Term::ReadKey':
-        version => '2.33'
-    }
-
-    perl::module{ 'App::ElasticSearch::Utilities':
     }
 
     # Create ramdisks if required
