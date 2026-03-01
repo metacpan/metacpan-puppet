@@ -13,7 +13,7 @@ server {
   root <%= @html %>;
   <% end %>
   access_log <%= @log_dir %>/access.log custom_v1;
-  error_log <%= @log_di %>/error.log info;
+  error_log <%= @log_dir %>/error.log info;
 
   gzip             on;
   gzip_proxied     any;
