@@ -25,7 +25,7 @@ class minion_queue::service (
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
     }
     ~> exec { 'minion_queue-init-stop':
-        command     => "systemctl stop ${service_name}"
+        command     => "systemctl stop ${service_name}",
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
     }
 
@@ -52,7 +52,7 @@ class minion_queue::service (
     # ideally we'd subscribe to the git update of metacpan-api
     # but we don't use the git repo on the dev boxes
     exec { 'restart_minion_queue':
-        command => "systemctl restart ${service_name}"
+        command => "systemctl restart ${service_name}",
         path    => [ '/usr/bin', '/bin', '/usr/sbin' ],
         require => [ Service[$service_name] ],
     }
