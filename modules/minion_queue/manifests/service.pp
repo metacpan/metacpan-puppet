@@ -26,6 +26,7 @@ class minion_queue::service (
     }
     ~> exec { 'minion_queue-init-stop':
         command     => "systemctl stop ${service_name}",
+        returns     => [ 0, 5 ],
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
     }
 

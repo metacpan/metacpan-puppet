@@ -21,6 +21,7 @@ class metacpan::watcher(
     }
     ~> exec { 'metacpan-watcher-init-stop':
         command     => 'systemctl stop metacpan-watcher',
+        returns     => [ 0, 5 ],
         path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
     }
 
