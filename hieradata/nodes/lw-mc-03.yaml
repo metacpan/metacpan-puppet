@@ -4,18 +4,11 @@ classes:
     - minion_queue
 
 minion_queue::service::workers: 5
-minion_queue::service::ensure: running
+minion_queue::service::ensure: stopped
 minion_queue::service::enable: true
 
 # We want watcher enabled
 metacpan::watcher::enable: true
-
-# Monitor the minion queue
-munin::node::plugins:
-    'minion':
-      target: '/home/metacpan/metacpan-api/bin/munin/monitor_minion_queue.pl'
-      ensure: 'link'
-      config: ['user metacpan']
 
 metacpan::crons::api:
     snapshot_cpan_index:
@@ -25,42 +18,42 @@ metacpan::crons::api:
     snapshot_purge_old:
       ensure : absent
     author:
-      ensure : present
+      ensure : absent
     ratings:
       ensure : absent
     cpantesters:
-      ensure : present
+      ensure : absent
     latest:
-      ensure : present
+      ensure : absent
     backup_purge:
-      ensure : present
+      ensure : absent
     session:
-      ensure : present
+      ensure : absent
     release:
-      ensure : present
+      ensure : absent
     package:
-      ensure : present
+      ensure : absent
     package_cleanup:
-      ensure : present
+      ensure : absent
     permission:
-      ensure : present
+      ensure : absent
     permission_cleanup:
-      ensure : present
+      ensure : absent
     tickets:
-      ensure : present
+      ensure : absent
     river:
-      ensure : present
+      ensure : absent
     external_cygwin:
-      ensure : present
-#    external_debian:
-#      ensure : present
+      ensure : absent
+    external_debian:
+      ensure : absent
     contributor_daily:
-      ensure : present
+      ensure : absent
     contributor_weekly:
-      ensure : present
+      ensure : absent
     favorite_hourly:
-      ensure : present
+      ensure : absent
     favorite_weekly:
-      ensure : present
+      ensure : absent
     cover_full:
-      ensure : present
+      ensure : absent

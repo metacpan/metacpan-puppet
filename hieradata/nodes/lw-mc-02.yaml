@@ -5,7 +5,7 @@ classes:
   - minion_queue
 
 minion_queue::service::workers: 10
-minion_queue::service::ensure: running
+minion_queue::service::ensure: stopped
 minion_queue::service::enable: true
 
 
