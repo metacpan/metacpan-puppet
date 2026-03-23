@@ -33,6 +33,8 @@ class metacpan::system::packages {
     package { libpcre3-dev: ensure => present } # for gitgrep in grep.mc.org
     package { gettext: ensure => present } # for gitgrep in grep.mc.org
 
+    package { libarchive-dev: ensure => present }
+
     package { ack-grep: ensure => present }
     package { less: ensure => present }
     package { mosh: ensure => present }
