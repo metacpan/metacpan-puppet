@@ -41,6 +41,7 @@ metacpan::users:
         fullname : "Leo Lapworth <leo@cuckoo.org>"
         no_passwd_sudo : true
     rhodri:
+        ensure   : absent
         admin    : true
         fullname : "Rhodri Metcalfe-Davies <rhodrimd@digitalcraftsmen.com>"
         no_passwd_sudo : true
@@ -53,6 +54,7 @@ metacpan::users:
         fullname : 'Shawn Sorichetti <shawn@coloredblocks.com>'
         shell    : /bin/zsh
     rwstauner:
+        ensure   : absent
         admin    : true
         fullname : 'Randy Stauner <rwstauner@cpan.org>'
         shell    : /bin/zsh
@@ -62,15 +64,18 @@ metacpan::users:
         fullname : 'Sawyer <xsawyerx@cpan.org>'
         shell    : /bin/zsh
     trs:
+        ensure   : absent
         admin    : true
         fullname : "Thomas Sibley <tsibley@cpan.org>"
     matthewt:
+        ensure   : absent
         admin    : true
         fullname : "Matt S Trout <perl-stuff@trout.me.uk>"
     haarg:
         admin    : true
         fullname : "Graham Knop <haarg@haarg.org>"
     mhorsfall:
+        ensure   : absent
         admin    : true
         fullname : "Matthew Horsfall (alh) <wolfsage@gmail.com>"
     ben:
@@ -78,6 +83,7 @@ metacpan::users:
         admin    : true
         fullname : "Ben Hundley <ben@qbox.io>"
     ether:
+        ensure   : absent
         admin    : true
         fullname : "Karen Etheridge <ether@cpan.org"
     mickey:
@@ -86,18 +92,22 @@ metacpan::users:
         no_passwd_sudo : true
     # David Cantrell needs access for cpxxxan and cpan deps (rsync)
     davidc:
+        ensure   : absent
         fullname : "David Cantrell <david@cantrell.org.uk>"
     brad:
+        ensure   : absent
         admin    : true
         fullname : "Brad Lhotsky <brad.lhotsky@gmail.com>"
     jberger:
+        ensure   : absent
         admin    : true
         fullname : "Joel Berger <joel.a.berger@gmail.com>"
     mohawk2:
+        ensure   : absent
         admin    : true
         fullname : "Ed J <etj@cpan.org>"
     abraxxa:
+        ensure   : absent
         admin    : true
         fullname : "Alexander Hartmaier <abraxxa@cpan.org>"
         no_passwd_sudo : true
-
