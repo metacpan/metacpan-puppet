@@ -49,6 +49,8 @@ metacpan::crons::api:
       ensure : present
     river:
       ensure : present
+    bus_factor:
+      ensure : present
     external_cygwin:
       ensure : present
 #    external_debian:

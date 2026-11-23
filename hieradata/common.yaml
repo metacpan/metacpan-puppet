@@ -328,6 +328,11 @@ metacpan::crons::api:
         minute : 30
         hour : 1
         ensure : absent
+    bus_factor:
+        cmd : 'bus_factor'
+        minute : 30
+        hour : 3
+        ensure : absent
     external_cygwin:
         cmd : 'external --external_source cygwin --email_to book@cpan.org'
         minute : 31
